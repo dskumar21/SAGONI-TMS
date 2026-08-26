@@ -9,14 +9,14 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; padding: 14px; }
-    .container { max-width: 480px; margin: 0 auto; }
+    .container { max-width: 520px; margin: 0 auto; }
     
     .header { text-align: center; padding: 16px 12px; background: #1e293b; border-radius: 12px; border: 1px solid #334155; margin-bottom: 16px; }
     .header h1 { font-size: 18px; font-weight: 800; color: #38bdf8; }
     .header p { font-size: 11px; color: #94a3b8; margin-top: 4px; }
     .sec-badge { display: inline-block; background: #0369a1; color: #e0f2fe; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; margin-top: 6px; }
 
-    .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 18px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+    .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 18px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); margin-bottom: 14px; }
     .form-group { margin-bottom: 14px; }
     label { display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px; }
     input, select, textarea { width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 14px; outline: none; }
@@ -34,6 +34,9 @@
 
     .toast { display: none; background: #065f46; border: 1px solid #34d399; color: #ecfdf5; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 600; text-align: center; margin-bottom: 14px; }
     .hidden { display: none; }
+    
+    .section-title { font-size: 14px; font-weight: 700; color: #f1f5f9; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 4px; }
+    .item-card { background: #0f172a; padding: 10px; border-radius: 8px; margin-top: 8px; font-size: 12px; border-left: 4px solid #38bdf8; }
   </style>
 </head>
 <body>
@@ -100,7 +103,7 @@
               <option>Turnout Overhauling (सगोनी यार्ड)</option>
             </select>
           </div>
-          <div class="form-group"><label>आउटपुट / प्रगति विवरण</label><input type="text" id="mOutput" placeholder="उदा: 75 Sleeper Packed" required></div>
+          <div class="form-group"><label>आउटपुट / प्रगति विवरण</label><input type="text" id="mOutput" placeholder="उदा: 75 Sleeper Packed, 12 Joints Oiled" required></div>
           <button type="submit" id="mBtn" class="btn btn-green">डेटाबेस में सुरक्षित करें</button>
         </form>
       </div>
@@ -132,11 +135,27 @@
         </form>
       </div>
 
-      <!-- JE LIVE DASHBOARD -->
-      <div id="jeForm" class="card hidden">
-        <h3 style="font-size: 15px; margin-bottom: 8px; color: #60a5fa;">📊 JE मास्टर कंट्रोल (सगोनी 1157 - 1173)</h3>
-        <button onclick="loadJEDashboard()" class="btn btn-blue" style="margin-bottom: 12px;">🔄 लाइव डेटा रीफ्रेश करें</button>
-        <div id="jeDefectsList" style="font-size: 12px; line-height: 1.6;">लोड हो रहा है...</div>
+      <!-- JE MASTER DASHBOARD -->
+      <div id="jeForm" class="hidden">
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <h3 style="font-size: 15px; color: #60a5fa;">📊 JE कंट्रोल (सगोनी 1157 - 1173)</h3>
+            <button onclick="loadJEDashboard()" style="background: #2563eb; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer;">🔄 Refresh</button>
+          </div>
+          <div style="font-size: 11px; color: #94a3b8;">लाइव क्लाउड डेटाबेस मॉनिटरिंग</div>
+        </div>
+
+        <!-- 1. GANG WORK LOGS SECTION -->
+        <div class="card">
+          <div class="section-title" style="color: #4ade80;">🛠️ मेट दैनिक प्रगति (Gang Daily Work)</div>
+          <div id="jeWorkList" style="font-size: 12px; line-height: 1.5;">लोड हो रहा है...</div>
+        </div>
+
+        <!-- 2. DEFECTS SECTION -->
+        <div class="card">
+          <div class="section-title" style="color: #f87171;">⚠️ ट्रैक डिफेक्ट्स & अलर्ट्स (Defects)</div>
+          <div id="jeDefectsList" style="font-size: 12px; line-height: 1.5;">लोड हो रहा है...</div>
+        </div>
       </div>
 
     </div>
@@ -153,6 +172,7 @@
     const STAFF_DATA = {
       "JE01": { name: "JE (P-Way) Sagoni", role: "je", beat: "Section 1157 - 1173" },
       "MATE01": { name: "रामलाल मुकद्दम", role: "mate", beat: "Gang-01 (1157-1162)" },
+      "MATE02": { name: "श्याम सिंह", role: "mate", beat: "Gang-02 (1162-1168)" },
       "KEY01": { name: "सुरेश कीमैन", role: "keyman", beat: "UP Line (1157-1165)" },
       "PAT01": { name: "राकेश पेट्रोलमैन", role: "keyman", beat: "Night Patrol (1157-1165)" }
     };
@@ -194,7 +214,7 @@
       setTimeout(() => { toast.style.display = 'none'; }, 3500);
     }
 
-    // SUBMIT MATE WORK TO SUPABASE
+    // 1. SUBMIT MATE WORK
     async function submitMateWork(e) {
       e.preventDefault();
       const btn = document.getElementById('mBtn');
@@ -219,12 +239,12 @@
       if (error) {
         alert('डेटाबेस एरर: ' + error.message);
       } else {
-        showToast('✅ गैंग कार्य Supabase डेटाबेस में सुरक्षित हो गया!');
+        showToast('✅ मुकद्दम कार्य Supabase डेटाबेस में सुरक्षित हो गया!');
         e.target.reset();
       }
     }
 
-    // SUBMIT DEFECT TO SUPABASE
+    // 2. SUBMIT KEYMAN DEFECT
     async function submitKeymanDefect(e) {
       e.preventDefault();
       const btn = document.getElementById('kBtn');
@@ -253,12 +273,18 @@
       }
     }
 
-    // LOAD JE LIVE DATA
+    // 3. LOAD COMPLETE JE LIVE DASHBOARD
     async function loadJEDashboard() {
-      const container = document.getElementById('jeDefectsList');
-      container.innerHTML = "डेटा लोड हो रहा है...";
+      loadGangWork();
+      loadDefects();
+    }
 
-      const { data, error } = await db.from('track_defects').select('*').order('created_at', { ascending: false }).limit(5);
+    // FETCH GANG WORK LOGS
+    async function loadGangWork() {
+      const container = document.getElementById('jeWorkList');
+      container.innerHTML = "कार्य डायरी लोड हो रही है...";
+
+      const { data, error } = await db.from('daily_work_logs').select('*').order('created_at', { ascending: false }).limit(6);
 
       if (error) {
         container.innerHTML = "त्रुटि: " + error.message;
@@ -266,16 +292,61 @@
       }
 
       if (!data || data.length === 0) {
-        container.innerHTML = "🟢 अभी कोई ओपन डिफेक्ट दर्ज नहीं है।";
+        container.innerHTML = "⚪ आज अभी तक किसी मेट ने कार्य सबमिट नहीं किया है।";
         return;
       }
 
-      let html = '<strong style="color:#38bdf8;">ताज़ा डिफेक्ट्स:</strong><br>';
+      let html = '';
+      data.forEach(w => {
+        const time = new Date(w.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        html += `<div class="item-card" style="border-left-color: #22c55e;">
+          <div style="display:flex; justify-content:space-between;">
+            <strong style="color:#4ade80;">${w.gang_no || 'Gang'} - ${w.mate_name}</strong>
+            <span style="color:#94a3b8; font-size:10px;">${time}</span>
+          </div>
+          <div style="margin-top:3px;">
+            📍 <strong>${w.line_name}</strong>: Km ${w.from_km} से ${w.to_km}<br>
+            🔨 <strong>कार्य:</strong> ${w.work_type}<br>
+            📦 <strong>प्रगति:</strong> ${w.output_details}
+          </div>
+        </div>`;
+      });
+      container.innerHTML = html;
+    }
+
+    // FETCH DEFECTS
+    async function loadDefects() {
+      const container = document.getElementById('jeDefectsList');
+      container.innerHTML = "डिफेक्ट्स लोड हो रहे हैं...";
+
+      const { data, error } = await db.from('track_defects').select('*').order('created_at', { ascending: false }).limit(6);
+
+      if (error) {
+        container.innerHTML = "त्रुटि: " + error.message;
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        container.innerHTML = "🟢 अभी कोई ओपन डिफेक्ट दर्ज नहीं है। ट्रैक सुरक्षित है!";
+        return;
+      }
+
+      let html = '';
       data.forEach(d => {
-        html += `<div style="background:#0f172a; padding:8px; border-radius:6px; margin-top:6px; border-left:3px solid #ef4444;">
-          📍 <strong>${d.line_name} @ Km ${d.km_location}</strong> (${d.pole_no})<br>
-          ⚠️ ${d.defect_type} - <em>${d.remarks || 'कोई रिमार्क नहीं'}</em><br>
-          <span style="color:#94a3b8; font-size:10px;">रिपोर्टकर्ता: ${d.reported_by}</span>
+        const isCritical = d.defect_type.includes('Fracture') || d.defect_type.includes('🔴');
+        const borderColor = isCritical ? '#ef4444' : (d.defect_type.includes('🟢') ? '#22c55e' : '#f59e0b');
+        const time = new Date(d.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+        html += `<div class="item-card" style="border-left-color: ${borderColor};">
+          <div style="display:flex; justify-content:space-between;">
+            <strong style="color:#38bdf8;">📍 ${d.line_name} @ Km ${d.km_location}</strong>
+            <span style="color:#94a3b8; font-size:10px;">${time}</span>
+          </div>
+          <div style="margin-top:3px;">
+            खंभा (Pole): <strong>${d.pole_no || '-'}</strong> | स्थिति: <strong>${d.defect_type}</strong><br>
+            📝 <em>${d.remarks || 'कोई रिमार्क नहीं'}</em><br>
+            <span style="color:#94a3b8; font-size:10px;">रिपोर्टकर्ता: ${d.reported_by}</span>
+          </div>
         </div>`;
       });
       container.innerHTML = html;
