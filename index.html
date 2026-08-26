@@ -9,7 +9,7 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; padding: 12px; }
-    .container { max-width: 720px; margin: 0 auto; }
+    .container { max-width: 740px; margin: 0 auto; }
     
     .header { text-align: center; padding: 14px 10px; background: #1e293b; border-radius: 12px; border: 1px solid #334155; margin-bottom: 12px; }
     .header h1 { font-size: 18px; font-weight: 800; color: #38bdf8; }
@@ -33,10 +33,10 @@
     .btn-amber { background: #d97706; }
 
     /* Touch Friendly Selector Buttons */
-    .line-selector-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 4px; }
-    .line-btn { background: #0f172a; border: 2px solid #334155; color: #cbd5e1; padding: 10px 4px; border-radius: 8px; font-size: 11px; font-weight: 700; text-align: center; cursor: pointer; transition: 0.2s; user-select: none; }
-    .line-btn.selected { background: #0369a1; border-color: #38bdf8; color: white; }
-    .line-btn.locked { opacity: 0.7; pointer-events: none; }
+    .section-pills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 4px; }
+    .pills-btn { background: #0f172a; border: 2px solid #334155; color: #cbd5e1; padding: 10px 4px; border-radius: 8px; font-size: 11px; font-weight: 700; text-align: center; cursor: pointer; transition: 0.2s; user-select: none; }
+    .pills-btn.selected { background: #0369a1; border-color: #38bdf8; color: white; }
+    .pills-btn.locked { opacity: 0.7; pointer-events: none; }
 
     /* Action Grids */
     .sos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
@@ -86,7 +86,7 @@
     <div class="header">
       <h1>सगोनी पी-वे ट्रैक मैनेजमेंट सिस्टम</h1>
       <span class="sec-badge">Km 1157.000 से 1173.000 (16 Km)</span>
-      <p>Voice Assisted Early Train Warning & Safety Command</p>
+      <p>Section-Aware Early Train Warning & Block Safety System</p>
     </div>
 
     <!-- LIVE SIREN & VOICE ALERT BOX -->
@@ -102,11 +102,11 @@
     <!-- HOME SECTION -->
     <div id="homeSection">
 
-      <!-- 1. EARLY TRAIN WARNING SYSTEM (7 LINES CONFIGURATION) -->
+      <!-- 1. SECTION-AWARE EARLY TRAIN WARNING SYSTEM -->
       <div class="card card-train-safety">
         <div style="text-align: center;">
-          <strong style="color: #38bdf8; font-size: 15px;">🚆 ट्रैक सुरक्षा: लाइव ट्रेन चेतावनी प्रणाली</strong>
-          <p style="font-size: 11px; color: #94a3b8; margin-top: 2px;">सगोनी यार्ड व ब्लॉक सेक्शन की सभी 7 लाइनों का वॉयस अलर्ट:</p>
+          <strong style="color: #38bdf8; font-size: 15px;">🚆 रिलेटिव सेक्शन ब्लॉक चेतावनी प्रणाली</strong>
+          <p style="font-size: 11px; color: #94a3b8; margin-top: 2px;">(रतनगांव $\leftrightarrow$ सगोनी $\leftrightarrow$ गोला पट्टी IBH)</p>
         </div>
 
         <div class="train-grid">
@@ -122,30 +122,41 @@
           </div>
         </div>
 
-        <!-- SENDER FORM -->
+        <!-- SENDER FORM (गाड़ी बताने वाला) -->
         <div id="trainSenderPanel" style="display: none; margin-top: 14px; border-top: 1px dashed #0284c7; padding-top: 12px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <strong style="color:#38bdf8; font-size:13px;">📢 गाड़ी सूचना डिस्पैच</strong>
+            <strong style="color:#38bdf8; font-size:13px;">📢 ट्रेन ब्लॉक डिस्पैच (Movement Dispatch)</strong>
             <button onclick="closeTrainPanels()" style="background:none; border:none; color:#f87171; cursor:pointer;">✖</button>
           </div>
           
           <div class="form-group">
-            <label>आपकी ID / स्टेशन (Sender ID)</label>
+            <label>आपकी ID / स्टेशन</label>
             <input type="text" id="sndEmpId" placeholder="उदा: SM_SAGONI, GATE_1162, JE01">
           </div>
 
+          <!-- Step 1: Direction & Block Section Dispatch Selection -->
           <div class="form-group">
-            <label>किस लाइन की गाड़ी बता रहे हैं? (टच करके चुनें):</label>
-            <div class="line-selector-grid">
-              <div class="line-btn selected" id="btnLineUP" onclick="selectSenderLine('अप मेन लाइन')">UP Main</div>
-              <div class="line-btn" id="btnLineDN" onclick="selectSenderLine('डाउन मेन लाइन')">DN Main</div>
-              <div class="line-btn" id="btnLine3rd" onclick="selectSenderLine('थर्ड मेन लाइन')">3rd Main</div>
-              <div class="line-btn" id="btnLineUPLoop" onclick="selectSenderLine('अप लूप लाइन')">UP Loop</div>
-              <div class="line-btn" id="btnLineDNLoop" onclick="selectSenderLine('डाउन लूप लाइन')">DN Loop</div>
-              <div class="line-btn" id="btnLine3rdLoop" onclick="selectSenderLine('थर्ड लूप लाइन')">3rd Loop</div>
-              <div class="line-btn" id="btnLineLH" onclick="selectSenderLine('लॉन्ग हॉल साइडिंग')" style="grid-column: span 3;">लॉन्ग हॉल साइडिंग (Long Haul Siding)</div>
+            <label>ट्रेन मूवमेंट और ब्लॉक सेक्शन चुनें (टच करें):</label>
+            <div class="section-pills-grid" style="grid-template-columns: 1fr 1fr;">
+              <div class="pills-btn selected" id="sndMv1" onclick="selectMovement('UP: रतनगांव से सगोनी', 'रतनगांव-सगोनी')">🔼 UP: रतनगांव $\rightarrow$ सगोनी</div>
+              <div class="pills-btn" id="sndMv2" onclick="selectMovement('UP: सगोनी से गोला पट्टी', 'गोला पट्टी-सगोनी')">🔼 UP: सगोनी $\rightarrow$ गोला पट्टी</div>
+              <div class="pills-btn" id="sndMv3" onclick="selectMovement('DN: गोला पट्टी से सगोनी', 'गोला पट्टी-सगोनी')">🔽 DN: गोला पट्टी $\rightarrow$ सगोनी</div>
+              <div class="pills-btn" id="sndMv4" onclick="selectMovement('DN: सगोनी से रतनगांव', 'रतनगांव-सगोनी')">🔽 DN: सगोनी $\rightarrow$ रतनगांव</div>
             </div>
-            <input type="hidden" id="selectedSenderLine" value="अप मेन लाइन">
+            <input type="hidden" id="selectedMovement" value="UP: रतनगांव से सगोनी">
+            <input type="hidden" id="targetBlockSection" value="रतनगांव-सगोनी">
+          </div>
+
+          <!-- Step 2: Specific Line Selection -->
+          <div class="form-group">
+            <label>विशिष्ट लाइन (Specific Line):</label>
+            <div class="section-pills-grid">
+              <div class="pills-btn selected" id="btnSndLineMain" onclick="selectSenderSpecificLine('मेन लाइन')">Main Line</div>
+              <div class="pills-btn" id="btnSndLineLoop" onclick="selectSenderSpecificLine('लूप लाइन')">Loop Line</div>
+              <div class="pills-btn" id="btnSndLine3rd" onclick="selectSenderSpecificLine('थर्ड लाइन')">3rd Line</div>
+              <div class="pills-btn" id="btnSndLineLH" onclick="selectSenderSpecificLine('लॉन्ग हॉल साइडिंग')" style="grid-column: span 3;">लॉन्ग हॉल साइडिंग</div>
+            </div>
+            <input type="hidden" id="selectedSpecificLine" value="मेन लाइन">
           </div>
 
           <div class="form-group">
@@ -159,10 +170,10 @@
           </div>
         </div>
 
-        <!-- RECEIVER FORM (7 LINES ROUTE LOCKING) -->
+        <!-- RECEIVER FORM (गाड़ी पूछने/सुनने वाला) -->
         <div id="trainReceiverPanel" style="display: none; margin-top: 14px; border-top: 1px dashed #0284c7; padding-top: 12px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <strong style="color:#4ade80; font-size:13px;">📡 लाइव अलर्ट रिसीवर (रूट लॉक सिस्टम)</strong>
+            <strong style="color:#4ade80; font-size:13px;">📡 रिलेटिव लोकेशन मॉनिटर (Location Lock)</strong>
             <button onclick="closeTrainPanels()" style="background:none; border:none; color:#f87171; cursor:pointer;">✖</button>
           </div>
           
@@ -171,29 +182,39 @@
             <input type="text" id="rcvEmpId" placeholder="उदा: MATE01, KEY01">
           </div>
 
+          <!-- Step 1: Work Location Selection -->
           <div class="form-group">
-            <label>किन-किन लाइनों पर आप कार्य कर रहे हैं? (टच करके सेलेक्ट करें):</label>
-            <div class="line-selector-grid" id="rcvLineGrid">
-              <div class="line-btn selected" id="rcvUP" onclick="toggleReceiverLine('rcvUP', 'अप मेन लाइन')">UP Main</div>
-              <div class="line-btn selected" id="rcvDN" onclick="toggleReceiverLine('rcvDN', 'डाउन मेन लाइन')">DN Main</div>
-              <div class="line-btn" id="rcv3rd" onclick="toggleReceiverLine('rcv3rd', 'थर्ड मेन लाइन')">3rd Main</div>
-              <div class="line-btn" id="rcvUPLoop" onclick="toggleReceiverLine('rcvUPLoop', 'अप लूप लाइन')">UP Loop</div>
-              <div class="line-btn" id="rcvDNLoop" onclick="toggleReceiverLine('rcvDNLoop', 'डाउन लूप लाइन')">DN Loop</div>
-              <div class="line-btn" id="rcv3rdLoop" onclick="toggleReceiverLine('rcv3rdLoop', 'थर्ड लूप लाइन')">3rd Loop</div>
-              <div class="line-btn" id="rcvLH" onclick="toggleReceiverLine('rcvLH', 'लॉन्ग हॉल साइडिंग')" style="grid-column: span 3;">लॉन्ग हॉल साइडिंग</div>
+            <label>1. आपकी कार्य लोकेशन (Block Section):</label>
+            <div class="section-pills-grid" id="rcvBlockGrid">
+              <div class="pills-btn selected" id="rcvLocGhul" onclick="selectReceiverBlock('गोला पट्टी-सगोनी')">गोला पट्टी – सगोनी सेक्शन</div>
+              <div class="pills-btn" id="rcvLocYard" onclick="selectReceiverBlock('सगोनी यार्ड')">सगोनी यार्ड क्षेत्र</div>
+              <div class="pills-btn" id="rcvLocRat" onclick="selectReceiverBlock('रतनगांव-सगोनी')">सगोनी – रतनगांव सेक्शन</div>
+            </div>
+            <input type="hidden" id="selectedReceiverBlock" value="गोला पट्टी-सगोनी">
+          </div>
+
+          <!-- Step 2: Line Monitoring Toggle -->
+          <div class="form-group">
+            <label>2. किन-किन लाइनों पर नजर रखनी है?</label>
+            <div class="section-pills-grid" id="rcvLineGrid">
+              <div class="pills-btn selected" id="rcvLMain" onclick="toggleReceiverLineType('मेन लाइन')">मेन लाइन (Main)</div>
+              <div class="pills-btn selected" id="rcvLLoop" onclick="toggleReceiverLineType('लूप लाइन')">लूप लाइन (Loop)</div>
+              <div class="pills-btn selected" id="rcvL3rd" onclick="toggleReceiverLineType('थर्ड लाइन')">थर्ड लाइन (3rd)</div>
+              <div class="pills-btn" id="rcvLLH" onclick="toggleReceiverLineType('लॉन्ग हॉल साइडिंग')" style="grid-column: span 3;">लॉन्ग हॉल साइडिंग</div>
             </div>
           </div>
 
+          <!-- Lock Button -->
           <div id="receiverControls">
             <button onclick="lockAndStartMonitoring()" id="btnLockMonitor" class="btn btn-green" style="font-size:14px; font-weight:800;">
-              🔒 लाइन लॉक करें & मॉनिटरिंग चालू करें
+              🔒 लोकेशन व रूट लॉक करें (Start Safe Monitoring)
             </button>
-            <div id="rcvStatus" style="font-size:11px; color:#94a3b8; text-align:center; margin-top:6px;">स्टेटस: लाइन चुनकर लॉक करें</div>
+            <div id="rcvStatus" style="font-size:11px; color:#94a3b8; text-align:center; margin-top:6px;">स्टेटस: लोकेशन लॉक करने के बाद ही सक्रिय होगा</div>
           </div>
 
           <div id="receiverUnlockBar" style="display: none; margin-top: 8px;">
             <button onclick="unlockReceiverSettings()" class="btn" style="background:#475569; font-size:12px;">
-              🔓 अनलॉक करें / लाइन सेलेक्शन बदलें
+              🔓 अनलॉक करें / लोकेशन बदलें
             </button>
           </div>
         </div>
@@ -382,7 +403,7 @@
         <div id="tabMap" class="card" style="display: none;">
           <strong style="color:#38bdf8; font-size:14px; display:block; margin-bottom:6px;">🗺️ 16 Km लीनियर ट्रैक मॉनिटर (सगोनी 1157 - 1173)</strong>
           <div style="background:#0f172a; padding:16px 12px; border-radius:8px; border:1px solid #334155;">
-            <div style="display:flex; justify-content:space-between; font-size:10px; color:#64748b; margin-bottom:4px;"><span>Km 1157.0</span><span>Km 1165.0 (Sagoni Yard)</span><span>Km 1173.0</span></div>
+            <div style="display:flex; justify-content:space-between; font-size:10px; color:#64748b; margin-bottom:4px;"><span>Km 1157.0 (रतनगांव)</span><span>Km 1165.0 (सगोनी)</span><span>Km 1173.0 (गोला पट्टी IBH)</span></div>
             <div style="font-size:11px; color:#cbd5e1; margin-bottom:2px;">UP Main Line:</div>
             <div id="upLineTrack" style="height:7px; background:#1e293b; border-radius:4px; position:relative; margin-bottom:8px; border:1px solid #475569;"></div>
             <div style="font-size:11px; color:#cbd5e1; margin-bottom:2px;">DN Main Line:</div>
@@ -409,8 +430,9 @@
     let autoStopTimer = null;
     let realtimeChannel = null;
 
-    // Receiver Selected Lines Set
-    const subscribedLines = new Set(['अप मेन लाइन', 'डाउन मेन लाइन']);
+    // Relative Location & Line State
+    let myLockedBlock = 'गोला पट्टी-सगोनी';
+    const mySubscribedLineTypes = new Set(['मेन लाइन', 'लूप लाइन', 'थर्ड लाइन']);
 
     const STAFF_DATA = {
       "JE01": { name: "JE (P-Way) Sagoni", role: "je", beat: "Section 1157 - 1173" },
@@ -420,14 +442,10 @@
       "PAT01": { name: "राकेश पेट्रोलमैन", role: "keyman", beat: "Night Patrol (1157-1165)" }
     };
 
-    // --- SOUND ENGINE (WEB AUDIO SYNTHESIZER) ---
+    // --- SOUND & CLEAR HINDI VOICE ENGINE ---
     function initAudio() {
-      if (!audioContext) {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (audioContext.state === 'suspended') {
-        audioContext.resume();
-      }
+      if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioContext.state === 'suspended') audioContext.resume();
     }
 
     function playTone(freq, type, duration) {
@@ -445,7 +463,6 @@
       } catch (e) { console.log(e); }
     }
 
-    // --- ENHANCED CLEAR HINDI VOICE ENGINE ---
     function speakHindiAlert(text) {
       try {
         if ('speechSynthesis' in window) {
@@ -465,7 +482,7 @@
       } catch (e) { console.log("Voice error:", e); }
     }
 
-    function triggerSirenSound(alertType, lineName, trainNo) {
+    function triggerSirenSound(alertType, movementText, lineText, trainNo) {
       stopAlarmSound();
       initAudio();
 
@@ -473,8 +490,8 @@
       document.getElementById('floatingStopBar').style.display = 'block';
 
       const voiceText = alertType === 'DISPATCHED'
-        ? `सावधान! ${lineName} पर गाड़ी छोड़ दी गई है। तुरंत ट्रैक छोड़ें!`
-        : `सावधान! ${lineName} पर गाड़ी ब्लॉक हो चुकी है।`;
+        ? `सावधान! ${movementText} ${lineText} पर गाड़ी छोड़ दी गई है। तुरंत ट्रैक छोड़ें!`
+        : `सावधान! ${movementText} ${lineText} पर गाड़ी ब्लॉक हो चुकी है।`;
 
       speakHindiAlert(voiceText);
 
@@ -490,13 +507,8 @@
         }, 700);
       }
 
-      voiceInterval = setInterval(() => {
-        speakHindiAlert(voiceText);
-      }, 6000);
-
-      autoStopTimer = setTimeout(() => {
-        stopAlarmSound();
-      }, 40000);
+      voiceInterval = setInterval(() => speakHindiAlert(voiceText), 6000);
+      autoStopTimer = setTimeout(() => stopAlarmSound(), 40000);
     }
 
     function stopAlarmSound() {
@@ -509,36 +521,74 @@
       document.getElementById('floatingStopBar').style.display = 'none';
     }
 
-    // --- RECEIVER LINE TOGGLE & LOCK LOGIC ---
-    function toggleReceiverLine(btnId, lineName) {
-      const btn = document.getElementById(btnId);
-      if (subscribedLines.has(lineName)) {
-        if (subscribedLines.size === 1) {
-          alert('कम से कम एक लाइन चुनना आवश्यक है!');
-          return;
-        }
-        subscribedLines.delete(lineName);
+    // --- SENDER CONTROLS ---
+    function selectMovement(movementName, targetBlock) {
+      document.getElementById('selectedMovement').value = movementName;
+      document.getElementById('targetBlockSection').value = targetBlock;
+      ['sndMv1', 'sndMv2', 'sndMv3', 'sndMv4'].forEach(id => document.getElementById(id).classList.remove('selected'));
+      if (movementName.includes('रतनगांव से सगोनी')) document.getElementById('sndMv1').classList.add('selected');
+      if (movementName.includes('सगोनी से गोला पट्टी')) document.getElementById('sndMv2').classList.add('selected');
+      if (movementName.includes('गोला पट्टी से सगोनी')) document.getElementById('sndMv3').classList.add('selected');
+      if (movementName.includes('सगोनी से रतनगांव')) document.getElementById('sndMv4').classList.add('selected');
+    }
+
+    function selectSenderSpecificLine(lineName) {
+      document.getElementById('selectedSpecificLine').value = lineName;
+      ['btnSndLineMain', 'btnSndLineLoop', 'btnSndLine3rd', 'btnSndLineLH'].forEach(id => document.getElementById(id).classList.remove('selected'));
+      if (lineName === 'मेन लाइन') document.getElementById('btnSndLineMain').classList.add('selected');
+      if (lineName === 'लूप लाइन') document.getElementById('btnSndLineLoop').classList.add('selected');
+      if (lineName === 'थर्ड लाइन') document.getElementById('btnSndLine3rd').classList.add('selected');
+      if (lineName === 'लॉन्ग हॉल साइडिंग') document.getElementById('btnSndLineLH').classList.add('selected');
+    }
+
+    async function sendLiveTrainAlert(alertType) {
+      const senderId = document.getElementById('sndEmpId').value.trim().toUpperCase() || 'P-WAY_USER';
+      const movement = document.getElementById('selectedMovement').value;
+      const targetBlock = document.getElementById('targetBlockSection').value;
+      const specificLine = document.getElementById('selectedSpecificLine').value;
+      const train = document.getElementById('sndTrain').value || 'गाड़ी';
+
+      const payload = {
+        sender_id: senderId,
+        line_name: specificLine,
+        alert_type: alertType,
+        train_no: train,
+        location_note: JSON.stringify({ block: targetBlock, movement: movement })
+      };
+
+      const { error } = await db.from('train_live_alerts').insert([payload]);
+      if (error) alert('त्रुटि: ' + error.message);
+      else showToast(`✅ ${movement} (${specificLine}) पर अलर्ट प्रसारित किया गया!`);
+    }
+
+    // --- RECEIVER CONTROLS & RELATIVE LOCKING ---
+    function selectReceiverBlock(blockName) {
+      myLockedBlock = blockName;
+      document.getElementById('selectedReceiverBlock').value = blockName;
+      ['rcvLocGhul', 'rcvLocYard', 'rcvLocRat'].forEach(id => document.getElementById(id).classList.remove('selected'));
+      if (blockName === 'गोला पट्टी-सगोनी') document.getElementById('rcvLocGhul').classList.add('selected');
+      if (blockName === 'सगोनी यार्ड') document.getElementById('rcvLocYard').classList.add('selected');
+      if (blockName === 'रतनगांव-सगोनी') document.getElementById('rcvLocRat').classList.add('selected');
+    }
+
+    function toggleReceiverLineType(lineType) {
+      const idMap = { 'मेन लाइन': 'rcvLMain', 'लूप लाइन': 'rcvLLoop', 'थर्ड लाइन': 'rcvL3rd', 'लॉन्ग हॉल साइडिंग': 'rcvLLH' };
+      const btn = document.getElementById(idMap[lineType]);
+      if (mySubscribedLineTypes.has(lineType)) {
+        if (mySubscribedLineTypes.size === 1) { alert('कम से कम एक लाइन चुनना आवश्यक है!'); return; }
+        mySubscribedLineTypes.delete(lineType);
         btn.classList.remove('selected');
       } else {
-        subscribedLines.add(lineName);
+        mySubscribedLineTypes.add(lineType);
         btn.classList.add('selected');
       }
     }
 
-    // 🔒 LOCK SETTINGS & START REALTIME MONITORING
     function lockAndStartMonitoring() {
       initAudio();
-
-      if (subscribedLines.size === 0) {
-        alert('कृपया कम से कम एक लाइन चुनें!');
-        return;
-      }
-
-      document.querySelectorAll('#rcvLineGrid .line-btn').forEach(btn => btn.classList.add('locked'));
+      document.querySelectorAll('#rcvBlockGrid .pills-btn, #rcvLineGrid .pills-btn').forEach(btn => btn.classList.add('locked'));
       
-      const linesArray = Array.from(subscribedLines);
-      speakHindiAlert(`${linesArray.join(' और ')} का रूट लॉक कर दिया गया है।`);
-
+      speakHindiAlert(`${myLockedBlock} का लोकेशन रूट लॉक हो गया है।`);
       document.getElementById('receiverControls').style.display = 'none';
       document.getElementById('receiverUnlockBar').style.display = 'block';
 
@@ -546,45 +596,33 @@
         realtimeChannel = db.channel('public:train_live_alerts')
           .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'train_live_alerts' }, payload => {
             const alertData = payload.new;
-            if (subscribedLines.has(alertData.line_name)) {
+            let note = { block: '', movement: '' };
+            try { note = JSON.parse(alertData.location_note); } catch(e){}
+
+            const blockMatches = (note.block === myLockedBlock) || (myLockedBlock === 'सगोनी यार्ड');
+            const lineMatches = mySubscribedLineTypes.has(alertData.line_name);
+
+            if (blockMatches && lineMatches) {
               const isDispatched = alertData.alert_type === 'DISPATCHED';
               document.getElementById('sirenAlertTitle').innerText = isDispatched 
-                ? `🚨 ${alertData.line_name}: गाड़ी छोड़ दी गई है!` 
-                : `⛔ ${alertData.line_name}: गाड़ी ब्लॉक हो चुकी है!`;
+                ? `🚨 ${note.movement} (${alertData.line_name}): गाड़ी छूट गई!` 
+                : `⛔ ${note.movement} (${alertData.line_name}): गाड़ी ब्लॉक हो गई!`;
               document.getElementById('sirenAlertDesc').innerText = `ट्रेन सं.: ${alertData.train_no} | प्रेषक: ${alertData.sender_id}`;
               document.getElementById('sirenAlarmBox').scrollIntoView({ behavior: 'smooth' });
 
-              triggerSirenSound(alertData.alert_type, alertData.line_name, alertData.train_no);
+              triggerSirenSound(alertData.alert_type, note.movement, alertData.line_name, alertData.train_no);
             }
           })
           .subscribe();
       }
 
-      showToast(`🔒 ${linesArray.join(', ')} लॉक हो गई है!`);
+      showToast(`🔒 ${myLockedBlock} सुरक्षित रूप से लॉक हो गया!`);
     }
 
-    // 🔓 UNLOCK SETTINGS
     function unlockReceiverSettings() {
-      document.querySelectorAll('#rcvLineGrid .line-btn').forEach(btn => btn.classList.remove('locked'));
+      document.querySelectorAll('#rcvBlockGrid .pills-btn, #rcvLineGrid .pills-btn').forEach(btn => btn.classList.remove('locked'));
       document.getElementById('receiverControls').style.display = 'block';
       document.getElementById('receiverUnlockBar').style.display = 'none';
-      document.getElementById('rcvStatus').innerText = "स्टेटस: लाइनें अनलॉक हैं। बदलने के बाद दोबारा लॉक करें।";
-      document.getElementById('rcvStatus').style.color = "#f59e0b";
-    }
-
-    // --- SENDER LINE SELECTOR ---
-    function selectSenderLine(lineName) {
-      document.getElementById('selectedSenderLine').value = lineName;
-      ['btnLineUP', 'btnLineDN', 'btnLine3rd', 'btnLineUPLoop', 'btnLineDNLoop', 'btnLine3rdLoop', 'btnLineLH'].forEach(id => {
-        document.getElementById(id).classList.remove('selected');
-      });
-      if (lineName === 'अप मेन लाइन') document.getElementById('btnLineUP').classList.add('selected');
-      if (lineName === 'डाउन मेन लाइन') document.getElementById('btnLineDN').classList.add('selected');
-      if (lineName === 'थर्ड मेन लाइन') document.getElementById('btnLine3rd').classList.add('selected');
-      if (lineName === 'अप लूप लाइन') document.getElementById('btnLineUPLoop').classList.add('selected');
-      if (lineName === 'डाउन लूप लाइन') document.getElementById('btnLineDNLoop').classList.add('selected');
-      if (lineName === 'थर्ड लूप लाइन') document.getElementById('btnLine3rdLoop').classList.add('selected');
-      if (lineName === 'लॉन्ग हॉल साइडिंग') document.getElementById('btnLineLH').classList.add('selected');
     }
 
     function openTrainMode(mode) {
@@ -598,34 +636,10 @@
       document.getElementById('trainReceiverPanel').style.display = 'none';
     }
 
-    async function sendLiveTrainAlert(alertType) {
-      const senderId = document.getElementById('sndEmpId').value.trim().toUpperCase() || 'P-WAY_USER';
-      const line = document.getElementById('selectedSenderLine').value;
-      const train = document.getElementById('sndTrain').value || 'गाड़ी';
-
-      const payload = {
-        sender_id: senderId,
-        line_name: line,
-        alert_type: alertType,
-        train_no: train,
-        location_note: 'सगोनी सेक्शन'
-      };
-
-      const { error } = await db.from('train_live_alerts').insert([payload]);
-      if (error) {
-        alert('त्रुटि: ' + error.message);
-      } else {
-        showToast(`✅ ${line} पर ${alertType === 'DISPATCHED' ? 'गाड़ी छूटने' : 'ब्लॉक'} का अलर्ट प्रसारित किया गया!`);
-      }
-    }
-
     // --- STANDARD LOGIN & APP FUNCTIONS ---
     function handleLogin() {
       const id = document.getElementById('empIdInput').value.trim().toUpperCase();
-      if (!STAFF_DATA[id]) {
-        alert('अमान्य ID! (उदा: JE01, MATE01, KEY01)');
-        return;
-      }
+      if (!STAFF_DATA[id]) { alert('अमान्य ID! (उदा: JE01, MATE01, KEY01)'); return; }
       activeUser = { emp_id: id, ...STAFF_DATA[id] };
       document.getElementById('uName').innerText = activeUser.name;
       document.getElementById('uRole').innerText = activeUser.role.toUpperCase();
@@ -635,14 +649,11 @@
       document.getElementById('appContainer').style.display = 'block';
 
       ['mateForm', 'keymanForm', 'jeForm'].forEach(f => document.getElementById(f).style.display = 'none');
-
       if (activeUser.role === 'mate') document.getElementById('mateForm').style.display = 'block';
       if (activeUser.role === 'keyman') document.getElementById('keymanForm').style.display = 'block';
       if (activeUser.role === 'je') {
         document.getElementById('jeForm').style.display = 'block';
-        loadEmergencies();
-        loadGangWork();
-        loadDefects();
+        loadEmergencies(); loadGangWork(); loadDefects();
       }
     }
 
@@ -744,9 +755,8 @@
 
     async function loadEmergencies() {
       const container = document.getElementById('emergencyLiveList');
-      container.innerHTML = "लोड हो रहा है...";
-      const { data, error } = await db.from('emergency_incidents').select('*').order('created_at', { ascending: false }).limit(10);
-      if (error || !data || data.length === 0) {
+      const { data } = await db.from('emergency_incidents').select('*').order('created_at', { ascending: false }).limit(10);
+      if (!data || data.length === 0) {
         container.innerHTML = '<div style="color:#22c55e; padding:10px; background:#0f172a; border-radius:6px; text-align:center;">🟢 कोई सक्रिय अलर्ट नहीं है।</div>';
         return;
       }
