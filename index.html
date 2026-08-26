@@ -25,12 +25,15 @@
     input, select, textarea { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 13px; outline: none; }
     input:focus, select:focus, textarea:focus { border-color: #38bdf8; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 
     .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; color: white; transition: 0.2s; }
     .btn-blue { background: #2563eb; }
     .btn-green { background: #16a34a; }
     .btn-red { background: #dc2626; }
     .btn-amber { background: #d97706; }
+    .btn-purple { background: #7c3aed; }
 
     /* Touch Friendly Selector Buttons */
     .section-pills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 4px; }
@@ -74,6 +77,10 @@
     th { background: #0f172a; color: #38bdf8; padding: 8px 10px; position: sticky; top: 0; border-bottom: 1px solid #334155; white-space: nowrap; }
     td { padding: 8px 10px; border-bottom: 1px solid #1e293b; color: #cbd5e1; }
     tr:nth-child(even) { background-color: rgba(15, 23, 42, 0.4); }
+
+    /* Muster Summary Box */
+    .muster-box { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+    .muster-title { font-size: 13px; font-weight: 700; color: #38bdf8; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 4px; }
   </style>
 </head>
 <body>
@@ -87,7 +94,7 @@
     <div class="header">
       <h1>सगोनी पी-वे ट्रैक मैनेजमेंट सिस्टम</h1>
       <span class="sec-badge">Km 1157.000 से 1173.000 (16 Km)</span>
-      <p>Section-Aware Early Train Warning & Block Safety System</p>
+      <p>Section-Aware Train Warning & Gang Operations Hub</p>
     </div>
 
     <!-- LIVE SIREN & VOICE ALERT BOX -->
@@ -123,7 +130,7 @@
           </div>
         </div>
 
-        <!-- SENDER FORM (गाड़ी बताने वाला - MULTI-SELECTION ENABLED) -->
+        <!-- SENDER FORM -->
         <div id="trainSenderPanel" style="display: none; margin-top: 14px; border-top: 1px dashed #0284c7; padding-top: 12px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
             <strong style="color:#38bdf8; font-size:13px;">📢 ट्रेन डिस्पैच (एक साथ कई सेक्शन चुनें)</strong>
@@ -135,7 +142,6 @@
             <input type="text" id="sndEmpId" placeholder="उदा: SM_SAGONI, GATE_1162, JE01">
           </div>
 
-          <!-- Step 1: Direction & Block Section Dispatch Selection (Multi-Select) -->
           <div class="form-group">
             <label>1. मूवमेंट व ब्लॉक सेक्शन चुनें (एक या अधिक पर टच करें):</label>
             <div class="section-pills-grid" id="sndMovementGrid">
@@ -146,7 +152,6 @@
             </div>
           </div>
 
-          <!-- Step 2: Specific Line Selection (7 Segregated Lines - Multi-Select) -->
           <div class="form-group">
             <label>2. प्रभावित लाइन चुनें (एक या अधिक चुनें):</label>
             <div class="line-selector-grid" id="sndLinesGrid">
@@ -171,7 +176,7 @@
           </div>
         </div>
 
-        <!-- RECEIVER FORM (गाड़ी पूछने/सुनने वाला) -->
+        <!-- RECEIVER FORM -->
         <div id="trainReceiverPanel" style="display: none; margin-top: 14px; border-top: 1px dashed #0284c7; padding-top: 12px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
             <strong style="color:#4ade80; font-size:13px;">📡 रिलेटिव लोकेशन मॉनिटर (रूट लॉक)</strong>
@@ -183,7 +188,6 @@
             <input type="text" id="rcvEmpId" placeholder="उदा: MATE01, KEY01">
           </div>
 
-          <!-- Step 1: Work Location Selection -->
           <div class="form-group">
             <label>1. आपकी कार्य लोकेशन (Block Section):</label>
             <div class="section-pills-grid" id="rcvBlockGrid" style="grid-template-columns: repeat(3, 1fr);">
@@ -194,7 +198,6 @@
             <input type="hidden" id="selectedReceiverBlock" value="गोला पट्टी-सगोनी">
           </div>
 
-          <!-- Step 2: Line Monitoring (7 Segregated Lines) -->
           <div class="form-group">
             <label>2. किन-किन लाइनों पर नजर रखनी है? (टच करके चुनें):</label>
             <div class="line-selector-grid" id="rcvLineGrid">
@@ -208,7 +211,6 @@
             </div>
           </div>
 
-          <!-- Lock Button -->
           <div id="receiverControls">
             <button onclick="lockAndStartMonitoring()" id="btnLockMonitor" class="btn btn-green" style="font-size:14px; font-weight:800;">
               🔒 लोकेशन व रूट लॉक करें (Start Safe Monitoring)
@@ -229,7 +231,7 @@
         <div style="text-align: center; margin-bottom: 14px;">
           <span style="font-size: 26px;">🔐</span>
           <h2 style="font-size: 15px; margin-top: 4px;">स्टाफ लॉगिन (Staff Access)</h2>
-          <p style="font-size: 11px; color: #94a3b8;">दैनिक कार्य / डायरी भरने हेतु टोकन दर्ज करें</p>
+          <p style="font-size: 11px; color: #94a3b8;">दैनिक कार्य / डायरी / हाजिरी भरने हेतु टोकन दर्ज करें</p>
         </div>
         
         <div class="form-group">
@@ -305,36 +307,129 @@
         <button onclick="logout()" style="background: none; border: 1px solid #475569; color: #f87171; font-size: 11px; padding: 4px 8px; border-radius: 6px; cursor: pointer;">लॉगआउट</button>
       </div>
 
-      <!-- MATE FORM -->
-      <div id="mateForm" class="card" style="display: none;">
-        <h3 style="font-size: 15px; margin-bottom: 12px; color: #4ade80;">🛠️ दैनिक कार्य डायरी (Gang Mate)</h3>
-        <form onsubmit="submitMateWork(event)">
-          <div class="form-group">
-            <label>लाइन (Line)</label>
-            <select id="mLine">
-              <option>UP Main Line</option>
-              <option>DN Main Line</option>
-              <option>3rd Main Line</option>
-              <option>UP Loop Line</option>
-              <option>DN Loop Line</option>
-              <option>3rd Loop Line</option>
-              <option>Long Haul Siding</option>
-            </select>
+      <!-- MATE PORTAL (TAB 1: MORNING 08:00 AM MUSTER | TAB 2: DAILY DIARY) -->
+      <div id="mateForm" style="display: none;">
+        
+        <!-- Mate Internal Nav Tabs -->
+        <div class="tab-bar" style="margin-bottom: 12px;">
+          <button class="tab-btn active" id="btnMateTabMuster" onclick="switchMateTab('mateMusterCard')">🌅 सुबह 08:00 AM मस्टर (हाजिरी)</button>
+          <button class="tab-btn" id="btnMateTabDiary" onclick="switchMateTab('mateDiaryCard')">🛠️ दैनिक कार्य डायरी & प्रगति</button>
+        </div>
+
+        <!-- 1. MORNING GANG MUSTER CARD -->
+        <div id="mateMusterCard" class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 style="font-size: 15px; color: #38bdf8;">🌅 सुबह का गैंग मस्टर (Morning Attendance)</h3>
+            <span style="font-size:11px; color:#4ade80; font-weight:bold;">समय: 08:00 AM</span>
           </div>
-          <div class="grid-2">
-            <div class="form-group"><label>From Km</label><input type="number" id="mFromKm" step="0.001" min="1157" max="1173" value="1157.000" required></div>
-            <div class="form-group"><label>To Km</label><input type="number" id="mToKm" step="0.001" min="1157" max="1173" value="1157.450" required></div>
-          </div>
-          <div class="form-group">
-            <label>कार्य का प्रकार</label>
-            <select id="mWorkType">
-              <option>Through Packing</option><option>Slack Picking</option><option>ERC & Liner Greasing</option>
-              <option>Joint Lubrication & Destressing</option><option>Ballast Boxing</option><option>Turnout Overhauling</option>
-            </select>
-          </div>
-          <div class="form-group"><label>आउटपुट विवरण</label><input type="text" id="mOutput" placeholder="उदा: 75 Sleeper Packed" required></div>
-          <button type="submit" id="mBtn" class="btn btn-green">डेटाबेस में सुरक्षित करें</button>
-        </form>
+
+          <form onsubmit="submitMorningMuster(event)">
+            <div class="muster-box">
+              <div class="muster-title">👥 ऑन-ड्यूटी कार्य आवंटन (Working Breakdown)</div>
+              <div class="grid-3">
+                <div class="form-group">
+                  <label>🟢 ऑन ट्रैक कार्य</label>
+                  <input type="number" id="mstTrackWork" min="0" value="12" onchange="calculateMusterTotal()" required>
+                </div>
+                <div class="form-group">
+                  <label>🔑 कीमैन ड्यूटी</label>
+                  <input type="number" id="mstKeyman" min="0" value="2" onchange="calculateMusterTotal()" required>
+                </div>
+                <div class="form-group">
+                  <label>🔦 वॉचमैन / गेट</label>
+                  <input type="number" id="mstWatchman" min="0" value="1" onchange="calculateMusterTotal()" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="muster-box">
+              <div class="muster-title" style="color:#f59e0b;">🏖️ अनुपस्थिति / अन्य (Non-Available)</div>
+              <div class="grid-4">
+                <div class="form-group">
+                  <label>🌙 नाइट रेस्ट</label>
+                  <input type="number" id="mstNight" min="0" value="1" onchange="calculateMusterTotal()" required>
+                </div>
+                <div class="form-group">
+                  <label>🏥 सिक / मेडिकल</label>
+                  <input type="number" id="mstSick" min="0" value="0" onchange="calculateMusterTotal()" required>
+                </div>
+                <div class="form-group">
+                  <label>🏖️ छुट्टी (Leave)</label>
+                  <input type="number" id="mstLeave" min="0" value="1" onchange="calculateMusterTotal()" required>
+                </div>
+                <div class="form-group">
+                  <label>🔴 गैरहाजिर</label>
+                  <input type="number" id="mstAbsent" min="0" value="0" onchange="calculateMusterTotal()" required>
+                </div>
+              </div>
+            </div>
+
+            <div style="background:#0369a1; padding:10px 12px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <span style="font-size:12px; font-weight:700; color:white;">कुल गैंग स्ट्रेंथ (Total Headcount):</span>
+              <strong id="mstTotalSum" style="font-size:16px; color:#fef08a;">16</strong>
+            </div>
+
+            <div class="form-group">
+              <label>मुकद्दम रिमार्क्स (Remarks / विशेष विवरण)</label>
+              <textarea id="mstRemarks" rows="2" placeholder="उदा: आज 2 आदमी गेट 1162 पर तैनात किए गए हैं..."></textarea>
+            </div>
+
+            <button type="submit" id="mstBtn" class="btn btn-purple">💾 सुबह 8:00 AM मस्टर सबमिट करें</button>
+          </form>
+        </div>
+
+        <!-- 2. DAILY WORK DIARY CARD (INTEGRATED WITH POSITIONING) -->
+        <div id="mateDiaryCard" class="card" style="display: none;">
+          <h3 style="font-size: 15px; margin-bottom: 12px; color: #4ade80;">🛠️ दैनिक कार्य डायरी & मैनपॉवर पोजिशनिंग</h3>
+          <form onsubmit="submitMateWork(event)">
+            
+            <div class="form-group">
+              <label>लाइन (Line)</label>
+              <select id="mLine">
+                <option>UP Main Line</option>
+                <option>DN Main Line</option>
+                <option>3rd Main Line</option>
+                <option>UP Loop Line</option>
+                <option>DN Loop Line</option>
+                <option>3rd Loop Line</option>
+                <option>Long Haul Siding</option>
+              </select>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group"><label>From Km</label><input type="number" id="mFromKm" step="0.001" min="1157" max="1173" value="1157.000" required></div>
+              <div class="form-group"><label>To Km</label><input type="number" id="mToKm" step="0.001" min="1157" max="1173" value="1157.450" required></div>
+            </div>
+
+            <div class="form-group">
+              <label>कार्य का प्रकार</label>
+              <select id="mWorkType">
+                <option>Through Packing (थ्रू पैकिंग)</option>
+                <option>Slack Picking (स्लैक पिकिंग)</option>
+                <option>ERC & Liner Greasing</option>
+                <option>Joint Lubrication & Destressing</option>
+                <option>Ballast Boxing / Dressing</option>
+                <option>Turnout Overhauling (सगोनी यार्ड)</option>
+                <option>Casual Sleeper Renewal</option>
+              </select>
+            </div>
+
+            <!-- Manpower on Work Location -->
+            <div class="grid-2">
+              <div class="form-group">
+                <label>मौके पर कार्यरत कुल लेबर</label>
+                <input type="number" id="mWorkingLabour" min="1" value="12" required>
+              </div>
+              <div class="form-group">
+                <label>आउटपुट / प्रगति विवरण</label>
+                <input type="text" id="mOutput" placeholder="उदा: 75 Sleeper Packed" required>
+              </div>
+            </div>
+
+            <button type="submit" id="mBtn" class="btn btn-green">💾 कार्य डायरी डेटाबेस में सुरक्षित करें</button>
+          </form>
+        </div>
+
       </div>
 
       <!-- KEYMAN FORM -->
@@ -369,16 +464,46 @@
         </form>
       </div>
 
-      <!-- JE MASTER DASHBOARD -->
+      <!-- JE MASTER DASHBOARD (WITH GANG MUSTER TAB) -->
       <div id="jeForm" style="display: none;">
         <div class="tab-bar">
-          <button class="tab-btn active" onclick="switchJETab('tabEmergency')">🚨 आपात अलर्ट्स</button>
-          <button class="tab-btn" onclick="switchJETab('tabMate')">🛠️ मेट डायरी</button>
+          <button class="tab-btn active" onclick="switchJETab('tabMusterLog')">📋 मस्टर & हाजिरी</button>
+          <button class="tab-btn" onclick="switchJETab('tabEmergency')">🚨 आपात अलर्ट्स</button>
+          <button class="tab-btn" onclick="switchJETab('tabMate')">🛠️ कार्य डायरी</button>
           <button class="tab-btn" onclick="switchJETab('tabDefects')">⚠️ डिफेक्ट्स</button>
           <button class="tab-btn" onclick="switchJETab('tabMap')">🗺️ 2D स्केल</button>
         </div>
 
-        <div id="tabEmergency" class="card">
+        <!-- TAB 0: GANG MUSTER & ATTENDANCE REGISTER -->
+        <div id="tabMusterLog" class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong style="color:#a855f7; font-size:14px;">📋 सुबह 08:00 AM गैंग हाजिरी & पोजिशनिंग रजिस्टर</strong>
+            <button onclick="loadMusterLogs()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
+          </div>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>समय</th>
+                  <th>गैंग/मुकद्दम</th>
+                  <th>कुल</th>
+                  <th>कार्य पर</th>
+                  <th>कीमैन</th>
+                  <th>वॉचमैन</th>
+                  <th>नाइट</th>
+                  <th>सिक</th>
+                  <th>छुट्टी</th>
+                  <th>गैरहाजिर</th>
+                  <th>रिमार्क्स</th>
+                </tr>
+              </thead>
+              <tbody id="musterTableBody"><tr><td colspan="11" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 1: EMERGENCY INCIDENTS -->
+        <div id="tabEmergency" class="card" style="display: none;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <strong style="color:#ef4444; font-size:14px;">🚨 आपातकालीन घटना रजिस्टर</strong>
             <button onclick="loadEmergencies()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
@@ -386,15 +511,17 @@
           <div id="emergencyLiveList">लोड हो रहा है...</div>
         </div>
 
+        <!-- TAB 2: DAILY WORK LOG -->
         <div id="tabMate" class="card" style="display: none;">
           <div class="table-responsive">
             <table>
-              <thead><tr><th>समय</th><th>गैंग/मुकद्दम</th><th>लाइन</th><th>Km Range</th><th>कार्य</th><th>प्रगति</th></tr></thead>
-              <tbody id="gangWorkTableBody"><tr><td colspan="6" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
+              <thead><tr><th>समय</th><th>गैंग/मुकद्दम</th><th>लाइन</th><th>Km Range</th><th>कार्य</th><th>मैनपॉवर</th><th>प्रगति</th></tr></thead>
+              <tbody id="gangWorkTableBody"><tr><td colspan="7" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
             </table>
           </div>
         </div>
 
+        <!-- TAB 3: DEFECTS -->
         <div id="tabDefects" class="card" style="display: none;">
           <div class="table-responsive">
             <table>
@@ -404,6 +531,7 @@
           </div>
         </div>
 
+        <!-- TAB 4: 2D MAP -->
         <div id="tabMap" class="card" style="display: none;">
           <strong style="color:#38bdf8; font-size:14px; display:block; margin-bottom:6px;">🗺️ 16 Km लीनियर ट्रैक मॉनिटर (सगोनी 1157 - 1173)</strong>
           <div style="background:#0f172a; padding:16px 12px; border-radius:8px; border:1px solid #334155;">
@@ -452,6 +580,128 @@
       "PAT01": { name: "राकेश पेट्रोलमैन", role: "keyman", beat: "Night Patrol (1157-1165)" }
     };
 
+    // --- MATE TAB SWITCHING ---
+    function switchMateTab(tabId) {
+      document.getElementById('mateMusterCard').style.display = 'none';
+      document.getElementById('mateDiaryCard').style.display = 'none';
+      document.getElementById('btnMateTabMuster').classList.remove('active');
+      document.getElementById('btnMateTabDiary').classList.remove('active');
+
+      document.getElementById(tabId).style.display = 'block';
+      if (tabId === 'mateMusterCard') document.getElementById('btnMateTabMuster').classList.add('active');
+      if (tabId === 'mateDiaryCard') document.getElementById('btnMateTabDiary').classList.add('active');
+    }
+
+    // --- MUSTER TOTAL SUM CALCULATION ---
+    function calculateMusterTotal() {
+      const track = parseInt(document.getElementById('mstTrackWork').value) || 0;
+      const keyman = parseInt(document.getElementById('mstKeyman').value) || 0;
+      const watchman = parseInt(document.getElementById('mstWatchman').value) || 0;
+      const night = parseInt(document.getElementById('mstNight').value) || 0;
+      const sick = parseInt(document.getElementById('mstSick').value) || 0;
+      const leave = parseInt(document.getElementById('mstLeave').value) || 0;
+      const absent = parseInt(document.getElementById('mstAbsent').value) || 0;
+
+      const total = track + keyman + watchman + night + sick + leave + absent;
+      document.getElementById('mstTotalSum').innerText = total;
+      document.getElementById('mWorkingLabour').value = track;
+    }
+
+    // --- 1. SUBMIT MORNING 08:00 AM MUSTER TO SUPABASE ---
+    async function submitMorningMuster(e) {
+      e.preventDefault();
+      const btn = document.getElementById('mstBtn');
+      btn.innerText = "हाजिरी सबमिट हो रही है...";
+      btn.disabled = true;
+
+      const totalSum = parseInt(document.getElementById('mstTotalSum').innerText) || 0;
+      const payload = {
+        emp_id: activeUser.emp_id,
+        mate_name: activeUser.name,
+        gang_no: activeUser.beat,
+        total_sanctioned: totalSum,
+        on_track_work: parseInt(document.getElementById('mstTrackWork').value) || 0,
+        keyman_duty: parseInt(document.getElementById('mstKeyman').value) || 0,
+        watchman_patrol: parseInt(document.getElementById('mstWatchman').value) || 0,
+        night_rest: parseInt(document.getElementById('mstNight').value) || 0,
+        sick_medical: parseInt(document.getElementById('mstSick').value) || 0,
+        on_leave: parseInt(document.getElementById('mstLeave').value) || 0,
+        absent: parseInt(document.getElementById('mstAbsent').value) || 0,
+        remarks: document.getElementById('mstRemarks').value || '8:00 AM मस्टर OK'
+      };
+
+      const { error } = await db.from('gang_muster_attendance').insert([payload]);
+      btn.innerText = "💾 सुबह 8:00 AM मस्टर सबमिट करें";
+      btn.disabled = false;
+
+      if (error) {
+        alert('डेटाबेस एरर: ' + error.message);
+      } else {
+        showToast('✅ सुबह 08:00 AM की गैंग हाजिरी सुरक्षित हो गई!');
+        switchMateTab('mateDiaryCard'); // Automatically switch to Work Diary
+      }
+    }
+
+    // --- 2. SUBMIT MATE WORK DIARY (WITH LABOUR) ---
+    async function submitMateWork(e) {
+      e.preventDefault();
+      const btn = document.getElementById('mBtn');
+      btn.innerText = "डायरी सेव हो रही है...";
+      btn.disabled = true;
+
+      const payload = {
+        emp_id: activeUser.emp_id,
+        gang_no: activeUser.beat,
+        line_name: document.getElementById('mLine').value,
+        from_km: parseFloat(document.getElementById('mFromKm').value),
+        to_km: parseFloat(document.getElementById('mToKm').value),
+        work_type: document.getElementById('mWorkType').value,
+        output_details: `[लेबर: ${document.getElementById('mWorkingLabour').value}] ${document.getElementById('mOutput').value}`,
+        mate_name: activeUser.name
+      };
+
+      const { error } = await db.from('daily_work_logs').insert([payload]);
+      btn.innerText = "💾 कार्य डायरी डेटाबेस में सुरक्षित करें";
+      btn.disabled = false;
+
+      if (error) alert('एरर: ' + error.message);
+      else {
+        showToast('✅ दैनिक कार्य डायरी सफलता से सुरक्षित हो गई!');
+        e.target.reset();
+      }
+    }
+
+    // --- LOAD MUSTER LOGS ON JE DASHBOARD ---
+    async function loadMusterLogs() {
+      const tbody = document.getElementById('musterTableBody');
+      tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;">लोड हो रहा है...</td></tr>';
+
+      const { data, error } = await db.from('gang_muster_attendance').select('*').order('created_at', { ascending: false }).limit(10);
+      if (error || !data || data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="11" style="text-align:center; color:#94a3b8;">आज अभी तक किसी मुकद्दम ने मस्टर सबमिट नहीं किया।</td></tr>';
+        return;
+      }
+
+      let html = '';
+      data.forEach(m => {
+        const time = new Date(m.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        html += `<tr>
+          <td>${time}</td>
+          <td><strong style="color:#a855f7;">${m.mate_name}</strong><br><span style="font-size:9px; color:#64748b;">${m.gang_no}</span></td>
+          <td><strong style="color:#fef08a;">${m.total_sanctioned}</strong></td>
+          <td><strong style="color:#4ade80;">${m.on_track_work}</strong></td>
+          <td>${m.keyman_duty}</td>
+          <td>${m.watchman_patrol}</td>
+          <td>${m.night_rest}</td>
+          <td><span style="color:#f87171;">${m.sick_medical}</span></td>
+          <td><span style="color:#f59e0b;">${m.on_leave}</span></td>
+          <td><span style="color:#ef4444; font-weight:bold;">${m.absent}</span></td>
+          <td><em>${m.remarks || '-'}</em></td>
+        </tr>`;
+      });
+      tbody.innerHTML = html;
+    }
+
     // --- SOUND & ENHANCED CLEAR HINDI VOICE ENGINE ---
     function initAudio() {
       if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -473,7 +723,6 @@
       } catch (e) { console.log(e); }
     }
 
-    // Pure Hindi speech synthesizer without weird symbols or English words
     function speakHindiAlert(text) {
       try {
         if ('speechSynthesis' in window) {
@@ -482,7 +731,7 @@
           const utterance = new SpeechSynthesisUtterance(cleanText);
           utterance.lang = 'hi-IN';
           utterance.volume = 1.0;
-          utterance.rate = 0.85; // Clean, natural, clear pace
+          utterance.rate = 0.85;
           utterance.pitch = 0.95;
 
           const voices = window.speechSynthesis.getVoices();
@@ -501,7 +750,6 @@
       document.getElementById('sirenAlarmBox').style.display = 'block';
       document.getElementById('floatingStopBar').style.display = 'block';
 
-      // Pure clear spoken text with punctuation pauses
       const voiceText = alertType === 'DISPATCHED'
         ? `सावधान। ${lineText} पर ${movementText} के लिए गाड़ी छोड़ दी गई है। कृपया तुरंत ट्रैक से हटें।`
         : `सावधान। ${lineText} पर ${movementText} में गाड़ी ब्लॉक हो चुकी है।`;
@@ -534,7 +782,7 @@
       document.getElementById('floatingStopBar').style.display = 'none';
     }
 
-    // --- SENDER CONTROLS (MULTI-SELECT MOVEMENTS & LINES) ---
+    // --- SENDER CONTROLS (MULTI-SELECT) ---
     function toggleSenderMovement(btnId, mvName, blockName) {
       const btn = document.getElementById(btnId);
       if (senderMovements.has(btnId)) {
@@ -559,7 +807,6 @@
       }
     }
 
-    // BROADCAST TO ALL SELECTED MOVEMENTS AND LINES SIMULTANEOUSLY
     async function sendMultiLiveTrainAlert(alertType) {
       const senderId = document.getElementById('sndEmpId').value.trim().toUpperCase() || 'P-WAY_USER';
       const train = document.getElementById('sndTrain').value || 'गाड़ी';
@@ -578,11 +825,8 @@
       });
 
       const { error } = await db.from('train_live_alerts').insert(payloads);
-      if (error) {
-        alert('त्रुटि: ' + error.message);
-      } else {
-        showToast(`✅ ${payloads.length} सेक्शन्स/लाइनों पर एक साथ लाइव अलर्ट प्रसारित हो गया!`);
-      }
+      if (error) alert('त्रुटि: ' + error.message);
+      else showToast(`✅ ${payloads.length} सेक्शन्स/लाइनों पर एक साथ लाइव अलर्ट प्रसारित हो गया!`);
     }
 
     // --- RECEIVER CONTROLS & RELATIVE LOCKING ---
@@ -672,11 +916,17 @@
       document.getElementById('appContainer').style.display = 'block';
 
       ['mateForm', 'keymanForm', 'jeForm'].forEach(f => document.getElementById(f).style.display = 'none');
-      if (activeUser.role === 'mate') document.getElementById('mateForm').style.display = 'block';
+      if (activeUser.role === 'mate') {
+        document.getElementById('mateForm').style.display = 'block';
+        switchMateTab('mateMusterCard');
+      }
       if (activeUser.role === 'keyman') document.getElementById('keymanForm').style.display = 'block';
       if (activeUser.role === 'je') {
         document.getElementById('jeForm').style.display = 'block';
-        loadEmergencies(); loadGangWork(); loadDefects();
+        loadMusterLogs();
+        loadEmergencies();
+        loadGangWork();
+        loadDefects();
       }
     }
 
@@ -694,9 +944,9 @@
     }
 
     function switchJETab(tabId) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-bar .tab-btn').forEach(btn => btn.classList.remove('active'));
       event.target.classList.add('active');
-      ['tabEmergency', 'tabMate', 'tabDefects', 'tabMap'].forEach(t => document.getElementById(t).style.display = 'none');
+      ['tabMusterLog', 'tabEmergency', 'tabMate', 'tabDefects', 'tabMap'].forEach(t => document.getElementById(t).style.display = 'none');
       document.getElementById(tabId).style.display = 'block';
     }
 
@@ -789,30 +1039,10 @@
         html += `<div style="background:#0f172a; border-left:4px solid #ef4444; padding:10px; border-radius:8px; margin-bottom:8px;">
           <div style="display:flex; justify-content:space-between;"><strong style="color:#ef4444; font-size:13px;">${inc.incident_type}</strong><span style="color:#94a3b8; font-size:10px;">${time}</span></div>
           <div style="margin-top:4px; font-size:12px;">📍 <strong>${inc.line_name} @ Km ${inc.km_location}</strong> (${inc.pole_no})<br>🚆 <strong>गाड़ी सं.:</strong> ${inc.train_no} | <em>${inc.remarks}</em><br><span style="color:#38bdf8; font-size:11px;">रिपोर्टकर्ता: <strong>${inc.reporter_name}</strong></span></div>
-          ${inc.photo_url ? `<div style="margin-top:8px;"><img src="${inc.photo_url}" style="max-width:100%; max-height:220px; border-radius:6px; border:1px solid #334155; object-fit:contain;"></div>` : ''}
+          ${inc.photo_url ? `<div style="margin-top:8px;"><img src="${inc.photo_url}" style="max-width:100%; max-height:220px; border-radius:6px; border-index:1px solid #334155; object-fit:contain;"></div>` : ''}
         </div>`;
       });
       container.innerHTML = html;
-    }
-
-    async function submitMateWork(e) {
-      e.preventDefault();
-      const btn = document.getElementById('mBtn');
-      btn.innerText = "सेव हो रहा है...";
-      btn.disabled = true;
-
-      const payload = {
-        emp_id: activeUser.emp_id, gang_no: activeUser.beat, line_name: document.getElementById('mLine').value,
-        from_km: parseFloat(document.getElementById('mFromKm').value), to_km: parseFloat(document.getElementById('mToKm').value),
-        work_type: document.getElementById('mWorkType').value, output_details: document.getElementById('mOutput').value,
-        mate_name: activeUser.name
-      };
-
-      const { error } = await db.from('daily_work_logs').insert([payload]);
-      btn.innerText = "डेटाबेस में सुरक्षित करें";
-      btn.disabled = false;
-      if (error) alert('एरर: ' + error.message);
-      else { showToast('✅ मुकद्दम कार्य सुरक्षित हो गया!'); e.target.reset(); }
     }
 
     async function submitKeymanDefect(e) {
@@ -838,11 +1068,11 @@
     async function loadGangWork() {
       const tbody = document.getElementById('gangWorkTableBody');
       const { data } = await db.from('daily_work_logs').select('*').order('created_at', { ascending: false });
-      if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">कोई रिकॉर्ड नहीं।</td></tr>'; return; }
+      if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#94a3b8;">कोई रिकॉर्ड नहीं।</td></tr>'; return; }
       let html = '';
       data.forEach(w => {
         const time = new Date(w.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        html += `<tr><td>${time}</td><td><strong style="color:#4ade80;">${w.mate_name}</strong></td><td><span class="tag tag-yellow">${w.line_name}</span></td><td>${w.from_km} - ${w.to_km}</td><td>${w.work_type}</td><td><strong style="color:#38bdf8;">${w.output_details}</strong></td></tr>`;
+        html += `<tr><td>${time}</td><td><strong style="color:#4ade80;">${w.mate_name}</strong></td><td><span style="background:#78350f; color:#fef08a; padding:2px 6px; border-radius:4px; font-size:10px;">${w.line_name}</span></td><td>${w.from_km} - ${w.to_km}</td><td>${w.work_type}</td><td><strong style="color:#38bdf8;">${w.output_details}</strong></td></tr>`;
       });
       tbody.innerHTML = html;
     }
@@ -856,10 +1086,10 @@
       let html = '';
       data.forEach(d => {
         const isCritical = d.defect_type.includes('Fracture') || d.defect_type.includes('🔴');
-        const tagClass = isCritical ? 'tag-red' : (d.defect_type.includes('🟢') ? 'tag-green' : 'tag-yellow');
+        const tagClass = isCritical ? 'background:#7f1d1d; color:#fecaca;' : (d.defect_type.includes('🟢') ? 'background:#14532d; color:#bbf7d0;' : 'background:#78350f; color:#fef08a;');
         const time = new Date(d.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 
-        html += `<tr><td>${time}</td><td><span class="tag tag-yellow">${d.line_name}</span></td><td><strong>${d.km_location}</strong></td><td>${d.pole_no || '-'}</td><td><span class="tag ${tagClass}">${d.defect_type}</span></td><td><em>${d.remarks || '-'}</em></td><td>${d.reported_by}</td></tr>`;
+        html += `<tr><td>${time}</td><td>${d.line_name}</td><td><strong>${d.km_location}</strong></td><td>${d.pole_no || '-'}</td><td><span style="padding:2px 6px; border-radius:4px; font-size:10px; font-weight:700; ${tagClass}">${d.defect_type}</span></td><td><em>${d.remarks || '-'}</em></td><td>${d.reported_by}</td></tr>`;
         if (d.km_location >= 1157 && d.km_location <= 1173) {
           const percent = ((d.km_location - 1157) / 16) * 100;
           const markerColor = isCritical ? '#ef4444' : (d.defect_type.includes('🟢') ? '#22c55e' : '#f59e0b');
