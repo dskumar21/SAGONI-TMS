@@ -34,6 +34,8 @@
     .btn-red { background: #dc2626; }
     .btn-amber { background: #d97706; }
     .btn-purple { background: #7c3aed; }
+    .btn-csv { background: #059669; color: white; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+    .btn-csv:hover { background: #047857; }
 
     /* Touch Friendly Selector Buttons */
     .section-pills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 4px; }
@@ -307,10 +309,9 @@
         <button onclick="logout()" style="background: none; border: 1px solid #475569; color: #f87171; font-size: 11px; padding: 4px 8px; border-radius: 6px; cursor: pointer;">लॉगआउट</button>
       </div>
 
-      <!-- MATE PORTAL (TAB 1: MORNING 08:00 AM MUSTER | TAB 2: DAILY DIARY) -->
+      <!-- MATE PORTAL -->
       <div id="mateForm" style="display: none;">
         
-        <!-- Mate Internal Nav Tabs -->
         <div class="tab-bar" style="margin-bottom: 12px;">
           <button class="tab-btn active" id="btnMateTabMuster" onclick="switchMateTab('mateMusterCard')">🌅 सुबह 08:00 AM मस्टर (हाजिरी)</button>
           <button class="tab-btn" id="btnMateTabDiary" onclick="switchMateTab('mateDiaryCard')">🛠️ दैनिक कार्य डायरी & प्रगति</button>
@@ -378,7 +379,7 @@
           </form>
         </div>
 
-        <!-- 2. DAILY WORK DIARY CARD (INTEGRATED WITH POSITIONING) -->
+        <!-- 2. DAILY WORK DIARY CARD -->
         <div id="mateDiaryCard" class="card" style="display: none;">
           <h3 style="font-size: 15px; margin-bottom: 12px; color: #4ade80;">🛠️ दैनिक कार्य डायरी & मैनपॉवर पोजिशनिंग</h3>
           <form onsubmit="submitMateWork(event)">
@@ -414,7 +415,6 @@
               </select>
             </div>
 
-            <!-- Manpower on Work Location -->
             <div class="grid-2">
               <div class="form-group">
                 <label>मौके पर कार्यरत कुल लेबर</label>
@@ -464,7 +464,7 @@
         </form>
       </div>
 
-      <!-- JE MASTER DASHBOARD (WITH GANG MUSTER TAB) -->
+      <!-- JE MASTER DASHBOARD -->
       <div id="jeForm" style="display: none;">
         <div class="tab-bar">
           <button class="tab-btn active" onclick="switchJETab('tabMusterLog')">📋 मस्टर & हाजिरी</button>
@@ -477,8 +477,11 @@
         <!-- TAB 0: GANG MUSTER & ATTENDANCE REGISTER -->
         <div id="tabMusterLog" class="card">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <strong style="color:#a855f7; font-size:14px;">📋 सुबह 08:00 AM गैंग हाजिरी & पोजिशनिंग रजिस्टर</strong>
-            <button onclick="loadMusterLogs()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
+            <strong style="color:#a855f7; font-size:14px;">📋 सुबह 08:00 AM गैंग हाजिरी & पोजिशनिंग</strong>
+            <div style="display:flex; gap:6px;">
+              <button onclick="exportMusterToCSV()" class="btn-csv">📥 Download Excel (CSV)</button>
+              <button onclick="loadMusterLogs()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
+            </div>
           </div>
           <div class="table-responsive">
             <table>
@@ -506,23 +509,40 @@
         <div id="tabEmergency" class="card" style="display: none;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <strong style="color:#ef4444; font-size:14px;">🚨 आपातकालीन घटना रजिस्टर</strong>
-            <button onclick="loadEmergencies()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
+            <div style="display:flex; gap:6px;">
+              <button onclick="exportEmergenciesToCSV()" class="btn-csv">📥 Download Excel (CSV)</button>
+              <button onclick="loadEmergencies()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
+            </div>
           </div>
           <div id="emergencyLiveList">लोड हो रहा है...</div>
         </div>
 
         <!-- TAB 2: DAILY WORK LOG -->
         <div id="tabMate" class="card" style="display: none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong style="color:#4ade80; font-size:14px;">🛠️ दैनिक कार्य प्रगति रजिस्टर</strong>
+            <div style="display:flex; gap:6px;">
+              <button onclick="exportWorkLogsToCSV()" class="btn-csv">📥 Download Excel (CSV)</button>
+              <button onclick="loadGangWork()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
+            </div>
+          </div>
           <div class="table-responsive">
             <table>
-              <thead><tr><th>समय</th><th>गैंग/मुकद्दम</th><th>लाइन</th><th>Km Range</th><th>कार्य</th><th>मैनपॉवर</th><th>प्रगति</th></tr></thead>
-              <tbody id="gangWorkTableBody"><tr><td colspan="7" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
+              <thead><tr><th>समय</th><th>गैंग/मुकद्दम</th><th>लाइन</th><th>Km Range</th><th>कार्य</th><th>प्रगति</th></tr></thead>
+              <tbody id="gangWorkTableBody"><tr><td colspan="6" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
             </table>
           </div>
         </div>
 
         <!-- TAB 3: DEFECTS -->
         <div id="tabDefects" class="card" style="display: none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong style="color:#f87171; font-size:14px;">⚠️ ट्रैक डिफेक्ट & अलर्ट रजिस्टर</strong>
+            <div style="display:flex; gap:6px;">
+              <button onclick="exportDefectsToCSV()" class="btn-csv">📥 Download Excel (CSV)</button>
+              <button onclick="loadDefects()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
+            </div>
+          </div>
           <div class="table-responsive">
             <table>
               <thead><tr><th>समय</th><th>लाइन</th><th>Km</th><th>खंभा</th><th>स्थिति</th><th>रिमार्क्स</th><th>रिपोर्टकर्ता</th></tr></thead>
@@ -580,6 +600,74 @@
       "PAT01": { name: "राकेश पेट्रोलमैन", role: "keyman", beat: "Night Patrol (1157-1165)" }
     };
 
+    // --- CSV DOWNLOAD UTILITY ---
+    function downloadCSVFile(csvContent, fileName) {
+      const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // 1. EXPORT MUSTER TO CSV
+    async function exportMusterToCSV() {
+      const { data, error } = await db.from('gang_muster_attendance').select('*').order('created_at', { ascending: false });
+      if (error || !data || data.length === 0) { alert('डाउनलोड करने के लिए कोई डेटा उपलब्ध नहीं है!'); return; }
+
+      let csv = "तारीख व समय,मुकद्दम का नाम,गैंग नंबर,कुल लेबर,ऑन ट्रैक कार्य,कीमैन ड्यूटी,वॉचमैन/गेट,नाइट ड्यूटी,सिक/मेडिकल,छुट्टी,गैरहाजिर,रिमार्क्स\n";
+      data.forEach(r => {
+        const time = new Date(r.created_at).toLocaleString();
+        csv += `"${time}","${r.mate_name}","${r.gang_no}",${r.total_sanctioned},${r.on_track_work},${r.keyman_duty},${r.watchman_patrol},${r.night_rest},${r.sick_medical},${r.on_leave},${r.absent},"${r.remarks || ''}"\n`;
+      });
+      const dateStr = new Date().toISOString().split('T')[0];
+      downloadCSVFile(csv, `Gang_Muster_Attendance_${dateStr}.csv`);
+    }
+
+    // 2. EXPORT WORK LOGS TO CSV
+    async function exportWorkLogsToCSV() {
+      const { data, error } = await db.from('daily_work_logs').select('*').order('created_at', { ascending: false });
+      if (error || !data || data.length === 0) { alert('डाउनलोड करने के लिए कोई डेटा उपलब्ध नहीं है!'); return; }
+
+      let csv = "तारीख व समय,मुकद्दम का नाम,गैंग नंबर,लाइन,From Km,To Km,कार्य का प्रकार,प्रगति विवरण\n";
+      data.forEach(r => {
+        const time = new Date(r.created_at).toLocaleString();
+        csv += `"${time}","${r.mate_name}","${r.gang_no}","${r.line_name}",${r.from_km},${r.to_km},"${r.work_type}","${r.output_details}"\n`;
+      });
+      const dateStr = new Date().toISOString().split('T')[0];
+      downloadCSVFile(csv, `Gang_Daily_Work_Logs_${dateStr}.csv`);
+    }
+
+    // 3. EXPORT DEFECTS TO CSV
+    async function exportDefectsToCSV() {
+      const { data, error } = await db.from('track_defects').select('*').order('created_at', { ascending: false });
+      if (error || !data || data.length === 0) { alert('डाउनलोड करने के लिए कोई डेटा उपलब्ध नहीं है!'); return; }
+
+      let csv = "तारीख व समय,रिपोर्टकर्ता,लाइन,Km लोकेशन,खंभा नंबर,डिफेक्ट प्रकार,रिमार्क्स\n";
+      data.forEach(r => {
+        const time = new Date(r.created_at).toLocaleString();
+        csv += `"${time}","${r.reported_by}","${r.line_name}",${r.km_location},"${r.pole_no || ''}","${r.defect_type}","${r.remarks || ''}"\n`;
+      });
+      const dateStr = new Date().toISOString().split('T')[0];
+      downloadCSVFile(csv, `Track_Defects_Report_${dateStr}.csv`);
+    }
+
+    // 4. EXPORT EMERGENCIES TO CSV
+    async function exportEmergenciesToCSV() {
+      const { data, error } = await db.from('emergency_incidents').select('*').order('created_at', { ascending: false });
+      if (error || !data || data.length === 0) { alert('डाउनलोड करने के लिए कोई डेटा उपलब्ध नहीं है!'); return; }
+
+      let csv = "तारीख व समय,रिपोर्टकर्ता,घटना का प्रकार,लाइन,Km लोकेशन,खंभा नंबर,गाड़ी संख्या,विवरण\n";
+      data.forEach(r => {
+        const time = new Date(r.created_at).toLocaleString();
+        csv += `"${time}","${r.reporter_name} (${r.reporter_emp_id})","${r.incident_type}","${r.line_name}",${r.km_location},"${r.pole_no || ''}","${r.train_no || ''}","${r.remarks || ''}"\n`;
+      });
+      const dateStr = new Date().toISOString().split('T')[0];
+      downloadCSVFile(csv, `Emergency_Incidents_Report_${dateStr}.csv`);
+    }
+
     // --- MATE TAB SWITCHING ---
     function switchMateTab(tabId) {
       document.getElementById('mateMusterCard').style.display = 'none';
@@ -607,7 +695,7 @@
       document.getElementById('mWorkingLabour').value = track;
     }
 
-    // --- 1. SUBMIT MORNING 08:00 AM MUSTER TO SUPABASE ---
+    // --- 1. SUBMIT MORNING 08:00 AM MUSTER ---
     async function submitMorningMuster(e) {
       e.preventDefault();
       const btn = document.getElementById('mstBtn');
@@ -638,11 +726,11 @@
         alert('डेटाबेस एरर: ' + error.message);
       } else {
         showToast('✅ सुबह 08:00 AM की गैंग हाजिरी सुरक्षित हो गई!');
-        switchMateTab('mateDiaryCard'); // Automatically switch to Work Diary
+        switchMateTab('mateDiaryCard');
       }
     }
 
-    // --- 2. SUBMIT MATE WORK DIARY (WITH LABOUR) ---
+    // --- 2. SUBMIT MATE WORK DIARY ---
     async function submitMateWork(e) {
       e.preventDefault();
       const btn = document.getElementById('mBtn');
@@ -1039,7 +1127,7 @@
         html += `<div style="background:#0f172a; border-left:4px solid #ef4444; padding:10px; border-radius:8px; margin-bottom:8px;">
           <div style="display:flex; justify-content:space-between;"><strong style="color:#ef4444; font-size:13px;">${inc.incident_type}</strong><span style="color:#94a3b8; font-size:10px;">${time}</span></div>
           <div style="margin-top:4px; font-size:12px;">📍 <strong>${inc.line_name} @ Km ${inc.km_location}</strong> (${inc.pole_no})<br>🚆 <strong>गाड़ी सं.:</strong> ${inc.train_no} | <em>${inc.remarks}</em><br><span style="color:#38bdf8; font-size:11px;">रिपोर्टकर्ता: <strong>${inc.reporter_name}</strong></span></div>
-          ${inc.photo_url ? `<div style="margin-top:8px;"><img src="${inc.photo_url}" style="max-width:100%; max-height:220px; border-radius:6px; border-index:1px solid #334155; object-fit:contain;"></div>` : ''}
+          ${inc.photo_url ? `<div style="margin-top:8px;"><img src="${inc.photo_url}" style="max-width:100%; max-height:220px; border-radius:6px; border:1px solid #334155; object-fit:contain;"></div>` : ''}
         </div>`;
       });
       container.innerHTML = html;
@@ -1068,11 +1156,11 @@
     async function loadGangWork() {
       const tbody = document.getElementById('gangWorkTableBody');
       const { data } = await db.from('daily_work_logs').select('*').order('created_at', { ascending: false });
-      if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#94a3b8;">कोई रिकॉर्ड नहीं।</td></tr>'; return; }
+      if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">कोई रिकॉर्ड नहीं।</td></tr>'; return; }
       let html = '';
       data.forEach(w => {
         const time = new Date(w.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        html += `<tr><td>${time}</td><td><strong style="color:#4ade80;">${w.mate_name}</strong></td><td><span style="background:#78350f; color:#fef08a; padding:2px 6px; border-radius:4px; font-size:10px;">${w.line_name}</span></td><td>${w.from_km} - ${w.to_km}</td><td>${w.work_type}</td><td><strong style="color:#38bdf8;">${w.output_details}</strong></td></tr>`;
+        html += `<tr><td>${time}</td><td><strong style="color:#4ade80;">${w.mate_name}</strong></td><td><span class="tag tag-yellow">${w.line_name}</span></td><td>${w.from_km} - ${w.to_km}</td><td>${w.work_type}</td><td><strong style="color:#38bdf8;">${w.output_details}</strong></td></tr>`;
       });
       tbody.innerHTML = html;
     }
@@ -1086,10 +1174,10 @@
       let html = '';
       data.forEach(d => {
         const isCritical = d.defect_type.includes('Fracture') || d.defect_type.includes('🔴');
-        const tagClass = isCritical ? 'background:#7f1d1d; color:#fecaca;' : (d.defect_type.includes('🟢') ? 'background:#14532d; color:#bbf7d0;' : 'background:#78350f; color:#fef08a;');
+        const tagClass = isCritical ? 'tag-red' : (d.defect_type.includes('🟢') ? 'tag-green' : 'tag-yellow');
         const time = new Date(d.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 
-        html += `<tr><td>${time}</td><td>${d.line_name}</td><td><strong>${d.km_location}</strong></td><td>${d.pole_no || '-'}</td><td><span style="padding:2px 6px; border-radius:4px; font-size:10px; font-weight:700; ${tagClass}">${d.defect_type}</span></td><td><em>${d.remarks || '-'}</em></td><td>${d.reported_by}</td></tr>`;
+        html += `<tr><td>${time}</td><td><span class="tag tag-yellow">${d.line_name}</span></td><td><strong>${d.km_location}</strong></td><td>${d.pole_no || '-'}</td><td><span class="tag ${tagClass}">${d.defect_type}</span></td><td><em>${d.remarks || '-'}</em></td><td>${d.reported_by}</td></tr>`;
         if (d.km_location >= 1157 && d.km_location <= 1173) {
           const percent = ((d.km_location - 1157) / 16) * 100;
           const markerColor = isCritical ? '#ef4444' : (d.defect_type.includes('🟢') ? '#22c55e' : '#f59e0b');
