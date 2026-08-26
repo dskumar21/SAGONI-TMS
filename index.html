@@ -58,6 +58,10 @@
     #sirenAlarmBox { display: none; background: #7f1d1d; border: 3px solid #ef4444; border-radius: 12px; padding: 18px 12px; text-align: center; margin-bottom: 14px; animation: pulseAlert 0.8s infinite alternate; }
     @keyframes pulseAlert { 0% { box-shadow: 0 0 10px #ef4444; transform: scale(0.99); } 100% { box-shadow: 0 0 25px #dc2626; transform: scale(1.01); background: #991b1b; } }
 
+    /* Sticky Bottom Floating Stop Button */
+    #floatingStopBar { display: none; position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 480px; z-index: 10000; }
+    #floatingStopBar button { background: #ffffff; color: #b91c1c; border: 3px solid #ef4444; border-radius: 50px; font-size: 16px; font-weight: 900; padding: 14px; box-shadow: 0 10px 25px rgba(0,0,0,0.6); width: 100%; cursor: pointer; }
+
     /* Tabs */
     .tab-bar { display: flex; gap: 6px; margin-bottom: 12px; background: #0f172a; padding: 4px; border-radius: 8px; border: 1px solid #334155; }
     .tab-btn { flex: 1; padding: 8px 4px; border: none; background: transparent; color: #94a3b8; font-size: 11px; font-weight: 700; border-radius: 6px; cursor: pointer; text-align: center; transition: 0.2s; }
@@ -76,6 +80,11 @@
 </head>
 <body>
 
+  <!-- FLOATING ACKNOWLEDGE & STOP BUTTON (ALWAYS ACCESSIBLE) -->
+  <div id="floatingStopBar">
+    <button onclick="stopAlarmSound()">🔕 अलार्म बंद करें (Acknowledge & Stop)</button>
+  </div>
+
   <div class="container">
     <div class="header">
       <h1>सगोनी पी-वे ट्रैक मैनेजमेंट सिस्टम</h1>
@@ -88,7 +97,7 @@
       <div style="font-size: 32px; margin-bottom: 4px;">🚨 📢 ⚠️</div>
       <h2 id="sirenAlertTitle" style="color: #fff; font-size: 18px; font-weight: 900;">ट्रेन आ रही है! तुरंत ट्रैक छोड़ें!</h2>
       <p id="sirenAlertDesc" style="color: #fecaca; font-size: 13px; margin: 6px 0 14px 0;">--</p>
-      <button onclick="stopAlarmSound()" class="btn" style="background:#fff; color:#991b1b; font-size:15px; font-weight:900; box-shadow:0 4px 10px rgba(0,0,0,0.4);">🔕 अलार्म बंद करें (Acknowledge & Stop)</button>
+      <button onclick="stopAlarmSound()" class="btn" style="background:#fff; color:#991b1b; font-size:15px; font-weight:900; box-shadow:0 4px 10px rgba(0,0,0,0.4);">🔕 अलार्म बंद करें (Stop Sound)</button>
     </div>
 
     <div id="toast" class="toast"></div>
@@ -370,6 +379,7 @@
       }
     }
 
+    // SIREN SOUND VOLUME (REDUCED TO 0.08 SO VOICE REMAINS 100% CLEAR)
     function playTone(freq, type, duration) {
       try {
         initAudio();
@@ -377,7 +387,7 @@
         const gain = audioContext.createGain();
         osc.type = type;
         osc.frequency.setValueAtTime(freq, audioContext.currentTime);
-        gain.gain.setValueAtTime(0.35, audioContext.currentTime);
+        gain.gain.setValueAtTime(0.08, audioContext.currentTime); // Soft background tone
         osc.connect(gain);
         gain.connect(audioContext.destination);
         osc.start();
@@ -385,15 +395,16 @@
       } catch (e) { console.log(e); }
     }
 
-    // --- HINDI VOICE SYNTHESIZER (TEXT TO SPEECH) ---
+    // --- HINDI VOICE SYNTHESIZER (MAXIMUM LOUD & CLEAR) ---
     function speakHindiAlert(text) {
       try {
         if ('speechSynthesis' in window) {
-          window.speechSynthesis.cancel();
+          window.speechSynthesis.cancel(); // Stop overlap
           const utterance = new SpeechSynthesisUtterance(text);
           utterance.lang = 'hi-IN';
-          utterance.rate = 0.95;
-          utterance.pitch = 1.0;
+          utterance.volume = 1.0; // 100% Full volume
+          utterance.rate = 0.92;   // Clear speaking pace
+          utterance.pitch = 1.05;
           window.speechSynthesis.speak(utterance);
         }
       } catch (e) { console.log("Voice error:", e); }
@@ -403,31 +414,34 @@
       stopAlarmSound();
       initAudio();
 
-      // Exact Voice phrasing as requested
+      // Show both Top Alert Box and Sticky Bottom Stop Bar
+      document.getElementById('sirenAlarmBox').style.display = 'block';
+      document.getElementById('floatingStopBar').style.display = 'block';
+
       const voiceText = alertType === 'DISPATCHED'
         ? `सावधान! ${lineName} पर गाड़ी छोड़ दी गई है। तुरंत ट्रैक छोड़ें!`
         : `सावधान! ${lineName} पर गाड़ी ब्लॉक हो चुकी है।`;
 
-      // 1. First Voice Announcement
+      // 1. First Voice Announcement immediately
       speakHindiAlert(voiceText);
 
-      // 2. Audio Tone / Siren Pattern
+      // 2. Audio Tone / Siren in gentle background loop
       if (alertType === 'DISPATCHED') {
         let toggle = false;
         alarmInterval = setInterval(() => {
-          playTone(toggle ? 950 : 680, 'sawtooth', 0.22);
+          playTone(toggle ? 900 : 650, 'sawtooth', 0.20);
           toggle = !toggle;
-        }, 260);
+        }, 300);
       } else {
         alarmInterval = setInterval(() => {
-          playTone(420, 'square', 0.35);
-        }, 650);
+          playTone(400, 'square', 0.30);
+        }, 700);
       }
 
-      // 3. Repeat Voice Every 7 Seconds
+      // 3. Repeat Voice Announcement every 6 seconds
       voiceInterval = setInterval(() => {
         speakHindiAlert(voiceText);
-      }, 7000);
+      }, 6000);
 
       // Auto stop after 35 seconds
       autoStopTimer = setTimeout(() => {
@@ -435,15 +449,18 @@
       }, 35000);
     }
 
+    // --- INSTANT ACKNOWLEDGE & STOP ALL SOUNDS ---
     function stopAlarmSound() {
       if (alarmInterval) { clearInterval(alarmInterval); alarmInterval = null; }
       if (voiceInterval) { clearInterval(voiceInterval); voiceInterval = null; }
       if (autoStopTimer) { clearTimeout(autoStopTimer); autoStopTimer = null; }
       if ('speechSynthesis' in window) { window.speechSynthesis.cancel(); }
+      
       document.getElementById('sirenAlarmBox').style.display = 'none';
+      document.getElementById('floatingStopBar').style.display = 'none';
     }
 
-    // --- SENDER LINE SELECTOR (TOUCH PILLS) ---
+    // --- SENDER LINE SELECTOR ---
     function selectSenderLine(lineName) {
       document.getElementById('selectedSenderLine').value = lineName;
       ['btnLineUP', 'btnLineDN', 'btnLine3rd', 'btnLineUPLoop', 'btnLineDNLoop', 'btnLineYard'].forEach(id => {
@@ -516,7 +533,6 @@
               ? `🚨 ${alertData.line_name}: गाड़ी छोड़ दी गई है!` 
               : `⛔ ${alertData.line_name}: गाड़ी ब्लॉक हो चुकी है!`;
             document.getElementById('sirenAlertDesc').innerText = `ट्रेन सं.: ${alertData.train_no} | प्रेषक: ${alertData.sender_id}`;
-            document.getElementById('sirenAlarmBox').style.display = 'block';
             document.getElementById('sirenAlarmBox').scrollIntoView({ behavior: 'smooth' });
 
             triggerSirenSound(alertData.alert_type, alertData.line_name, alertData.train_no);
