@@ -4,18 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sagoni P-Way Section TMS</title>
+  <!-- Supabase CDN Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; padding: 14px; }
     .container { max-width: 480px; margin: 0 auto; }
     
-    /* Header */
     .header { text-align: center; padding: 16px 12px; background: #1e293b; border-radius: 12px; border: 1px solid #334155; margin-bottom: 16px; }
     .header h1 { font-size: 18px; font-weight: 800; color: #38bdf8; }
     .header p { font-size: 11px; color: #94a3b8; margin-top: 4px; }
     .sec-badge { display: inline-block; background: #0369a1; color: #e0f2fe; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; margin-top: 6px; }
 
-    /* Auth Card */
     .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 18px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
     .form-group { margin-bottom: 14px; }
     label { display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px; }
@@ -23,21 +23,15 @@
     input:focus, select:focus, textarea:focus { border-color: #38bdf8; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-    /* Buttons */
     .btn { width: 100%; padding: 13px; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; color: white; transition: 0.2s; }
     .btn-blue { background: #2563eb; }
     .btn-green { background: #16a34a; }
     .btn-amber { background: #d97706; }
-    .btn-purple { background: #9333ea; }
-    .btn-red { background: #dc2626; }
-    .btn-gray { background: #334155; color: #cbd5e1; margin-top: 10px; }
 
-    /* User Profile Bar */
     .user-bar { background: #0f172a; border: 1px solid #334155; padding: 10px 12px; border-radius: 8px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
     .user-info { font-size: 12px; }
     .user-info strong { color: #38bdf8; font-size: 13px; }
 
-    /* Toast */
     .toast { display: none; background: #065f46; border: 1px solid #34d399; color: #ecfdf5; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 600; text-align: center; margin-bottom: 14px; }
     .hidden { display: none; }
   </style>
@@ -45,21 +39,20 @@
 <body>
 
   <div class="container">
-    <!-- Header -->
     <div class="header">
       <h1>सगोनी पी-वे ट्रैक मैनेजमेंट सिस्टम</h1>
       <span class="sec-badge">Km 1157.000 से 1173.000 (16 Km)</span>
-      <p>Role-Based Field Operations & Monitoring Hub</p>
+      <p>Real-Time Supabase Connected Hub</p>
     </div>
 
     <div id="toast" class="toast"></div>
 
-    <!-- 1. LOGIN SCREEN -->
+    <!-- LOGIN SCREEN -->
     <div id="loginScreen" class="card">
       <div style="text-align: center; margin-bottom: 16px;">
         <span style="font-size: 32px;">🔐</span>
         <h2 style="font-size: 16px; margin-top: 6px;">स्टाफ लॉगिन (Staff Access)</h2>
-        <p style="font-size: 12px; color: #94a3b8;">अपना Employee ID / PF No. दर्ज करें</p>
+        <p style="font-size: 12px; color: #94a3b8;">अपना Employee ID दर्ज करें</p>
       </div>
       
       <div class="form-group">
@@ -70,15 +63,12 @@
       <button onclick="handleLogin()" class="btn btn-blue">पोर्टल में प्रवेश करें</button>
 
       <div style="margin-top: 20px; font-size: 11px; color: #64748b; line-height: 1.6; border-top: 1px solid #334155; padding-top: 10px;">
-        <strong>डेमो टेस्ट IDs:</strong><br>
-        • JE / SSE: <code>JE01</code> | • मुकद्दम/मेट: <code>MATE01</code><br>
-        • कीमैन: <code>KEY01</code> | • पेट्रोलमैन: <code>PAT01</code>
+        <strong>लॉगिन टोकन्स:</strong> <code>JE01</code> | <code>MATE01</code> | <code>KEY01</code> | <code>PAT01</code>
       </div>
     </div>
 
-    <!-- 2. FORM INTERFACES (Loaded based on ID) -->
+    <!-- APP CONTAINER -->
     <div id="appContainer" class="hidden">
-      <!-- Active User Strip -->
       <div class="user-bar">
         <div class="user-info">
           लॉगिन: <strong id="uName">--</strong> (<span id="uRole">--</span>)<br>
@@ -87,21 +77,21 @@
         <button onclick="logout()" style="background: none; border: 1px solid #475569; color: #f87171; font-size: 11px; padding: 4px 8px; border-radius: 6px; cursor: pointer;">लॉगआउट</button>
       </div>
 
-      <!-- A. GANG MATE FORM -->
+      <!-- MATE FORM -->
       <div id="mateForm" class="card hidden">
         <h3 style="font-size: 15px; margin-bottom: 12px; color: #4ade80;">🛠️ दैनिक कार्य डायरी (Gang Mate)</h3>
-        <form onsubmit="submitEntry(event, 'गैंग कार्य')">
+        <form onsubmit="submitMateWork(event)">
           <div class="form-group">
             <label>लाइन (Line)</label>
-            <select><option>UP Line</option><option>DN Line</option><option>3rd Line</option><option>Sagoni Yard</option></select>
+            <select id="mLine"><option>UP Line</option><option>DN Line</option><option>3rd Line</option><option>Sagoni Yard</option></select>
           </div>
           <div class="grid-2">
-            <div class="form-group"><label>From Km</label><input type="number" step="0.001" min="1157" max="1173" value="1157.000" required></div>
-            <div class="form-group"><label>To Km</label><input type="number" step="0.001" min="1157" max="1173" value="1157.450" required></div>
+            <div class="form-group"><label>From Km</label><input type="number" id="mFromKm" step="0.001" min="1157" max="1173" value="1157.000" required></div>
+            <div class="form-group"><label>To Km</label><input type="number" id="mToKm" step="0.001" min="1157" max="1173" value="1157.450" required></div>
           </div>
           <div class="form-group">
-            <label>कार्य का प्रकार (Work Done)</label>
-            <select>
+            <label>कार्य का प्रकार</label>
+            <select id="mWorkType">
               <option>Through Packing (थ्रू पैकिंग)</option>
               <option>Slack Picking (स्लैक पिकिंग)</option>
               <option>ERC & Liner Greasing</option>
@@ -110,125 +100,185 @@
               <option>Turnout Overhauling (सगोनी यार्ड)</option>
             </select>
           </div>
-          <div class="form-group"><label>आउटपुट / प्रगति विवरण</label><input type="text" placeholder="उदा: 75 Sleeper Packed, 15 Joints Oiled" required></div>
-          <button type="submit" class="btn btn-green">कार्य सबमिट करें</button>
+          <div class="form-group"><label>आउटपुट / प्रगति विवरण</label><input type="text" id="mOutput" placeholder="उदा: 75 Sleeper Packed" required></div>
+          <button type="submit" id="mBtn" class="btn btn-green">डेटाबेस में सुरक्षित करें</button>
         </form>
       </div>
 
-      <!-- B. KEYMAN FORM -->
+      <!-- KEYMAN FORM -->
       <div id="keymanForm" class="card hidden">
-        <h3 style="font-size: 15px; margin-bottom: 12px; color: #38bdf8;">🔑 दैनिक गश्त & डिफेक्ट रिपोर्ट (Keyman)</h3>
-        <form onsubmit="submitEntry(event, 'कीमैन रिपोर्ट')">
+        <h3 style="font-size: 15px; margin-bottom: 12px; color: #38bdf8;">🔑 डिफेक्ट रिपोर्टिंग (Keyman / Patrolman)</h3>
+        <form onsubmit="submitKeymanDefect(event)">
           <div class="form-group">
             <label>लाइन</label>
-            <select><option>UP Line</option><option>DN Line</option><option>3rd Line</option></select>
+            <select id="kLine"><option>UP Line</option><option>DN Line</option><option>3rd Line</option></select>
           </div>
           <div class="grid-2">
-            <div class="form-group"><label>Km Location</label><input type="number" step="0.001" min="1157" max="1173" placeholder="1162.400" required></div>
-            <div class="form-group"><label>Pole No. (खंभा)</label><input type="text" placeholder="1162/14" required></div>
+            <div class="form-group"><label>Km Location</label><input type="number" id="kKm" step="0.001" min="1157" max="1173" placeholder="1162.400" required></div>
+            <div class="form-group"><label>Pole No.</label><input type="text" id="kPole" placeholder="1162/14" required></div>
           </div>
           <div class="form-group">
-            <label>स्थिति / खराबी (Condition)</label>
-            <select style="color: #f87171; font-weight: 600;">
-              <option value="Normal">🟢 सब सुरक्षित (All Intact)</option>
-              <option value="Defect">🔴 Weld Fracture / Crack</option>
-              <option value="Defect">🟡 Missing ERC / Liners Replaced</option>
-              <option value="Defect">🟡 Loose Fishbolts Tightened</option>
-              <option value="Defect">🟡 Severe Bad Riding / Slack</option>
+            <label>डिफेक्ट का प्रकार</label>
+            <select id="kDefect">
+              <option>🟢 Normal - Routine Beat OK</option>
+              <option>🔴 Weld Fracture / Crack</option>
+              <option>🟡 Missing ERC / Liners Replaced</option>
+              <option>🟡 Loose Fishbolts Tightened</option>
+              <option>🟡 Bad Riding / Slack Location</option>
             </select>
           </div>
-          <div class="form-group"><label>रिमार्क्स / विवरण</label><textarea rows="2" placeholder="मौके की स्थिति लिखें..."></textarea></div>
-          <button type="submit" class="btn btn-blue">कीमैन रिपोर्ट दर्ज करें</button>
+          <div class="form-group"><label>रिमार्क्स</label><textarea id="kRemarks" rows="2" placeholder="मौके की स्थिति..."></textarea></div>
+          <button type="submit" id="kBtn" class="btn btn-blue">डिफेक्ट दर्ज करें</button>
         </form>
       </div>
 
-      <!-- C. PATROLMAN FORM -->
-      <div id="patrolForm" class="card hidden">
-        <h3 style="font-size: 15px; margin-bottom: 12px; color: #fbbf24;">🔦 पेट्रोलिंग रिपोर्ट (Patrolman)</h3>
-        <form onsubmit="submitEntry(event, 'पेट्रोलिंग')">
-          <div class="form-group">
-            <label>पेट्रोलिंग का प्रकार</label>
-            <select><option>Cold Weather Patrol</option><option>Hot Weather Patrol</option><option>Monsoon Patrol</option></select>
-          </div>
-          <div class="grid-2">
-            <div class="form-group"><label>Start Km</label><input type="number" step="0.001" value="1157.000" required></div>
-            <div class="form-group"><label>End Km</label><input type="number" step="0.001" value="1165.000" required></div>
-          </div>
-          <div class="form-group">
-            <label>ट्रैक स्थिति</label>
-            <select><option>Safe & Normal (सुरक्षित)</option><option>Track Defect / Rail Crack Found</option><option>Obstruction on Track</option></select>
-          </div>
-          <button type="submit" class="btn btn-amber">पेट्रोलिंग सबमिट करें</button>
-        </form>
-      </div>
-
-      <!-- D. JE / SSE MASTER DASHBOARD PREVIEW -->
+      <!-- JE LIVE DASHBOARD -->
       <div id="jeForm" class="card hidden">
         <h3 style="font-size: 15px; margin-bottom: 8px; color: #60a5fa;">📊 JE मास्टर कंट्रोल (सगोनी 1157 - 1173)</h3>
-        <p style="font-size: 12px; color: #94a3b8; margin-bottom: 14px;">16 Km 2D Linear Track Visualizer</p>
-        
-        <!-- Linear Track Dummy Scale -->
-        <div style="background: #0f172a; padding: 12px; border-radius: 8px; border: 1px solid #334155; margin-bottom: 14px; text-align: center;">
-          <div style="font-size: 11px; color: #94a3b8; margin-bottom: 6px;">[UP Line] Km 1157.000 ══════ 1165.000 ══════ 1173.000</div>
-          <div style="height: 6px; background: #22c55e; border-radius: 3px; position: relative;">
-            <div style="position: absolute; left: 40%; top: -4px; width: 14px; height: 14px; background: #ef4444; border-radius: 50%;" title="Defect @ 1163.4"></div>
-          </div>
-          <div style="font-size: 10px; color: #ef4444; margin-top: 8px;">🔴 1 Defect Reported @ Km 1163.400</div>
-        </div>
-
-        <button onclick="alert('Supabase कनेक्ट होते ही पूरा इंटरएक्टिव 2D मैप यहाँ लाइव हो जाएगा!')" class="btn btn-blue">लाइव लीनियर मैप खोलें</button>
+        <button onclick="loadJEDashboard()" class="btn btn-blue" style="margin-bottom: 12px;">🔄 लाइव डेटा रीफ्रेश करें</button>
+        <div id="jeDefectsList" style="font-size: 12px; line-height: 1.6;">लोड हो रहा है...</div>
       </div>
 
     </div>
   </div>
 
   <script>
-    // Employee Master Directory
+    // --- SUPABASE CONFIGURATION ---
+    const SUPABASE_URL = "https://jhdkpdsrrgwqzxwftcyc.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_GL2DEQ5U-COnS8ifSz4Zgg_8ooV-wGv";
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let activeUser = null;
+
     const STAFF_DATA = {
-      "JE01": { name: "JE (P-Way)", role: "je", beat: "Sagoni Section (1157 - 1173)" },
-      "MATE01": { name: "रामलाल मुकद्दम", role: "mate", beat: "Gang-01 (Km 1157-1162)" },
-      "MATE02": { name: "श्याम सिंह", role: "mate", beat: "Gang-02 (Km 1162-1168)" },
-      "KEY01": { name: "सुरेश कीमैन", role: "keyman", beat: "UP Line (Km 1157-1165)" },
-      "PAT01": { name: "राकेश पेट्रोलमैन", role: "patrol", beat: "Night Beat (1157-1165)" }
+      "JE01": { name: "JE (P-Way) Sagoni", role: "je", beat: "Section 1157 - 1173" },
+      "MATE01": { name: "रामलाल मुकद्दम", role: "mate", beat: "Gang-01 (1157-1162)" },
+      "KEY01": { name: "सुरेश कीमैन", role: "keyman", beat: "UP Line (1157-1165)" },
+      "PAT01": { name: "राकेश पेट्रोलमैन", role: "keyman", beat: "Night Patrol (1157-1165)" }
     };
 
     function handleLogin() {
       const id = document.getElementById('empIdInput').value.trim().toUpperCase();
       if (!STAFF_DATA[id]) {
-        alert('अमान्य कर्मचारी ID! कृपया सही ID डालें (उदा: JE01, MATE01, KEY01)');
+        alert('अमान्य ID! (उदा: JE01, MATE01, KEY01)');
         return;
       }
-
-      const user = STAFF_DATA[id];
-      document.getElementById('uName').innerText = user.name;
-      document.getElementById('uRole').innerText = user.role.toUpperCase();
-      document.getElementById('uBeat').innerText = user.beat;
+      activeUser = { emp_id: id, ...STAFF_DATA[id] };
+      document.getElementById('uName').innerText = activeUser.name;
+      document.getElementById('uRole').innerText = activeUser.role.toUpperCase();
+      document.getElementById('uBeat').innerText = activeUser.beat;
 
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('appContainer').classList.remove('hidden');
 
-      // Hide all forms first
-      ['mateForm', 'keymanForm', 'patrolForm', 'jeForm'].forEach(f => document.getElementById(f).classList.add('hidden'));
+      ['mateForm', 'keymanForm', 'jeForm'].forEach(f => document.getElementById(f).classList.add('hidden'));
 
-      // Show specific role form
-      if (user.role === 'mate') document.getElementById('mateForm').classList.remove('hidden');
-      if (user.role === 'keyman') document.getElementById('keymanForm').classList.remove('hidden');
-      if (user.role === 'patrol') document.getElementById('patrolForm').classList.remove('hidden');
-      if (user.role === 'je') document.getElementById('jeForm').classList.remove('hidden');
+      if (activeUser.role === 'mate') document.getElementById('mateForm').classList.remove('hidden');
+      if (activeUser.role === 'keyman') document.getElementById('keymanForm').classList.remove('hidden');
+      if (activeUser.role === 'je') {
+        document.getElementById('jeForm').classList.remove('hidden');
+        loadJEDashboard();
+      }
     }
 
     function logout() {
-      document.getElementById('empIdInput').value = '';
+      activeUser = null;
       document.getElementById('appContainer').classList.add('hidden');
       document.getElementById('loginScreen').style.display = 'block';
     }
 
-    function submitEntry(e, type) {
-      e.preventDefault();
+    function showToast(msg) {
       const toast = document.getElementById('toast');
-      toast.innerText = `✅ ${type} सफलतापूर्वक दर्ज हो गया और JE सिस्टम में सिंक हो गया!`;
+      toast.innerText = msg;
       toast.style.display = 'block';
       setTimeout(() => { toast.style.display = 'none'; }, 3500);
+    }
+
+    // SUBMIT MATE WORK TO SUPABASE
+    async function submitMateWork(e) {
+      e.preventDefault();
+      const btn = document.getElementById('mBtn');
+      btn.innerText = "सेव हो रहा है...";
+      btn.disabled = true;
+
+      const payload = {
+        emp_id: activeUser.emp_id,
+        gang_no: activeUser.beat,
+        line_name: document.getElementById('mLine').value,
+        from_km: parseFloat(document.getElementById('mFromKm').value),
+        to_km: parseFloat(document.getElementById('mToKm').value),
+        work_type: document.getElementById('mWorkType').value,
+        output_details: document.getElementById('mOutput').value,
+        mate_name: activeUser.name
+      };
+
+      const { error } = await db.from('daily_work_logs').insert([payload]);
+      btn.innerText = "डेटाबेस में सुरक्षित करें";
+      btn.disabled = false;
+
+      if (error) {
+        alert('डेटाबेस एरर: ' + error.message);
+      } else {
+        showToast('✅ गैंग कार्य Supabase डेटाबेस में सुरक्षित हो गया!');
+        e.target.reset();
+      }
+    }
+
+    // SUBMIT DEFECT TO SUPABASE
+    async function submitKeymanDefect(e) {
+      e.preventDefault();
+      const btn = document.getElementById('kBtn');
+      btn.innerText = "सेव हो रहा है...";
+      btn.disabled = true;
+
+      const payload = {
+        emp_id: activeUser.emp_id,
+        line_name: document.getElementById('kLine').value,
+        km_location: parseFloat(document.getElementById('kKm').value),
+        pole_no: document.getElementById('kPole').value,
+        defect_type: document.getElementById('kDefect').value,
+        remarks: document.getElementById('kRemarks').value,
+        reported_by: activeUser.name
+      };
+
+      const { error } = await db.from('track_defects').insert([payload]);
+      btn.innerText = "डिफेक्ट दर्ज करें";
+      btn.disabled = false;
+
+      if (error) {
+        alert('डेटाबेस एरर: ' + error.message);
+      } else {
+        showToast('✅ डिफेक्ट अलर्ट Supabase में दर्ज हो गया!');
+        e.target.reset();
+      }
+    }
+
+    // LOAD JE LIVE DATA
+    async function loadJEDashboard() {
+      const container = document.getElementById('jeDefectsList');
+      container.innerHTML = "डेटा लोड हो रहा है...";
+
+      const { data, error } = await db.from('track_defects').select('*').order('created_at', { ascending: false }).limit(5);
+
+      if (error) {
+        container.innerHTML = "त्रुटि: " + error.message;
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        container.innerHTML = "🟢 अभी कोई ओपन डिफेक्ट दर्ज नहीं है।";
+        return;
+      }
+
+      let html = '<strong style="color:#38bdf8;">ताज़ा डिफेक्ट्स:</strong><br>';
+      data.forEach(d => {
+        html += `<div style="background:#0f172a; padding:8px; border-radius:6px; margin-top:6px; border-left:3px solid #ef4444;">
+          📍 <strong>${d.line_name} @ Km ${d.km_location}</strong> (${d.pole_no})<br>
+          ⚠️ ${d.defect_type} - <em>${d.remarks || 'कोई रिमार्क नहीं'}</em><br>
+          <span style="color:#94a3b8; font-size:10px;">रिपोर्टकर्ता: ${d.reported_by}</span>
+        </div>`;
+      });
+      container.innerHTML = html;
     }
   </script>
 </body>
