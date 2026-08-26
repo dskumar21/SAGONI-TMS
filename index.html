@@ -8,35 +8,48 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; padding: 14px; }
-    .container { max-width: 520px; margin: 0 auto; }
+    body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; padding: 12px; }
+    .container { max-width: 680px; margin: 0 auto; }
     
-    .header { text-align: center; padding: 16px 12px; background: #1e293b; border-radius: 12px; border: 1px solid #334155; margin-bottom: 16px; }
+    .header { text-align: center; padding: 14px 10px; background: #1e293b; border-radius: 12px; border: 1px solid #334155; margin-bottom: 14px; }
     .header h1 { font-size: 18px; font-weight: 800; color: #38bdf8; }
-    .header p { font-size: 11px; color: #94a3b8; margin-top: 4px; }
-    .sec-badge { display: inline-block; background: #0369a1; color: #e0f2fe; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; margin-top: 6px; }
+    .header p { font-size: 11px; color: #94a3b8; margin-top: 3px; }
+    .sec-badge { display: inline-block; background: #0369a1; color: #e0f2fe; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; margin-top: 5px; }
 
-    .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 18px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); margin-bottom: 14px; }
-    .form-group { margin-bottom: 14px; }
-    label { display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px; }
-    input, select, textarea { width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 14px; outline: none; }
+    .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); margin-bottom: 12px; }
+    .form-group { margin-bottom: 12px; }
+    label { display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 5px; }
+    input, select, textarea { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 13px; outline: none; }
     input:focus, select:focus, textarea:focus { border-color: #38bdf8; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-    .btn { width: 100%; padding: 13px; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; color: white; transition: 0.2s; }
+    .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; color: white; transition: 0.2s; }
     .btn-blue { background: #2563eb; }
     .btn-green { background: #16a34a; }
     .btn-amber { background: #d97706; }
 
-    .user-bar { background: #0f172a; border: 1px solid #334155; padding: 10px 12px; border-radius: 8px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
+    .user-bar { background: #0f172a; border: 1px solid #334155; padding: 10px 12px; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
     .user-info { font-size: 12px; }
     .user-info strong { color: #38bdf8; font-size: 13px; }
 
-    .toast { display: none; background: #065f46; border: 1px solid #34d399; color: #ecfdf5; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 600; text-align: center; margin-bottom: 14px; }
+    .toast { display: none; background: #065f46; border: 1px solid #34d399; color: #ecfdf5; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 600; text-align: center; margin-bottom: 12px; }
     .hidden { display: none; }
     
-    .section-title { font-size: 14px; font-weight: 700; color: #f1f5f9; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 4px; }
-    .item-card { background: #0f172a; padding: 10px; border-radius: 8px; margin-top: 8px; font-size: 12px; border-left: 4px solid #38bdf8; }
+    /* JE Navigation Tabs */
+    .tab-bar { display: flex; gap: 6px; margin-bottom: 12px; background: #0f172a; padding: 4px; border-radius: 8px; border: 1px solid #334155; }
+    .tab-btn { flex: 1; padding: 8px 4px; border: none; background: transparent; color: #94a3b8; font-size: 12px; font-weight: 700; border-radius: 6px; cursor: pointer; text-align: center; transition: 0.2s; }
+    .tab-btn.active { background: #2563eb; color: white; }
+
+    /* Data Tables */
+    .table-responsive { max-height: 420px; overflow-y: auto; overflow-x: auto; border: 1px solid #334155; border-radius: 8px; }
+    table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: left; }
+    th { background: #0f172a; color: #38bdf8; padding: 8px 10px; position: sticky; top: 0; border-bottom: 1px solid #334155; white-space: nowrap; }
+    td { padding: 8px 10px; border-bottom: 1px solid #1e293b; color: #cbd5e1; }
+    tr:nth-child(even) { background-color: rgba(15, 23, 42, 0.4); }
+    .tag { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; }
+    .tag-red { background: #7f1d1d; color: #fecaca; }
+    .tag-green { background: #14532d; color: #bbf7d0; }
+    .tag-yellow { background: #78350f; color: #fef08a; }
   </style>
 </head>
 <body>
@@ -45,17 +58,17 @@
     <div class="header">
       <h1>सगोनी पी-वे ट्रैक मैनेजमेंट सिस्टम</h1>
       <span class="sec-badge">Km 1157.000 से 1173.000 (16 Km)</span>
-      <p>Real-Time Supabase Connected Hub</p>
+      <p>Role-Separated Field & Monitoring Operations</p>
     </div>
 
     <div id="toast" class="toast"></div>
 
-    <!-- LOGIN SCREEN -->
+    <!-- 1. LOGIN SCREEN -->
     <div id="loginScreen" class="card">
       <div style="text-align: center; margin-bottom: 16px;">
         <span style="font-size: 32px;">🔐</span>
         <h2 style="font-size: 16px; margin-top: 6px;">स्टाफ लॉगिन (Staff Access)</h2>
-        <p style="font-size: 12px; color: #94a3b8;">अपना Employee ID दर्ज करें</p>
+        <p style="font-size: 12px; color: #94a3b8;">अपना Employee ID / PF No. दर्ज करें</p>
       </div>
       
       <div class="form-group">
@@ -66,11 +79,11 @@
       <button onclick="handleLogin()" class="btn btn-blue">पोर्टल में प्रवेश करें</button>
 
       <div style="margin-top: 20px; font-size: 11px; color: #64748b; line-height: 1.6; border-top: 1px solid #334155; padding-top: 10px;">
-        <strong>लॉगिन टोकन्स:</strong> <code>JE01</code> | <code>MATE01</code> | <code>KEY01</code> | <code>PAT01</code>
+        <strong>डेमो टोकन्स:</strong> <code>JE01</code> | <code>MATE01</code> | <code>KEY01</code> | <code>PAT01</code>
       </div>
     </div>
 
-    <!-- APP CONTAINER -->
+    <!-- 2. APP CONTAINER -->
     <div id="appContainer" class="hidden">
       <div class="user-bar">
         <div class="user-info">
@@ -135,27 +148,88 @@
         </form>
       </div>
 
-      <!-- JE MASTER DASHBOARD -->
+      <!-- JE MASTER DASHBOARD (ORGANIZED WITH TABS) -->
       <div id="jeForm" class="hidden">
-        <div class="card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <h3 style="font-size: 15px; color: #60a5fa;">📊 JE कंट्रोल (सगोनी 1157 - 1173)</h3>
-            <button onclick="loadJEDashboard()" style="background: #2563eb; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer;">🔄 Refresh</button>
+        
+        <!-- Tab Buttons -->
+        <div class="tab-bar">
+          <button class="tab-btn active" onclick="switchJETab('tabMate')">🛠️ मेट कार्य डायरी</button>
+          <button class="tab-btn" onclick="switchJETab('tabDefects')">⚠️ डिफेक्ट्स & अलर्ट्स</button>
+          <button class="tab-btn" onclick="switchJETab('tabMap')">🗺️ 2D लीनियर स्केल</button>
+        </div>
+
+        <!-- TAB 1: GANG WORK REGISTER -->
+        <div id="tabMate" class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong style="color:#4ade80; font-size:14px;">🛠️ गैंगवार दैनिक कार्य रजिस्टर</strong>
+            <button onclick="loadGangWork()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
           </div>
-          <div style="font-size: 11px; color: #94a3b8;">लाइव क्लाउड डेटाबेस मॉनिटरिंग</div>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>समय</th>
+                  <th>गैंग / मुकद्दम</th>
+                  <th>लाइन</th>
+                  <th>Km Range</th>
+                  <th>कार्य प्रकार</th>
+                  <th>प्रगति (Output)</th>
+                </tr>
+              </thead>
+              <tbody id="gangWorkTableBody">
+                <tr><td colspan="6" style="text-align:center;">डेटा लोड हो रहा है...</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        <!-- 1. GANG WORK LOGS SECTION -->
-        <div class="card">
-          <div class="section-title" style="color: #4ade80;">🛠️ मेट दैनिक प्रगति (Gang Daily Work)</div>
-          <div id="jeWorkList" style="font-size: 12px; line-height: 1.5;">लोड हो रहा है...</div>
+        <!-- TAB 2: DEFECTS REGISTER -->
+        <div id="tabDefects" class="card hidden">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong style="color:#f87171; font-size:14px;">⚠️ ट्रैक डिफेक्ट & अलर्ट रजिस्टर</strong>
+            <button onclick="loadDefects()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
+          </div>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>समय</th>
+                  <th>लाइन</th>
+                  <th>Km</th>
+                  <th>खंभा (Pole)</th>
+                  <th>स्थिति / डिफेक्ट</th>
+                  <th>रिमार्क्स</th>
+                  <th>रिपोर्टकर्ता</th>
+                </tr>
+              </thead>
+              <tbody id="defectsTableBody">
+                <tr><td colspan="7" style="text-align:center;">डेटा लोड हो रहा है...</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        <!-- 2. DEFECTS SECTION -->
-        <div class="card">
-          <div class="section-title" style="color: #f87171;">⚠️ ट्रैक डिफेक्ट्स & अलर्ट्स (Defects)</div>
-          <div id="jeDefectsList" style="font-size: 12px; line-height: 1.5;">लोड हो रहा है...</div>
+        <!-- TAB 3: 2D LINEAR VISUALIZER -->
+        <div id="tabMap" class="card hidden">
+          <strong style="color:#38bdf8; font-size:14px; display:block; margin-bottom:6px;">🗺️ 16 Km लीनियर ट्रैक मॉनिटर (सगोनी 1157 - 1173)</strong>
+          <p style="font-size:11px; color:#94a3b8; margin-bottom:14px;">सेक्शन की पटरियों पर लाइव डिफेक्ट लोकेशन</p>
+
+          <div style="background:#0f172a; padding:16px 12px; border-radius:8px; border:1px solid #334155;">
+            <div style="display:flex; justify-content:space-between; font-size:10px; color:#64748b; margin-bottom:4px;">
+              <span>Km 1157.0</span>
+              <span>Km 1165.0 (Sagoni Yard)</span>
+              <span>Km 1173.0</span>
+            </div>
+            <!-- UP Line Bar -->
+            <div style="font-size:11px; color:#cbd5e1; margin-bottom:3px;">UP Line:</div>
+            <div id="upLineTrack" style="height:8px; background:#1e293b; border-radius:4px; position:relative; margin-bottom:14px; border:1px solid #475569;"></div>
+
+            <!-- DN Line Bar -->
+            <div style="font-size:11px; color:#cbd5e1; margin-bottom:3px;">DN Line:</div>
+            <div id="dnLineTrack" style="height:8px; background:#1e293b; border-radius:4px; position:relative; border:1px solid #475569;"></div>
+          </div>
         </div>
+
       </div>
 
     </div>
@@ -197,7 +271,8 @@
       if (activeUser.role === 'keyman') document.getElementById('keymanForm').classList.remove('hidden');
       if (activeUser.role === 'je') {
         document.getElementById('jeForm').classList.remove('hidden');
-        loadJEDashboard();
+        loadGangWork();
+        loadDefects();
       }
     }
 
@@ -212,6 +287,13 @@
       toast.innerText = msg;
       toast.style.display = 'block';
       setTimeout(() => { toast.style.display = 'none'; }, 3500);
+    }
+
+    function switchJETab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      ['tabMate', 'tabDefects', 'tabMap'].forEach(t => document.getElementById(t).classList.add('hidden'));
+      document.getElementById(tabId).classList.remove('hidden');
     }
 
     // 1. SUBMIT MATE WORK
@@ -273,83 +355,87 @@
       }
     }
 
-    // 3. LOAD COMPLETE JE LIVE DASHBOARD
-    async function loadJEDashboard() {
-      loadGangWork();
-      loadDefects();
-    }
-
-    // FETCH GANG WORK LOGS
+    // FETCH GANG WORK REGISTER
     async function loadGangWork() {
-      const container = document.getElementById('jeWorkList');
-      container.innerHTML = "कार्य डायरी लोड हो रही है...";
+      const tbody = document.getElementById('gangWorkTableBody');
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">डेटा लोड हो रहा है...</td></tr>';
 
-      const { data, error } = await db.from('daily_work_logs').select('*').order('created_at', { ascending: false }).limit(6);
+      const { data, error } = await db.from('daily_work_logs').select('*').order('created_at', { ascending: false });
 
       if (error) {
-        container.innerHTML = "त्रुटि: " + error.message;
+        tbody.innerHTML = `<tr><td colspan="6" style="color:#f87171;">एरर: ${error.message}</td></tr>`;
         return;
       }
 
       if (!data || data.length === 0) {
-        container.innerHTML = "⚪ आज अभी तक किसी मेट ने कार्य सबमिट नहीं किया है।";
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">कोई रिकॉर्ड उपलब्ध नहीं है।</td></tr>';
         return;
       }
 
       let html = '';
       data.forEach(w => {
         const time = new Date(w.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        html += `<div class="item-card" style="border-left-color: #22c55e;">
-          <div style="display:flex; justify-content:space-between;">
-            <strong style="color:#4ade80;">${w.gang_no || 'Gang'} - ${w.mate_name}</strong>
-            <span style="color:#94a3b8; font-size:10px;">${time}</span>
-          </div>
-          <div style="margin-top:3px;">
-            📍 <strong>${w.line_name}</strong>: Km ${w.from_km} से ${w.to_km}<br>
-            🔨 <strong>कार्य:</strong> ${w.work_type}<br>
-            📦 <strong>प्रगति:</strong> ${w.output_details}
-          </div>
-        </div>`;
+        html += `<tr>
+          <td><strong style="color:#94a3b8;">${time}</strong></td>
+          <td><strong style="color:#4ade80;">${w.mate_name}</strong><br><span style="font-size:9px; color:#64748b;">${w.gang_no || ''}</span></td>
+          <td><span class="tag tag-yellow">${w.line_name}</span></td>
+          <td>${w.from_km} - ${w.to_km}</td>
+          <td>${w.work_type}</td>
+          <td><strong style="color:#38bdf8;">${w.output_details}</strong></td>
+        </tr>`;
       });
-      container.innerHTML = html;
+      tbody.innerHTML = html;
     }
 
-    // FETCH DEFECTS
+    // FETCH DEFECTS REGISTER & MAP MARKERS
     async function loadDefects() {
-      const container = document.getElementById('jeDefectsList');
-      container.innerHTML = "डिफेक्ट्स लोड हो रहे हैं...";
+      const tbody = document.getElementById('defectsTableBody');
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">डेटा लोड हो रहा है...</td></tr>';
 
-      const { data, error } = await db.from('track_defects').select('*').order('created_at', { ascending: false }).limit(6);
+      const upTrack = document.getElementById('upLineTrack');
+      const dnTrack = document.getElementById('dnLineTrack');
+      upTrack.innerHTML = '';
+      dnTrack.innerHTML = '';
+
+      const { data, error } = await db.from('track_defects').select('*').order('created_at', { ascending: false });
 
       if (error) {
-        container.innerHTML = "त्रुटि: " + error.message;
+        tbody.innerHTML = `<tr><td colspan="7" style="color:#f87171;">एरर: ${error.message}</td></tr>`;
         return;
       }
 
       if (!data || data.length === 0) {
-        container.innerHTML = "🟢 अभी कोई ओपन डिफेक्ट दर्ज नहीं है। ट्रैक सुरक्षित है!";
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#4ade80;">🟢 ट्रैक सुरक्षित है! कोई ओपन डिफेक्ट नहीं है।</td></tr>';
         return;
       }
 
       let html = '';
       data.forEach(d => {
         const isCritical = d.defect_type.includes('Fracture') || d.defect_type.includes('🔴');
-        const borderColor = isCritical ? '#ef4444' : (d.defect_type.includes('🟢') ? '#22c55e' : '#f59e0b');
+        const tagClass = isCritical ? 'tag-red' : (d.defect_type.includes('🟢') ? 'tag-green' : 'tag-yellow');
         const time = new Date(d.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 
-        html += `<div class="item-card" style="border-left-color: ${borderColor};">
-          <div style="display:flex; justify-content:space-between;">
-            <strong style="color:#38bdf8;">📍 ${d.line_name} @ Km ${d.km_location}</strong>
-            <span style="color:#94a3b8; font-size:10px;">${time}</span>
-          </div>
-          <div style="margin-top:3px;">
-            खंभा (Pole): <strong>${d.pole_no || '-'}</strong> | स्थिति: <strong>${d.defect_type}</strong><br>
-            📝 <em>${d.remarks || 'कोई रिमार्क नहीं'}</em><br>
-            <span style="color:#94a3b8; font-size:10px;">रिपोर्टकर्ता: ${d.reported_by}</span>
-          </div>
-        </div>`;
+        html += `<tr>
+          <td><strong style="color:#94a3b8;">${time}</strong></td>
+          <td><span class="tag tag-yellow">${d.line_name}</span></td>
+          <td><strong>${d.km_location}</strong></td>
+          <td>${d.pole_no || '-'}</td>
+          <td><span class="tag ${tagClass}">${d.defect_type}</span></td>
+          <td><em>${d.remarks || '-'}</em></td>
+          <td>${d.reported_by}</td>
+        </tr>`;
+
+        // Plot onto 2D Track Scale (1157 to 1173 Km = 16 Km range)
+        if (d.km_location >= 1157 && d.km_location <= 1173) {
+          const percent = ((d.km_location - 1157) / 16) * 100;
+          const markerColor = isCritical ? '#ef4444' : (d.defect_type.includes('🟢') ? '#22c55e' : '#f59e0b');
+          const dot = `<div title="Km ${d.km_location} - ${d.defect_type}" style="position:absolute; left:${percent}%; top:-3px; width:12px; height:12px; background:${markerColor}; border-radius:50%; border:2px solid #0f172a; cursor:pointer;"></div>`;
+          
+          if (d.line_name.includes('UP')) upTrack.innerHTML += dot;
+          if (d.line_name.includes('DN')) dnTrack.innerHTML += dot;
+        }
       });
-      container.innerHTML = html;
+      tbody.innerHTML = html;
     }
   </script>
 </body>
