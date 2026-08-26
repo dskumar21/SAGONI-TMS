@@ -18,6 +18,7 @@
 
     .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); margin-bottom: 12px; }
     .card-emergency { border: 2px solid #ef4444; background: #181d2f; }
+    .card-train-safety { border: 2px solid #0284c7; background: #0c2135; }
 
     .form-group { margin-bottom: 12px; }
     label { display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 5px; }
@@ -29,13 +30,18 @@
     .btn-blue { background: #2563eb; }
     .btn-green { background: #16a34a; }
     .btn-red { background: #dc2626; }
+    .btn-amber { background: #d97706; }
 
-    /* SOS Grid Icons */
+    /* Action Grids */
     .sos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
     .sos-item { background: #0f172a; border: 1px solid #dc2626; border-radius: 8px; padding: 10px 4px; text-align: center; cursor: pointer; transition: 0.2s; }
-    .sos-item:hover, .sos-item.active-sos { background: #7f1d1d; border-color: #f87171; }
+    .sos-item:hover { background: #7f1d1d; border-color: #f87171; }
     .sos-icon { font-size: 22px; display: block; margin-bottom: 4px; }
     .sos-label { font-size: 10px; font-weight: 700; color: #fecaca; }
+
+    .train-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+    .train-item { background: #0f172a; border: 1px solid #0284c7; border-radius: 8px; padding: 12px 8px; text-align: center; cursor: pointer; }
+    .train-item:hover { background: #075985; }
 
     .user-bar { background: #0f172a; border: 1px solid #334155; padding: 10px 12px; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
     .user-info { font-size: 12px; }
@@ -43,12 +49,15 @@
 
     .toast { display: none; background: #065f46; border: 1px solid #34d399; color: #ecfdf5; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 600; text-align: center; margin-bottom: 12px; }
     
+    /* Live Siren Alert Box */
+    #sirenAlarmBox { display: none; background: #991b1b; border: 2px solid #ef4444; border-radius: 12px; padding: 16px; text-align: center; margin-bottom: 14px; animation: blink 1s infinite alternate; }
+    @keyframes blink { from { box-shadow: 0 0 10px #ef4444; } to { box-shadow: 0 0 25px #dc2626; background: #7f1d1d; } }
+
     /* Tabs */
     .tab-bar { display: flex; gap: 6px; margin-bottom: 12px; background: #0f172a; padding: 4px; border-radius: 8px; border: 1px solid #334155; }
     .tab-btn { flex: 1; padding: 8px 4px; border: none; background: transparent; color: #94a3b8; font-size: 11px; font-weight: 700; border-radius: 6px; cursor: pointer; text-align: center; transition: 0.2s; }
     .tab-btn.active { background: #2563eb; color: white; }
 
-    /* Tables */
     .table-responsive { max-height: 380px; overflow-y: auto; overflow-x: auto; border: 1px solid #334155; border-radius: 8px; }
     table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: left; }
     th { background: #0f172a; color: #38bdf8; padding: 8px 10px; position: sticky; top: 0; border-bottom: 1px solid #334155; white-space: nowrap; }
@@ -59,6 +68,10 @@
     .tag-red { background: #7f1d1d; color: #fecaca; }
     .tag-green { background: #14532d; color: #bbf7d0; }
     .tag-yellow { background: #78350f; color: #fef08a; }
+
+    .chk-group { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+    .chk-label { font-size: 12px; color: white; display: flex; align-items: center; gap: 4px; cursor: pointer; }
+    .chk-label input { width: auto; }
   </style>
 </head>
 <body>
@@ -67,20 +80,103 @@
     <div class="header">
       <h1>सगोनी पी-वे ट्रैक मैनेजमेंट सिस्टम</h1>
       <span class="sec-badge">Km 1157.000 से 1173.000 (16 Km)</span>
-      <p>Instant Operations & Safety Center</p>
+      <p>Early Train Warning & Track Operations Safety</p>
+    </div>
+
+    <!-- LIVE SIREN ALERT BOX (POPS UP WHEN TRAIN APPROACHES) -->
+    <div id="sirenAlarmBox">
+      <div style="font-size: 28px;">🚨 📢 ⚠️</div>
+      <h2 id="sirenAlertTitle" style="color: #fff; font-size: 18px; margin: 4px 0;">ट्रेन आ रही है! तुरंत ट्रैक छोड़ें!</h2>
+      <p id="sirenAlertDesc" style="color: #fecaca; font-size: 13px; margin-bottom: 12px;">--</p>
+      <button onclick="stopAlarmSound()" class="btn" style="background:#fff; color:#991b1b; font-weight:900;">🔕 अलार्म स्वीकार करें (Acknowledge & Stop)</button>
     </div>
 
     <div id="toast" class="toast"></div>
 
-    <!-- MAIN HOME WRAPPER (LOGIN + DIRECT SOS PANEL) -->
+    <!-- HOME SECTION -->
     <div id="homeSection">
-      
-      <!-- 1. LOGIN CARD -->
+
+      <!-- 1. EARLY TRAIN WARNING SYSTEM (NEW INTERCONNECTED SYSTEM) -->
+      <div class="card card-train-safety">
+        <div style="text-align: center;">
+          <strong style="color: #38bdf8; font-size: 15px;">🚆 ट्रैक सुरक्षा: लाइव ट्रेन चेतावनी प्रणाली</strong>
+          <p style="font-size: 11px; color: #94a3b8; margin-top: 2px;">गाड़ी पूछने और बताने का इंटरकनेक्टेड मॉड्यूल:</p>
+        </div>
+
+        <div class="train-grid">
+          <div class="train-item" onclick="openTrainMode('sender')">
+            <span style="font-size: 24px; display:block; margin-bottom:4px;">📢</span>
+            <strong style="color:#38bdf8; font-size:12px;">गाड़ी सूचना दें</strong><br>
+            <span style="color:#94a3b8; font-size:10px;">(Sender / Dispatcher)</span>
+          </div>
+          <div class="train-item" onclick="openTrainMode('receiver')">
+            <span style="font-size: 24px; display:block; margin-bottom:4px;">📡</span>
+            <strong style="color:#4ade80; font-size:12px;">गाड़ी अलर्ट सुनें</strong><br>
+            <span style="color:#94a3b8; font-size:10px;">(Receiver / Tracker)</span>
+          </div>
+        </div>
+
+        <!-- SENDER FORM (गाड़ी बताने वाला) -->
+        <div id="trainSenderPanel" style="display: none; margin-top: 14px; border-top: 1px dashed #0284c7; padding-top: 12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <strong style="color:#38bdf8; font-size:13px;">📢 गाड़ी सूचना डिस्पैच फॉर्म</strong>
+            <button onclick="closeTrainPanels()" style="background:none; border:none; color:#f87171; cursor:pointer;">✖</button>
+          </div>
+          <div class="form-group">
+            <label>आपकी ID / स्टेशन (Sender ID)</label>
+            <input type="text" id="sndEmpId" placeholder="उदा: SM_SAGONI, GATE_1162, JE01">
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label>लाइन (Line Name)</label>
+              <select id="sndLine">
+                <option value="UP Line">UP Line</option>
+                <option value="DN Line">DN Line</option>
+                <option value="3rd Line">3rd Line</option>
+                <option value="Sagoni Yard">Sagoni Yard</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>गाड़ी सं. / विवरण</label>
+              <input type="text" id="sndTrain" placeholder="उदा: 12181 / GOODS">
+            </div>
+          </div>
+          <div class="grid-2" style="margin-top: 6px;">
+            <button onclick="sendLiveTrainAlert('DISPATCHED')" class="btn btn-red" style="font-size:12px;">🚨 गाड़ी छोड़ दी गई (Siren)</button>
+            <button onclick="sendLiveTrainAlert('BLOCKED')" class="btn btn-amber" style="font-size:12px;">⛔ ब्लॉक / रोकी गई (Beep)</button>
+          </div>
+        </div>
+
+        <!-- RECEIVER FORM (गाड़ी पूछने/सुनने वाला) -->
+        <div id="trainReceiverPanel" style="display: none; margin-top: 14px; border-top: 1px dashed #0284c7; padding-top: 12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <strong style="color:#4ade80; font-size:13px;">📡 लाइव अलर्ट रिसीवर (Field Audio Monitor)</strong>
+            <button onclick="closeTrainPanels()" style="background:none; border:none; color:#f87171; cursor:pointer;">✖</button>
+          </div>
+          <div class="form-group">
+            <label>आपकी ID (Trackman / Mate ID)</label>
+            <input type="text" id="rcvEmpId" placeholder="उदा: MATE01, KEY01">
+          </div>
+          <div class="form-group">
+            <label>किन-किन लाइनों के अलर्ट सुनने हैं? (Multiple Selection)</label>
+            <div class="chk-group">
+              <label class="chk-label"><input type="checkbox" id="chkUP" checked> UP Line</label>
+              <label class="chk-label"><input type="checkbox" id="chkDN" checked> DN Line</label>
+              <label class="chk-label"><input type="checkbox" id="chk3rd"> 3rd Line</label>
+              <label class="chk-label"><input type="checkbox" id="chkYard"> Sagoni Yard</label>
+            </div>
+          </div>
+          <button onclick="activateAudioMonitoring()" id="btnListenLive" class="btn btn-green">🚨 अलर्ट मॉनिटरिंग चालू करें (Live On)</button>
+          <div id="rcvStatus" style="font-size:11px; color:#94a3b8; text-align:center; margin-top:6px;">स्टेटस: बंद है</div>
+        </div>
+      </div>
+
+      <!-- 2. LOGIN CARD -->
       <div class="card">
         <div style="text-align: center; margin-bottom: 14px;">
-          <span style="font-size: 28px;">🔐</span>
-          <h2 style="font-size: 16px; margin-top: 4px;">स्टाफ लॉगिन (Staff Access)</h2>
-          <p style="font-size: 12px; color: #94a3b8;">दैनिक कार्य / डायरी भरने हेतु टोकन दर्ज करें</p>
+          <span style="font-size: 26px;">🔐</span>
+          <h2 style="font-size: 15px; margin-top: 4px;">स्टाफ लॉगिन (Staff Access)</h2>
+          <p style="font-size: 11px; color: #94a3b8;">दैनिक कार्य / डायरी भरने हेतु टोकन दर्ज करें</p>
         </div>
         
         <div class="form-group">
@@ -95,80 +191,39 @@
         </div>
       </div>
 
-      <!-- 2. EMERGENCY INCIDENT CARD -->
+      <!-- 3. EMERGENCY INCIDENT CARD -->
       <div class="card card-emergency">
         <div style="text-align: center;">
           <strong style="color: #f87171; font-size: 14px;">🚨 त्वरित आपातकालीन रिपोर्टिंग (Direct SOS)</strong>
           <p style="font-size: 11px; color: #94a3b8; margin-top: 2px;">बिना लॉगिन किए तुरंत घटना दर्ज करें:</p>
         </div>
 
-        <!-- 4 Emergency Action Icons -->
         <div class="sos-grid">
-          <div class="sos-item" onclick="selectEmergencyType('🐮 CRO (Cattle Run Over)')">
-            <span class="sos-icon">🐮</span>
-            <span class="sos-label">C.R.O.</span>
-          </div>
-          <div class="sos-item" onclick="selectEmergencyType('🔥 Hot Axle / Brake Binding')">
-            <span class="sos-icon">🔥</span>
-            <span class="sos-label">Hot Axle</span>
-          </div>
-          <div class="sos-item" onclick="selectEmergencyType('🛑 Train Stalled / Failure')">
-            <span class="sos-icon">🛑</span>
-            <span class="sos-label">Train Fail</span>
-          </div>
-          <div class="sos-item" onclick="selectEmergencyType('⚠️ Sabotage / Obstruction')">
-            <span class="sos-icon">⚠️</span>
-            <span class="sos-label">Sabotage</span>
-          </div>
+          <div class="sos-item" onclick="selectEmergencyType('🐮 CRO (Cattle Run Over)')"><span class="sos-icon">🐮</span><span class="sos-label">C.R.O.</span></div>
+          <div class="sos-item" onclick="selectEmergencyType('🔥 Hot Axle / Brake Binding')"><span class="sos-icon">🔥</span><span class="sos-label">Hot Axle</span></div>
+          <div class="sos-item" onclick="selectEmergencyType('🛑 Train Stalled / Failure')"><span class="sos-icon">🛑</span><span class="sos-label">Train Fail</span></div>
+          <div class="sos-item" onclick="selectEmergencyType('⚠️ Sabotage / Obstruction')"><span class="sos-icon">⚠️</span><span class="sos-label">Sabotage</span></div>
         </div>
 
-        <!-- Dynamic Inline Emergency Form -->
         <div id="inlineEmergencyForm" style="display: none; margin-top: 16px; border-top: 1px dashed #ef4444; padding-top: 12px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <strong id="selectedTypeTitle" style="color:#38bdf8; font-size:13px;">--</strong>
-            <button onclick="closeEmergencyForm()" style="background:none; border:none; color:#f87171; font-size:16px; cursor:pointer; font-weight:bold;">✖ बंद करें</button>
+            <button onclick="closeEmergencyForm()" style="background:none; border:none; color:#f87171; font-size:16px; cursor:pointer; font-weight:bold;">✖</button>
           </div>
 
           <form onsubmit="submitEmergencyIncident(event)">
             <input type="hidden" id="emIncidentType">
-            
-            <div class="form-group">
-              <label>आपकी Employee ID / नाम</label>
-              <input type="text" id="emEmpId" placeholder="उदा: KEY01, MATE01 या नाम" required>
-            </div>
-
+            <div class="form-group"><label>आपकी Employee ID / नाम</label><input type="text" id="emEmpId" placeholder="उदा: KEY01, MATE01" required></div>
             <div class="grid-2">
-              <div class="form-group">
-                <label>लाइन (Line)</label>
-                <select id="emLine"><option>UP Line</option><option>DN Line</option><option>3rd Line</option><option>Sagoni Yard</option></select>
-              </div>
-              <div class="form-group">
-                <label>गाड़ी सं. (Train No.)</label>
-                <input type="text" id="emTrain" placeholder="उदा: 12181 / GOODS">
-              </div>
+              <div class="form-group"><label>लाइन</label><select id="emLine"><option>UP Line</option><option>DN Line</option><option>3rd Line</option><option>Sagoni Yard</option></select></div>
+              <div class="form-group"><label>गाड़ी सं.</label><input type="text" id="emTrain" placeholder="12181 / GOODS"></div>
             </div>
-
             <div class="grid-2">
-              <div class="form-group">
-                <label>Km Location</label>
-                <input type="number" id="emKm" step="0.001" min="1157" max="1173" placeholder="1164.200" required>
-              </div>
-              <div class="form-group">
-                <label>खंभा नंबर (Pole No.)</label>
-                <input type="text" id="emPole" placeholder="1164/18" required>
-              </div>
+              <div class="form-group"><label>Km Location</label><input type="number" id="emKm" step="0.001" min="1157" max="1173" placeholder="1164.200" required></div>
+              <div class="form-group"><label>खंभा नंबर</label><input type="text" id="emPole" placeholder="1164/18" required></div>
             </div>
-
-            <div class="form-group">
-              <label>विवरण / स्थिति</label>
-              <textarea id="emRemarks" rows="2" placeholder="घटना का विवरण, ट्रैक क्लियर है या ब्लॉक..." required></textarea>
-            </div>
-
-            <div class="form-group">
-              <label>📸 मौके की फोटो (ऑटो-कंप्रेस होकर 1 सेकंड में जाएगी)</label>
-              <input type="file" id="emPhoto" accept="image/*" capture="environment" style="padding:6px;">
-            </div>
-
+            <div class="form-group"><label>विवरण</label><textarea id="emRemarks" rows="2" placeholder="मौके की स्थिति..." required></textarea></div>
+            <div class="form-group"><label>📸 मौके की फोटो</label><input type="file" id="emPhoto" accept="image/*" capture="environment" style="padding:6px;"></div>
             <button type="submit" id="emBtn" class="btn btn-red">🚨 तुरंत इमरजेंसी अलर्ट दर्ज करें</button>
           </form>
         </div>
@@ -176,7 +231,7 @@
 
     </div>
 
-    <!-- 3. LOGGED-IN PORTAL (GANG, KEYMAN, JE DASHBOARD) -->
+    <!-- LOGGED-IN PORTAL (GANG, KEYMAN, JE DASHBOARD) -->
     <div id="appContainer" style="display: none;">
       <div class="user-bar">
         <div class="user-info">
@@ -190,10 +245,7 @@
       <div id="mateForm" class="card" style="display: none;">
         <h3 style="font-size: 15px; margin-bottom: 12px; color: #4ade80;">🛠️ दैनिक कार्य डायरी (Gang Mate)</h3>
         <form onsubmit="submitMateWork(event)">
-          <div class="form-group">
-            <label>लाइन (Line)</label>
-            <select id="mLine"><option>UP Line</option><option>DN Line</option><option>3rd Line</option><option>Sagoni Yard</option></select>
-          </div>
+          <div class="form-group"><label>लाइन</label><select id="mLine"><option>UP Line</option><option>DN Line</option><option>3rd Line</option><option>Sagoni Yard</option></select></div>
           <div class="grid-2">
             <div class="form-group"><label>From Km</label><input type="number" id="mFromKm" step="0.001" min="1157" max="1173" value="1157.000" required></div>
             <div class="form-group"><label>To Km</label><input type="number" id="mToKm" step="0.001" min="1157" max="1173" value="1157.450" required></div>
@@ -201,39 +253,29 @@
           <div class="form-group">
             <label>कार्य का प्रकार</label>
             <select id="mWorkType">
-              <option>Through Packing (थ्रू पैकिंग)</option>
-              <option>Slack Picking (स्लैक पिकिंग)</option>
-              <option>ERC & Liner Greasing</option>
-              <option>Joint Lubrication & Destressing</option>
-              <option>Ballast Boxing / Dressing</option>
-              <option>Turnout Overhauling (सगोनी यार्ड)</option>
+              <option>Through Packing</option><option>Slack Picking</option><option>ERC & Liner Greasing</option>
+              <option>Joint Lubrication & Destressing</option><option>Ballast Boxing</option><option>Turnout Overhauling</option>
             </select>
           </div>
-          <div class="form-group"><label>आउटपुट / प्रगति विवरण</label><input type="text" id="mOutput" placeholder="उदा: 75 Sleeper Packed, 12 Joints Oiled" required></div>
+          <div class="form-group"><label>आउटपुट विवरण</label><input type="text" id="mOutput" placeholder="उदा: 75 Sleeper Packed" required></div>
           <button type="submit" id="mBtn" class="btn btn-green">डेटाबेस में सुरक्षित करें</button>
         </form>
       </div>
 
       <!-- KEYMAN FORM -->
       <div id="keymanForm" class="card" style="display: none;">
-        <h3 style="font-size: 15px; margin-bottom: 12px; color: #38bdf8;">🔑 डिफेक्ट रिपोर्टिंग (Keyman / Patrolman)</h3>
+        <h3 style="font-size: 15px; margin-bottom: 12px; color: #38bdf8;">🔑 डिफेक्ट रिपोर्टिंग (Keyman)</h3>
         <form onsubmit="submitKeymanDefect(event)">
-          <div class="form-group">
-            <label>लाइन</label>
-            <select id="kLine"><option>UP Line</option><option>DN Line</option><option>3rd Line</option></select>
-          </div>
+          <div class="form-group"><label>लाइन</label><select id="kLine"><option>UP Line</option><option>DN Line</option><option>3rd Line</option></select></div>
           <div class="grid-2">
-            <div class="form-group"><label>Km Location</label><input type="number" id="kKm" step="0.001" min="1157" max="1173" placeholder="1162.400" required></div>
-            <div class="form-group"><label>Pole No.</label><input type="text" id="kPole" placeholder="1162/14" required></div>
+            <div class="form-group"><label>Km</label><input type="number" id="kKm" step="0.001" min="1157" max="1173" placeholder="1162.400" required></div>
+            <div class="form-group"><label>खंभा</label><input type="text" id="kPole" placeholder="1162/14" required></div>
           </div>
           <div class="form-group">
             <label>डिफेक्ट का प्रकार</label>
             <select id="kDefect">
-              <option>🟢 Normal - Routine Beat OK</option>
-              <option>🔴 Weld Fracture / Crack</option>
-              <option>🟡 Missing ERC / Liners Replaced</option>
-              <option>🟡 Loose Fishbolts Tightened</option>
-              <option>🟡 Bad Riding / Slack Location</option>
+              <option>🟢 Normal - Routine Beat OK</option><option>🔴 Weld Fracture / Crack</option>
+              <option>🟡 Missing ERC / Liners</option><option>🟡 Loose Fishbolts</option><option>🟡 Bad Riding / Slack</option>
             </select>
           </div>
           <div class="form-group"><label>रिमार्क्स</label><textarea id="kRemarks" rows="2" placeholder="मौके की स्थिति..."></textarea></div>
@@ -243,7 +285,6 @@
 
       <!-- JE MASTER DASHBOARD -->
       <div id="jeForm" style="display: none;">
-        
         <div class="tab-bar">
           <button class="tab-btn active" onclick="switchJETab('tabEmergency')">🚨 आपात अलर्ट्स</button>
           <button class="tab-btn" onclick="switchJETab('tabMate')">🛠️ मेट डायरी</button>
@@ -251,62 +292,44 @@
           <button class="tab-btn" onclick="switchJETab('tabMap')">🗺️ 2D स्केल</button>
         </div>
 
-        <!-- TAB 0: EMERGENCY INCIDENTS -->
         <div id="tabEmergency" class="card">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <strong style="color:#ef4444; font-size:14px;">🚨 आपातकालीन & स्पेशल घटना रजिस्टर</strong>
+            <strong style="color:#ef4444; font-size:14px;">🚨 आपातकालीन घटना रजिस्टर</strong>
             <button onclick="loadEmergencies()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
           </div>
           <div id="emergencyLiveList">लोड हो रहा है...</div>
         </div>
 
-        <!-- TAB 1: GANG WORK -->
         <div id="tabMate" class="card" style="display: none;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <strong style="color:#4ade80; font-size:14px;">🛠️ गैंगवार दैनिक कार्य रजिस्टर</strong>
-            <button onclick="loadGangWork()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
-          </div>
           <div class="table-responsive">
             <table>
-              <thead>
-                <tr><th>समय</th><th>गैंग/मुकद्दम</th><th>लाइन</th><th>Km Range</th><th>कार्य प्रकार</th><th>प्रगति</th></tr>
-              </thead>
+              <thead><tr><th>समय</th><th>गैंग/मुकद्दम</th><th>लाइन</th><th>Km Range</th><th>कार्य</th><th>प्रगति</th></tr></thead>
               <tbody id="gangWorkTableBody"><tr><td colspan="6" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
             </table>
           </div>
         </div>
 
-        <!-- TAB 2: DEFECTS -->
         <div id="tabDefects" class="card" style="display: none;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <strong style="color:#f87171; font-size:14px;">⚠️ ट्रैक डिफेक्ट & अलर्ट रजिस्टर</strong>
-            <button onclick="loadDefects()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
-          </div>
           <div class="table-responsive">
             <table>
-              <thead>
-                <tr><th>समय</th><th>लाइन</th><th>Km</th><th>खंभा</th><th>स्थिति</th><th>रिमार्क्स</th><th>रिपोर्टकर्ता</th></tr>
-              </thead>
+              <thead><tr><th>समय</th><th>लाइन</th><th>Km</th><th>खंभा</th><th>स्थिति</th><th>रिमार्क्स</th><th>रिपोर्टकर्ता</th></tr></thead>
               <tbody id="defectsTableBody"><tr><td colspan="7" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
             </table>
           </div>
         </div>
 
-        <!-- TAB 3: 2D MAP -->
         <div id="tabMap" class="card" style="display: none;">
           <strong style="color:#38bdf8; font-size:14px; display:block; margin-bottom:6px;">🗺️ 16 Km लीनियर ट्रैक मॉनिटर (सगोनी 1157 - 1173)</strong>
           <div style="background:#0f172a; padding:16px 12px; border-radius:8px; border:1px solid #334155;">
-            <div style="display:flex; justify-content:space-between; font-size:10px; color:#64748b; margin-bottom:4px;">
-              <span>Km 1157.0</span><span>Km 1165.0</span><span>Km 1173.0</span>
-            </div>
+            <div style="display:flex; justify-content:space-between; font-size:10px; color:#64748b; margin-bottom:4px;"><span>Km 1157.0</span><span>Km 1165.0</span><span>Km 1173.0</span></div>
             <div style="font-size:11px; color:#cbd5e1; margin-bottom:3px;">UP Line:</div>
             <div id="upLineTrack" style="height:8px; background:#1e293b; border-radius:4px; position:relative; margin-bottom:14px; border:1px solid #475569;"></div>
             <div style="font-size:11px; color:#cbd5e1; margin-bottom:3px;">DN Line:</div>
             <div id="dnLineTrack" style="height:8px; background:#1e293b; border-radius:4px; position:relative; border:1px solid #475569;"></div>
           </div>
         </div>
-
       </div>
+
     </div>
   </div>
 
@@ -317,6 +340,9 @@
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let activeUser = null;
+    let audioContext = null;
+    let alarmInterval = null;
+    let isListening = false;
 
     const STAFF_DATA = {
       "JE01": { name: "JE (P-Way) Sagoni", role: "je", beat: "Section 1157 - 1173" },
@@ -326,6 +352,122 @@
       "PAT01": { name: "राकेश पेट्रोलमैन", role: "keyman", beat: "Night Patrol (1157-1165)" }
     };
 
+    // --- SOUND ENGINE (WEB AUDIO SYNTHESIZER) ---
+    function initAudio() {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function playTone(freq, type, duration) {
+      try {
+        initAudio();
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+        gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        osc.start();
+        osc.stop(audioContext.currentTime + duration);
+      } catch (e) { console.log(e); }
+    }
+
+    function triggerSirenSound(alertType) {
+      stopAlarmSound();
+      if (alertType === 'DISPATCHED') {
+        // High-Pitch Fast Pulsing Siren (गाड़ी छोड़ दी गई)
+        let toggle = false;
+        alarmInterval = setInterval(() => {
+          playTone(toggle ? 900 : 650, 'sawtooth', 0.25);
+          toggle = !toggle;
+        }, 300);
+      } else {
+        // Low-Pitch Staccato Beep (गाड़ी ब्लॉक / स्टॉल्ड)
+        alarmInterval = setInterval(() => {
+          playTone(400, 'square', 0.4);
+        }, 700);
+      }
+    }
+
+    function stopAlarmSound() {
+      if (alarmInterval) {
+        clearInterval(alarmInterval);
+        alarmInterval = null;
+      }
+      document.getElementById('sirenAlarmBox').style.display = 'none';
+    }
+
+    // --- TRAIN MODULE OPEN/CLOSE ---
+    function openTrainMode(mode) {
+      closeTrainPanels();
+      if (mode === 'sender') document.getElementById('trainSenderPanel').style.display = 'block';
+      if (mode === 'receiver') document.getElementById('trainReceiverPanel').style.display = 'block';
+    }
+
+    function closeTrainPanels() {
+      document.getElementById('trainSenderPanel').style.display = 'none';
+      document.getElementById('trainReceiverPanel').style.display = 'none';
+    }
+
+    // --- SENDER: SEND TRAIN ALERT ---
+    async function sendLiveTrainAlert(alertType) {
+      const senderId = document.getElementById('sndEmpId').value.trim().toUpperCase() || 'P-WAY_USER';
+      const line = document.getElementById('sndLine').value;
+      const train = document.getElementById('sndTrain').value || 'गाड़ी';
+
+      const payload = {
+        sender_id: senderId,
+        line_name: line,
+        alert_type: alertType,
+        train_no: train,
+        location_note: 'सगोनी सेक्शन'
+      };
+
+      const { error } = await db.from('train_live_alerts').insert([payload]);
+      if (error) {
+        alert('त्रुटि: ' + error.message);
+      } else {
+        showToast(`✅ ${line} पर ${alertType === 'DISPATCHED' ? 'गाड़ी छूटने' : 'ब्लॉक'} का लाइव सायरन अलर्ट प्रसारित कर दिया गया!`);
+      }
+    }
+
+    // --- RECEIVER: ACTIVATE REALTIME AUDIO LISTENER ---
+    function activateAudioMonitoring() {
+      initAudio();
+      isListening = true;
+      document.getElementById('btnListenLive').innerText = "🟢 मॉनिटरिंग चालू है (Live Active)";
+      document.getElementById('rcvStatus').innerText = "✅ लाइव कनेक्शन सक्रिय: चुने हुए ट्रैक पर गाड़ी छूटते ही सायरन बजेगा!";
+      document.getElementById('rcvStatus').style.color = "#4ade80";
+
+      // Subscribe to Supabase Realtime Alerts
+      db.channel('public:train_live_alerts')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'train_live_alerts' }, payload => {
+          const alertData = payload.new;
+          const selectedLines = [];
+          if (document.getElementById('chkUP').checked) selectedLines.push('UP Line');
+          if (document.getElementById('chkDN').checked) selectedLines.push('DN Line');
+          if (document.getElementById('chk3rd').checked) selectedLines.push('3rd Line');
+          if (document.getElementById('chkYard').checked) selectedLines.push('Sagoni Yard');
+
+          // Check if alert belongs to subscribed lines
+          if (selectedLines.includes(alertData.line_name)) {
+            const isDispatched = alertData.alert_type === 'DISPATCHED';
+            document.getElementById('sirenAlertTitle').innerText = isDispatched 
+              ? `🚨 ${alertData.line_name}: गाड़ी छोड़ दी गई है!` 
+              : `⛔ ${alertData.line_name}: ट्रैक ब्लॉक / गाड़ी रोकी गई!`;
+            document.getElementById('sirenAlertDesc').innerText = `ट्रेन सं.: ${alertData.train_no} | प्रेषक: ${alertData.sender_id}`;
+            document.getElementById('sirenAlarmBox').style.display = 'block';
+            document.getElementById('sirenAlarmBox').scrollIntoView({ behavior: 'smooth' });
+
+            triggerSirenSound(alertData.alert_type);
+          }
+        })
+        .subscribe();
+    }
+
+    // --- STANDARD LOGIN & APP FUNCTIONS ---
     function handleLogin() {
       const id = document.getElementById('empIdInput').value.trim().toUpperCase();
       if (!STAFF_DATA[id]) {
@@ -384,13 +526,10 @@
       document.getElementById('inlineEmergencyForm').style.display = 'none';
     }
 
-    // --- SMART CLIENT-SIDE IMAGE COMPRESSOR (Reduces 15MB to ~100KB instantly) ---
+    // COMPRESSOR & SUBMIT
     function compressImageFile(file) {
       return new Promise((resolve) => {
-        if (!file) {
-          resolve(null);
-          return;
-        }
+        if (!file) { resolve(null); return; }
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = (e) => {
@@ -398,30 +537,13 @@
           img.src = e.target.result;
           img.onload = () => {
             const canvas = document.createElement('canvas');
-            let width = img.width;
-            let height = img.height;
-            const maxDim = 800; // 800px is crystal clear for inspections & super lightweight
-
-            if (width > height) {
-              if (width > maxDim) {
-                height = Math.round((height * maxDim) / width);
-                width = maxDim;
-              }
-            } else {
-              if (height > maxDim) {
-                width = Math.round((width * maxDim) / height);
-                height = maxDim;
-              }
-            }
-
-            canvas.width = width;
-            canvas.height = height;
+            let width = img.width, height = img.height, maxDim = 800;
+            if (width > height) { if (width > maxDim) { height = Math.round((height * maxDim) / width); width = maxDim; } }
+            else { if (height > maxDim) { width = Math.round((width * maxDim) / height); height = maxDim; } }
+            canvas.width = width; canvas.height = height;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, width, height);
-
-            // Compress to JPEG format with 0.6 quality (creates ~80KB to 120KB image)
-            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
-            resolve(compressedBase64);
+            resolve(canvas.toDataURL('image/jpeg', 0.6));
           };
           img.onerror = () => resolve(null);
         };
@@ -429,26 +551,21 @@
       });
     }
 
-    // --- SUBMIT EMERGENCY INCIDENT (FAST UPLOAD) ---
     async function submitEmergencyIncident(e) {
       e.preventDefault();
       const btn = document.getElementById('emBtn');
-      btn.innerText = "⚡ फोटो प्रोसेस और अपलोड हो रही है...";
+      btn.innerText = "⚡ फोटो अपलोड हो रही है...";
       btn.disabled = true;
 
       try {
         const fileInput = document.getElementById('emPhoto');
         let photoBase64 = null;
-        if (fileInput.files.length > 0) {
-          photoBase64 = await compressImageFile(fileInput.files[0]);
-        }
+        if (fileInput.files.length > 0) photoBase64 = await compressImageFile(fileInput.files[0]);
 
         const empId = document.getElementById('emEmpId').value.trim().toUpperCase();
-        const reporterName = STAFF_DATA[empId] ? STAFF_DATA[empId].name : empId;
-
         const payload = {
           reporter_emp_id: empId,
-          reporter_name: reporterName,
+          reporter_name: STAFF_DATA[empId] ? STAFF_DATA[empId].name : empId,
           incident_type: document.getElementById('emIncidentType').value,
           line_name: document.getElementById('emLine').value,
           km_location: parseFloat(document.getElementById('emKm').value),
@@ -459,15 +576,13 @@
         };
 
         const { error } = await db.from('emergency_incidents').insert([payload]);
-        
         btn.innerText = "🚨 तुरंत इमरजेंसी अलर्ट दर्ज करें";
         btn.disabled = false;
 
-        if (error) {
-          alert('डेटाबेस एरर: ' + error.message);
-        } else {
+        if (error) alert('त्रुटि: ' + error.message);
+        else {
           closeEmergencyForm();
-          showToast('✅ आपातकालीन अलर्ट 1 सेकंड में सफलतापूर्वक दर्ज हो गया!');
+          showToast('✅ आपातकालीन अलर्ट 1 सेकंड में दर्ज हो गया!');
           e.target.reset();
         }
       } catch (err) {
@@ -477,37 +592,26 @@
       }
     }
 
-    // --- LOAD EMERGENCIES ON JE DASHBOARD ---
     async function loadEmergencies() {
       const container = document.getElementById('emergencyLiveList');
-      container.innerHTML = "आपातकालीन अलर्ट लोड हो रहे हैं...";
-
+      container.innerHTML = "लोड हो रहा है...";
       const { data, error } = await db.from('emergency_incidents').select('*').order('created_at', { ascending: false }).limit(10);
       if (error || !data || data.length === 0) {
-        container.innerHTML = '<div style="color:#22c55e; padding:10px; background:#0f172a; border-radius:6px; text-align:center;">🟢 कोई सक्रिय आपातकालीन अलर्ट नहीं है। ट्रैक सुरक्षित है।</div>';
+        container.innerHTML = '<div style="color:#22c55e; padding:10px; background:#0f172a; border-radius:6px; text-align:center;">🟢 कोई सक्रिय अलर्ट नहीं है।</div>';
         return;
       }
-
       let html = '';
       data.forEach(inc => {
         const time = new Date(inc.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
         html += `<div style="background:#0f172a; border-left:4px solid #ef4444; padding:10px; border-radius:8px; margin-bottom:8px;">
-          <div style="display:flex; justify-content:space-between;">
-            <strong style="color:#ef4444; font-size:13px;">${inc.incident_type}</strong>
-            <span style="color:#94a3b8; font-size:10px;">${time}</span>
-          </div>
-          <div style="margin-top:4px; font-size:12px;">
-            📍 <strong>${inc.line_name} @ Km ${inc.km_location}</strong> (खंभा: ${inc.pole_no})<br>
-            🚆 <strong>गाड़ी सं.:</strong> ${inc.train_no} | <strong>विवरण:</strong> <em>${inc.remarks}</em><br>
-            <span style="color:#38bdf8; font-size:11px;">रिपोर्टकर्ता: <strong>${inc.reporter_name}</strong> (${inc.reporter_emp_id})</span>
-          </div>
+          <div style="display:flex; justify-content:space-between;"><strong style="color:#ef4444; font-size:13px;">${inc.incident_type}</strong><span style="color:#94a3b8; font-size:10px;">${time}</span></div>
+          <div style="margin-top:4px; font-size:12px;">📍 <strong>${inc.line_name} @ Km ${inc.km_location}</strong> (${inc.pole_no})<br>🚆 <strong>गाड़ी सं.:</strong> ${inc.train_no} | <em>${inc.remarks}</em><br><span style="color:#38bdf8; font-size:11px;">रिपोर्टकर्ता: <strong>${inc.reporter_name}</strong></span></div>
           ${inc.photo_url ? `<div style="margin-top:8px;"><img src="${inc.photo_url}" style="max-width:100%; max-height:220px; border-radius:6px; border:1px solid #334155; object-fit:contain;"></div>` : ''}
         </div>`;
       });
       container.innerHTML = html;
     }
 
-    // --- SUBMIT MATE WORK ---
     async function submitMateWork(e) {
       e.preventDefault();
       const btn = document.getElementById('mBtn');
@@ -515,29 +619,19 @@
       btn.disabled = true;
 
       const payload = {
-        emp_id: activeUser.emp_id,
-        gang_no: activeUser.beat,
-        line_name: document.getElementById('mLine').value,
-        from_km: parseFloat(document.getElementById('mFromKm').value),
-        to_km: parseFloat(document.getElementById('mToKm').value),
-        work_type: document.getElementById('mWorkType').value,
-        output_details: document.getElementById('mOutput').value,
+        emp_id: activeUser.emp_id, gang_no: activeUser.beat, line_name: document.getElementById('mLine').value,
+        from_km: parseFloat(document.getElementById('mFromKm').value), to_km: parseFloat(document.getElementById('mToKm').value),
+        work_type: document.getElementById('mWorkType').value, output_details: document.getElementById('mOutput').value,
         mate_name: activeUser.name
       };
 
       const { error } = await db.from('daily_work_logs').insert([payload]);
       btn.innerText = "डेटाबेस में सुरक्षित करें";
       btn.disabled = false;
-
-      if (error) {
-        alert('डेटाबेस एरर: ' + error.message);
-      } else {
-        showToast('✅ मुकद्दम कार्य सुरक्षित हो गया!');
-        e.target.reset();
-      }
+      if (error) alert('एरर: ' + error.message);
+      else { showToast('✅ मुकद्दम कार्य सुरक्षित हो गया!'); e.target.reset(); }
     }
 
-    // --- SUBMIT KEYMAN DEFECT ---
     async function submitKeymanDefect(e) {
       e.preventDefault();
       const btn = document.getElementById('kBtn');
@@ -545,89 +639,47 @@
       btn.disabled = true;
 
       const payload = {
-        emp_id: activeUser.emp_id,
-        line_name: document.getElementById('kLine').value,
-        km_location: parseFloat(document.getElementById('kKm').value),
-        pole_no: document.getElementById('kPole').value,
-        defect_type: document.getElementById('kDefect').value,
-        remarks: document.getElementById('kRemarks').value,
+        emp_id: activeUser.emp_id, line_name: document.getElementById('kLine').value,
+        km_location: parseFloat(document.getElementById('kKm').value), pole_no: document.getElementById('kPole').value,
+        defect_type: document.getElementById('kDefect').value, remarks: document.getElementById('kRemarks').value,
         reported_by: activeUser.name
       };
 
       const { error } = await db.from('track_defects').insert([payload]);
       btn.innerText = "डिफेक्ट दर्ज करें";
       btn.disabled = false;
-
-      if (error) {
-        alert('डेटाबेस एरर: ' + error.message);
-      } else {
-        showToast('✅ डिफेक्ट अलर्ट दर्ज हो गया!');
-        e.target.reset();
-      }
+      if (error) alert('एरर: ' + error.message);
+      else { showToast('✅ डिफेक्ट अलर्ट दर्ज हो गया!'); e.target.reset(); }
     }
 
-    // --- LOAD GANG WORK ---
     async function loadGangWork() {
       const tbody = document.getElementById('gangWorkTableBody');
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">लोड हो रहा है...</td></tr>';
-
-      const { data, error } = await db.from('daily_work_logs').select('*').order('created_at', { ascending: false });
-      if (error || !data || data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">कोई रिकॉर्ड नहीं।</td></tr>';
-        return;
-      }
-
+      const { data } = await db.from('daily_work_logs').select('*').order('created_at', { ascending: false });
+      if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">कोई रिकॉर्ड नहीं।</td></tr>'; return; }
       let html = '';
       data.forEach(w => {
         const time = new Date(w.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        html += `<tr>
-          <td><strong style="color:#94a3b8;">${time}</strong></td>
-          <td><strong style="color:#4ade80;">${w.mate_name}</strong><br><span style="font-size:9px; color:#64748b;">${w.gang_no || ''}</span></td>
-          <td><span class="tag tag-yellow">${w.line_name}</span></td>
-          <td>${w.from_km} - ${w.to_km}</td>
-          <td>${w.work_type}</td>
-          <td><strong style="color:#38bdf8;">${w.output_details}</strong></td>
-        </tr>`;
+        html += `<tr><td>${time}</td><td><strong style="color:#4ade80;">${w.mate_name}</strong></td><td><span class="tag tag-yellow">${w.line_name}</span></td><td>${w.from_km} - ${w.to_km}</td><td>${w.work_type}</td><td><strong style="color:#38bdf8;">${w.output_details}</strong></td></tr>`;
       });
       tbody.innerHTML = html;
     }
 
-    // --- LOAD DEFECTS ---
     async function loadDefects() {
       const tbody = document.getElementById('defectsTableBody');
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">लोड हो रहा है...</td></tr>';
-
-      const upTrack = document.getElementById('upLineTrack');
-      const dnTrack = document.getElementById('dnLineTrack');
-      upTrack.innerHTML = '';
-      dnTrack.innerHTML = '';
-
-      const { data, error } = await db.from('track_defects').select('*').order('created_at', { ascending: false });
-      if (error || !data || data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#4ade80;">🟢 कोई ओपन डिफेक्ट नहीं है।</td></tr>';
-        return;
-      }
-
+      const upTrack = document.getElementById('upLineTrack'), dnTrack = document.getElementById('dnLineTrack');
+      upTrack.innerHTML = ''; dnTrack.innerHTML = '';
+      const { data } = await db.from('track_defects').select('*').order('created_at', { ascending: false });
+      if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#4ade80;">🟢 कोई ओपन डिफेक्ट नहीं है।</td></tr>'; return; }
       let html = '';
       data.forEach(d => {
         const isCritical = d.defect_type.includes('Fracture') || d.defect_type.includes('🔴');
         const tagClass = isCritical ? 'tag-red' : (d.defect_type.includes('🟢') ? 'tag-green' : 'tag-yellow');
         const time = new Date(d.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-
-        html += `<tr>
-          <td><strong style="color:#94a3b8;">${time}</strong></td>
-          <td><span class="tag tag-yellow">${d.line_name}</span></td>
-          <td><strong>${d.km_location}</strong></td>
-          <td>${d.pole_no || '-'}</td>
-          <td><span class="tag ${tagClass}">${d.defect_type}</span></td>
-          <td><em>${d.remarks || '-'}</em></td>
-          <td>${d.reported_by}</td>
-        </tr>`;
-
+        html += `<tr><td>${time}</td><td><span class="tag tag-yellow">${d.line_name}</span></td><td><strong>${d.km_location}</strong></td><td>${d.pole_no || '-'}</td><td><span class="tag ${tagClass}">${d.defect_type}</span></td><td><em>${d.remarks || '-'}</em></td><td>${d.reported_by}</td></tr>`;
         if (d.km_location >= 1157 && d.km_location <= 1173) {
           const percent = ((d.km_location - 1157) / 16) * 100;
           const markerColor = isCritical ? '#ef4444' : (d.defect_type.includes('🟢') ? '#22c55e' : '#f59e0b');
-          const dot = `<div title="Km ${d.km_location} - ${d.defect_type}" style="position:absolute; left:${percent}%; top:-3px; width:12px; height:12px; background:${markerColor}; border-radius:50%; border:2px solid #0f172a;"></div>`;
+          const dot = `<div style="position:absolute; left:${percent}%; top:-3px; width:12px; height:12px; background:${markerColor}; border-radius:50%; border:2px solid #0f172a;"></div>`;
           if (d.line_name.includes('UP')) upTrack.innerHTML += dot;
           if (d.line_name.includes('DN')) dnTrack.innerHTML += dot;
         }
