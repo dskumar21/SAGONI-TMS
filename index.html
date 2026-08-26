@@ -32,10 +32,11 @@
     .btn-red { background: #dc2626; }
     .btn-amber { background: #d97706; }
 
-    /* Touch Friendly Selector Buttons */
+    /* Touch Selector Grid */
     .line-selector-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 4px; }
-    .line-btn { background: #0f172a; border: 2px solid #334155; color: #cbd5e1; padding: 8px 4px; border-radius: 8px; font-size: 11px; font-weight: 700; text-align: center; cursor: pointer; transition: 0.2s; user-select: none; }
+    .line-btn { background: #0f172a; border: 2px solid #334155; color: #cbd5e1; padding: 10px 4px; border-radius: 8px; font-size: 11px; font-weight: 700; text-align: center; cursor: pointer; transition: 0.2s; user-select: none; }
     .line-btn.selected { background: #0369a1; border-color: #38bdf8; color: white; }
+    .line-btn.locked { opacity: 0.7; pointer-events: none; }
 
     /* Action Grids */
     .sos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
@@ -58,7 +59,7 @@
     #sirenAlarmBox { display: none; background: #7f1d1d; border: 3px solid #ef4444; border-radius: 12px; padding: 18px 12px; text-align: center; margin-bottom: 14px; animation: pulseAlert 0.8s infinite alternate; }
     @keyframes pulseAlert { 0% { box-shadow: 0 0 10px #ef4444; transform: scale(0.99); } 100% { box-shadow: 0 0 25px #dc2626; transform: scale(1.01); background: #991b1b; } }
 
-    /* Sticky Bottom Floating Stop Button */
+    /* Sticky Bottom Floating Stop Bar */
     #floatingStopBar { display: none; position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 480px; z-index: 10000; }
     #floatingStopBar button { background: #ffffff; color: #b91c1c; border: 3px solid #ef4444; border-radius: 50px; font-size: 16px; font-weight: 900; padding: 14px; box-shadow: 0 10px 25px rgba(0,0,0,0.6); width: 100%; cursor: pointer; }
 
@@ -72,15 +73,11 @@
     th { background: #0f172a; color: #38bdf8; padding: 8px 10px; position: sticky; top: 0; border-bottom: 1px solid #334155; white-space: nowrap; }
     td { padding: 8px 10px; border-bottom: 1px solid #1e293b; color: #cbd5e1; }
     tr:nth-child(even) { background-color: rgba(15, 23, 42, 0.4); }
-    
-    .chk-group { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 6px; }
-    .chk-label { font-size: 12px; color: white; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #0f172a; padding: 6px 8px; border-radius: 6px; border: 1px solid #334155; }
-    .chk-label input { width: auto; }
   </style>
 </head>
 <body>
 
-  <!-- FLOATING ACKNOWLEDGE & STOP BUTTON (ALWAYS ACCESSIBLE) -->
+  <!-- FLOATING ACKNOWLEDGE & STOP BUTTON -->
   <div id="floatingStopBar">
     <button onclick="stopAlarmSound()">🔕 अलार्म बंद करें (Acknowledge & Stop)</button>
   </div>
@@ -105,11 +102,11 @@
     <!-- HOME SECTION -->
     <div id="homeSection">
 
-      <!-- 1. EARLY TRAIN WARNING SYSTEM (VOICE ENABLED) -->
+      <!-- 1. EARLY TRAIN WARNING SYSTEM (LOCKED ROUTE + CLEAR VOICE) -->
       <div class="card card-train-safety">
         <div style="text-align: center;">
           <strong style="color: #38bdf8; font-size: 15px;">🚆 ट्रैक सुरक्षा: लाइव ट्रेन चेतावनी प्रणाली</strong>
-          <p style="font-size: 11px; color: #94a3b8; margin-top: 2px;">गाड़ी छूटने और ब्लॉक की बोलकर सूचना देने वाला मॉड्यूल:</p>
+          <p style="font-size: 11px; color: #94a3b8; margin-top: 2px;">रूट लॉक और साफ़ हिंदी वॉयस अनाउंसमेंट:</p>
         </div>
 
         <div class="train-grid">
@@ -120,8 +117,8 @@
           </div>
           <div class="train-item" onclick="openTrainMode('receiver')">
             <span style="font-size: 24px; display:block; margin-bottom:4px;">📡</span>
-            <strong style="color:#4ade80; font-size:12px;">गाड़ी अलर्ट सुनें (बोलकर)</strong><br>
-            <span style="color:#94a3b8; font-size:10px;">(Receiver / Tracker)</span>
+            <strong style="color:#4ade80; font-size:12px;">गाड़ी अलर्ट सुनें</strong><br>
+            <span style="color:#94a3b8; font-size:10px;">(Receiver / Locked)</span>
           </div>
         </div>
 
@@ -161,29 +158,44 @@
           </div>
         </div>
 
-        <!-- RECEIVER FORM -->
+        <!-- RECEIVER FORM (WITH ROUTE LOCKING MECHANISM) -->
         <div id="trainReceiverPanel" style="display: none; margin-top: 14px; border-top: 1px dashed #0284c7; padding-top: 12px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <strong style="color:#4ade80; font-size:13px;">📡 लाइव अलर्ट रिसीवर (Voice & Siren Monitor)</strong>
+            <strong style="color:#4ade80; font-size:13px;">📡 लाइव अलर्ट रिसीवर (फिक्स रूट लॉक)</strong>
             <button onclick="closeTrainPanels()" style="background:none; border:none; color:#f87171; cursor:pointer;">✖</button>
           </div>
+          
           <div class="form-group">
             <label>आपकी ID (Trackman / Mate ID)</label>
             <input type="text" id="rcvEmpId" placeholder="उदा: MATE01, KEY01">
           </div>
+
+          <!-- Touch Toggle Pills with Safe Lock -->
           <div class="form-group">
-            <label>किन-किन लाइनों के अलर्ट सुनने हैं? (Checkboxes)</label>
-            <div class="chk-group">
-              <label class="chk-label"><input type="checkbox" id="chkUP" checked> UP Line (अप लाइन)</label>
-              <label class="chk-label"><input type="checkbox" id="chkDN" checked> DN Line (डाउन लाइन)</label>
-              <label class="chk-label"><input type="checkbox" id="chk3rd"> 3rd Line (तीसरी लाइन)</label>
-              <label class="chk-label"><input type="checkbox" id="chkUPLoop"> UP Loop (अप लूप)</label>
-              <label class="chk-label"><input type="checkbox" id="chkDNLoop"> DN Loop (डाउन लूप)</label>
-              <label class="chk-label"><input type="checkbox" id="chkYard"> Sagoni Yard</label>
+            <label>किन-किन लाइनों पर आप काम कर रहे हैं? (टच करके सेलेक्ट करें):</label>
+            <div class="line-selector-grid" id="rcvLineGrid">
+              <div class="line-btn selected" id="rcvUP" onclick="toggleReceiverLine('rcvUP', 'अप लाइन')">UP Line</div>
+              <div class="line-btn selected" id="rcvDN" onclick="toggleReceiverLine('rcvDN', 'डाउन लाइन')">DN Line</div>
+              <div class="line-btn" id="rcv3rd" onclick="toggleReceiverLine('rcv3rd', 'तीसरी लाइन')">3rd Line</div>
+              <div class="line-btn" id="rcvUPLoop" onclick="toggleReceiverLine('rcvUPLoop', 'अप लूप लाइन')">UP Loop</div>
+              <div class="line-btn" id="rcvDNLoop" onclick="toggleReceiverLine('rcvDNLoop', 'डाउन लूप लाइन')">DN Loop</div>
+              <div class="line-btn" id="rcvYard" onclick="toggleReceiverLine('rcvYard', 'सगोनी यार्ड')">Yard</div>
             </div>
           </div>
-          <button onclick="activateAudioMonitoring()" id="btnListenLive" class="btn btn-green">🚨 वॉयस & सायरन मॉनिटरिंग चालू करें</button>
-          <div id="rcvStatus" style="font-size:11px; color:#94a3b8; text-align:center; margin-top:6px;">स्टेटस: बंद है</div>
+
+          <!-- Action Buttons (Lock & Monitor) -->
+          <div id="receiverControls">
+            <button onclick="lockAndStartMonitoring()" id="btnLockMonitor" class="btn btn-green" style="font-size:14px; font-weight:800;">
+              🔒 लाइन लॉक करें & मॉनिटरिंग चालू करें
+            </button>
+            <div id="rcvStatus" style="font-size:11px; color:#94a3b8; text-align:center; margin-top:6px;">स्टेटस: लाइन चुनकर लॉक करें</div>
+          </div>
+
+          <div id="receiverUnlockBar" style="display: none; margin-top: 8px;">
+            <button onclick="unlockReceiverSettings()" class="btn" style="background:#475569; font-size:12px;">
+              🔓 अनलॉक करें / लाइन सेलेक्शन बदलें
+            </button>
+          </div>
         </div>
       </div>
 
@@ -360,6 +372,10 @@
     let alarmInterval = null;
     let voiceInterval = null;
     let autoStopTimer = null;
+    let realtimeChannel = null;
+
+    // Receiver Selected Lines Set
+    const subscribedLines = new Set(['अप लाइन', 'डाउन लाइन']);
 
     const STAFF_DATA = {
       "JE01": { name: "JE (P-Way) Sagoni", role: "je", beat: "Section 1157 - 1173" },
@@ -379,7 +395,6 @@
       }
     }
 
-    // SIREN SOUND VOLUME (REDUCED TO 0.08 SO VOICE REMAINS 100% CLEAR)
     function playTone(freq, type, duration) {
       try {
         initAudio();
@@ -387,7 +402,7 @@
         const gain = audioContext.createGain();
         osc.type = type;
         osc.frequency.setValueAtTime(freq, audioContext.currentTime);
-        gain.gain.setValueAtTime(0.08, audioContext.currentTime); // Soft background tone
+        gain.gain.setValueAtTime(0.06, audioContext.currentTime); // Soft background beep
         osc.connect(gain);
         gain.connect(audioContext.destination);
         osc.start();
@@ -395,16 +410,22 @@
       } catch (e) { console.log(e); }
     }
 
-    // --- HINDI VOICE SYNTHESIZER (MAXIMUM LOUD & CLEAR) ---
+    // --- ENHANCED CLEAR HINDI VOICE ENGINE ---
     function speakHindiAlert(text) {
       try {
         if ('speechSynthesis' in window) {
-          window.speechSynthesis.cancel(); // Stop overlap
+          window.speechSynthesis.cancel();
           const utterance = new SpeechSynthesisUtterance(text);
           utterance.lang = 'hi-IN';
-          utterance.volume = 1.0; // 100% Full volume
-          utterance.rate = 0.92;   // Clear speaking pace
-          utterance.pitch = 1.05;
+          utterance.volume = 1.0;  // Full Volume
+          utterance.rate = 0.88;    // Calm, steady, authoritative pace
+          utterance.pitch = 0.90;   // Deep male tone for clear railway voice
+
+          // Pick natural hindi voice if device provides one
+          const voices = window.speechSynthesis.getVoices();
+          const hiVoice = voices.find(v => v.lang.includes('hi') || v.lang.includes('HI'));
+          if (hiVoice) utterance.voice = hiVoice;
+
           window.speechSynthesis.speak(utterance);
         }
       } catch (e) { console.log("Voice error:", e); }
@@ -414,7 +435,6 @@
       stopAlarmSound();
       initAudio();
 
-      // Show both Top Alert Box and Sticky Bottom Stop Bar
       document.getElementById('sirenAlarmBox').style.display = 'block';
       document.getElementById('floatingStopBar').style.display = 'block';
 
@@ -422,34 +442,33 @@
         ? `सावधान! ${lineName} पर गाड़ी छोड़ दी गई है। तुरंत ट्रैक छोड़ें!`
         : `सावधान! ${lineName} पर गाड़ी ब्लॉक हो चुकी है।`;
 
-      // 1. First Voice Announcement immediately
+      // 1. Immediate Voice Alert
       speakHindiAlert(voiceText);
 
-      // 2. Audio Tone / Siren in gentle background loop
+      // 2. Gentle Background Tone
       if (alertType === 'DISPATCHED') {
         let toggle = false;
         alarmInterval = setInterval(() => {
-          playTone(toggle ? 900 : 650, 'sawtooth', 0.20);
+          playTone(toggle ? 900 : 650, 'sawtooth', 0.18);
           toggle = !toggle;
-        }, 300);
+        }, 320);
       } else {
         alarmInterval = setInterval(() => {
-          playTone(400, 'square', 0.30);
+          playTone(400, 'square', 0.25);
         }, 700);
       }
 
-      // 3. Repeat Voice Announcement every 6 seconds
+      // 3. Repeat Voice Every 6 Seconds
       voiceInterval = setInterval(() => {
         speakHindiAlert(voiceText);
       }, 6000);
 
-      // Auto stop after 35 seconds
+      // Auto stop after 40 seconds
       autoStopTimer = setTimeout(() => {
         stopAlarmSound();
-      }, 35000);
+      }, 40000);
     }
 
-    // --- INSTANT ACKNOWLEDGE & STOP ALL SOUNDS ---
     function stopAlarmSound() {
       if (alarmInterval) { clearInterval(alarmInterval); alarmInterval = null; }
       if (voiceInterval) { clearInterval(voiceInterval); voiceInterval = null; }
@@ -458,6 +477,71 @@
       
       document.getElementById('sirenAlarmBox').style.display = 'none';
       document.getElementById('floatingStopBar').style.display = 'none';
+    }
+
+    // --- RECEIVER LINE TOGGLE & LOCK LOGIC ---
+    function toggleReceiverLine(btnId, lineName) {
+      const btn = document.getElementById(btnId);
+      if (subscribedLines.has(lineName)) {
+        if (subscribedLines.size === 1) {
+          alert('कम से कम एक लाइन चुनना आवश्यक है!');
+          return;
+        }
+        subscribedLines.delete(lineName);
+        btn.classList.remove('selected');
+      } else {
+        subscribedLines.add(lineName);
+        btn.classList.add('selected');
+      }
+    }
+
+    // 🔒 LOCK SETTINGS & START REALTIME MONITORING
+    function lockAndStartMonitoring() {
+      initAudio();
+
+      if (subscribedLines.size === 0) {
+        alert('कृपया कम से कम एक लाइन चुनें!');
+        return;
+      }
+
+      // Freeze Line Buttons
+      document.querySelectorAll('#rcvLineGrid .line-btn').forEach(btn => btn.classList.add('locked'));
+      
+      const linesArray = Array.from(subscribedLines);
+      speakHindiAlert(`${linesArray.join(' और ')} का रूट लॉक कर दिया गया है। मॉनिटरिंग चालू है।`);
+
+      document.getElementById('receiverControls').style.display = 'none';
+      document.getElementById('receiverUnlockBar').style.display = 'block';
+
+      // Start Supabase Realtime Listener
+      if (!realtimeChannel) {
+        realtimeChannel = db.channel('public:train_live_alerts')
+          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'train_live_alerts' }, payload => {
+            const alertData = payload.new;
+            if (subscribedLines.has(alertData.line_name)) {
+              const isDispatched = alertData.alert_type === 'DISPATCHED';
+              document.getElementById('sirenAlertTitle').innerText = isDispatched 
+                ? `🚨 ${alertData.line_name}: गाड़ी छोड़ दी गई है!` 
+                : `⛔ ${alertData.line_name}: गाड़ी ब्लॉक हो चुकी है!`;
+              document.getElementById('sirenAlertDesc').innerText = `ट्रेन सं.: ${alertData.train_no} | प्रेषक: ${alertData.sender_id}`;
+              document.getElementById('sirenAlarmBox').scrollIntoView({ behavior: 'smooth' });
+
+              triggerSirenSound(alertData.alert_type, alertData.line_name, alertData.train_no);
+            }
+          })
+          .subscribe();
+      }
+
+      showToast(`🔒 ${linesArray.join(', ')} लॉक हो गई है!`);
+    }
+
+    // 🔓 UNLOCK SETTINGS TO CHANGE LINES
+    function unlockReceiverSettings() {
+      document.querySelectorAll('#rcvLineGrid .line-btn').forEach(btn => btn.classList.remove('locked'));
+      document.getElementById('receiverControls').style.display = 'block';
+      document.getElementById('receiverUnlockBar').style.display = 'none';
+      document.getElementById('rcvStatus').innerText = "स्टेटस: लाइनें अनलॉक हैं। बदलने के बाद दोबारा लॉक करें।";
+      document.getElementById('rcvStatus').style.color = "#f59e0b";
     }
 
     // --- SENDER LINE SELECTOR ---
@@ -485,7 +569,6 @@
       document.getElementById('trainReceiverPanel').style.display = 'none';
     }
 
-    // --- SENDER: SEND TRAIN ALERT ---
     async function sendLiveTrainAlert(alertType) {
       const senderId = document.getElementById('sndEmpId').value.trim().toUpperCase() || 'P-WAY_USER';
       const line = document.getElementById('selectedSenderLine').value;
@@ -503,42 +586,8 @@
       if (error) {
         alert('त्रुटि: ' + error.message);
       } else {
-        showToast(`✅ ${line} पर ${alertType === 'DISPATCHED' ? 'गाड़ी छूटने' : 'ब्लॉक'} का लाइव वॉयस अलर्ट प्रसारित किया गया!`);
+        showToast(`✅ ${line} पर ${alertType === 'DISPATCHED' ? 'गाड़ी छूटने' : 'ब्लॉक'} का अलर्ट प्रसारित किया गया!`);
       }
-    }
-
-    // --- RECEIVER: ACTIVATE REALTIME AUDIO LISTENER ---
-    function activateAudioMonitoring() {
-      initAudio();
-      speakHindiAlert("अलर्ट मॉनिटरिंग चालू हो चुकी है");
-
-      document.getElementById('btnListenLive').innerText = "🟢 मॉनिटरिंग चालू है (Live Active)";
-      document.getElementById('rcvStatus').innerText = "✅ लाइव कनेक्शन सक्रिय: गाड़ी छूटने या ब्लॉक होने पर बोलकर बताएगा!";
-      document.getElementById('rcvStatus').style.color = "#4ade80";
-
-      db.channel('public:train_live_alerts')
-        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'train_live_alerts' }, payload => {
-          const alertData = payload.new;
-          const selectedLines = [];
-          if (document.getElementById('chkUP').checked) selectedLines.push('अप लाइन');
-          if (document.getElementById('chkDN').checked) selectedLines.push('डाउन लाइन');
-          if (document.getElementById('chk3rd').checked) selectedLines.push('तीसरी लाइन');
-          if (document.getElementById('chkUPLoop').checked) selectedLines.push('अप लूप लाइन');
-          if (document.getElementById('chkDNLoop').checked) selectedLines.push('डाउन लूप लाइन');
-          if (document.getElementById('chkYard').checked) selectedLines.push('सगोनी यार्ड');
-
-          if (selectedLines.includes(alertData.line_name)) {
-            const isDispatched = alertData.alert_type === 'DISPATCHED';
-            document.getElementById('sirenAlertTitle').innerText = isDispatched 
-              ? `🚨 ${alertData.line_name}: गाड़ी छोड़ दी गई है!` 
-              : `⛔ ${alertData.line_name}: गाड़ी ब्लॉक हो चुकी है!`;
-            document.getElementById('sirenAlertDesc').innerText = `ट्रेन सं.: ${alertData.train_no} | प्रेषक: ${alertData.sender_id}`;
-            document.getElementById('sirenAlarmBox').scrollIntoView({ behavior: 'smooth' });
-
-            triggerSirenSound(alertData.alert_type, alertData.line_name, alertData.train_no);
-          }
-        })
-        .subscribe();
     }
 
     // --- STANDARD LOGIN & APP FUNCTIONS ---
