@@ -11,7 +11,7 @@
     body { background-color: #0f172a; color: #f8fafc; min-height: 100vh; padding: 12px; }
     .container { max-width: 720px; margin: 0 auto; }
     
-    .header { text-align: center; padding: 14px 10px; background: #1e293b; border-radius: 12px; border: 1px solid #334155; margin-bottom: 14px; }
+    .header { text-align: center; padding: 14px 10px; background: #1e293b; border-radius: 12px; border: 1px solid #334155; margin-bottom: 12px; }
     .header h1 { font-size: 18px; font-weight: 800; color: #38bdf8; }
     .header p { font-size: 11px; color: #94a3b8; margin-top: 3px; }
     .sec-badge { display: inline-block; background: #0369a1; color: #e0f2fe; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; margin-top: 5px; }
@@ -27,6 +27,14 @@
     .btn-blue { background: #2563eb; }
     .btn-green { background: #16a34a; }
     .btn-amber { background: #d97706; }
+    .btn-red { background: #dc2626; }
+
+    /* SOS / Quick Action Grid */
+    .sos-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
+    .sos-btn { background: #1e293b; border: 1px solid #ef4444; border-radius: 10px; padding: 10px 4px; text-align: center; cursor: pointer; transition: 0.2s; color: white; text-decoration: none; }
+    .sos-btn:hover { background: #7f1d1d; }
+    .sos-icon { font-size: 22px; display: block; margin-bottom: 4px; }
+    .sos-txt { font-size: 10px; font-weight: 700; color: #fecaca; }
 
     .user-bar { background: #0f172a; border: 1px solid #334155; padding: 10px 12px; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
     .user-info { font-size: 12px; }
@@ -35,7 +43,7 @@
     .toast { display: none; background: #065f46; border: 1px solid #34d399; color: #ecfdf5; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 600; text-align: center; margin-bottom: 12px; }
     .hidden { display: none; }
     
-    /* JE Navigation Tabs */
+    /* Tabs */
     .tab-bar { display: flex; gap: 6px; margin-bottom: 12px; background: #0f172a; padding: 4px; border-radius: 8px; border: 1px solid #334155; }
     .tab-btn { flex: 1; padding: 8px 4px; border: none; background: transparent; color: #94a3b8; font-size: 11px; font-weight: 700; border-radius: 6px; cursor: pointer; text-align: center; transition: 0.2s; }
     .tab-btn.active { background: #2563eb; color: white; }
@@ -52,13 +60,9 @@
     .tag-green { background: #14532d; color: #bbf7d0; }
     .tag-yellow { background: #78350f; color: #fef08a; }
 
-    /* Health & Metric Badges */
-    .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
-    .kpi-card { background: #0f172a; border: 1px solid #334155; padding: 10px; border-radius: 8px; text-align: center; }
-    .kpi-val { font-size: 20px; font-weight: 800; margin-top: 4px; }
-    .kpi-lbl { font-size: 10px; color: #94a3b8; }
-    
-    .vuln-item { background: #0f172a; border-left: 4px solid #ef4444; padding: 10px; border-radius: 6px; margin-bottom: 8px; font-size: 12px; }
+    /* Modal (Popup) */
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 12px; }
+    .modal-box { background: #1e293b; border: 2px solid #ef4444; border-radius: 12px; padding: 18px; max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto; }
   </style>
 </head>
 <body>
@@ -67,7 +71,27 @@
     <div class="header">
       <h1>सगोनी पी-वे ट्रैक मैनेजमेंट सिस्टम</h1>
       <span class="sec-badge">Km 1157.000 से 1173.000 (16 Km)</span>
-      <p>Intelligent Track Health & Defect Analysis Platform</p>
+      <p>Instant Emergency & Operations Command Center</p>
+    </div>
+
+    <!-- QUICK SOS / SPECIAL INCIDENT ICONS (Always Visible on Top) -->
+    <div class="sos-bar">
+      <div class="sos-btn" onclick="openEmergencyModal('🐮 CRO (Cattle Run Over)')">
+        <span class="sos-icon">🐮</span>
+        <span class="sos-txt">C.R.O.</span>
+      </div>
+      <div class="sos-btn" onclick="openEmergencyModal('🔥 Hot Axle / Brake Binding')">
+        <span class="sos-icon">🔥</span>
+        <span class="sos-txt">Hot Axle</span>
+      </div>
+      <div class="sos-btn" onclick="openEmergencyModal('🛑 Train Stalled / Failure')">
+        <span class="sos-icon">🛑</span>
+        <span class="sos-txt">Train Fail</span>
+      </div>
+      <div class="sos-btn" onclick="openEmergencyModal('⚠️ Sabotage / Track Obstruction')">
+        <span class="sos-icon">⚠️</span>
+        <span class="sos-txt">Sabotage</span>
+      </div>
     </div>
 
     <div id="toast" class="toast"></div>
@@ -76,8 +100,8 @@
     <div id="loginScreen" class="card">
       <div style="text-align: center; margin-bottom: 16px;">
         <span style="font-size: 32px;">🔐</span>
-        <h2 style="font-size: 16px; margin-top: 6px;">स्टाफ लॉगिन (Staff Access)</h2>
-        <p style="font-size: 12px; color: #94a3b8;">अपना Employee ID / PF No. दर्ज करें</p>
+        <h2 style="font-size: 16px; margin-top: 6px;">नियमित स्टाफ लॉगिन (Staff Access)</h2>
+        <p style="font-size: 12px; color: #94a3b8;">दैनिक कार्य / डायरी भरने हेतु टोकन दर्ज करें</p>
       </div>
       
       <div class="form-group">
@@ -157,50 +181,26 @@
         </form>
       </div>
 
-      <!-- JE MASTER DASHBOARD (ORGANIZED WITH ANALYTICS) -->
+      <!-- JE MASTER DASHBOARD -->
       <div id="jeForm" class="hidden">
         
-        <!-- Tab Bar -->
         <div class="tab-bar">
-          <button class="tab-btn active" onclick="switchJETab('tabHealth')">🧠 ट्रैक हेल्थ & अलर्ट्स</button>
+          <button class="tab-btn active" onclick="switchJETab('tabEmergency')">🚨 आपातकालीन अलर्ट्स</button>
           <button class="tab-btn" onclick="switchJETab('tabMate')">🛠️ मेट डायरी</button>
           <button class="tab-btn" onclick="switchJETab('tabDefects')">⚠️ डिफेक्ट्स</button>
           <button class="tab-btn" onclick="switchJETab('tabMap')">🗺️ 2D स्केल</button>
         </div>
 
-        <!-- TAB 0: TRACK INTELLIGENCE & HEALTH INDEX -->
-        <div id="tabHealth" class="card">
-          <!-- Top KPI Numbers -->
-          <div class="kpi-grid">
-            <div class="kpi-card">
-              <div class="kpi-lbl">सेक्शन हेल्थ इंडेक्स</div>
-              <div id="kpiHealth" class="kpi-val" style="color:#22c55e;">100%</div>
-            </div>
-            <div class="kpi-card">
-              <div class="kpi-lbl">रिपीटर स्पॉट्स (Repeater)</div>
-              <div id="kpiRepeaters" class="kpi-val" style="color:#f59e0b;">0</div>
-            </div>
-            <div class="kpi-card">
-              <div class="kpi-lbl">क्रिटिकल डिफेक्ट्स</div>
-              <div id="kpiCritical" class="kpi-val" style="color:#ef4444;">0</div>
-            </div>
+        <!-- TAB 0: EMERGENCY INCIDENTS (CRO, HOT AXLE ETC.) -->
+        <div id="tabEmergency" class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong style="color:#ef4444; font-size:14px;">🚨 आपातकालीन & स्पेशल घटना रजिस्टर</strong>
+            <button onclick="loadEmergencies()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
           </div>
-
-          <!-- Chronic Repeater Locations Alert -->
-          <div style="margin-top: 14px;">
-            <strong style="color:#f59e0b; font-size:13px;">🔁 बार-बार ध्यान माँगने वाले स्थान (Repeater Attention Spots)</strong>
-            <p style="font-size:10px; color:#94a3b8; margin-bottom:8px;">जहाँ हाल ही में कई बार स्लैक पिकिंग या फिटिंग अटेंड की गई है:</p>
-            <div id="repeaterList" style="font-size:12px;">विश्लेषण हो रहा है...</div>
-          </div>
-
-          <!-- Vulnerable Spots Alert -->
-          <div style="margin-top: 14px;">
-            <strong style="color:#ef4444; font-size:13px;">🚨 संवेदनशील लोकेशन्स (Immediate Attention Required)</strong>
-            <div id="vulnList" style="margin-top:6px; font-size:12px;">कोई गंभीर खतरा दर्ज नहीं है।</div>
-          </div>
+          <div id="emergencyLiveList">डेटा लोड हो रहा है...</div>
         </div>
 
-        <!-- TAB 1: GANG WORK REGISTER -->
+        <!-- TAB 1: GANG WORK -->
         <div id="tabMate" class="card hidden">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <strong style="color:#4ade80; font-size:14px;">🛠️ गैंगवार दैनिक कार्य रजिस्टर</strong>
@@ -209,23 +209,14 @@
           <div class="table-responsive">
             <table>
               <thead>
-                <tr>
-                  <th>समय</th>
-                  <th>गैंग / मुकद्दम</th>
-                  <th>लाइन</th>
-                  <th>Km Range</th>
-                  <th>कार्य प्रकार</th>
-                  <th>प्रगति (Output)</th>
-                </tr>
+                <tr><th>समय</th><th>गैंग/मुकद्दम</th><th>लाइन</th><th>Km Range</th><th>कार्य प्रकार</th><th>प्रगति</th></tr>
               </thead>
-              <tbody id="gangWorkTableBody">
-                <tr><td colspan="6" style="text-align:center;">डेटा लोड हो रहा है...</td></tr>
-              </tbody>
+              <tbody id="gangWorkTableBody"><tr><td colspan="6" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
             </table>
           </div>
         </div>
 
-        <!-- TAB 2: DEFECTS REGISTER -->
+        <!-- TAB 2: DEFECTS -->
         <div id="tabDefects" class="card hidden">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <strong style="color:#f87171; font-size:14px;">⚠️ ट्रैक डिफेक्ट & अलर्ट रजिस्टर</strong>
@@ -234,46 +225,81 @@
           <div class="table-responsive">
             <table>
               <thead>
-                <tr>
-                  <th>समय</th>
-                  <th>लाइन</th>
-                  <th>Km</th>
-                  <th>खंभा (Pole)</th>
-                  <th>स्थिति / डिफेक्ट</th>
-                  <th>रिमार्क्स</th>
-                  <th>रिपोर्टकर्ता</th>
-                </tr>
+                <tr><th>समय</th><th>लाइन</th><th>Km</th><th>खंभा</th><th>स्थिति</th><th>रिमार्क्स</th><th>रिपोर्टकर्ता</th></tr>
               </thead>
-              <tbody id="defectsTableBody">
-                <tr><td colspan="7" style="text-align:center;">डेटा लोड हो रहा है...</td></tr>
-              </tbody>
+              <tbody id="defectsTableBody"><tr><td colspan="7" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
             </table>
           </div>
         </div>
 
-        <!-- TAB 3: 2D LINEAR VISUALIZER -->
+        <!-- TAB 3: 2D MAP -->
         <div id="tabMap" class="card hidden">
           <strong style="color:#38bdf8; font-size:14px; display:block; margin-bottom:6px;">🗺️ 16 Km लीनियर ट्रैक मॉनिटर (सगोनी 1157 - 1173)</strong>
-          <p style="font-size:11px; color:#94a3b8; margin-bottom:14px;">सेक्शन की पटरियों पर लाइव डिफेक्ट लोकेशन</p>
-
           <div style="background:#0f172a; padding:16px 12px; border-radius:8px; border:1px solid #334155;">
             <div style="display:flex; justify-content:space-between; font-size:10px; color:#64748b; margin-bottom:4px;">
-              <span>Km 1157.0</span>
-              <span>Km 1165.0 (Sagoni Yard)</span>
-              <span>Km 1173.0</span>
+              <span>Km 1157.0</span><span>Km 1165.0 (Sagoni Yard)</span><span>Km 1173.0</span>
             </div>
-            <!-- UP Line Bar -->
             <div style="font-size:11px; color:#cbd5e1; margin-bottom:3px;">UP Line:</div>
             <div id="upLineTrack" style="height:8px; background:#1e293b; border-radius:4px; position:relative; margin-bottom:14px; border:1px solid #475569;"></div>
-
-            <!-- DN Line Bar -->
             <div style="font-size:11px; color:#cbd5e1; margin-bottom:3px;">DN Line:</div>
             <div id="dnLineTrack" style="height:8px; background:#1e293b; border-radius:4px; position:relative; border:1px solid #475569;"></div>
           </div>
         </div>
 
       </div>
+    </div>
+  </div>
 
+  <!-- 3. EMERGENCY INCIDENT POPUP MODAL (Universal Access) -->
+  <div id="emergencyModal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3 id="modalTitle" style="color:#ef4444; font-size:15px;">🚨 आपातकालीन रिपोर्टिंग</h3>
+        <button onclick="closeEmergencyModal()" style="background:none; border:none; color:#94a3b8; font-size:20px; cursor:pointer;">✖</button>
+      </div>
+
+      <form onsubmit="submitEmergencyIncident(event)">
+        <input type="hidden" id="emIncidentType">
+        
+        <div class="form-group">
+          <label>आपकी Employee ID / टोकन (पहचान हेतु)</label>
+          <input type="text" id="emEmpId" placeholder="उदा: MATE01, KEY01, JE01 या नाम" required>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label>लाइन (Line)</label>
+            <select id="emLine"><option>UP Line</option><option>DN Line</option><option>3rd Line</option><option>Sagoni Yard</option></select>
+          </div>
+          <div class="form-group">
+            <label>गाड़ी संख्या (Train No. यदि ज्ञात हो)</label>
+            <input type="text" id="emTrain" placeholder="उदा: 12181 / GOODS">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Km Location</label>
+            <input type="number" id="emKm" step="0.001" min="1157" max="1173" placeholder="1164.200" required>
+          </div>
+          <div class="form-group">
+            <label>खंभा नंबर (Pole No.)</label>
+            <input type="text" id="emPole" placeholder="1164/18" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>घटना का संक्षिप्त विवरण (Remarks)</label>
+          <textarea id="emRemarks" rows="2" placeholder="मौके की स्थिति, कैजुअल्टी, ट्रेन रुकी है या नहीं..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>📸 मौके की फोटो (Camera / Gallery)</label>
+          <input type="file" id="emPhoto" accept="image/*" capture="environment" style="padding:6px;">
+        </div>
+
+        <button type="submit" id="emBtn" class="btn btn-red" style="margin-top:6px;">🚨 तुरंत इमरजेंसी अलर्ट भेजें</button>
+      </form>
     </div>
   </div>
 
@@ -313,7 +339,7 @@
       if (activeUser.role === 'keyman') document.getElementById('keymanForm').classList.remove('hidden');
       if (activeUser.role === 'je') {
         document.getElementById('jeForm').classList.remove('hidden');
-        runTrackIntelligenceEngine();
+        loadEmergencies();
         loadGangWork();
         loadDefects();
       }
@@ -335,11 +361,103 @@
     function switchJETab(tabId) {
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       event.target.classList.add('active');
-      ['tabHealth', 'tabMate', 'tabDefects', 'tabMap'].forEach(t => document.getElementById(t).classList.add('hidden'));
+      ['tabEmergency', 'tabMate', 'tabDefects', 'tabMap'].forEach(t => document.getElementById(t).classList.add('hidden'));
       document.getElementById(tabId).classList.remove('hidden');
     }
 
-    // 1. SUBMIT MATE WORK
+    // --- MODAL CONTROLS ---
+    function openEmergencyModal(type) {
+      document.getElementById('modalTitle').innerText = type;
+      document.getElementById('emIncidentType').value = type;
+      if (activeUser) document.getElementById('emEmpId').value = activeUser.emp_id;
+      document.getElementById('emergencyModal').classList.remove('hidden');
+    }
+
+    function closeEmergencyModal() {
+      document.getElementById('emergencyModal').classList.add('hidden');
+    }
+
+    // --- SUBMIT EMERGENCY INCIDENT (WITH PHOTO COMPRESSION) ---
+    async function submitEmergencyIncident(e) {
+      e.preventDefault();
+      const btn = document.getElementById('emBtn');
+      btn.innerText = "अलर्ट भेजा जा रहा है...";
+      btn.disabled = true;
+
+      let photoBase64 = null;
+      const fileInput = document.getElementById('emPhoto');
+      if (fileInput.files.length > 0) {
+        photoBase64 = await readFileAsBase64(fileInput.files[0]);
+      }
+
+      const empId = document.getElementById('emEmpId').value.trim().toUpperCase();
+      const reporterName = STAFF_DATA[empId] ? STAFF_DATA[empId].name : empId;
+
+      const payload = {
+        reporter_emp_id: empId,
+        reporter_name: reporterName,
+        incident_type: document.getElementById('emIncidentType').value,
+        line_name: document.getElementById('emLine').value,
+        km_location: parseFloat(document.getElementById('emKm').value),
+        pole_no: document.getElementById('emPole').value,
+        train_no: document.getElementById('emTrain').value || 'N/A',
+        remarks: document.getElementById('emRemarks').value,
+        photo_url: photoBase64
+      };
+
+      const { error } = await db.from('emergency_incidents').insert([payload]);
+      btn.innerText = "🚨 तुरंत इमरजेंसी अलर्ट भेजें";
+      btn.disabled = false;
+
+      if (error) {
+        alert('एरर: ' + error.message);
+      } else {
+        closeEmergencyModal();
+        showToast('🚨 आपातकालीन अलर्ट सीधे कंट्रोल/JE सिस्टम को भेज दिया गया!');
+        e.target.reset();
+        if (activeUser && activeUser.role === 'je') loadEmergencies();
+      }
+    }
+
+    function readFileAsBase64(file) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // --- LOAD EMERGENCIES ON JE DASHBOARD ---
+    async function loadEmergencies() {
+      const container = document.getElementById('emergencyLiveList');
+      container.innerHTML = "आपातकालीन अलर्ट लोड हो रहे हैं...";
+
+      const { data, error } = await db.from('emergency_incidents').select('*').order('created_at', { ascending: false }).limit(10);
+      if (error || !data || data.length === 0) {
+        container.innerHTML = '<div style="color:#22c55e; padding:8px; background:#0f172a; border-radius:6px;">🟢 कोई सक्रिय आपातकालीन अलर्ट नहीं है। ट्रैक सामान्य है।</div>';
+        return;
+      }
+
+      let html = '';
+      data.forEach(inc => {
+        const time = new Date(inc.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        html += `<div style="background:#0f172a; border-left:4px solid #ef4444; padding:10px; border-radius:8px; margin-bottom:8px;">
+          <div style="display:flex; justify-content:space-between;">
+            <strong style="color:#ef4444; font-size:13px;">${inc.incident_type}</strong>
+            <span style="color:#94a3b8; font-size:10px;">${time}</span>
+          </div>
+          <div style="margin-top:4px; font-size:12px;">
+            📍 <strong>${inc.line_name} @ Km ${inc.km_location}</strong> (खंभा: ${inc.pole_no})<br>
+            🚆 <strong>गाड़ी सं.:</strong> ${inc.train_no} | <strong>विवरण:</strong> <em>${inc.remarks}</em><br>
+            <span style="color:#38bdf8; font-size:11px;">रिपोर्टकर्ता: <strong>${inc.reporter_name}</strong> (${inc.reporter_emp_id})</span>
+          </div>
+          ${inc.photo_url ? `<div style="margin-top:8px;"><img src="${inc.photo_url}" style="max-width:100%; max-height:160px; border-radius:6px; border:1px solid #334155;"></div>` : ''}
+        </div>`;
+      });
+      container.innerHTML = html;
+    }
+
+    // --- 1. SUBMIT MATE WORK ---
     async function submitMateWork(e) {
       e.preventDefault();
       const btn = document.getElementById('mBtn');
@@ -369,7 +487,7 @@
       }
     }
 
-    // 2. SUBMIT KEYMAN DEFECT
+    // --- 2. SUBMIT KEYMAN DEFECT ---
     async function submitKeymanDefect(e) {
       e.preventDefault();
       const btn = document.getElementById('kBtn');
@@ -398,70 +516,7 @@
       }
     }
 
-    // --- 3. TRACK INTELLIGENCE & HEALTH ENGINE (ANALYTICS) ---
-    async function runTrackIntelligenceEngine() {
-      const [worksRes, defectsRes] = await Promise.all([
-        db.from('daily_work_logs').select('*'),
-        db.from('track_defects').select('*')
-      ]);
-
-      const works = worksRes.data || [];
-      const defects = defectsRes.data || [];
-
-      // A. Calculate Critical & Vulnerable Items
-      let criticalCount = 0;
-      let vulnListHtml = '';
-      defects.forEach(d => {
-        const isCrit = d.defect_type.includes('Fracture') || d.defect_type.includes('🔴');
-        if (isCrit) {
-          criticalCount++;
-          vulnListHtml += `<div class="vuln-item">
-            🚨 <strong>${d.line_name} @ Km ${d.km_location}</strong> (${d.pole_no})<br>
-            ⚠️ ${d.defect_type} | <em>${d.remarks || 'तत्काल ध्यान आवश्यक'}</em>
-          </div>`;
-        }
-      });
-      document.getElementById('kpiCritical').innerText = criticalCount;
-      document.getElementById('vulnList').innerHTML = vulnListHtml || '<div style="color:#22c55e;">🟢 कोई क्रिटिकल डिफेक्ट पेंडिंग नहीं है।</div>';
-
-      // B. Calculate Repeat Attention / Chronic Spots (Grouping by 200m block)
-      const locationAttentionMap = {};
-      works.forEach(w => {
-        const block = Math.floor(w.from_km * 5) / 5; // 200m block
-        const key = `${w.line_name}@${block.toFixed(3)}`;
-        locationAttentionMap[key] = (locationAttentionMap[key] || 0) + 1;
-      });
-
-      defects.forEach(d => {
-        const block = Math.floor(d.km_location * 5) / 5;
-        const key = `${d.line_name}@${block.toFixed(3)}`;
-        locationAttentionMap[key] = (locationAttentionMap[key] || 0) + 1;
-      });
-
-      let repeaterCount = 0;
-      let repeaterHtml = '';
-      for (const [key, count] of Object.entries(locationAttentionMap)) {
-        if (count >= 2) {
-          repeaterCount++;
-          const [line, km] = key.split('@');
-          repeaterHtml += `<div style="background:#0f172a; border-left:4px solid #f59e0b; padding:8px; border-radius:6px; margin-bottom:6px;">
-            🔁 <strong>${line} (लगभग Km ${km})</strong><br>
-            <span style="color:#94a3b8; font-size:11px;">इस लोकेशन पर कुल <strong>${count} बार</strong> कार्य/डिफेक्ट रिपोर्ट हुआ है (संभावित क्रॉनिक स्पॉट)।</span>
-          </div>`;
-        }
-      }
-      document.getElementById('kpiRepeaters').innerText = repeaterCount;
-      document.getElementById('repeaterList').innerHTML = repeaterHtml || '<div style="color:#94a3b8;">⚪ अभी कोई क्रॉनिक रिपीट स्पॉट नहीं मिला।</div>';
-
-      // C. Section Health Score Formula
-      let health = 100 - (criticalCount * 12) - (repeaterCount * 5);
-      if (health < 0) health = 0;
-      const healthEl = document.getElementById('kpiHealth');
-      healthEl.innerText = `${health}%`;
-      healthEl.style.color = health > 80 ? '#22c55e' : (health > 50 ? '#f59e0b' : '#ef4444');
-    }
-
-    // FETCH GANG WORK REGISTER
+    // --- LOAD GANG WORK REGISTER ---
     async function loadGangWork() {
       const tbody = document.getElementById('gangWorkTableBody');
       tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">लोड हो रहा है...</td></tr>';
@@ -487,7 +542,7 @@
       tbody.innerHTML = html;
     }
 
-    // FETCH DEFECTS REGISTER
+    // --- LOAD DEFECTS REGISTER & MAP MARKERS ---
     async function loadDefects() {
       const tbody = document.getElementById('defectsTableBody');
       tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">लोड हो रहा है...</td></tr>';
