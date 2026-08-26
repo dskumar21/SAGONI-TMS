@@ -9,7 +9,6 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     
-    /* 🚆 SOLID RAILWAY TRACK TEXTURE BACKGROUND */
     body {
       background-color: #0b1329;
       background-image: 
@@ -23,31 +22,20 @@
     }
     .container { max-width: 760px; margin: 0 auto; }
     
-    /* 🏛️ OFFICIAL WCR / JABALPUR EMBLEM HEADER */
     .header {
       background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
       border-radius: 12px;
       border: 2px solid #f59e0b;
-      padding: 12px 10px;
+      padding: 14px 10px;
       margin-bottom: 14px;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
+      text-align: center;
     }
-    .ir-logo-svg {
-      width: 44px;
-      height: 44px;
-      flex-shrink: 0;
-    }
-    .header-text { text-align: center; flex: 1; }
-    .header-text .ir-zone { font-size: 11px; font-weight: 900; color: #f59e0b; letter-spacing: 1.5px; text-transform: uppercase; }
-    .header-text h1 { font-size: 16px; font-weight: 900; color: #38bdf8; margin: 2px 0; }
-    .header-text p { font-size: 10px; color: #cbd5e1; font-weight: 600; }
+    .header .ir-zone { font-size: 11px; font-weight: 900; color: #f59e0b; letter-spacing: 1.5px; text-transform: uppercase; }
+    .header h1 { font-size: 17px; font-weight: 900; color: #38bdf8; margin: 3px 0; }
+    .header p { font-size: 10px; color: #cbd5e1; font-weight: 600; }
     .sec-badge { display: inline-block; background: #0284c7; color: #ffffff; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 6px; margin-top: 4px; border: 1px solid #38bdf8; }
 
-    /* 💎 SOLID HIGH CONTRAST CARDS */
     .card {
       background: #1e293b;
       border: 1px solid #334155;
@@ -75,14 +63,12 @@
     .btn-purple { background: #7c3aed; }
     .btn-csv { background: #059669; color: white; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
 
-    /* Touch Friendly Selector Buttons */
     .section-pills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 4px; }
     .line-selector-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 4px; }
     .pills-btn { background: #0f172a; border: 2px solid #334155; color: #cbd5e1; padding: 9px 4px; border-radius: 8px; font-size: 11px; font-weight: 700; text-align: center; cursor: pointer; transition: 0.2s; user-select: none; }
     .pills-btn.selected { background: #0284c7; border-color: #38bdf8; color: white; box-shadow: 0 0 10px rgba(56,189,248,0.4); }
     .pills-btn.locked { opacity: 0.7; pointer-events: none; }
 
-    /* Action Grids */
     .sos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
     .sos-item { background: #0f172a; border: 1px solid #dc2626; border-radius: 8px; padding: 10px 4px; text-align: center; cursor: pointer; transition: 0.2s; }
     .sos-item:hover { background: #7f1d1d; border-color: #f87171; }
@@ -99,15 +85,12 @@
 
     .toast { display: none; background: #065f46; border: 1px solid #34d399; color: #ecfdf5; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 600; text-align: center; margin-bottom: 12px; }
     
-    /* Prominent Alarm Blinker */
     #sirenAlarmBox { display: none; background: #7f1d1d; border: 3px solid #ef4444; border-radius: 12px; padding: 18px 12px; text-align: center; margin-bottom: 14px; animation: pulseAlert 0.8s infinite alternate; }
     @keyframes pulseAlert { 0% { box-shadow: 0 0 10px #ef4444; transform: scale(0.99); } 100% { box-shadow: 0 0 25px #dc2626; transform: scale(1.01); background: #991b1b; } }
 
-    /* Sticky Bottom Floating Stop Bar */
     #floatingStopBar { display: none; position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 480px; z-index: 10000; }
     #floatingStopBar button { background: #ffffff; color: #b91c1c; border: 3px solid #ef4444; border-radius: 50px; font-size: 16px; font-weight: 900; padding: 14px; box-shadow: 0 10px 25px rgba(0,0,0,0.6); width: 100%; cursor: pointer; }
 
-    /* Tabs */
     .tab-bar { display: flex; gap: 6px; margin-bottom: 12px; background: #0f172a; padding: 4px; border-radius: 8px; border: 1px solid #334155; }
     .tab-btn { flex: 1; padding: 8px 4px; border: none; background: transparent; color: #94a3b8; font-size: 11px; font-weight: 700; border-radius: 6px; cursor: pointer; text-align: center; transition: 0.2s; }
     .tab-btn.active { background: #2563eb; color: white; }
@@ -124,48 +107,19 @@
 </head>
 <body>
 
-  <!-- FLOATING ACKNOWLEDGE & STOP BUTTON -->
   <div id="floatingStopBar">
     <button onclick="stopAlarmSound()">🔕 अलार्म बंद करें (Acknowledge & Stop)</button>
   </div>
 
   <div class="container">
     
-    <!-- 🏛️ GUARANTEED IN-LINE INDIAN RAILWAYS / WCR JABALPUR EMBLEM -->
     <div class="header">
-      <svg class="ir-logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="50" cy="50" r="46" fill="#1e3a8a" stroke="#f59e0b" stroke-width="4"/>
-        <circle cx="50" cy="50" r="38" fill="#0f172a" stroke="#ffffff" stroke-dasharray="3 3" stroke-width="2"/>
-        <path d="M30 65 L70 65 L65 40 L35 40 Z" fill="#ef4444" stroke="#f59e0b" stroke-width="2"/>
-        <circle cx="42" cy="52" r="4" fill="#ffffff"/>
-        <circle cx="58" cy="52" r="4" fill="#ffffff"/>
-        <rect x="44" y="32" width="12" height="8" fill="#f59e0b"/>
-        <line x1="25" y1="72" x2="75" y2="72" stroke="#38bdf8" stroke-width="3"/>
-        <line x1="28" y1="76" x2="72" y2="76" stroke="#f59e0b" stroke-width="2"/>
-        <circle cx="50" cy="18" r="4" fill="#f59e0b"/>
-      </svg>
-      
-      <div class="header-text">
-        <div class="ir-zone">पश्चिम मध्य रेल | WCR JABALPUR</div>
-        <h1>सगोनी पी-वे ट्रैक मैनेजमेंट सिस्टम</h1>
-        <span class="sec-badge">Km 1157.000 से 1173.000 (16 Km)</span>
-        <p style="margin-top: 3px;">रतनगांव ➔ सगोनी ➔ गोला पट्टी (IBH)</p>
-      </div>
-
-      <svg class="ir-logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="50" cy="50" r="46" fill="#1e3a8a" stroke="#f59e0b" stroke-width="4"/>
-        <circle cx="50" cy="50" r="38" fill="#0f172a" stroke="#ffffff" stroke-dasharray="3 3" stroke-width="2"/>
-        <path d="M30 65 L70 65 L65 40 L35 40 Z" fill="#ef4444" stroke="#f59e0b" stroke-width="2"/>
-        <circle cx="42" cy="52" r="4" fill="#ffffff"/>
-        <circle cx="58" cy="52" r="4" fill="#ffffff"/>
-        <rect x="44" y="32" width="12" height="8" fill="#f59e0b"/>
-        <line x1="25" y1="72" x2="75" y2="72" stroke="#38bdf8" stroke-width="3"/>
-        <line x1="28" y1="76" x2="72" y2="76" stroke="#f59e0b" stroke-width="2"/>
-        <circle cx="50" cy="18" r="4" fill="#f59e0b"/>
-      </svg>
+      <div class="ir-zone">पश्चिम मध्य रेल | WCR JABALPUR</div>
+      <h1>सगोनी पी-वे ट्रैक मैनेजमेंट सिस्टम</h1>
+      <span class="sec-badge">Km 1157.000 से 1173.000 (16 Km)</span>
+      <p style="margin-top: 4px;">रतनगांव ➔ सगोनी ➔ गोला पट्टी (IBH)</p>
     </div>
 
-    <!-- LIVE SIREN & VOICE ALERT BOX -->
     <div id="sirenAlarmBox">
       <div style="font-size: 32px; margin-bottom: 4px;">🚨 📢 ⚠️</div>
       <h2 id="sirenAlertTitle" style="color: #fff; font-size: 18px; font-weight: 900;">ट्रेन आ रही है! तुरंत ट्रैक छोड़ें!</h2>
@@ -175,10 +129,8 @@
 
     <div id="toast" class="toast"></div>
 
-    <!-- HOME SECTION -->
     <div id="homeSection">
 
-      <!-- 1. SECTION-AWARE EARLY TRAIN WARNING SYSTEM -->
       <div class="card card-train-safety">
         <div style="text-align: center;">
           <strong style="color: #38bdf8; font-size: 15px;">🚆 रिलेटिव सेक्शन ब्लॉक चेतावनी प्रणाली</strong>
@@ -198,7 +150,6 @@
           </div>
         </div>
 
-        <!-- SENDER FORM -->
         <div id="trainSenderPanel" style="display: none; margin-top: 14px; border-top: 1px dashed #0284c7; padding-top: 12px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
             <strong style="color:#38bdf8; font-size:13px;">📢 ट्रेन डिस्पैच (एक साथ कई सेक्शन चुनें)</strong>
@@ -244,7 +195,6 @@
           </div>
         </div>
 
-        <!-- RECEIVER FORM -->
         <div id="trainReceiverPanel" style="display: none; margin-top: 14px; border-top: 1px dashed #0284c7; padding-top: 12px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
             <strong style="color:#4ade80; font-size:13px;">📡 रिलेटिव लोकेशन मॉनिटर (रूट लॉक)</strong>
@@ -294,7 +244,6 @@
         </div>
       </div>
 
-      <!-- 2. LOGIN CARD -->
       <div class="card">
         <div style="text-align: center; margin-bottom: 14px;">
           <span style="font-size: 26px;">🔐</span>
@@ -314,7 +263,6 @@
         </div>
       </div>
 
-      <!-- 3. EMERGENCY INCIDENT CARD -->
       <div class="card card-emergency">
         <div style="text-align: center;">
           <strong style="color: #f87171; font-size: 14px;">🚨 त्वरित आपातकालीन रिपोर्टिंग (Direct SOS)</strong>
@@ -365,7 +313,6 @@
 
     </div>
 
-    <!-- LOGGED-IN PORTAL (GANG, KEYMAN, JE DASHBOARD) -->
     <div id="appContainer" style="display: none;">
       <div class="user-bar">
         <div class="user-info">
@@ -375,15 +322,12 @@
         <button onclick="logout()" style="background: none; border: 1px solid #475569; color: #f87171; font-size: 11px; padding: 4px 8px; border-radius: 6px; cursor: pointer;">लॉगआउट</button>
       </div>
 
-      <!-- MATE PORTAL -->
       <div id="mateForm" style="display: none;">
-        
         <div class="tab-bar" style="margin-bottom: 12px;">
           <button class="tab-btn active" id="btnMateTabMuster" onclick="switchMateTab('mateMusterCard')">🌅 सुबह 08:00 AM मस्टर (हाजिरी)</button>
           <button class="tab-btn" id="btnMateTabDiary" onclick="switchMateTab('mateDiaryCard')">🛠️ दैनिक कार्य डायरी & प्रगति</button>
         </div>
 
-        <!-- 1. MORNING GANG MUSTER CARD -->
         <div id="mateMusterCard" class="card">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
             <h3 style="font-size: 15px; color: #38bdf8;">🌅 सुबह का गैंग मस्टर (Morning Attendance)</h3>
@@ -445,11 +389,9 @@
           </form>
         </div>
 
-        <!-- 2. DAILY WORK DIARY CARD -->
         <div id="mateDiaryCard" class="card" style="display: none;">
           <h3 style="font-size: 15px; margin-bottom: 12px; color: #4ade80;">🛠️ दैनिक कार्य डायरी & मैनपॉवर पोजिशनिंग</h3>
           <form onsubmit="submitMateWork(event)">
-            
             <div class="form-group">
               <label>लाइन (Line)</label>
               <select id="mLine">
@@ -495,10 +437,8 @@
             <button type="submit" id="mBtn" class="btn btn-green">💾 कार्य डायरी डेटाबेस में सुरक्षित करें</button>
           </form>
         </div>
-
       </div>
 
-      <!-- KEYMAN FORM -->
       <div id="keymanForm" class="card" style="display: none;">
         <h3 style="font-size: 15px; margin-bottom: 12px; color: #38bdf8;">🔑 डिफेक्ट रिपोर्टिंग (Keyman)</h3>
         <form onsubmit="submitKeymanDefect(event)">
@@ -530,7 +470,6 @@
         </form>
       </div>
 
-      <!-- JE MASTER DASHBOARD -->
       <div id="jeForm" style="display: none;">
         <div class="tab-bar">
           <button class="tab-btn active" onclick="switchJETab('tabMusterLog')">📋 मस्टर & हाजिरी</button>
@@ -540,7 +479,6 @@
           <button class="tab-btn" onclick="switchJETab('tabMap')">🗺️ 2D स्केल</button>
         </div>
 
-        <!-- TAB 0: GANG MUSTER & ATTENDANCE REGISTER -->
         <div id="tabMusterLog" class="card">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <strong style="color:#a855f7; font-size:14px;">📋 सुबह 08:00 AM गैंग हाजिरी & पोजिशनिंग</strong>
@@ -571,7 +509,6 @@
           </div>
         </div>
 
-        <!-- TAB 1: EMERGENCY INCIDENTS -->
         <div id="tabEmergency" class="card" style="display: none;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <strong style="color:#ef4444; font-size:14px;">🚨 आपातकालीन घटना रजिस्टर</strong>
@@ -583,7 +520,6 @@
           <div id="emergencyLiveList">लोड हो रहा है...</div>
         </div>
 
-        <!-- TAB 2: DAILY WORK LOG -->
         <div id="tabMate" class="card" style="display: none;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <strong style="color:#4ade80; font-size:14px;">🛠️ दैनिक कार्य प्रगति रजिस्टर</strong>
@@ -600,7 +536,6 @@
           </div>
         </div>
 
-        <!-- TAB 3: DEFECTS -->
         <div id="tabDefects" class="card" style="display: none;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <strong style="color:#f87171; font-size:14px;">⚠️ ट्रैक डिफेक्ट & अलर्ट रजिस्टर</strong>
@@ -617,7 +552,6 @@
           </div>
         </div>
 
-        <!-- TAB 4: 2D MAP -->
         <div id="tabMap" class="card" style="display: none;">
           <strong style="color:#38bdf8; font-size:14px; display:block; margin-bottom:6px;">🗺️ 16 Km लीनियर ट्रैक मॉनिटर (सगोनी 1157 - 1173)</strong>
           <div style="background: #0f172a; padding:16px 12px; border-radius:8px; border:1px solid #334155;">
@@ -636,7 +570,6 @@
   </div>
 
   <script>
-    // --- SUPABASE CONFIGURATION ---
     const SUPABASE_URL = "https://jhdkpdsrrgwqzxwftcyc.supabase.co";
     const SUPABASE_KEY = "sb_publishable_GL2DEQ5U-COnS8ifSz4Zgg_8ooV-wGv";
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -648,13 +581,11 @@
     let autoStopTimer = null;
     let realtimeChannel = null;
 
-    // SENDER Multi-Select State
     const senderMovements = new Map([
       ['sndMv1', { name: 'रतनगांव से सगोनी', block: 'रतनगांव-सगोनी' }]
     ]);
     const senderLines = new Set(['अप मेन लाइन']);
 
-    // RECEIVER State
     let myLockedBlock = 'गोला पट्टी-सगोनी';
     const mySubscribedLines = new Set(['अप मेन लाइन', 'डाउन मेन लाइन', 'थर्ड मेन लाइन']);
 
@@ -666,7 +597,6 @@
       "PAT01": { name: "राकेश पेट्रोलमैन", role: "keyman", beat: "Night Patrol (1157-1165)" }
     };
 
-    // --- CSV DOWNLOAD UTILITY ---
     function downloadCSVFile(csvContent, fileName) {
       const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement("a");
@@ -678,7 +608,6 @@
       document.body.removeChild(link);
     }
 
-    // 1. EXPORT MUSTER TO CSV
     async function exportMusterToCSV() {
       const { data, error } = await db.from('gang_muster_attendance').select('*').order('created_at', { ascending: false });
       if (error || !data || data.length === 0) { alert('डाउनलोड करने के लिए कोई डेटा उपलब्ध नहीं है!'); return; }
@@ -692,7 +621,6 @@
       downloadCSVFile(csv, `Gang_Muster_Attendance_${dateStr}.csv`);
     }
 
-    // 2. EXPORT WORK LOGS TO CSV
     async function exportWorkLogsToCSV() {
       const { data, error } = await db.from('daily_work_logs').select('*').order('created_at', { ascending: false });
       if (error || !data || data.length === 0) { alert('डाउनलोड करने के लिए कोई डेटा उपलब्ध नहीं है!'); return; }
@@ -706,7 +634,6 @@
       downloadCSVFile(csv, `Gang_Daily_Work_Logs_${dateStr}.csv`);
     }
 
-    // 3. EXPORT DEFECTS TO CSV
     async function exportDefectsToCSV() {
       const { data, error } = await db.from('track_defects').select('*').order('created_at', { ascending: false });
       if (error || !data || data.length === 0) { alert('डाउनलोड करने के लिए कोई डेटा उपलब्ध नहीं है!'); return; }
@@ -720,7 +647,6 @@
       downloadCSVFile(csv, `Track_Defects_Report_${dateStr}.csv`);
     }
 
-    // 4. EXPORT EMERGENCIES TO CSV
     async function exportEmergenciesToCSV() {
       const { data, error } = await db.from('emergency_incidents').select('*').order('created_at', { ascending: false });
       if (error || !data || data.length === 0) { alert('डाउनलोड करने के लिए कोई डेटा उपलब्ध नहीं है!'); return; }
@@ -734,7 +660,6 @@
       downloadCSVFile(csv, `Emergency_Incidents_Report_${dateStr}.csv`);
     }
 
-    // --- MATE TAB SWITCHING ---
     function switchMateTab(tabId) {
       document.getElementById('mateMusterCard').style.display = 'none';
       document.getElementById('mateDiaryCard').style.display = 'none';
@@ -746,7 +671,6 @@
       if (tabId === 'mateDiaryCard') document.getElementById('btnMateTabDiary').classList.add('active');
     }
 
-    // --- MUSTER TOTAL SUM CALCULATION ---
     function calculateMusterTotal() {
       const track = parseInt(document.getElementById('mstTrackWork').value) || 0;
       const keyman = parseInt(document.getElementById('mstKeyman').value) || 0;
@@ -761,7 +685,6 @@
       document.getElementById('mWorkingLabour').value = track;
     }
 
-    // --- 1. SUBMIT MORNING 08:00 AM MUSTER ---
     async function submitMorningMuster(e) {
       e.preventDefault();
       const btn = document.getElementById('mstBtn');
@@ -796,7 +719,6 @@
       }
     }
 
-    // --- 2. SUBMIT MATE WORK DIARY ---
     async function submitMateWork(e) {
       e.preventDefault();
       const btn = document.getElementById('mBtn');
@@ -825,7 +747,6 @@
       }
     }
 
-    // --- LOAD MUSTER LOGS ON JE DASHBOARD ---
     async function loadMusterLogs() {
       const tbody = document.getElementById('musterTableBody');
       tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;">लोड हो रहा है...</td></tr>';
@@ -856,7 +777,6 @@
       tbody.innerHTML = html;
     }
 
-    // --- SOUND & ENHANCED CLEAR HINDI VOICE ENGINE ---
     function initAudio() {
       if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
       if (audioContext.state === 'suspended') audioContext.resume();
@@ -936,7 +856,6 @@
       document.getElementById('floatingStopBar').style.display = 'none';
     }
 
-    // --- SENDER CONTROLS (MULTI-SELECT) ---
     function toggleSenderMovement(btnId, mvName, blockName) {
       const btn = document.getElementById(btnId);
       if (senderMovements.has(btnId)) {
@@ -983,7 +902,6 @@
       else showToast(`✅ ${payloads.length} सेक्शन्स/लाइनों पर एक साथ लाइव अलर्ट प्रसारित हो गया!`);
     }
 
-    // --- RECEIVER CONTROLS & RELATIVE LOCKING ---
     function selectReceiverBlock(blockName) {
       myLockedBlock = blockName;
       document.getElementById('selectedReceiverBlock').value = blockName;
@@ -1057,7 +975,6 @@
       document.getElementById('trainReceiverPanel').style.display = 'none';
     }
 
-    // --- STANDARD LOGIN & APP FUNCTIONS ---
     function handleLogin() {
       const id = document.getElementById('empIdInput').value.trim().toUpperCase();
       if (!STAFF_DATA[id]) { alert('अमान्य ID! (उदा: JE01, MATE01, KEY01)'); return; }
