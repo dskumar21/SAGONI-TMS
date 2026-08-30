@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>WCR Sagoni P-Way Section TMS</title>
+  <title>WCR Sagoni P-Way Section TMS & Safety System</title>
 
   <!-- 📱 MOBILE PWA & APP ICON EMBED -->
   <meta name="theme-color" content="#070d1e">
@@ -13,8 +13,6 @@
 
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%23070d1e'/%3E%3Ccircle cx='256' cy='256' r='210' fill='%231e3a8a' stroke='%23f59e0b' stroke-width='18'/%3E%3Ccircle cx='256' cy='256' r='175' fill='%230b1329' stroke='%2338bdf8' stroke-width='8' stroke-dasharray='12 12'/%3E%3Cpath d='M150 330 L362 330 L335 190 L177 190 Z' fill='%23ef4444' stroke='%23f59e0b' stroke-width='10'/%3E%3Ccircle cx='205' cy='260' r='24' fill='%23ffffff'/%3E%3Ccircle cx='307' cy='260' r='24' fill='%23ffffff'/%3E%3Crect x='226' cy='145' width='60' height='45' rx='8' fill='%23f59e0b'/%3E%3Cline x1='110' y1='370' x2='402' y2='370' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cline x1='130' y1='398' x2='382' y2='398' stroke='%23f59e0b' stroke-width='12' stroke-linecap='round'/%3E%3Ctext x='256' y='460' font-size='42' font-family='sans-serif' font-weight='900' fill='%23fef08a' text-anchor='middle'%3EWCR TMS%3C/text%3E%3C/svg%3E">
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%23070d1e'/%3E%3Ccircle cx='256' cy='256' r='210' fill='%231e3a8a' stroke='%23f59e0b' stroke-width='18'/%3E%3Ccircle cx='256' cy='256' r='175' fill='%230b1329' stroke='%2338bdf8' stroke-width='8' stroke-dasharray='12 12'/%3E%3Cpath d='M150 330 L362 330 L335 190 L177 190 Z' fill='%23ef4444' stroke='%23f59e0b' stroke-width='10'/%3E%3Ccircle cx='205' cy='260' r='24' fill='%23ffffff'/%3E%3Ccircle cx='307' cy='260' r='24' fill='%23ffffff'/%3E%3Crect x='226' cy='145' width='60' height='45' rx='8' fill='%23f59e0b'/%3E%3Cline x1='110' y1='370' x2='402' y2='370' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cline x1='130' y1='398' x2='382' y2='398' stroke='%23f59e0b' stroke-width='12' stroke-linecap='round'/%3E%3Ctext x='256' y='460' font-size='42' font-family='sans-serif' font-weight='900' fill='%23fef08a' text-anchor='middle'%3EWCR TMS%3C/text%3E%3C/svg%3E">
-
-  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Sagoni%20P-Way%20TMS%22%2C%22short_name%22%3A%22Sagoni%20TMS%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23070d1e%22%2C%22theme_color%22%3A%22%23070d1e%22%7D">
 
   <!-- Supabase CDN Client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -50,7 +48,20 @@
       min-height: 100vh;
       padding: 14px;
     }
-    .container { max-width: 980px; margin: 0 auto; }
+    .container { max-width: 1000px; margin: 0 auto; }
+
+    /* Advisory Live Header Banner */
+    #advisoryLiveBanner {
+      display: none;
+      background: linear-gradient(135deg, #78350f, #b45309);
+      border: 1px solid var(--accent-amber);
+      color: #fef08a;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 12px;
+      margin-bottom: 12px;
+      animation: pulseAlert 1.5s infinite alternate;
+    }
 
     .header-bento {
       background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
@@ -179,6 +190,15 @@
 
   <div class="container">
     
+    <!-- 📢 Realtime Live Safety Advisory Broadcast Banner -->
+    <div id="advisoryLiveBanner">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <strong id="advBannerTitle">📢 संरक्षा एडवाइजरी</strong>
+        <span id="advBannerTime" style="font-size:10px; opacity:0.8;">--</span>
+      </div>
+      <p id="advBannerText" style="margin-top:4px; font-size:11.5px; color:#ffffff;">--</p>
+    </div>
+
     <div class="header-bento">
       <div class="header-info">
         <div class="ir-badge"><span>●</span> पश्चिम मध्य रेल | WCR JABALPUR</div>
@@ -209,7 +229,7 @@
               <div style="background: rgba(245, 158, 11, 0.2); border: 1px solid var(--accent-amber); padding: 10px; border-radius: 12px; font-size: 24px;">📂</div>
               <div>
                 <strong style="color: var(--accent-amber); font-size: 14px; display:block;">महत्वपूर्ण दस्तावेज़ व संदर्भ</strong>
-                <p style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">Annexure-3/9 SEJ चार्ट व PDF अपलोडर</p>
+                <p style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">Annexure-3/9 SEJ चार्ट व PDF रिपॉजिटरी</p>
               </div>
             </div>
             <div style="display: flex; align-items: center; gap: 6px;">
@@ -226,7 +246,7 @@
               <div style="background: rgba(34, 197, 94, 0.2); border: 1px solid var(--accent-green); padding: 10px; border-radius: 12px; font-size: 24px;">📞</div>
               <div>
                 <strong style="color: var(--accent-green); font-size: 14px; display:block;">सेक्शन कांटेक्ट डायरेक्टरी</strong>
-                <p style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">JE, मुकद्दम, कीमैन, SM व अधिकारियों के फ़ोन/WhatsApp</p>
+                <p style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">SE, JE, मुकद्दम, कीमैन, SM व कंट्रोल डायरेक्टरी</p>
               </div>
             </div>
             <div style="display: flex; align-items: center; gap: 6px;">
@@ -264,7 +284,7 @@
               <button onclick="closeTrainPanels()" style="background:none; border:none; color:#f87171; cursor:pointer;">✖</button>
             </div>
             <form onsubmit="handleSenderFormSubmit(event)">
-              <div class="form-group"><label>आपकी ID / स्टेशन (Sender ID)</label><input type="text" id="sndEmpId" placeholder="उदा: SM_SAGONI, GATE_1162, JE01" required></div>
+              <div class="form-group"><label>आपका अधिकृत मोबाइल नंबर</label><input type="tel" id="sndPhone" placeholder="10 अंकों का मोबाइल नंबर" maxlength="10" required></div>
               <div class="form-group">
                 <label>1. मूवमेंट व ब्लॉक सेक्शन:</label>
                 <div class="section-pills-grid" id="sndMovementGrid">
@@ -301,7 +321,7 @@
               <button onclick="closeTrainPanels()" style="background:none; border:none; color:#f87171; cursor:pointer;">✖</button>
             </div>
             <form onsubmit="handleReceiverLockSubmit(event)">
-              <div class="form-group"><label>आपकी ID (Trackman / Mate ID)</label><input type="text" id="rcvEmpId" placeholder="उदा: MATE01, KEY01"></div>
+              <div class="form-group"><label>आपका मोबाइल नंबर</label><input type="tel" id="rcvPhone" placeholder="10 अंकों का मोबाइल नंबर" maxlength="10" required></div>
               <div class="form-group">
                 <label>1. आपकी कार्य लोकेशन:</label>
                 <div class="section-pills-grid" id="rcvBlockGrid" style="grid-template-columns: repeat(3, 1fr);">
@@ -338,13 +358,12 @@
           <div style="text-align: center; margin-bottom: 10px;">
             <span style="font-size: 26px;">📱</span>
             <strong style="font-size: 14px; display:block; margin-top:2px;">मोबाइल OTP लॉगिन</strong>
-            <p style="font-size: 10px; color: var(--text-muted);">CUG मोबाइल नंबर द्वारा लॉगिन</p>
+            <p style="font-size: 10px; color: var(--text-muted);">CUG मोबाइल नंबर द्वारा सुरक्षित लॉगिन</p>
           </div>
           
-          <!-- Step 1: Mobile Number Input -->
           <div id="loginStepMobile">
             <div class="form-group">
-              <label>पंजीकृत मोबाइल नंबर (CUG Phone)</label>
+              <label>पंजीकृत मोबाइल नंबर</label>
               <input type="tel" id="mobileInput" placeholder="9752418177" maxlength="10" required>
             </div>
             <button type="button" onclick="requestLoginOTP()" class="btn btn-blue" style="font-size: 13px;">
@@ -352,7 +371,6 @@
             </button>
           </div>
 
-          <!-- Step 2: OTP Verification Box -->
           <div id="loginStepOTP" style="display: none;">
             <div class="form-group">
               <label>4-अंकों का OTP दर्ज करें</label>
@@ -367,15 +385,15 @@
           </div>
 
           <div style="margin-top: 12px; font-size: 10px; color: #64748b; line-height: 1.5; border-top: 1px solid #334155; padding-top: 8px;">
-            <strong>JE इन-चार्ज CUG:</strong> <code>9752418177</code>
+            <strong>SE इन-चार्ज CUG:</strong> <code>9752418177</code>
           </div>
         </div>
 
-        <!-- 🚨 Bento 5: Emergency SOS -->
+        <!-- 🚨 Bento 5: Emergency SOS (With Auto Client Compression) -->
         <div class="bento-card emergency-hub col-12">
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <strong style="color: #f87171; font-size: 14px;">🚨 त्वरित आपातकालीन रिपोर्टिंग (Direct SOS & Instant Alert)</strong>
-            <span style="font-size: 10px; color: #fca5a5;">दर्ज होते ही फ़ोन अलर्ट प्रसारित</span>
+            <strong style="color: #f87171; font-size: 14px;">🚨 त्वरित आपातकालीन रिपोर्टिंग (Direct SOS & Compressed Photo)</strong>
+            <span style="font-size: 10px; color: #fca5a5;">Whitelisted Mobile Only</span>
           </div>
           <div class="sos-grid">
             <div class="sos-item" onclick="selectEmergencyType('🐮 CRO (Cattle Run Over)')"><span class="sos-icon">🐮</span><span class="sos-label">C.R.O.</span></div>
@@ -391,7 +409,10 @@
             </div>
             <form onsubmit="submitEmergencyIncident(event)">
               <input type="hidden" id="emIncidentType">
-              <div class="form-group"><label>आपकी Employee ID / नाम</label><input type="text" id="emEmpId" placeholder="उदा: KEY01, MATE01" required></div>
+              <div class="form-group">
+                <label>आपका पंजीकृत मोबाइल नंबर (Whitelisted Phone)</label>
+                <input type="tel" id="emPhone" placeholder="10 अंकों का मोबाइल नंबर" maxlength="10" required>
+              </div>
               <div class="grid-2">
                 <div class="form-group">
                   <label>लाइन</label>
@@ -407,8 +428,12 @@
                 <div class="form-group"><label>खंभा नंबर</label><input type="text" id="emPole" placeholder="1164/18" required></div>
               </div>
               <div class="form-group"><label>विवरण</label><textarea id="emRemarks" rows="2" placeholder="मौके की स्थिति..." required></textarea></div>
-              <div class="form-group"><label>📸 मौके की फोटो</label><input type="file" id="emPhoto" accept="image/*" capture="environment" style="padding:6px;"></div>
-              <button type="submit" id="emBtn" class="btn btn-red">🚨 तुरंत इमरजेंसी दर्ज करें एवं मोबाइल अलर्ट भेजें</button>
+              <div class="form-group">
+                <label>📸 मौके की फोटो (Auto Compressed to &lt;200KB)</label>
+                <input type="file" id="emPhoto" accept="image/*" capture="environment" style="padding:6px;">
+                <span id="compressStatusText" style="font-size:10px; color:#4ade80;"></span>
+              </div>
+              <button type="submit" id="emBtn" class="btn btn-red">🚨 तुरंत इमरजेंसी दर्ज करें एवं SE को WhatsApp अलर्ट भेजें</button>
             </form>
           </div>
         </div>
@@ -522,15 +547,16 @@
         </form>
       </div>
 
-      <!-- JE DASHBOARD SECTION -->
-      <div id="jeForm" style="display: none;">
+      <!-- SE / JE DASHBOARD SECTION -->
+      <div id="adminForm" style="display: none;">
         <div class="tab-bar">
-          <button class="tab-btn active" id="jeTab_tabMusterLog" onclick="switchJETab('tabMusterLog')">📋 मस्टर हाजिरी</button>
-          <button class="tab-btn" id="jeTab_tabEmergency" onclick="switchJETab('tabEmergency')">🚨 आपात अलर्ट्स & कंप्लायंस</button>
-          <button class="tab-btn" id="jeTab_tabMate" onclick="switchJETab('tabMate')">🛠️ कार्य डायरी</button>
-          <button class="tab-btn" id="jeTab_tabDefects" onclick="switchJETab('tabDefects')">⚠️ डिफेक्ट्स & क्लोज़र</button>
-          <button class="tab-btn" id="jeTab_tabMap" onclick="switchJETab('tabMap')">🗺️ 2D मैप</button>
-          <button class="tab-btn" id="jeTab_tabMonthlyReport" onclick="switchJETab('tabMonthlyReport')">📊 मासिक / वार्षिक रिपोर्ट</button>
+          <button class="tab-btn active" id="admTab_tabMusterLog" onclick="switchAdminTab('tabMusterLog')">📋 मस्टर हाजिरी</button>
+          <button class="tab-btn" id="admTab_tabEmergency" onclick="switchAdminTab('tabEmergency')">🚨 आपात अलर्ट्स & एक्शन</button>
+          <button class="tab-btn" id="admTab_tabMate" onclick="switchAdminTab('tabMate')">🛠️ कार्य डायरी</button>
+          <button class="tab-btn" id="admTab_tabDefects" onclick="switchAdminTab('tabDefects')">⚠️ डिफेक्ट्स & क्लोज़र</button>
+          <button class="tab-btn" id="admTab_tabMap" onclick="switchAdminTab('tabMap')">🗺️ 2D मैप</button>
+          <button class="tab-btn" id="admTab_tabBroadcast" onclick="switchAdminTab('tabBroadcast')">📢 WhatsApp एडवाइजरी</button>
+          <button class="tab-btn" id="admTab_tabMonthlyReport" onclick="switchAdminTab('tabMonthlyReport')">📊 मासिक रिपोर्ट</button>
         </div>
 
         <div id="tabMusterLog" class="bento-card">
@@ -551,10 +577,10 @@
           </div>
         </div>
 
-        <!-- Emergency Events with Compliance/Resolve Action -->
+        <!-- Emergency Events with Compliance/Resolve & SE Deletion Action -->
         <div id="tabEmergency" class="bento-card" style="display: none;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <strong style="color:#ef4444; font-size:14px;">🚨 आपातकालीन घटना रजिस्टर एवं JE कंप्लायंस</strong>
+            <strong style="color:#ef4444; font-size:14px;">🚨 आपातकालीन घटना रजिस्टर एवं निस्तारण</strong>
             <div style="display:flex; gap:6px;">
               <button onclick="exportEmergenciesToCSV()" class="btn-csv">📥 Download Excel</button>
               <button onclick="loadEmergencies()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
@@ -590,7 +616,7 @@
           </div>
           <div class="table-responsive">
             <table>
-              <thead><tr><th>समय</th><th>लाइन</th><th>Km</th><th>खंभा</th><th>स्थिति/डिफेक्ट</th><th>रिमार्क्स</th><th>रिपोर्टकर्ता</th><th>JE एक्शन</th></tr></thead>
+              <thead><tr><th>समय</th><th>लाइन</th><th>Km</th><th>खंभा</th><th>स्थिति/डिफेक्ट</th><th>रिमार्क्स</th><th>रिपोर्टकर्ता</th><th>एक्शन</th></tr></thead>
               <tbody id="defectsTableBody"><tr><td colspan="8" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
             </table>
           </div>
@@ -624,7 +650,51 @@
           </div>
         </div>
 
-        <!-- 📊 Monthly / Annual Comprehensive Report Tab -->
+        <!-- 📢 SE WhatsApp Broadcast & Advisory Hub -->
+        <div id="tabBroadcast" class="bento-card" style="display: none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <strong style="color:var(--accent-amber); font-size:15px;">📢 P-Way संरक्षा एडवाइजरी & WhatsApp ब्रॉडकास्ट</strong>
+            <span style="font-size:11px; color:#4ade80; font-weight:bold;">Issued by SE (P-Way)</span>
+          </div>
+
+          <div style="background:rgba(11,19,41,0.6); border:1px solid rgba(245, 158, 11, 0.4); border-radius:12px; padding:14px; margin-bottom:14px;">
+            <div class="grid-2">
+              <div class="form-group">
+                <label>एडवाइजरी श्रेणी (Category)</label>
+                <select id="advCategory">
+                  <option value="⚠️ संरक्षा निर्देश (Safety Advisory)">⚠️ संरक्षा निर्देश (Safety Advisory)</option>
+                  <option value="🌧️ मानसून / पेट्रोलिंग अलर्ट (Weather Alert)">🌧️ मानसून / पेट्रोलिंग अलर्ट (Weather Alert)</option>
+                  <option value="🛑 ट्रैक ब्लॉक / कॉशन ऑर्डर (Traffic Block)">🛑 ट्रैक ब्लॉक / कॉशन ऑर्डर (Traffic Block)</option>
+                  <option value="📋 सामान्य सर्कुलर (General Circular)">📋 सामान्य सर्कुलर (General Circular)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>लक्ष्य समूह (Target Group)</label>
+                <select id="advTarget">
+                  <option value="ALL">सभी स्टाफ (All Staff - Mates & Keymen)</option>
+                  <option value="MATES">केवल मुकद्दम (Mates Only)</option>
+                  <option value="KEYMEN">केवल कीमैन व पेट्रोलमैन (Keymen Only)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>निर्देश / एडवाइजरी संदेश (Message)</label>
+              <textarea id="advMessageText" rows="3" placeholder="उदा: भारी बारिश के कारण सभी कीमैन एवं पेट्रोलमैन अपने-अपने बीट पर वाटर-लॉगिंग व गिट्टी की स्थिति की सघन जांच करें..."></textarea>
+            </div>
+
+            <div class="grid-2">
+              <button type="button" onclick="broadcastAdvisoryLive()" class="btn btn-amber" style="font-size:13px;">
+                📢 एडवाइजरी जारी करें (Live In-App)
+              </button>
+              <button type="button" onclick="dispatchAdvisoryToWhatsApp()" class="btn btn-green" style="font-size:13px;">
+                💬 WhatsApp पर प्रसारित करें
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 📊 Monthly Summary Report Tab -->
         <div id="tabMonthlyReport" class="bento-card" style="display: none;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
             <strong style="color:var(--accent-amber); font-size:15px;">📊 मासिक एवं वार्षिक सेक्शन परफॉरमेंस समरी रिपोर्ट</strong>
@@ -665,14 +735,14 @@
 
       <div class="tab-bar">
         <button class="tab-btn active" id="btnTabDocList" onclick="switchDocTab('docListSec')">📄 सुरक्षित दस्तावेज़ (View / Download)</button>
-        <button class="tab-btn" id="btnTabDocAdd" onclick="switchDocTab('docAddSec')">📤 नया PDF अपलोड करें</button>
+        <button class="tab-btn" id="btnTabDocAdd" onclick="switchDocTab('docAddSec')">📤 नया PDF अपलोड करें (SE Only)</button>
       </div>
 
       <div id="docListSec"><div id="docsContainerList"></div></div>
 
       <div id="docAddSec" style="display: none;">
         <div style="background:rgba(11,19,41,0.6); border:1px solid rgba(56, 189, 248, 0.3); border-radius:12px; padding:14px;">
-          <strong style="color:var(--accent-blue); font-size:13px; display:block; margin-bottom:10px;">📤 डिवाइस (मोबाइल/लैपटॉप) से PDF फाइल अपलोड करें</strong>
+          <strong style="color:var(--accent-blue); font-size:13px; display:block; margin-bottom:10px;">📤 डिवाइस से PDF फाइल अपलोड करें</strong>
           <div class="form-group"><label>दस्तावेज़ का नाम</label><input type="text" id="newDocTitle" placeholder="उदा: IRPWM Para 338 या Monsoon Guidelines"></div>
           <div class="form-group"><label>छोटा विवरण / संदर्भ</label><input type="text" id="newDocSub" placeholder="उदा: 60kg Rail Track Inspection Chart"></div>
           <div class="form-group">
@@ -702,7 +772,7 @@
 
       <div class="tab-bar">
         <button class="tab-btn active" id="btnTabContactList" onclick="switchContactTab('contactListSec')">📋 डायरेक्टरी सूची</button>
-        <button class="tab-btn" id="btnTabContactAdd" onclick="switchContactTab('contactAddSec')">➕ नया कांटेक्ट जोड़ें (JE/SSE)</button>
+        <button class="tab-btn" id="btnTabContactAdd" onclick="switchContactTab('contactAddSec')">➕ नया कांटेक्ट जोड़ें (SE Only)</button>
       </div>
 
       <div id="contactListSec"><div id="contactsListContainer"></div></div>
@@ -714,7 +784,6 @@
           <div class="form-group"><label>पदनाम / विभाग</label><input type="text" id="cntDesignation" placeholder="उदा: SSE / JE / मुकद्दम Gang-03 / SM"></div>
           <div class="form-group"><label>अधिकारी / कर्मचारी का नाम</label><input type="text" id="cntName" placeholder="उदा: श्री रमेश कुमार"></div>
           <div class="form-group"><label>मोबाइल / CUG नंबर</label><input type="tel" id="cntPhone" placeholder="उदा: 9752418177"></div>
-          <div class="form-group"><label>🔐 JE/SSE सुरक्षा पिन (1162)</label><input type="password" id="cntSecurityPin" placeholder="JE Security PIN दर्ज करें" style="letter-spacing:2px;"></div>
           <div class="grid-2" style="margin-top: 8px;">
             <button type="button" onclick="saveContactForm()" class="btn btn-green" style="font-size:13px;">💾 सुरक्षित करें</button>
             <button type="button" onclick="resetContactForm()" class="btn btn-blue" style="background:#475569; font-size:13px;">रद्द करें</button>
@@ -729,9 +798,8 @@
     const SUPABASE_KEY = "sb_publishable_GL2DEQ5U-COnS8ifSz4Zgg_8ooV-wGv";
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // 🚨 JE / इन-चार्ज का पंजीकृत मोबाइल नंबर (Your Specific Mobile Number)
-    const JE_EMERGENCY_MOBILE = "919752418177"; 
-    const JE_MASTER_PIN = "1162";
+    // 🚨 SE (Sectional Engineer) In-Charge Phone
+    const SE_MOBILE_NUMBER = "9752418177"; 
 
     let activeUser = null;
     let audioContext = null;
@@ -743,7 +811,6 @@
     let selectedPDFBase64 = null;
     let selectedPDFName = "";
 
-    // Dynamic OTP Cache
     let currentLoginOTP = null;
     let pendingLoginUser = null;
 
@@ -752,14 +819,73 @@
     let myLockedBlock = 'गोला पट्टी-सगोनी';
     const mySubscribedLines = new Set(['अप मेन लाइन', 'डाउन मेन लाइन', 'थर्ड मेन लाइन']);
 
-    // 📱 CUG Mobile Registered Staff Directory
+    // 📱 Authorized Whitelisted Staff Phone Directory
     const STAFF_PHONE_MAP = {
-      "9752418177": { emp_id: "JE01", name: "JE (P-Way) Sagoni", role: "je", beat: "Section 1157 - 1173" },
+      "9752418177": { emp_id: "SE01", name: "SE (Sectional) P-Way Sagoni", role: "se", beat: "Section In-Charge (1157 - 1173)" },
+      "9425111111": { emp_id: "JE01", name: "JE (Junior Engineer) P-Way", role: "je", beat: "Sub-Section (1157 - 1173)" },
       "9425777777": { emp_id: "MATE01", name: "रामलाल मुकद्दम", role: "mate", beat: "Gang-01 (1157-1162)" },
       "9425888888": { emp_id: "MATE02", name: "श्याम सिंह मुकद्दम", role: "mate", beat: "Gang-02 (1162-1168)" },
       "9425999999": { emp_id: "KEY01", name: "सुरेश कीमैन", role: "keyman", beat: "UP Line (1157-1165)" },
       "9425000011": { emp_id: "PAT01", name: "राकेश पेट्रोलमैन", role: "keyman", beat: "Night Patrol (1157-1165)" }
     };
+
+    function isUserAuthorized(phone) {
+      const cleanPhone = String(phone).replace(/[^0-9]/g, '').slice(-10);
+      return STAFF_PHONE_MAP[cleanPhone] || null;
+    }
+
+    function isCurrentUserSE() {
+      return activeUser && (activeUser.role === 'se' || activeUser.emp_id === 'SE01');
+    }
+
+    /* =================== ⚡ CLIENT-SIDE AUTO IMAGE COMPRESSION ENGINE =================== */
+    // Compresses large camera photos (20MB-25MB) down to crisp ~100KB-180KB JPEG
+    function compressImageFile(file, maxWidth = 1000, quality = 0.65) {
+      return new Promise((resolve) => {
+        if (!file) { resolve(null); return; }
+        
+        const statusText = document.getElementById('compressStatusText');
+        if (statusText) statusText.innerText = "⏳ फोटो कंप्रेस हो रही है...";
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (e) => {
+          const img = new Image();
+          img.src = e.target.result;
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+              if (width > maxWidth) {
+                height = Math.round((height * maxWidth) / width);
+                width = maxWidth;
+              }
+            } else {
+              if (height > maxWidth) {
+                width = Math.round((width * maxWidth) / height);
+                height = maxWidth;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+            const originalSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+            const approxNewSizeKB = Math.round((compressedBase64.length * 3 / 4) / 1024);
+
+            if (statusText) statusText.innerText = `⚡ कंप्रेस्ड: ${originalSizeMB} MB ➔ ~${approxNewSizeKB} KB (सुरक्षित)`;
+            resolve(compressedBase64);
+          };
+          img.onerror = () => resolve(null);
+        };
+        reader.onerror = () => resolve(null);
+      });
+    }
 
     /* =================== 📱 MOBILE & OTP LOGIN SYSTEM =================== */
     function requestLoginOTP() {
@@ -770,39 +896,31 @@
         return;
       }
 
-      if (!STAFF_PHONE_MAP[rawMobile]) {
-        alert("⚠️ यह मोबाइल नंबर सगोनी पी-वे सेक्शन डेटाबेस में पंजीकृत नहीं है! कृपया अपने JE / SSE से संपर्क करें।");
+      const staff = isUserAuthorized(rawMobile);
+      if (!staff) {
+        alert("⚠️ यह मोबाइल नंबर सगोनी पी-वे सेक्शन में अधिकृत नहीं है! कृपया SE / JE से संपर्क करें।");
         return;
       }
 
-      pendingLoginUser = STAFF_PHONE_MAP[rawMobile];
-      
-      // Generate Secure 4-Digit Dynamic OTP
+      pendingLoginUser = staff;
       currentLoginOTP = String(Math.floor(1000 + Math.random() * 9000));
 
       document.getElementById('loginStepMobile').style.display = 'none';
       document.getElementById('loginStepOTP').style.display = 'block';
 
-      // Show in-app alert for immediate login
-      alert(`📲 सगोनी TMS सुरक्षा OTP:\n\nनमस्ते ${pendingLoginUser.name},\nलॉगिन करने के लिए आपका OTP कोड है: [ ${currentLoginOTP} ]\n(यह OTP 5 मिनट के लिए वैध है)`);
-
-      showToast(`📲 OTP कोड ${rawMobile} पर प्रेषित किया गया!`);
+      alert(`📲 सगोनी TMS सुरक्षा OTP:\n\nनमस्ते ${pendingLoginUser.name},\nलॉगिन करने के लिए आपका OTP कोड है: [ ${currentLoginOTP} ]`);
+      showToast(`📲 OTP कोड ${rawMobile} पर भेजा गया!`);
     }
 
     function verifyLoginOTP() {
       const enteredOTP = document.getElementById('otpInput').value.trim();
-
-      if (!enteredOTP) {
-        alert("कृपया OTP दर्ज करें!");
-        return;
-      }
+      if (!enteredOTP) { alert("कृपया OTP दर्ज करें!"); return; }
 
       if (enteredOTP !== currentLoginOTP && enteredOTP !== "1162") {
         alert("❌ अमान्य OTP! कृपया सही कोड दर्ज करें।");
         return;
       }
 
-      // Successful Login
       activeUser = pendingLoginUser;
       saveAppState();
 
@@ -812,7 +930,7 @@
       document.getElementById('homeSection').style.display = 'none';
       document.getElementById('appContainer').style.display = 'block';
 
-      ['mateForm', 'keymanForm', 'jeForm'].forEach(f => document.getElementById(f).style.display = 'none');
+      ['mateForm', 'keymanForm', 'adminForm'].forEach(f => document.getElementById(f).style.display = 'none');
       
       if (activeUser.role === 'mate') {
         document.getElementById('mateForm').style.display = 'block';
@@ -821,9 +939,9 @@
       if (activeUser.role === 'keyman') {
         document.getElementById('keymanForm').style.display = 'block';
       }
-      if (activeUser.role === 'je') {
-        document.getElementById('jeForm').style.display = 'block';
-        switchJETab('tabMusterLog');
+      if (activeUser.role === 'se' || activeUser.role === 'je') {
+        document.getElementById('adminForm').style.display = 'block';
+        switchAdminTab('tabMusterLog');
         loadMusterLogs(); loadEmergencies(); loadGangWork(); loadDefects();
       }
 
@@ -841,15 +959,13 @@
       document.getElementById('loginStepMobile').style.display = 'block';
     }
 
-    /* =================== 🔄 REFRESH & STATE PERSISTENCE =================== */
+    /* =================== 🔄 REFRESH & PERSISTENCE =================== */
     function saveAppState() {
       if (activeUser) localStorage.setItem("sagoni_tms_active_user", JSON.stringify(activeUser));
       else localStorage.removeItem("sagoni_tms_active_user");
     }
 
-    function saveActiveTab(tabKey, tabVal) {
-      localStorage.setItem(tabKey, tabVal);
-    }
+    function saveActiveTab(tabKey, tabVal) { localStorage.setItem(tabKey, tabVal); }
 
     function restoreAppState() {
       const storedUser = localStorage.getItem("sagoni_tms_active_user");
@@ -863,7 +979,7 @@
           document.getElementById('homeSection').style.display = 'none';
           document.getElementById('appContainer').style.display = 'block';
 
-          ['mateForm', 'keymanForm', 'jeForm'].forEach(f => document.getElementById(f).style.display = 'none');
+          ['mateForm', 'keymanForm', 'adminForm'].forEach(f => document.getElementById(f).style.display = 'none');
           
           if (activeUser.role === 'mate') {
             document.getElementById('mateForm').style.display = 'block';
@@ -872,36 +988,86 @@
           if (activeUser.role === 'keyman') {
             document.getElementById('keymanForm').style.display = 'block';
           }
-          if (activeUser.role === 'je') {
-            document.getElementById('jeForm').style.display = 'block';
-            const savedJETab = localStorage.getItem("sagoni_tms_je_tab") || 'tabMusterLog';
-            switchJETab(savedJETab);
-            loadMusterLogs();
-            loadEmergencies();
-            loadGangWork();
-            loadDefects();
+          if (activeUser.role === 'se' || activeUser.role === 'je') {
+            document.getElementById('adminForm').style.display = 'block';
+            switchAdminTab(localStorage.getItem("sagoni_tms_adm_tab") || 'tabMusterLog');
+            loadMusterLogs(); loadEmergencies(); loadGangWork(); loadDefects();
           }
         } catch(e) {
           localStorage.removeItem("sagoni_tms_active_user");
         }
       }
+
+      // Check for stored live broadcast advisory
+      const storedAdv = localStorage.getItem("sagoni_tms_live_advisory");
+      if (storedAdv) {
+        try {
+          const adv = JSON.parse(storedAdv);
+          document.getElementById('advBannerTitle').innerText = `${adv.category}`;
+          document.getElementById('advBannerTime').innerText = adv.time;
+          document.getElementById('advBannerText').innerText = adv.message;
+          document.getElementById('advisoryLiveBanner').style.display = 'block';
+        } catch(e){}
+      }
     }
 
     function logout() {
-      activeUser = null; 
-      saveAppState();
-      localStorage.removeItem("sagoni_tms_mate_tab"); 
-      localStorage.removeItem("sagoni_tms_je_tab");
+      activeUser = null; saveAppState();
+      localStorage.removeItem("sagoni_tms_mate_tab"); localStorage.removeItem("sagoni_tms_adm_tab");
       document.getElementById('appContainer').style.display = 'none';
       document.getElementById('homeSection').style.display = 'block';
       cancelOTPLogin();
-      renderDocsList(); 
-      renderContactsList();
+      renderDocsList(); renderContactsList();
     }
 
-    /* =================== 🛠️ COMPLIANCE & RECTIFICATION (JE ACTIONS) =================== */
+    /* =================== 📢 SE WHATSAPP BROADCAST LOGIC =================== */
+    function broadcastAdvisoryLive() {
+      if (!isCurrentUserSE()) {
+        alert("🔒 केवल SE (Sectional Engineer) ही आधिकारिक एडवाइजरी जारी कर सकते हैं!");
+        return;
+      }
+
+      const cat = document.getElementById('advCategory').value;
+      const target = document.getElementById('advTarget').value;
+      const msg = document.getElementById('advMessageText').value.trim();
+
+      if (!msg) { alert("कृपया एडवाइजरी संदेश लिखें!"); return; }
+
+      const timeStr = new Date().toLocaleString();
+      const advPayload = { category: cat, target: target, message: msg, time: timeStr };
+
+      localStorage.setItem("sagoni_tms_live_advisory", JSON.stringify(advPayload));
+
+      document.getElementById('advBannerTitle').innerText = cat;
+      document.getElementById('advBannerTime').innerText = timeStr;
+      document.getElementById('advBannerText').innerText = msg;
+      document.getElementById('advisoryLiveBanner').style.display = 'block';
+
+      showToast("📢 लाइव संरक्षा एडवाइजरी सभी स्क्रीन पर सक्रिय हो गई!");
+    }
+
+    function dispatchAdvisoryToWhatsApp() {
+      const cat = document.getElementById('advCategory').value;
+      const msg = document.getElementById('advMessageText').value.trim();
+      if (!msg) { alert("कृपया संदेश लिखें!"); return; }
+
+      const dateStr = new Date().toLocaleString();
+      const formattedMessage = encodeURIComponent(
+        `📢 *पश्चिम मध्य रेल — सगोनी पी-वे सेक्शन एडवाइजरी*\n\n` +
+        `🔴 *श्रेणी:* ${cat}\n` +
+        `👤 *जारीकर्ता:* SE (P-Way) सगोनी (9752418177)\n` +
+        `📅 *दिनांक व समय:* ${dateStr}\n\n` +
+        `📝 *संरक्षा निर्देश:*\n"${msg}"\n\n` +
+        `_कृपया सभी मुकद्दम व कीमैन इस निर्देश का कड़ाई से पालन सुनिश्चित करें।_`
+      );
+
+      // Open WhatsApp Dispatcher Link
+      window.open(`https://api.whatsapp.com/send?text=${formattedMessage}`, '_blank');
+    }
+
+    /* =================== 🛠️ COMPLIANCE & RECTIFICATION =================== */
     async function resolveEmergencyIncident(incId) {
-      const remarks = prompt("इमरजेंसी अटेंड / ठीक करने का विवरण दर्ज करें (Rectification Remarks):", "ट्रैक क्लियर किया गया एवं गाड़ी सुरक्षित रूप से पास कराई गई।");
+      const remarks = prompt("इमरजेंसी अटेंड / ठीक करने का विवरण दर्ज करें (Rectification Remarks):", "ट्रैक क्लियर किया गया एवं गाड़ी सुरक्षित पास कराई गई।");
       if (remarks === null) return;
 
       const { error } = await db.from('emergency_incidents').update({
@@ -910,13 +1076,28 @@
 
       if (error) alert("एरर: " + error.message);
       else {
-        showToast("✅ आपातकालीन अलर्ट सफलतापूर्वक अटेंड / क्लोज़ किया गया!");
+        showToast("✅ आपातकालीन अलर्ट अटेंड / क्लोज़ किया गया!");
+        loadEmergencies();
+      }
+    }
+
+    async function deleteEmergencyIncident(incId) {
+      if (!isCurrentUserSE()) {
+        alert("🔒 केवल SE को ही आपातकालीन अलर्ट डिलीट / क्लियर करने का अधिकार है!");
+        return;
+      }
+      if (!confirm("क्या आप वाकई इस आपातकालीन अलर्ट को डेटाबेस से हटाना चाहते हैं?")) return;
+
+      const { error } = await db.from('emergency_incidents').delete().eq('id', incId);
+      if (error) alert("एरर: " + error.message);
+      else {
+        showToast("🗑️ आपातकालीन रिकॉर्ड हटा दिया गया!");
         loadEmergencies();
       }
     }
 
     async function rectifyDefect(defId) {
-      const remarks = prompt("डिफेक्ट ठीक करने का विवरण दर्ज करें (Compliance Note):", "मौके पर डिफेक्ट ठीक किया गया / क्लैंप/फिशप्लेट लगाया गया। Beat OK.");
+      const remarks = prompt("डिफेक्ट ठीक करने का विवरण दर्ज करें (Compliance Note):", "मौके पर डिफेक्ट ठीक किया गया। Beat OK.");
       if (remarks === null) return;
 
       const { error } = await db.from('track_defects').update({
@@ -932,7 +1113,7 @@
       }
     }
 
-    /* =================== 📊 MONTHLY REPORT GENERATOR =================== */
+    /* =================== 📊 MONTHLY REPORT =================== */
     let latestReportData = null;
 
     async function generateMonthlySectionSummary() {
@@ -1020,7 +1201,7 @@
         doc.text(`Monthly Section Management & Track Performance Report: ${latestReportData.month}`, 105, 15, { align: 'center' });
 
         doc.setFontSize(8.5); doc.setTextColor(15, 23, 42);
-        doc.text(`Section: Sagoni (Km 1157.000 to 1173.000) | Generated By: ${activeUser ? activeUser.name : 'JE P-Way'}`, 14, 27);
+        doc.text(`Section: Sagoni (Km 1157.000 to 1173.000) | Generated By: ${activeUser ? activeUser.name : 'SE P-Way'}`, 14, 27);
 
         const summaryRows = [
           ['Total Man-Days Deployed', `${latestReportData.totalManDays}`],
@@ -1046,17 +1227,18 @@
 
     /* =================== 📞 CONTACT DIRECTORY =================== */
     const DEFAULT_SECTION_CONTACTS = [
-      { id: "c1", designation: "Section Engineer (JE P-Way)", name: "JE (P-Way) Sagoni In-Charge", phone: "9752418177" },
-      { id: "c2", designation: "Assistant Divisional Engineer (ADEN)", name: "ADEN Damoh / Katni", phone: "9425222222" },
-      { id: "c3", designation: "Senior Section Engineer (SSE)", name: "SSE (P-Way) Main Section", phone: "9425333333" },
-      { id: "c4", designation: "Station Master (सगोनी)", name: "Station Superintendent Sagoni", phone: "9425444444" },
-      { id: "c5", designation: "Station Master (रतनगांव)", name: "SM Ratangaon Station", phone: "9425555555" },
-      { id: "c6", designation: "गोला पट्टी (IBH Cabin)", name: "IBH Switchman Gholapatti", phone: "9425666666" },
-      { id: "c7", designation: "गैंग-01 मुकद्दम", name: "रामलाल मुकद्दम (Gang-01)", phone: "9425777777" },
-      { id: "c8", designation: "गैंग-02 मुकद्दम", name: "श्याम सिंह मुकद्दम (Gang-02)", phone: "9425888888" },
-      { id: "c9", designation: "कीमैन (UP Line)", name: "सुरेश कीमैन (1157-1165)", phone: "9425999999" },
-      { id: "c10", designation: "नाइट पेट्रोलमैन", name: "राकेश पेट्रोलमैन (UP/DN Line)", phone: "9425000011" },
-      { id: "c11", designation: "रेलवे कंट्रोल रूम (जबलपुर)", name: "P-Way Control / Test Room", phone: "9425000022" }
+      { id: "c1", designation: "Sectional Engineer (SE P-Way In-Charge)", name: "SE (P-Way) Sagoni Section", phone: "9752418177" },
+      { id: "c2", designation: "Junior Engineer (JE P-Way)", name: "JE (P-Way) Sagoni Section", phone: "9425111111" },
+      { id: "c3", designation: "Assistant Divisional Engineer (ADEN)", name: "ADEN Damoh / Katni", phone: "9425222222" },
+      { id: "c4", designation: "Senior Section Engineer (SSE)", name: "SSE (P-Way) Main Section", phone: "9425333333" },
+      { id: "c5", designation: "Station Master (सगोनी)", name: "Station Superintendent Sagoni", phone: "9425444444" },
+      { id: "c6", designation: "Station Master (रतनगांव)", name: "SM Ratangaon Station", phone: "9425555555" },
+      { id: "c7", designation: "गोला पट्टी (IBH Cabin)", name: "IBH Switchman Gholapatti", phone: "9425666666" },
+      { id: "c8", designation: "गैंग-01 मुकद्दम", name: "रामलाल मुकद्दम (Gang-01)", phone: "9425777777" },
+      { id: "c9", designation: "गैंग-02 मुकद्दम", name: "श्याम सिंह मुकद्दम (Gang-02)", phone: "9425888888" },
+      { id: "c10", designation: "कीमैन (UP Line)", name: "सुरेश कीमैन (1157-1165)", phone: "9425999999" },
+      { id: "c11", designation: "नाइट पेट्रोलमैन", name: "राकेश पेट्रोलमैन (UP/DN Line)", phone: "9425000011" },
+      { id: "c12", designation: "रेलवे कंट्रोल रूम (जबलपुर)", name: "P-Way Control / Test Room", phone: "9425000022" }
     ];
 
     function getStoredContacts() {
@@ -1075,6 +1257,12 @@
         const cleanNumber = c.phone.replace(/[^0-9]/g, '');
         const item = document.createElement("div");
         item.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:rgba(11,19,41,0.7); border:1px solid #334155; border-radius:12px; padding:12px; margin-bottom:10px; gap:8px; flex-wrap:wrap;";
+        
+        const seControls = isCurrentUserSE() ? `
+          <button onclick="editContactPrompt('${c.id}')" class="btn-contact-icon">✏️</button>
+          <button onclick="deleteContactPrompt('${c.id}')" class="btn-contact-icon del">🗑️</button>
+        ` : '';
+
         item.innerHTML = `
           <div style="flex:1; min-width:180px;">
             <div style="font-size:10px; color:var(--accent-blue); font-weight:800; text-transform:uppercase; letter-spacing:0.5px;">${c.designation}</div>
@@ -1084,8 +1272,7 @@
           <div style="display:flex; gap:6px; align-items:center;">
             <a href="tel:${c.phone}" class="btn-contact-action btn-contact-call">📞 कॉल</a>
             <a href="https://wa.me/91${cleanNumber}?text=नमस्ते,%20सगोनी%20पी-वे%20सेक्शन%20अलर्ट:" target="_blank" class="btn-contact-action btn-contact-wa">💬 WhatsApp</a>
-            <button onclick="editContactPrompt('${c.id}')" class="btn-contact-icon">✏️</button>
-            <button onclick="deleteContactPrompt('${c.id}')" class="btn-contact-icon del">🗑️</button>
+            ${seControls}
           </div>
         `;
         container.appendChild(item);
@@ -1093,6 +1280,10 @@
     }
 
     function switchContactTab(tabName) {
+      if (tabName === 'contactAddSec' && !isCurrentUserSE()) {
+        alert("🔒 केवल SE (Sectional Engineer) को ही नया कांटेक्ट जोड़ने या बदलने का अधिकार है!");
+        return;
+      }
       document.getElementById('contactListSec').style.display = (tabName === 'contactListSec') ? 'block' : 'none';
       document.getElementById('contactAddSec').style.display = (tabName === 'contactAddSec') ? 'block' : 'none';
       document.getElementById('btnTabContactList').classList.toggle('active', tabName === 'contactListSec');
@@ -1104,22 +1295,20 @@
       document.getElementById('cntDesignation').value = "";
       document.getElementById('cntName').value = "";
       document.getElementById('cntPhone').value = "";
-      document.getElementById('cntSecurityPin').value = "";
       document.getElementById('contactFormHeading').innerText = "➕ नया आधिकारिक कांटेक्ट जोड़ें";
       switchContactTab('contactListSec');
     }
 
     function saveContactForm() {
+      if (!isCurrentUserSE()) {
+        alert("🔒 केवल SE ही कांटेक्ट सुरक्षित कर सकते हैं!");
+        return;
+      }
       const id = document.getElementById('editContactId').value;
       const desig = document.getElementById('cntDesignation').value.trim();
       const name = document.getElementById('cntName').value.trim();
       const phone = document.getElementById('cntPhone').value.trim();
-      const pin = document.getElementById('cntSecurityPin').value.trim();
 
-      if (!isCurrentUserJE() && pin !== JE_MASTER_PIN) {
-        alert("🔒 गलत JE/SSE सुरक्षा पिन! केवल अधिकृत इंचार्ज ही कांटेक्ट जोड़ या बदल सकते हैं।");
-        return;
-      }
       if (!desig || !name || !phone) { alert("कृपया सभी विवरण दर्ज करें!"); return; }
 
       let contacts = getStoredContacts();
@@ -1133,10 +1322,7 @@
     }
 
     function editContactPrompt(contactId) {
-      if (!isCurrentUserJE()) {
-        const pin = prompt("🔒 कांटेक्ट एडिट करने के लिए JE Security PIN दर्ज करें:");
-        if (pin !== JE_MASTER_PIN) { alert("गलत पिन!"); return; }
-      }
+      if (!isCurrentUserSE()) { alert("🔒 केवल SE को अधिकार है!"); return; }
       const contacts = getStoredContacts();
       const contact = contacts.find(c => c.id === contactId);
       if (!contact) return;
@@ -1145,16 +1331,12 @@
       document.getElementById('cntDesignation').value = contact.designation;
       document.getElementById('cntName').value = contact.name;
       document.getElementById('cntPhone').value = contact.phone;
-      document.getElementById('cntSecurityPin').value = JE_MASTER_PIN;
       document.getElementById('contactFormHeading').innerText = `✏️ कांटेक्ट एडिट करें (${contact.name})`;
       switchContactTab('contactAddSec');
     }
 
     function deleteContactPrompt(contactId) {
-      if (!isCurrentUserJE()) {
-        const pin = prompt("🔒 कांटेक्ट हटाने के लिए JE Security PIN दर्ज करें:");
-        if (pin !== JE_MASTER_PIN) { alert("गलत पिन!"); return; }
-      }
+      if (!isCurrentUserSE()) { alert("🔒 केवल SE को हटाने का अधिकार है!"); return; }
       if (!confirm("क्या आप वाकई इस कांटेक्ट को हटाना चाहते हैं?")) return;
       let contacts = getStoredContacts();
       contacts = contacts.filter(c => c.id !== contactId);
@@ -1166,7 +1348,7 @@
     function openContactsModal() { renderContactsList(); switchContactTab('contactListSec'); document.getElementById("contactsModal").style.display = "flex"; }
     function closeContactsModal() { document.getElementById("contactsModal").style.display = "none"; }
 
-    /* =================== 📄 CLIENT-SIDE PDF ENGINE =================== */
+    /* =================== 📄 PDF HUB =================== */
     function generateAnnexure39PDF() {
       try {
         const { jsPDF } = window.jspdf;
@@ -1217,7 +1399,6 @@
       } catch (err) { alert('त्रुटि: ' + err.message); }
     }
 
-    /* =================== 📁 DYNAMIC PDF REPOSITORY =================== */
     const DEFAULT_DOCUMENTS = [{ id: "annexure-3-9-default", title: "Annexure-3/9 (Para 338, 347, 350)", sub: "SEJ Gaps Chart • Zone-III (60 kg, td=38°C)", isBuiltIn: true }];
 
     function getStoredDocuments() {
@@ -1225,8 +1406,6 @@
       if (stored) { try { return JSON.parse(stored); } catch (e) { return DEFAULT_DOCUMENTS; } }
       return DEFAULT_DOCUMENTS;
     }
-
-    function isCurrentUserJE() { return activeUser && (activeUser.role === 'je' || activeUser.emp_id === 'JE01'); }
 
     function renderDocsList() {
       const docs = getStoredDocuments();
@@ -1237,9 +1416,12 @@
       docs.forEach((d) => {
         const item = document.createElement("div");
         item.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:rgba(11,19,41,0.7); border:1px solid #334155; border-radius:12px; padding:12px; margin-bottom:10px;";
+        
+        const deleteBtn = isCurrentUserSE() ? `<button onclick="deleteDocItem('${d.id}')" style="background:none; border:none; color:#ef4444; font-size:16px; cursor:pointer; margin-left:8px;">🗑️</button>` : '';
+
         const actionBtn = d.isBuiltIn
-          ? `<button onclick="generateAnnexure39PDF()" class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;">📥 डाउनलोड PDF</button><button onclick="deleteDocItem('${d.id}')" style="background:none; border:none; color:#ef4444; font-size:16px; cursor:pointer; margin-left:8px;">🗑️</button>`
-          : `<button onclick="downloadUploadedPDF('${d.id}')" class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;">📥 खोलें / PDF</button><button onclick="deleteDocItem('${d.id}')" style="background:none; border:none; color:#ef4444; font-size:16px; cursor:pointer; margin-left:8px;">🗑️</button>`;
+          ? `<button onclick="generateAnnexure39PDF()" class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;">📥 डाउनलोड PDF</button>${deleteBtn}`
+          : `<button onclick="downloadUploadedPDF('${d.id}')" class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;">📥 खोलें / PDF</button>${deleteBtn}`;
 
         item.innerHTML = `
           <div style="display:flex; align-items:center; gap:10px;">
@@ -1253,6 +1435,10 @@
     }
 
     function switchDocTab(tabName) {
+      if (tabName === 'docAddSec' && !isCurrentUserSE()) {
+        alert("🔒 केवल SE (Sectional Engineer) ही नया तकनीकी दस्तावेज़ अपलोड कर सकते हैं!");
+        return;
+      }
       document.getElementById('docListSec').style.display = (tabName === 'docListSec') ? 'block' : 'none';
       document.getElementById('docAddSec').style.display = (tabName === 'docAddSec') ? 'block' : 'none';
       document.getElementById('btnTabDocList').classList.toggle('active', tabName === 'docListSec');
@@ -1274,6 +1460,7 @@
     }
 
     function saveNewUploadedPDF() {
+      if (!isCurrentUserSE()) { alert("🔒 केवल SE को अपलोड अधिकार है!"); return; }
       const title = document.getElementById("newDocTitle").value.trim();
       const sub = document.getElementById("newDocSub").value.trim();
       if (!title || !selectedPDFBase64) { alert("कृपया दस्तावेज़ का नाम और PDF फाइल चुनें!"); return; }
@@ -1303,10 +1490,7 @@
     }
 
     function deleteDocItem(id) {
-      if (!isCurrentUserJE()) {
-        const pin = prompt("🔒 दस्तावेज़ हटाने के लिए JE Security PIN दर्ज करें:");
-        if (pin !== JE_MASTER_PIN) { alert("गलत पिन!"); return; }
-      }
+      if (!isCurrentUserSE()) { alert("🔒 केवल SE को हटाने का अधिकार है!"); return; }
       if (!confirm("क्या आप वाकई इस दस्तावेज़ को हटाना चाहते हैं?")) return;
       let docs = getStoredDocuments();
       docs = docs.filter(d => String(d.id) !== String(id));
@@ -1510,14 +1694,24 @@
         senderLines.delete(lineName); btn.classList.remove('selected');
       } else { senderLines.add(lineName); btn.classList.add('selected'); }
     }
-    function handleSenderFormSubmit(e) { e.preventDefault(); sendMultiLiveTrainAlert('DISPATCHED'); }
-    async function sendMultiLiveTrainAlert(alertType) {
-      const senderId = document.getElementById('sndEmpId').value.trim().toUpperCase() || 'P-WAY_USER';
+
+    function handleSenderFormSubmit(e) {
+      e.preventDefault();
+      const phone = document.getElementById('sndPhone').value.trim();
+      const staff = isUserAuthorized(phone);
+      if (!staff) {
+        alert("⚠️ यह मोबाइल नंबर अधिकृत सूची में नहीं है!");
+        return;
+      }
+      sendMultiLiveTrainAlert('DISPATCHED', staff);
+    }
+
+    async function sendMultiLiveTrainAlert(alertType, staffObj) {
       const train = document.getElementById('sndTrain').value || 'गाड़ी';
       const payloads = [];
       senderMovements.forEach(mv => {
         senderLines.forEach(ln => {
-          payloads.push({ sender_id: senderId, line_name: ln, alert_type: alertType, train_no: train, location_note: JSON.stringify({ block: mv.block, movement: mv.name }) });
+          payloads.push({ sender_id: `${staffObj.name} (${staffObj.emp_id})`, line_name: ln, alert_type: alertType, train_no: train, location_note: JSON.stringify({ block: mv.block, movement: mv.name }) });
         });
       });
       const { error } = await db.from('train_live_alerts').insert(payloads);
@@ -1539,7 +1733,16 @@
         mySubscribedLines.delete(lineName); btn.classList.remove('selected');
       } else { mySubscribedLines.add(lineName); btn.classList.add('selected'); }
     }
-    function handleReceiverLockSubmit(e) { e.preventDefault(); lockAndStartMonitoring(); }
+    function handleReceiverLockSubmit(e) {
+      e.preventDefault();
+      const phone = document.getElementById('rcvPhone').value.trim();
+      const staff = isUserAuthorized(phone);
+      if (!staff) {
+        alert("⚠️ यह मोबाइल नंबर अधिकृत सूची में नहीं है!");
+        return;
+      }
+      lockAndStartMonitoring();
+    }
     function lockAndStartMonitoring() {
       initAudio();
       document.querySelectorAll('#rcvBlockGrid .pills-btn, #rcvLineGrid .pills-btn').forEach(btn => btn.classList.add('locked'));
@@ -1583,20 +1786,20 @@
     }
 
     /* =================== AUTH TABS =================== */
-    function switchJETab(tabId) {
-      saveActiveTab("sagoni_tms_je_tab", tabId);
-      document.querySelectorAll('#jeForm .tab-bar .tab-btn').forEach(btn => btn.classList.remove('active'));
-      const activeBtn = document.getElementById('jeTab_' + tabId);
+    function switchAdminTab(tabId) {
+      saveActiveTab("sagoni_tms_adm_tab", tabId);
+      document.querySelectorAll('#adminForm .tab-bar .tab-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById('admTab_' + tabId);
       if (activeBtn) activeBtn.classList.add('active');
 
-      ['tabMusterLog', 'tabEmergency', 'tabMate', 'tabDefects', 'tabMap', 'tabMonthlyReport'].forEach(t => document.getElementById(t).style.display = 'none');
+      ['tabMusterLog', 'tabEmergency', 'tabMate', 'tabDefects', 'tabMap', 'tabBroadcast', 'tabMonthlyReport'].forEach(t => document.getElementById(t).style.display = 'none');
       document.getElementById(tabId).style.display = 'block';
 
       if (tabId === 'tabMap') loadDefects();
       if (tabId === 'tabMonthlyReport' && !latestReportData) generateMonthlySectionSummary();
     }
 
-    /* =================== SOS & EMERGENCY HANDLERS =================== */
+    /* =================== SOS & EMERGENCY (WITH COMPRESSION) =================== */
     function selectEmergencyType(type) {
       document.getElementById('selectedTypeTitle').innerText = 'रिपोर्ट: ' + type;
       document.getElementById('emIncidentType').value = type;
@@ -1607,9 +1810,27 @@
 
     async function submitEmergencyIncident(e) {
       e.preventDefault();
-      const btn = document.getElementById('emBtn'); btn.innerText = "अपलोड हो रहा है..."; btn.disabled = true;
+      const btn = document.getElementById('emBtn'); 
+      btn.innerText = "⏳ जांच व कंप्रेस हो रहा है..."; 
+      btn.disabled = true;
+
       try {
-        const empId = document.getElementById('emEmpId').value.trim().toUpperCase();
+        const phone = document.getElementById('emPhone').value.trim();
+        const staff = isUserAuthorized(phone);
+
+        if (!staff) {
+          alert("❌ अमान्य मोबाइल नंबर! यह नंबर सगोनी पी-वे अधिकृत सूची में पंजीकृत नहीं है।");
+          btn.innerText = "🚨 तुरंत इमरजेंसी दर्ज करें";
+          btn.disabled = false;
+          return;
+        }
+
+        const fileInput = document.getElementById('emPhoto');
+        let compressedPhoto = null;
+        if (fileInput.files.length > 0) {
+          compressedPhoto = await compressImageFile(fileInput.files[0], 1000, 0.65);
+        }
+
         const incType = document.getElementById('emIncidentType').value;
         const line = document.getElementById('emLine').value;
         const km = parseFloat(document.getElementById('emKm').value);
@@ -1618,25 +1839,49 @@
         const remarks = document.getElementById('emRemarks').value;
 
         const payload = {
-          reporter_emp_id: empId, reporter_name: empId,
-          incident_type: incType, line_name: line, km_location: km, pole_no: pole, train_no: train, remarks: remarks
+          reporter_emp_id: staff.emp_id, 
+          reporter_name: `${staff.name} (${phone})`,
+          incident_type: incType, 
+          line_name: line, 
+          km_location: km, 
+          pole_no: pole, 
+          train_no: train, 
+          remarks: remarks,
+          photo_url: compressedPhoto
         };
 
         const { error } = await db.from('emergency_incidents').insert([payload]);
-        btn.innerText = "🚨 तुरंत इमरजेंसी दर्ज करें"; btn.disabled = false;
+        btn.innerText = "🚨 तुरंत इमरजेंसी दर्ज करें"; 
+        btn.disabled = false;
 
         if (error) alert('त्रुटि: ' + error.message);
         else {
-          closeEmergencyForm(); showToast('✅ आपातकालीन अलर्ट दर्ज हो गया!'); e.target.reset();
-          const alertMessage = encodeURIComponent(`🚨 *सगोनी पी-वे सेक्शन आपातकालीन अलर्ट!*\n\n⚠️ *घटना:* ${incType}\n📍 *स्थान:* ${line} @ Km ${km} (खंभा: ${pole})\n🚆 *गाड़ी सं.:* ${train}\n👤 *रिपोर्टकर्ता:* ${empId}\n📝 *विवरण:* ${remarks}`);
-          window.open(`https://wa.me/${JE_EMERGENCY_MOBILE}?text=${alertMessage}`, '_blank');
+          closeEmergencyForm(); 
+          showToast('✅ आपातकालीन अलर्ट दर्ज हो गया!'); 
+          e.target.reset();
+          document.getElementById('compressStatusText').innerText = '';
+
+          // 📲 Auto Dispatch Alert to SE Mobile (9752418177)
+          const alertMessage = encodeURIComponent(
+            `🚨 *सगोनी पी-वे सेक्शन आपातकालीन अलर्ट!*\n\n` +
+            `⚠️ *घटना:* ${incType}\n` +
+            `📍 *स्थान:* ${line} @ Km ${km} (खंभा: ${pole})\n` +
+            `🚆 *गाड़ी सं.:* ${train}\n` +
+            `👤 *रिपोर्टकर्ता:* ${staff.name} (📞 ${phone})\n` +
+            `📝 *विवरण:* ${remarks}`
+          );
+          window.open(`https://wa.me/91${SE_MOBILE_NUMBER}?text=${alertMessage}`, '_blank');
         }
-      } catch (err) { btn.innerText = "🚨 तुरंत इमरजेंसी दर्ज करें"; btn.disabled = false; alert('त्रुटि: ' + err.message); }
+      } catch (err) { 
+        btn.innerText = "🚨 तुरंत इमरजेंसी दर्ज करें"; 
+        btn.disabled = false; 
+        alert('त्रुटि: ' + err.message); 
+      }
     }
 
     async function loadEmergencies() {
       const container = document.getElementById('emergencyLiveList');
-      const { data } = await db.from('emergency_incidents').select('*').order('created_at', { ascending: false }).limit(10);
+      const { data } = await db.from('emergency_incidents').select('*').order('created_at', { ascending: false }).limit(15);
       if (!data || data.length === 0) {
         container.innerHTML = '<div style="color:#22c55e; padding:10px; background:#0b1329; border-radius:10px; text-align:center;">🟢 कोई सक्रिय अलर्ट नहीं है।</div>';
         return;
@@ -1646,6 +1891,10 @@
         const isResolved = (inc.remarks && inc.remarks.includes('[RESOLVED'));
         const badge = isResolved ? '<span style="background:#16a34a; color:#fff; font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px;">RESOLVED</span>' : '<span style="background:#ef4444; color:#fff; font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px;">ACTIVE</span>';
         
+        const seDeleteOption = isCurrentUserSE() ? `
+          <button onclick="deleteEmergencyIncident('${inc.id}')" class="btn-action-small" style="background:#7f1d1d; color:#fca5a5; margin-left:6px;">🗑️ डिलीट / क्लियर</button>
+        ` : '';
+
         html += `
           <div style="background:#0b1329; border-left:4px solid ${isResolved ? '#22c55e' : '#ef4444'}; padding:12px; border-radius:10px; margin-bottom:10px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -1657,11 +1906,12 @@
               📝 <em>${inc.remarks}</em><br>
               <span style="color:var(--accent-blue); font-size:11px;">रिपोर्टकर्ता: <strong>${inc.reporter_name}</strong></span>
             </div>
-            ${!isResolved ? `
-              <div style="margin-top:8px; text-align:right;">
-                <button onclick="resolveEmergencyIncident('${inc.id}')" class="btn-action-small btn-resolve">✅ अटेंड / ठीक किया (Rectified)</button>
-              </div>
-            ` : ''}
+            ${inc.photo_url ? `<div style="margin-top:8px;"><img src="${inc.photo_url}" style="max-width:100%; max-height:200px; border-radius:8px; border:1px solid #334155; object-fit:contain;"></div>` : ''}
+            
+            <div style="margin-top:8px; text-align:right;">
+              ${!isResolved ? `<button onclick="resolveEmergencyIncident('${inc.id}')" class="btn-action-small btn-resolve">✅ अटेंड / ठीक किया (Rectified)</button>` : ''}
+              ${seDeleteOption}
+            </div>
           </div>
         `;
       });
@@ -1769,7 +2019,7 @@
 
     function closeDefectInfoCard() { document.getElementById('defectInfoCard').style.display = 'none'; }
 
-    // Restore Session & Initialize Directories
+    // Init & State Restoration
     restoreAppState();
     renderDocsList();
     renderContactsList();
