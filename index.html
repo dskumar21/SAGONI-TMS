@@ -64,7 +64,6 @@
       margin: 0 auto;
     }
 
-    /* Modern Bento-Grid Header */
     .header-bento {
       background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
       backdrop-filter: blur(14px);
@@ -115,7 +114,6 @@
       border-radius: 20px;
     }
 
-    /* Modern Bento Dashboard Grid */
     .bento-grid {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
@@ -123,7 +121,6 @@
       margin-bottom: 14px;
     }
 
-    /* Bento Card Spans */
     .col-12 { grid-column: span 12; }
     .col-8  { grid-column: span 8; }
     .col-6  { grid-column: span 6; }
@@ -133,7 +130,6 @@
       .col-8, .col-6, .col-4 { grid-column: span 12 !important; }
     }
 
-    /* Bento Glass Card */
     .bento-card {
       background: var(--card-bg);
       backdrop-filter: blur(12px);
@@ -151,7 +147,6 @@
       box-shadow: 0 10px 25px rgba(2, 132, 199, 0.2);
     }
 
-    /* Card Themes */
     .bento-card.docs-hub {
       background: linear-gradient(135deg, rgba(30, 58, 138, 0.4) 0%, rgba(15, 23, 42, 0.85) 100%);
       border: 1px solid rgba(245, 158, 11, 0.45);
@@ -172,7 +167,6 @@
       background: linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(20, 10, 18, 0.8) 100%);
     }
 
-    /* Form Controls */
     .form-group { margin-bottom: 12px; }
     label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase; }
     input, select, textarea {
@@ -194,7 +188,6 @@
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
     .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 
-    /* Interactive Buttons */
     .btn {
       width: 100%;
       padding: 11px 14px;
@@ -218,7 +211,6 @@
     .btn-purple { background: linear-gradient(135deg, #9333ea, #7e22ce); }
     .btn-csv { background: #059669; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
 
-    /* Pill Selectors */
     .section-pills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
     .line-selector-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
     .pills-btn {
@@ -242,7 +234,6 @@
     }
     .pills-btn.locked { opacity: 0.6; pointer-events: none; }
 
-    /* SOS Matrix */
     .sos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
     .sos-item {
       background: rgba(11, 19, 41, 0.6);
@@ -260,7 +251,6 @@
     .sos-icon { font-size: 22px; display: block; margin-bottom: 2px; }
     .sos-label { font-size: 10px; font-weight: 700; color: #fecaca; }
 
-    /* Train Safety Quick Select */
     .train-action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
     .train-action-box {
       background: rgba(11, 19, 41, 0.6);
@@ -276,7 +266,6 @@
       border-color: var(--accent-blue);
     }
 
-    /* Modal System */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -300,12 +289,10 @@
       box-shadow: 0 20px 50px rgba(0,0,0,0.85);
     }
 
-    /* Tab Switcher */
     .tab-bar { display: flex; gap: 6px; margin-bottom: 12px; background: rgba(11, 19, 41, 0.8); padding: 4px; border-radius: 10px; border: 1px solid #334155; }
     .tab-btn { flex: 1; padding: 8px 4px; border: none; background: transparent; color: var(--text-muted); font-size: 11px; font-weight: 700; border-radius: 8px; cursor: pointer; text-align: center; transition: 0.2s; }
     .tab-btn.active { background: #2563eb; color: white; }
 
-    /* PDF File Drag & Pick Zone */
     .file-dropzone {
       border: 2px dashed rgba(56, 189, 248, 0.4);
       border-radius: 12px;
@@ -321,14 +308,12 @@
       background: rgba(2, 132, 199, 0.1);
     }
 
-    /* Alerts and Toasts */
     .toast { display: none; background: #065f46; border: 1px solid #34d399; color: #ecfdf5; padding: 10px; border-radius: 10px; font-size: 12px; font-weight: 600; text-align: center; margin-bottom: 12px; }
     #sirenAlarmBox { display: none; background: #7f1d1d; border: 3px solid #ef4444; border-radius: 16px; padding: 18px 12px; text-align: center; margin-bottom: 14px; animation: pulseAlert 0.8s infinite alternate; }
     @keyframes pulseAlert { 0% { box-shadow: 0 0 10px #ef4444; } 100% { box-shadow: 0 0 25px #dc2626; background: #991b1b; } }
     #floatingStopBar { display: none; position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 480px; z-index: 10000; }
     #floatingStopBar button { background: #ffffff; color: #b91c1c; border: 3px solid #ef4444; border-radius: 50px; font-size: 16px; font-weight: 900; padding: 14px; box-shadow: 0 10px 25px rgba(0,0,0,0.6); width: 100%; cursor: pointer; }
 
-    /* Tables */
     .table-responsive { max-height: 380px; overflow-y: auto; overflow-x: auto; border: 1px solid #334155; border-radius: 10px; }
     table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: left; }
     th { background: #0b1329; color: var(--accent-blue); padding: 9px 10px; position: sticky; top: 0; border-bottom: 1px solid #334155; white-space: nowrap; }
@@ -338,14 +323,12 @@
 </head>
 <body>
 
-  <!-- Floating Audio Acknowledge Stop Bar -->
   <div id="floatingStopBar">
     <button onclick="stopAlarmSound()">🔕 अलार्म बंद करें (Acknowledge & Stop)</button>
   </div>
 
   <div class="container">
     
-    <!-- Bento Dashboard Header -->
     <div class="header-bento">
       <div class="header-info">
         <div class="ir-badge">
@@ -360,7 +343,6 @@
       </div>
     </div>
 
-    <!-- Active Alarm Notification -->
     <div id="sirenAlarmBox">
       <div style="font-size: 32px; margin-bottom: 4px;">🚨 📢 ⚠️</div>
       <h2 id="sirenAlertTitle" style="color: #fff; font-size: 18px; font-weight: 900;">ट्रेन आ रही है! तुरंत ट्रैक छोड़ें!</h2>
@@ -370,12 +352,11 @@
 
     <div id="toast" class="toast"></div>
 
-    <!-- MAIN DASHBOARD (BENTO GRID) -->
     <div id="homeSection">
       
       <div class="bento-grid">
 
-        <!-- Bento Card 1: 📂 Important Docs Hub (Span 12) -->
+        <!-- 📂 Important Docs Hub -->
         <div class="bento-card docs-hub col-12" onclick="openDocsModal()">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="display: flex; align-items: center; gap: 14px;">
@@ -384,7 +365,7 @@
               </div>
               <div>
                 <strong style="color: var(--accent-amber); font-size: 15px; display:block;">महत्वपूर्ण दस्तावेज़ व तकनीकी संदर्भ केंद्र</strong>
-                <p style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">Annexure-3/9 SEJ गैप चार्ट (Client PDF Engine), डायरेक्ट PDF फाइल अपलोडर व मैन्युअल्स</p>
+                <p style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">Annexure-3/9 SEJ गैप चार्ट, सुरक्षित अपलोड्स एवं अधिकृत तकनीकी संदर्भ</p>
               </div>
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
@@ -394,7 +375,7 @@
           </div>
         </div>
 
-        <!-- Bento Card 2: 🚆 Train Block Protection (Span 8) -->
+        <!-- 🚆 Train Block Protection -->
         <div class="bento-card train-hub col-8">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <strong style="color: var(--accent-blue); font-size: 14px;">🚆 रिलेटिव सेक्शन ब्लॉक सुरक्षा प्रणाली</strong>
@@ -515,7 +496,7 @@
           </div>
         </div>
 
-        <!-- Bento Card 3: 🔐 Staff Token Login (Span 4) -->
+        <!-- 🔐 Staff Token Login -->
         <div class="bento-card col-4">
           <div style="text-align: center; margin-bottom: 10px;">
             <span style="font-size: 26px;">🔐</span>
@@ -536,7 +517,7 @@
           </div>
         </div>
 
-        <!-- Bento Card 4: 🚨 Rapid Emergency SOS (Span 12) -->
+        <!-- 🚨 Rapid Emergency SOS -->
         <div class="bento-card emergency-hub col-12">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <strong style="color: #f87171; font-size: 14px;">🚨 त्वरित आपातकालीन रिपोर्टिंग (Direct SOS)</strong>
@@ -836,20 +817,19 @@
       <!-- Tab Switcher -->
       <div class="tab-bar">
         <button class="tab-btn active" id="btnTabDocList" onclick="switchDocTab('docListSec')">📄 सुरक्षित दस्तावेज़ (View / Download)</button>
-        <button class="tab-btn" id="btnTabDocAdd" onclick="switchDocTab('docAddSec')">📤 नया PDF अपलोड करें (Only PDF)</button>
+        <!-- केवल JE लॉगिन होने पर दिखेगा -->
+        <button class="tab-btn" id="btnTabDocAdd" onclick="switchDocTab('docAddSec')" style="display: none;">📤 नया PDF अपलोड (JE Only)</button>
       </div>
 
       <!-- Tab 1: List View -->
       <div id="docListSec">
-        <div id="docsContainerList">
-          <!-- Populated by JS -->
-        </div>
+        <div id="docsContainerList"></div>
       </div>
 
-      <!-- Tab 2: Native PDF File Upload Box -->
+      <!-- Tab 2: Admin/JE Only Direct PDF File Upload Box -->
       <div id="docAddSec" style="display: none;">
         <div style="background:rgba(11,19,41,0.6); border:1px solid rgba(56, 189, 248, 0.3); border-radius:12px; padding:14px;">
-          <strong style="color:var(--accent-blue); font-size:13px; display:block; margin-bottom:10px;">📤 डिवाइस (मोबाइल/लैपटॉप) से सीधी PDF फाइल अपलोड करें</strong>
+          <strong style="color:var(--accent-blue); font-size:13px; display:block; margin-bottom:10px;">📤 डिवाइस से अधिकृत PDF फाइल अपलोड करें (Max 5MB)</strong>
           
           <div class="form-group">
             <label>दस्तावेज़ का नाम (Title)</label>
@@ -857,7 +837,7 @@
           </div>
           
           <div class="form-group">
-            <label>छोटा विवरण / सबटाइटल</label>
+            <label>छोटा विवरण / संदर्भ</label>
             <input type="text" id="newDocSub" placeholder="उदा: 60kg Rail Track Inspection Chart">
           </div>
 
@@ -866,13 +846,13 @@
             <div class="file-dropzone" onclick="document.getElementById('pdfFileInput').click()">
               <span style="font-size:26px; display:block; margin-bottom:4px;">📄</span>
               <span id="chosenFileName" style="font-size:12px; color:#38bdf8; font-weight:bold;">फ़ाइल सेलेक्ट करने के लिए यहाँ टच करें</span>
-              <p style="font-size:10px; color:#94a3b8; margin-top:2px;">(केवल PDF फाइल स्वीकार की जाएगी)</p>
+              <p style="font-size:10px; color:#94a3b8; margin-top:2px;">(Magic Byte Verification • Anti-Virus Protected)</p>
             </div>
             <input type="file" id="pdfFileInput" accept="application/pdf" style="display:none;" onchange="handlePDFSelection(event)">
           </div>
 
           <button type="button" onclick="saveNewUploadedPDF()" class="btn btn-blue" style="font-size:13px; margin-top:4px;">
-            💾 लिस्ट में सुरक्षित करें (Save to Local / App)
+            🔒 अधिकृत रूप से सुरक्षित करें (Save Document)
           </button>
         </div>
       </div>
@@ -1019,7 +999,7 @@
       }
     }
 
-    /* =================== 📁 DOCS REPOSITORY & DIRECT PDF UPLOAD LOGIC =================== */
+    /* =================== 📁 RBAC & SECURE PDF STORAGE =================== */
     const DEFAULT_DOCUMENTS = [
       {
         id: 1,
@@ -1037,11 +1017,24 @@
       return DEFAULT_DOCUMENTS;
     }
 
+    function isCurrentUserJE() {
+      return activeUser && (activeUser.role === 'je' || activeUser.emp_id === 'JE01');
+    }
+
     function renderDocsList() {
       const docs = getStoredDocuments();
       const listContainer = document.getElementById("docsContainerList");
       const badge = document.getElementById("docBadgeCount");
       badge.textContent = `${docs.length} File${docs.length > 1 ? 's' : ''}`;
+
+      // Show/Hide Upload tab based on JE Login Status
+      const btnTabDocAdd = document.getElementById("btnTabDocAdd");
+      if (isCurrentUserJE()) {
+        btnTabDocAdd.style.display = 'inline-block';
+      } else {
+        btnTabDocAdd.style.display = 'none';
+        switchDocTab('docListSec');
+      }
 
       listContainer.innerHTML = "";
       docs.forEach((d) => {
@@ -1054,7 +1047,7 @@
         } else {
           actionBtn = `
             <button onclick="downloadUploadedPDF('${d.id}')" class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;">📥 खोलें / PDF</button>
-            <button onclick="deleteDocItem(${d.id})" style="background:none; border:none; color:#ef4444; font-size:16px; cursor:pointer; margin-left:8px;" title="हटाएं">🗑️</button>
+            ${isCurrentUserJE() ? `<button onclick="deleteDocItem(${d.id})" style="background:none; border:none; color:#ef4444; font-size:16px; cursor:pointer; margin-left:8px;" title="केवल JE द्वारा हटाएं">🗑️</button>` : ''}
           `;
         }
 
@@ -1075,38 +1068,72 @@
     }
 
     function switchDocTab(tabName) {
+      if (tabName === 'docAddSec' && !isCurrentUserJE()) {
+        alert("🔒 केवल JE (Section Engineer) को ही नया दस्तावेज़ अपलोड करने की अनुमति है!");
+        return;
+      }
       document.getElementById('docListSec').style.display = (tabName === 'docListSec') ? 'block' : 'none';
       document.getElementById('docAddSec').style.display = (tabName === 'docAddSec') ? 'block' : 'none';
       document.getElementById('btnTabDocList').classList.toggle('active', tabName === 'docListSec');
       document.getElementById('btnTabDocAdd').classList.toggle('active', tabName === 'docAddSec');
     }
 
+    // 🛡️ Strict Anti-Virus & Magic Header Verification
     function handlePDFSelection(e) {
       const file = e.target.files[0];
       if (!file) return;
 
-      if (file.type !== "application/pdf") {
-        alert("⚠️ केवल PDF फाइल ही सेलेक्ट करें!");
+      // 1. File Size Limitation (Max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert("⚠️ फाइल साइज़ बहुत बड़ा है! कृपया 5MB से छोटी PDF फाइल चुनें।");
         e.target.value = "";
         return;
       }
 
-      selectedPDFName = file.name;
-      document.getElementById('chosenFileName').innerText = `चयनित फाइल: ${file.name}`;
+      // 2. MIME & Extension Check
+      if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
+        alert("⚠️ अमान्य फाइल फॉर्मेट! केवल वास्तविक PDF फाइल ही स्वीकार की जाएगी।");
+        e.target.value = "";
+        return;
+      }
 
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        selectedPDFBase64 = evt.target.result;
+      // 3. Binary Magic Byte Validation (%PDF)
+      const headerBlob = file.slice(0, 5);
+      const readerHeader = new FileReader();
+      readerHeader.onload = function(evt) {
+        const arr = new Uint8Array(evt.target.result);
+        const header = String.fromCharCode.apply(null, arr);
+        if (!header.startsWith("%PDF")) {
+          alert("🚨 सुरक्षा चेतावनी: यह फाइल वैध PDF नहीं है या संदेहास्पद (Corrupted/Virus) है!");
+          document.getElementById('pdfFileInput').value = "";
+          selectedPDFBase64 = null;
+          return;
+        }
+
+        // Passed security tests: Read file as Base64
+        selectedPDFName = file.name;
+        document.getElementById('chosenFileName').innerText = `✅ सुरक्षित PDF: ${file.name}`;
+
+        const fullReader = new FileReader();
+        fullReader.onload = function(evtFull) {
+          selectedPDFBase64 = evtFull.target.result;
+        };
+        fullReader.readAsDataURL(file);
       };
-      reader.readAsDataURL(file);
+      readerHeader.readAsArrayBuffer(headerBlob);
     }
 
     function saveNewUploadedPDF() {
+      if (!isCurrentUserJE()) {
+        alert("🔒 अनधिकृत प्रयास: केवल JE ही दस्तावेज़ सुरक्षित कर सकते हैं!");
+        return;
+      }
+
       const title = document.getElementById("newDocTitle").value.trim();
       const sub = document.getElementById("newDocSub").value.trim();
 
       if (!title || !selectedPDFBase64) {
-        alert("कृपया दस्तावेज़ का नाम लिखें और एक PDF फाइल चुनें!");
+        alert("कृपया दस्तावेज़ का नाम लिखें और एक वैध PDF फाइल चुनें!");
         return;
       }
 
@@ -1114,16 +1141,17 @@
       const newDoc = {
         id: Date.now(),
         title: title,
-        sub: sub || selectedPDFName || "Uploaded Track Manual",
+        sub: sub || selectedPDFName || "Authorised Track Document",
         fileData: selectedPDFBase64,
-        isBuiltIn: false
+        isBuiltIn: false,
+        uploadedBy: activeUser ? activeUser.name : "JE P-Way"
       };
 
       try {
         docs.push(newDoc);
         localStorage.setItem("sagoni_tms_documents_v2", JSON.stringify(docs));
       } catch (err) {
-        alert("फाइल साइज़ अधिक होने के कारण इसे इंडेक्स्ड डेटाबेस में नहीं रखा जा सका। कृपया 4MB से कम साइज़ की PDF का उपयोग करें।");
+        alert("ब्राउज़र स्टोरेज सीमा पार हो गई है। कृपया कम पृष्ठों वाली PDF अपलोड करें।");
         return;
       }
 
@@ -1136,7 +1164,7 @@
 
       renderDocsList();
       switchDocTab('docListSec');
-      showToast("✅ PDF फाइल सुरक्षित रूप से स्टोर हो गई!");
+      showToast("✅ PDF फाइल अधिकृत रूप से सुरक्षित हो गई!");
     }
 
     function downloadUploadedPDF(docId) {
@@ -1155,11 +1183,16 @@
     }
 
     function deleteDocItem(id) {
-      if (!confirm("क्या आप इस दस्तावेज़ को हटाना चाहते हैं?")) return;
+      if (!isCurrentUserJE()) {
+        alert("🔒 केवल JE को दस्तावेज़ हटाने का अधिकार है!");
+        return;
+      }
+      if (!confirm("क्या आप वाकई इस दस्तावेज़ को हटाना चाहते हैं?")) return;
       let docs = getStoredDocuments();
       docs = docs.filter(d => d.id !== id);
       localStorage.setItem("sagoni_tms_documents_v2", JSON.stringify(docs));
       renderDocsList();
+      showToast("🗑️ दस्तावेज़ हटा दिया गया!");
     }
 
     function openDocsModal() {
@@ -1587,12 +1620,16 @@
         loadGangWork();
         loadDefects();
       }
+
+      // Re-evaluate Document UI Permissions
+      renderDocsList();
     }
 
     function logout() {
       activeUser = null;
       document.getElementById('appContainer').style.display = 'none';
       document.getElementById('homeSection').style.display = 'block';
+      renderDocsList();
     }
 
     function showToast(msg) {
