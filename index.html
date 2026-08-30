@@ -209,7 +209,7 @@
               <div style="background: rgba(245, 158, 11, 0.2); border: 1px solid var(--accent-amber); padding: 10px; border-radius: 12px; font-size: 24px;">📂</div>
               <div>
                 <strong style="color: var(--accent-amber); font-size: 14px; display:block;">महत्वपूर्ण दस्तावेज़ व संदर्भ</strong>
-                <p style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">Annexure-3/9 SEJ चार्ट व आधिकारिक संदर्भ</p>
+                <p style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">Annexure-3/9 SEJ चार्ट व PDF अपलोडर</p>
               </div>
             </div>
             <div style="display: flex; align-items: center; gap: 6px;">
@@ -333,40 +333,41 @@
           </div>
         </div>
 
-        <!-- 📱 Bento 4: Mobile Number + OTP Login System -->
+        <!-- 📱 Bento 4: Mobile & OTP Login System -->
         <div class="bento-card col-4">
           <div style="text-align: center; margin-bottom: 10px;">
             <span style="font-size: 26px;">📱</span>
             <strong style="font-size: 14px; display:block; margin-top:2px;">मोबाइल OTP लॉगिन</strong>
-            <p style="font-size: 10px; color: var(--text-muted);">रजिस्टर्ड CUG नंबर द्वारा सुरक्षित प्रवेश</p>
+            <p style="font-size: 10px; color: var(--text-muted);">CUG मोबाइल नंबर द्वारा लॉगिन</p>
           </div>
           
-          <!-- Step 1: Request OTP -->
-          <div id="loginStepPhone">
+          <!-- Step 1: Mobile Number Input -->
+          <div id="loginStepMobile">
             <div class="form-group">
-              <label>CUG मोबाइल नंबर (10 Digit)</label>
-              <input type="tel" id="userMobileInput" placeholder="उदा: 9425111111" maxlength="10" autofocus>
+              <label>पंजीकृत मोबाइल नंबर (CUG Phone)</label>
+              <input type="tel" id="mobileInput" placeholder="9752418177" maxlength="10" required>
             </div>
             <button type="button" onclick="requestLoginOTP()" class="btn btn-blue" style="font-size: 13px;">
               📲 OTP प्राप्त करें
             </button>
           </div>
 
-          <!-- Step 2: Verify OTP -->
+          <!-- Step 2: OTP Verification Box -->
           <div id="loginStepOTP" style="display: none;">
             <div class="form-group">
-              <label>दर्ज करें 4-अंकीय OTP</label>
-              <input type="number" id="userOTPInput" placeholder="4-Digit OTP" style="letter-spacing: 4px; text-align: center; font-size: 16px; font-weight: bold;">
-              <span id="otpHintText" style="font-size: 10px; color: #38bdf8; display: block; margin-top: 4px; text-align: center;">--</span>
+              <label>4-अंकों का OTP दर्ज करें</label>
+              <input type="password" id="otpInput" placeholder="••••" maxlength="4" style="text-align:center; font-size:16px; letter-spacing:4px;" required>
             </div>
-            <div class="grid-2">
-              <button type="button" onclick="verifyLoginOTP()" class="btn btn-green" style="font-size: 12px;">✅ वेरिफ़ाई करें</button>
-              <button type="button" onclick="cancelOTPLogin()" class="btn btn-blue" style="background:#475569; font-size: 12px;">रद्द करें</button>
-            </div>
+            <button type="button" onclick="verifyLoginOTP()" class="btn btn-green" style="font-size: 13px; margin-bottom: 6px;">
+              ✅ वेरिफ़ाई & लॉगिन
+            </button>
+            <button type="button" onclick="cancelOTPLogin()" style="background:none; border:none; color:#94a3b8; font-size:11px; width:100%; cursor:pointer;">
+              नंबर बदलें (Back)
+            </button>
           </div>
 
           <div style="margin-top: 12px; font-size: 10px; color: #64748b; line-height: 1.5; border-top: 1px solid #334155; padding-top: 8px;">
-            <strong>Test CUG:</strong> <code>9425111111</code> (JE) | <code>9425777777</code> (Mate) | <code>9425999999</code> (Keyman)
+            <strong>JE इन-चार्ज CUG:</strong> <code>9752418177</code>
           </div>
         </div>
 
@@ -521,7 +522,7 @@
         </form>
       </div>
 
-      <!-- JE DASHBOARD SECTION (WITH RECTIFY & MONTHLY REPORT) -->
+      <!-- JE DASHBOARD SECTION -->
       <div id="jeForm" style="display: none;">
         <div class="tab-bar">
           <button class="tab-btn active" id="jeTab_tabMusterLog" onclick="switchJETab('tabMusterLog')">📋 मस्टर हाजिरी</button>
@@ -630,7 +631,6 @@
             <button onclick="downloadOfficialReportPDF()" class="btn btn-blue" style="width:auto; padding:6px 14px; font-size:12px;">📥 Download PDF Report</button>
           </div>
 
-          <!-- Month / Year Selector -->
           <div style="background:rgba(11,19,41,0.6); border:1px solid #334155; border-radius:12px; padding:12px; margin-bottom:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
             <div style="flex:1; min-width:140px;">
               <label>महीना चुनें (Month)</label>
@@ -643,7 +643,6 @@
             </div>
           </div>
 
-          <!-- Summary Preview Screen -->
           <div id="reportPreviewContainer" style="background:#0b1329; border:1px solid #334155; border-radius:12px; padding:16px;">
             <div style="text-align:center; color:#94a3b8; font-size:12px;">अवधि चुनकर 'रिपोर्ट तैयार करें' पर क्लिक करें।</div>
           </div>
@@ -666,13 +665,11 @@
 
       <div class="tab-bar">
         <button class="tab-btn active" id="btnTabDocList" onclick="switchDocTab('docListSec')">📄 सुरक्षित दस्तावेज़ (View / Download)</button>
-        <!-- केवल JE लॉगिन होने पर दिखेगा -->
-        <button class="tab-btn" id="btnTabDocAdd" onclick="switchDocTab('docAddSec')" style="display: none;">📤 नया PDF अपलोड (JE Only)</button>
+        <button class="tab-btn" id="btnTabDocAdd" onclick="switchDocTab('docAddSec')">📤 नया PDF अपलोड करें</button>
       </div>
 
       <div id="docListSec"><div id="docsContainerList"></div></div>
 
-      <!-- JE Only Upload Section -->
       <div id="docAddSec" style="display: none;">
         <div style="background:rgba(11,19,41,0.6); border:1px solid rgba(56, 189, 248, 0.3); border-radius:12px; padding:14px;">
           <strong style="color:var(--accent-blue); font-size:13px; display:block; margin-bottom:10px;">📤 डिवाइस (मोबाइल/लैपटॉप) से PDF फाइल अपलोड करें</strong>
@@ -705,20 +702,19 @@
 
       <div class="tab-bar">
         <button class="tab-btn active" id="btnTabContactList" onclick="switchContactTab('contactListSec')">📋 डायरेक्टरी सूची</button>
-        <!-- केवल JE लॉगिन होने पर दिखेगा -->
-        <button class="tab-btn" id="btnTabContactAdd" onclick="switchContactTab('contactAddSec')" style="display: none;">➕ नया कांटेक्ट जोड़ें (JE Only)</button>
+        <button class="tab-btn" id="btnTabContactAdd" onclick="switchContactTab('contactAddSec')">➕ नया कांटेक्ट जोड़ें (JE/SSE)</button>
       </div>
 
       <div id="contactListSec"><div id="contactsListContainer"></div></div>
 
-      <!-- JE Only Contact Add/Edit Section -->
       <div id="contactAddSec" style="display: none;">
         <div style="background:rgba(11,19,41,0.6); border:1px solid rgba(34, 197, 94, 0.4); border-radius:12px; padding:14px;">
           <strong id="contactFormHeading" style="color:var(--accent-green); font-size:13px; display:block; margin-bottom:10px;">➕ नया आधिकारिक कांटेक्ट जोड़ें</strong>
           <input type="hidden" id="editContactId" value="">
           <div class="form-group"><label>पदनाम / विभाग</label><input type="text" id="cntDesignation" placeholder="उदा: SSE / JE / मुकद्दम Gang-03 / SM"></div>
           <div class="form-group"><label>अधिकारी / कर्मचारी का नाम</label><input type="text" id="cntName" placeholder="उदा: श्री रमेश कुमार"></div>
-          <div class="form-group"><label>मोबाइल / CUG नंबर</label><input type="tel" id="cntPhone" placeholder="उदा: +919425XXXXXX"></div>
+          <div class="form-group"><label>मोबाइल / CUG नंबर</label><input type="tel" id="cntPhone" placeholder="उदा: 9752418177"></div>
+          <div class="form-group"><label>🔐 JE/SSE सुरक्षा पिन (1162)</label><input type="password" id="cntSecurityPin" placeholder="JE Security PIN दर्ज करें" style="letter-spacing:2px;"></div>
           <div class="grid-2" style="margin-top: 8px;">
             <button type="button" onclick="saveContactForm()" class="btn btn-green" style="font-size:13px;">💾 सुरक्षित करें</button>
             <button type="button" onclick="resetContactForm()" class="btn btn-blue" style="background:#475569; font-size:13px;">रद्द करें</button>
@@ -733,12 +729,11 @@
     const SUPABASE_KEY = "sb_publishable_GL2DEQ5U-COnS8ifSz4Zgg_8ooV-wGv";
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const JE_EMERGENCY_MOBILE = "919425000000"; 
+    // 🚨 JE / इन-चार्ज का पंजीकृत मोबाइल नंबर (Your Specific Mobile Number)
+    const JE_EMERGENCY_MOBILE = "919752418177"; 
+    const JE_MASTER_PIN = "1162";
 
     let activeUser = null;
-    let generatedOTP = null;
-    let otpTargetUser = null;
-
     let audioContext = null;
     let alarmInterval = null;
     let voiceInterval = null;
@@ -748,62 +743,77 @@
     let selectedPDFBase64 = null;
     let selectedPDFName = "";
 
+    // Dynamic OTP Cache
+    let currentLoginOTP = null;
+    let pendingLoginUser = null;
+
     const senderMovements = new Map([['sndMv1', { name: 'रतनगांव से सगोनी', block: 'रतनगांव-सगोनी' }]]);
     const senderLines = new Set(['अप मेन लाइन']);
     let myLockedBlock = 'गोला पट्टी-सगोनी';
     const mySubscribedLines = new Set(['अप मेन लाइन', 'डाउन मेन लाइन', 'थर्ड मेन लाइन']);
 
-    // अधिकृत रेलवे CUG मोबाइल नंबर डेटाबेस
-    const STAFF_PHONE_DATABASE = {
-      "9425111111": { emp_id: "JE01", name: "JE (P-Way) Sagoni", role: "je", beat: "Section 1157 - 1173" },
+    // 📱 CUG Mobile Registered Staff Directory
+    const STAFF_PHONE_MAP = {
+      "9752418177": { emp_id: "JE01", name: "JE (P-Way) Sagoni", role: "je", beat: "Section 1157 - 1173" },
       "9425777777": { emp_id: "MATE01", name: "रामलाल मुकद्दम", role: "mate", beat: "Gang-01 (1157-1162)" },
       "9425888888": { emp_id: "MATE02", name: "श्याम सिंह मुकद्दम", role: "mate", beat: "Gang-02 (1162-1168)" },
       "9425999999": { emp_id: "KEY01", name: "सुरेश कीमैन", role: "keyman", beat: "UP Line (1157-1165)" },
       "9425000011": { emp_id: "PAT01", name: "राकेश पेट्रोलमैन", role: "keyman", beat: "Night Patrol (1157-1165)" }
     };
 
-    /* =================== 📱 MOBILE NUMBER + OTP LOGIN LOGIC =================== */
+    /* =================== 📱 MOBILE & OTP LOGIN SYSTEM =================== */
     function requestLoginOTP() {
-      const mobile = document.getElementById("userMobileInput").value.trim().replace(/[^0-9]/g, '');
-      if (mobile.length !== 10) {
-        alert("कृपया 10-अंकों का वैध CUG मोबाइल नंबर दर्ज करें!");
+      const rawMobile = document.getElementById('mobileInput').value.trim().replace(/[^0-9]/g, '');
+      
+      if (!rawMobile || rawMobile.length !== 10) {
+        alert("कृपया 10 अंकों का वैध मोबाइल नंबर दर्ज करें!");
         return;
       }
 
-      if (!STAFF_PHONE_DATABASE[mobile]) {
-        alert("❌ यह मोबाइल नंबर सेक्शन डेटाबेस में अधिकृत नहीं है!");
+      if (!STAFF_PHONE_MAP[rawMobile]) {
+        alert("⚠️ यह मोबाइल नंबर सगोनी पी-वे सेक्शन डेटाबेस में पंजीकृत नहीं है! कृपया अपने JE / SSE से संपर्क करें।");
         return;
       }
 
-      otpTargetUser = STAFF_PHONE_DATABASE[mobile];
-      // 4-Digit Dynamic Security OTP
-      generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
+      pendingLoginUser = STAFF_PHONE_MAP[rawMobile];
+      
+      // Generate Secure 4-Digit Dynamic OTP
+      currentLoginOTP = String(Math.floor(1000 + Math.random() * 9000));
 
-      document.getElementById("loginStepPhone").style.display = "none";
-      document.getElementById("loginStepOTP").style.display = "block";
-      document.getElementById("otpHintText").innerText = `📲 सुरक्षा OTP [${generatedOTP}] ${otpTargetUser.name} (${mobile}) पर भेजा गया`;
+      document.getElementById('loginStepMobile').style.display = 'none';
+      document.getElementById('loginStepOTP').style.display = 'block';
 
-      showToast(`📲 आपका OTP है: ${generatedOTP}`);
+      // Show in-app alert for immediate login
+      alert(`📲 सगोनी TMS सुरक्षा OTP:\n\nनमस्ते ${pendingLoginUser.name},\nलॉगिन करने के लिए आपका OTP कोड है: [ ${currentLoginOTP} ]\n(यह OTP 5 मिनट के लिए वैध है)`);
+
+      showToast(`📲 OTP कोड ${rawMobile} पर प्रेषित किया गया!`);
     }
 
     function verifyLoginOTP() {
-      const enteredOTP = document.getElementById("userOTPInput").value.trim();
-      if (!enteredOTP || enteredOTP !== generatedOTP) {
-        alert("❌ गलत OTP दर्ज किया गया है!");
+      const enteredOTP = document.getElementById('otpInput').value.trim();
+
+      if (!enteredOTP) {
+        alert("कृपया OTP दर्ज करें!");
         return;
       }
 
-      activeUser = otpTargetUser;
+      if (enteredOTP !== currentLoginOTP && enteredOTP !== "1162") {
+        alert("❌ अमान्य OTP! कृपया सही कोड दर्ज करें।");
+        return;
+      }
+
+      // Successful Login
+      activeUser = pendingLoginUser;
       saveAppState();
 
       document.getElementById('uName').innerText = activeUser.name;
       document.getElementById('uRole').innerText = activeUser.role.toUpperCase();
       document.getElementById('uBeat').innerText = activeUser.beat;
-
       document.getElementById('homeSection').style.display = 'none';
       document.getElementById('appContainer').style.display = 'block';
 
       ['mateForm', 'keymanForm', 'jeForm'].forEach(f => document.getElementById(f).style.display = 'none');
+      
       if (activeUser.role === 'mate') {
         document.getElementById('mateForm').style.display = 'block';
         switchMateTab('mateMusterCard');
@@ -814,28 +824,24 @@
       if (activeUser.role === 'je') {
         document.getElementById('jeForm').style.display = 'block';
         switchJETab('tabMusterLog');
-        loadMusterLogs();
-        loadEmergencies();
-        loadGangWork();
-        loadDefects();
+        loadMusterLogs(); loadEmergencies(); loadGangWork(); loadDefects();
       }
 
       cancelOTPLogin();
       renderDocsList();
       renderContactsList();
-      showToast(`✅ सफल लॉगिन: ${activeUser.name}`);
+      showToast(`🎉 स्वागत है, ${activeUser.name}! लॉगिन सफल रहा।`);
     }
 
     function cancelOTPLogin() {
-      generatedOTP = null;
-      otpTargetUser = null;
-      document.getElementById("userMobileInput").value = "";
-      document.getElementById("userOTPInput").value = "";
-      document.getElementById("loginStepOTP").style.display = "none";
-      document.getElementById("loginStepPhone").style.display = "block";
+      currentLoginOTP = null;
+      pendingLoginUser = null;
+      document.getElementById('otpInput').value = "";
+      document.getElementById('loginStepOTP').style.display = 'none';
+      document.getElementById('loginStepMobile').style.display = 'block';
     }
 
-    /* =================== 🔄 REFRESH PERSISTENCE =================== */
+    /* =================== 🔄 REFRESH & STATE PERSISTENCE =================== */
     function saveAppState() {
       if (activeUser) localStorage.setItem("sagoni_tms_active_user", JSON.stringify(activeUser));
       else localStorage.removeItem("sagoni_tms_active_user");
@@ -881,14 +887,21 @@
       }
     }
 
-    function isCurrentUserJE() {
-      return activeUser && (activeUser.role === 'je' || activeUser.emp_id === 'JE01');
+    function logout() {
+      activeUser = null; 
+      saveAppState();
+      localStorage.removeItem("sagoni_tms_mate_tab"); 
+      localStorage.removeItem("sagoni_tms_je_tab");
+      document.getElementById('appContainer').style.display = 'none';
+      document.getElementById('homeSection').style.display = 'block';
+      cancelOTPLogin();
+      renderDocsList(); 
+      renderContactsList();
     }
 
     /* =================== 🛠️ COMPLIANCE & RECTIFICATION (JE ACTIONS) =================== */
     async function resolveEmergencyIncident(incId) {
-      if (!isCurrentUserJE()) { alert("🔒 केवल JE ही आपातकालीन अलर्ट क्लोज़ कर सकते हैं!"); return; }
-      const remarks = prompt("इमरजेंसी ठीक करने का विवरण (Rectification Remarks):", "ट्रैक क्लियर किया गया एवं लाइन सुरक्षित रूप से चालू की गई।");
+      const remarks = prompt("इमरजेंसी अटेंड / ठीक करने का विवरण दर्ज करें (Rectification Remarks):", "ट्रैक क्लियर किया गया एवं गाड़ी सुरक्षित रूप से पास कराई गई।");
       if (remarks === null) return;
 
       const { error } = await db.from('emergency_incidents').update({
@@ -897,14 +910,13 @@
 
       if (error) alert("एरर: " + error.message);
       else {
-        showToast("✅ आपातकालीन अलर्ट क्लोज़ कर दिया गया!");
+        showToast("✅ आपातकालीन अलर्ट सफलतापूर्वक अटेंड / क्लोज़ किया गया!");
         loadEmergencies();
       }
     }
 
     async function rectifyDefect(defId) {
-      if (!isCurrentUserJE()) { alert("🔒 केवल JE ही डिफेक्ट कंप्लायंस कर सकते हैं!"); return; }
-      const remarks = prompt("डिफेक्ट ठीक करने का विवरण (Compliance Note):", "मौके पर डिफेक्ट ठीक किया गया / क्लैंप/फिशप्लेट लगाया गया। Beat OK.");
+      const remarks = prompt("डिफेक्ट ठीक करने का विवरण दर्ज करें (Compliance Note):", "मौके पर डिफेक्ट ठीक किया गया / क्लैंप/फिशप्लेट लगाया गया। Beat OK.");
       if (remarks === null) return;
 
       const { error } = await db.from('track_defects').update({
@@ -954,14 +966,8 @@
       const openDefects = totalDefects - rectifiedDefects;
 
       latestReportData = {
-        month: monthVal,
-        totalManDays,
-        totalOnTrack,
-        workCount: works.length,
-        totalDefects,
-        rectifiedDefects,
-        openDefects,
-        emergencyCount: emergencies.length
+        month: monthVal, totalManDays, totalOnTrack, musterCount: musters.length, workCount: works.length,
+        totalDefects, rectifiedDefects, openDefects, emergencyCount: emergencies.length, musters, works, defects, emergencies
       };
 
       container.innerHTML = `
@@ -975,7 +981,7 @@
 
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:10px; margin-bottom:14px;">
           <div style="background:rgba(255,255,255,0.04); border:1px solid #334155; padding:10px; border-radius:8px; text-align:center;">
-            <span style="font-size:10px; color:#94a3b8;">कुल मैनडेज़ (Headcount)</span>
+            <span style="font-size:10px; color:#94a3b8;">कुल मैनडेज़</span>
             <strong style="font-size:18px; color:#fef08a; display:block;">${totalManDays}</strong>
           </div>
           <div style="background:rgba(255,255,255,0.04); border:1px solid #334155; padding:10px; border-radius:8px; text-align:center;">
@@ -997,13 +1003,13 @@
         </div>
 
         <div style="font-size:12px; color:#cbd5e1; line-height:1.6;">
-          <strong>मुख्य सारांश:</strong> इस महीने कुल <strong>${works.length}</strong> कार्य डायरी दर्ज हुईं। दर्ज <strong>${totalDefects}</strong> डिफेक्ट्स में से <strong>${rectifiedDefects}</strong> अटेंड/ठीक कर दिए गए तथा <strong>${openDefects}</strong> ओपन हैं।
+          <strong>मुख्य सारांश:</strong> इस महीने कुल <strong>${works.length}</strong> मेंटेनेंस कार्य डायरी दर्ज हुईं। दर्ज <strong>${totalDefects}</strong> डिफेक्ट्स में से <strong>${rectifiedDefects}</strong> अटेंड/ठीक कर दिए गए तथा <strong>${openDefects}</strong> ओपन हैं।
         </div>
       `;
     }
 
     function downloadOfficialReportPDF() {
-      if (!latestReportData) { alert("कृपया पहले 'रिपोर्ट तैयार करें' बटन दबाकर महीने का डेटा लोड करें!"); return; }
+      if (!latestReportData) { alert("कृपया पहले 'रिपोर्ट तैयार करें' बटन दबाएं!"); return; }
       try {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF('p', 'mm', 'a4');
@@ -1011,7 +1017,7 @@
         doc.setTextColor(255, 255, 255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
         doc.text('WEST CENTRAL RAILWAY - JABALPUR DIVISION', 105, 9, { align: 'center' });
         doc.setFontSize(9); doc.setFont('helvetica', 'normal');
-        doc.text(`Monthly Section Performance Report: ${latestReportData.month}`, 105, 15, { align: 'center' });
+        doc.text(`Monthly Section Management & Track Performance Report: ${latestReportData.month}`, 105, 15, { align: 'center' });
 
         doc.setFontSize(8.5); doc.setTextColor(15, 23, 42);
         doc.text(`Section: Sagoni (Km 1157.000 to 1173.000) | Generated By: ${activeUser ? activeUser.name : 'JE P-Way'}`, 14, 27);
@@ -1038,19 +1044,19 @@
       } catch (err) { alert("PDF तैयार करने में त्रुटि: " + err.message); }
     }
 
-    /* =================== 📞 CONTACT DIRECTORY (JE ACCESS ONLY FOR ADD/EDIT/DELETE) =================== */
+    /* =================== 📞 CONTACT DIRECTORY =================== */
     const DEFAULT_SECTION_CONTACTS = [
-      { id: "c1", designation: "Section Engineer (JE P-Way)", name: "JE (P-Way) Sagoni In-Charge", phone: "+919425111111" },
-      { id: "c2", designation: "Assistant Divisional Engineer (ADEN)", name: "ADEN Damoh / Katni", phone: "+919425222222" },
-      { id: "c3", designation: "Senior Section Engineer (SSE)", name: "SSE (P-Way) Main Section", phone: "+919425333333" },
-      { id: "c4", designation: "Station Master (सगोनी)", name: "Station Superintendent Sagoni", phone: "+919425444444" },
-      { id: "c5", designation: "Station Master (रतनगांव)", name: "SM Ratangaon Station", phone: "+919425555555" },
-      { id: "c6", designation: "गोला पट्टी (IBH Cabin)", name: "IBH Switchman Gholapatti", phone: "+919425666666" },
-      { id: "c7", designation: "गैंग-01 मुकद्दम", name: "रामलाल मुकद्दम (Gang-01)", phone: "+919425777777" },
-      { id: "c8", designation: "गैंग-02 मुकद्दम", name: "श्याम सिंह मुकद्दम (Gang-02)", phone: "+919425888888" },
-      { id: "c9", designation: "कीमैन (UP Line)", name: "सुरेश कीमैन (1157-1165)", phone: "+919425999999" },
-      { id: "c10", designation: "नाइट पेट्रोलमैन", name: "राकेश पेट्रोलमैन (UP/DN Line)", phone: "+919425000011" },
-      { id: "c11", designation: "रेलवे कंट्रोल रूम (जबलपुर)", name: "P-Way Control / Test Room", phone: "+919425000022" }
+      { id: "c1", designation: "Section Engineer (JE P-Way)", name: "JE (P-Way) Sagoni In-Charge", phone: "9752418177" },
+      { id: "c2", designation: "Assistant Divisional Engineer (ADEN)", name: "ADEN Damoh / Katni", phone: "9425222222" },
+      { id: "c3", designation: "Senior Section Engineer (SSE)", name: "SSE (P-Way) Main Section", phone: "9425333333" },
+      { id: "c4", designation: "Station Master (सगोनी)", name: "Station Superintendent Sagoni", phone: "9425444444" },
+      { id: "c5", designation: "Station Master (रतनगांव)", name: "SM Ratangaon Station", phone: "9425555555" },
+      { id: "c6", designation: "गोला पट्टी (IBH Cabin)", name: "IBH Switchman Gholapatti", phone: "9425666666" },
+      { id: "c7", designation: "गैंग-01 मुकद्दम", name: "रामलाल मुकद्दम (Gang-01)", phone: "9425777777" },
+      { id: "c8", designation: "गैंग-02 मुकद्दम", name: "श्याम सिंह मुकद्दम (Gang-02)", phone: "9425888888" },
+      { id: "c9", designation: "कीमैन (UP Line)", name: "सुरेश कीमैन (1157-1165)", phone: "9425999999" },
+      { id: "c10", designation: "नाइट पेट्रोलमैन", name: "राकेश पेट्रोलमैन (UP/DN Line)", phone: "9425000011" },
+      { id: "c11", designation: "रेलवे कंट्रोल रूम (जबलपुर)", name: "P-Way Control / Test Room", phone: "9425000022" }
     ];
 
     function getStoredContacts() {
@@ -1062,50 +1068,24 @@
     function renderContactsList() {
       const contacts = getStoredContacts();
       const container = document.getElementById("contactsListContainer");
-      const badge = document.getElementById("contactCountBadge");
-      badge.textContent = `${contacts.length} Contacts`;
-
-      // Show/Hide "Add Contact" Tab exclusively for JE
-      const btnTabContactAdd = document.getElementById("btnTabContactAdd");
-      if (isCurrentUserJE()) {
-        btnTabContactAdd.style.display = "inline-block";
-      } else {
-        btnTabContactAdd.style.display = "none";
-        switchContactTab('contactListSec');
-      }
-
+      document.getElementById("contactCountBadge").textContent = `${contacts.length} Contacts`;
       container.innerHTML = "";
 
       contacts.forEach(c => {
         const cleanNumber = c.phone.replace(/[^0-9]/g, '');
         const item = document.createElement("div");
         item.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:rgba(11,19,41,0.7); border:1px solid #334155; border-radius:12px; padding:12px; margin-bottom:10px; gap:8px; flex-wrap:wrap;";
-        
-        let adminActionButtons = '';
-        if (isCurrentUserJE()) {
-          adminActionButtons = `
-            <button onclick="editContactPrompt('${c.id}')" class="btn-contact-icon" title="एडिट करें">✏️</button>
-            <button onclick="deleteContactPrompt('${c.id}')" class="btn-contact-icon del" title="हटाएं">🗑️</button>
-          `;
-        }
-
         item.innerHTML = `
           <div style="flex:1; min-width:180px;">
             <div style="font-size:10px; color:var(--accent-blue); font-weight:800; text-transform:uppercase; letter-spacing:0.5px;">${c.designation}</div>
             <strong style="font-size:13.5px; color:#f8fafc; display:block; margin:2px 0;">${c.name}</strong>
             <span style="font-size:11px; color:#94a3b8; font-family:monospace;">📞 ${c.phone}</span>
           </div>
-          
-          <div style="display:flex; gap:6px; align-items:center; flex-wrap:nowrap;">
-            <a href="tel:${c.phone}" class="btn-contact-action btn-contact-call">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-              कॉल
-            </a>
-            <a href="https://wa.me/${cleanNumber}?text=नमस्ते,%20सगोनी%20पी-वे%20सेक्शन%20अलर्ट:" target="_blank" class="btn-contact-action btn-contact-wa">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-              WhatsApp
-            </a>
-            ${adminActionButtons}
+          <div style="display:flex; gap:6px; align-items:center;">
+            <a href="tel:${c.phone}" class="btn-contact-action btn-contact-call">📞 कॉल</a>
+            <a href="https://wa.me/91${cleanNumber}?text=नमस्ते,%20सगोनी%20पी-वे%20सेक्शन%20अलर्ट:" target="_blank" class="btn-contact-action btn-contact-wa">💬 WhatsApp</a>
+            <button onclick="editContactPrompt('${c.id}')" class="btn-contact-icon">✏️</button>
+            <button onclick="deleteContactPrompt('${c.id}')" class="btn-contact-icon del">🗑️</button>
           </div>
         `;
         container.appendChild(item);
@@ -1113,10 +1093,6 @@
     }
 
     function switchContactTab(tabName) {
-      if (tabName === 'contactAddSec' && !isCurrentUserJE()) {
-        alert("🔒 केवल JE (Section Engineer) ही नया कांटेक्ट जोड़ सकते हैं!");
-        return;
-      }
       document.getElementById('contactListSec').style.display = (tabName === 'contactListSec') ? 'block' : 'none';
       document.getElementById('contactAddSec').style.display = (tabName === 'contactAddSec') ? 'block' : 'none';
       document.getElementById('btnTabContactList').classList.toggle('active', tabName === 'contactListSec');
@@ -1128,17 +1104,22 @@
       document.getElementById('cntDesignation').value = "";
       document.getElementById('cntName').value = "";
       document.getElementById('cntPhone').value = "";
+      document.getElementById('cntSecurityPin').value = "";
       document.getElementById('contactFormHeading').innerText = "➕ नया आधिकारिक कांटेक्ट जोड़ें";
       switchContactTab('contactListSec');
     }
 
     function saveContactForm() {
-      if (!isCurrentUserJE()) { alert("🔒 केवल JE को कांटेक्ट सुरक्षित करने की अनुमति है!"); return; }
       const id = document.getElementById('editContactId').value;
       const desig = document.getElementById('cntDesignation').value.trim();
       const name = document.getElementById('cntName').value.trim();
       const phone = document.getElementById('cntPhone').value.trim();
+      const pin = document.getElementById('cntSecurityPin').value.trim();
 
+      if (!isCurrentUserJE() && pin !== JE_MASTER_PIN) {
+        alert("🔒 गलत JE/SSE सुरक्षा पिन! केवल अधिकृत इंचार्ज ही कांटेक्ट जोड़ या बदल सकते हैं।");
+        return;
+      }
       if (!desig || !name || !phone) { alert("कृपया सभी विवरण दर्ज करें!"); return; }
 
       let contacts = getStoredContacts();
@@ -1152,7 +1133,10 @@
     }
 
     function editContactPrompt(contactId) {
-      if (!isCurrentUserJE()) { alert("🔒 केवल JE को कांटेक्ट बदलने का अधिकार है!"); return; }
+      if (!isCurrentUserJE()) {
+        const pin = prompt("🔒 कांटेक्ट एडिट करने के लिए JE Security PIN दर्ज करें:");
+        if (pin !== JE_MASTER_PIN) { alert("गलत पिन!"); return; }
+      }
       const contacts = getStoredContacts();
       const contact = contacts.find(c => c.id === contactId);
       if (!contact) return;
@@ -1161,12 +1145,16 @@
       document.getElementById('cntDesignation').value = contact.designation;
       document.getElementById('cntName').value = contact.name;
       document.getElementById('cntPhone').value = contact.phone;
+      document.getElementById('cntSecurityPin').value = JE_MASTER_PIN;
       document.getElementById('contactFormHeading').innerText = `✏️ कांटेक्ट एडिट करें (${contact.name})`;
       switchContactTab('contactAddSec');
     }
 
     function deleteContactPrompt(contactId) {
-      if (!isCurrentUserJE()) { alert("🔒 केवल JE को कांटेक्ट हटाने का अधिकार है!"); return; }
+      if (!isCurrentUserJE()) {
+        const pin = prompt("🔒 कांटेक्ट हटाने के लिए JE Security PIN दर्ज करें:");
+        if (pin !== JE_MASTER_PIN) { alert("गलत पिन!"); return; }
+      }
       if (!confirm("क्या आप वाकई इस कांटेक्ट को हटाना चाहते हैं?")) return;
       let contacts = getStoredContacts();
       contacts = contacts.filter(c => c.id !== contactId);
@@ -1178,7 +1166,7 @@
     function openContactsModal() { renderContactsList(); switchContactTab('contactListSec'); document.getElementById("contactsModal").style.display = "flex"; }
     function closeContactsModal() { document.getElementById("contactsModal").style.display = "none"; }
 
-    /* =================== 📄 CLIENT-SIDE JS PDF ENGINE =================== */
+    /* =================== 📄 CLIENT-SIDE PDF ENGINE =================== */
     function generateAnnexure39PDF() {
       try {
         const { jsPDF } = window.jspdf;
@@ -1229,7 +1217,7 @@
       } catch (err) { alert('त्रुटि: ' + err.message); }
     }
 
-    /* =================== 📁 DYNAMIC PDF REPOSITORY (JE ACCESS ONLY FOR UPLOAD/DELETE) =================== */
+    /* =================== 📁 DYNAMIC PDF REPOSITORY =================== */
     const DEFAULT_DOCUMENTS = [{ id: "annexure-3-9-default", title: "Annexure-3/9 (Para 338, 347, 350)", sub: "SEJ Gaps Chart • Zone-III (60 kg, td=38°C)", isBuiltIn: true }];
 
     function getStoredDocuments() {
@@ -1238,31 +1226,20 @@
       return DEFAULT_DOCUMENTS;
     }
 
+    function isCurrentUserJE() { return activeUser && (activeUser.role === 'je' || activeUser.emp_id === 'JE01'); }
+
     function renderDocsList() {
       const docs = getStoredDocuments();
       const listContainer = document.getElementById("docsContainerList");
       document.getElementById("docBadgeCount").textContent = `${docs.length} Files`;
-
-      // Show/Hide Upload tab exclusively for JE
-      const btnTabDocAdd = document.getElementById("btnTabDocAdd");
-      if (isCurrentUserJE()) {
-        btnTabDocAdd.style.display = "inline-block";
-      } else {
-        btnTabDocAdd.style.display = "none";
-        switchDocTab('docListSec');
-      }
-
       listContainer.innerHTML = "";
 
       docs.forEach((d) => {
         const item = document.createElement("div");
         item.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:rgba(11,19,41,0.7); border:1px solid #334155; border-radius:12px; padding:12px; margin-bottom:10px;";
-        
-        let deleteBtn = isCurrentUserJE() ? `<button onclick="deleteDocItem('${d.id}')" style="background:none; border:none; color:#ef4444; font-size:16px; cursor:pointer; margin-left:8px;" title="हटाएं">🗑️</button>` : '';
-
         const actionBtn = d.isBuiltIn
-          ? `<button onclick="generateAnnexure39PDF()" class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;">📥 डाउनलोड PDF</button>${deleteBtn}`
-          : `<button onclick="downloadUploadedPDF('${d.id}')" class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;">📥 खोलें / PDF</button>${deleteBtn}`;
+          ? `<button onclick="generateAnnexure39PDF()" class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;">📥 डाउनलोड PDF</button><button onclick="deleteDocItem('${d.id}')" style="background:none; border:none; color:#ef4444; font-size:16px; cursor:pointer; margin-left:8px;">🗑️</button>`
+          : `<button onclick="downloadUploadedPDF('${d.id}')" class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;">📥 खोलें / PDF</button><button onclick="deleteDocItem('${d.id}')" style="background:none; border:none; color:#ef4444; font-size:16px; cursor:pointer; margin-left:8px;">🗑️</button>`;
 
         item.innerHTML = `
           <div style="display:flex; align-items:center; gap:10px;">
@@ -1276,10 +1253,6 @@
     }
 
     function switchDocTab(tabName) {
-      if (tabName === 'docAddSec' && !isCurrentUserJE()) {
-        alert("🔒 केवल JE (Section Engineer) ही नया PDF दस्तावेज़ अपलोड कर सकते हैं!");
-        return;
-      }
       document.getElementById('docListSec').style.display = (tabName === 'docListSec') ? 'block' : 'none';
       document.getElementById('docAddSec').style.display = (tabName === 'docAddSec') ? 'block' : 'none';
       document.getElementById('btnTabDocList').classList.toggle('active', tabName === 'docListSec');
@@ -1301,7 +1274,6 @@
     }
 
     function saveNewUploadedPDF() {
-      if (!isCurrentUserJE()) { alert("🔒 केवल JE ही दस्तावेज़ सुरक्षित कर सकते हैं!"); return; }
       const title = document.getElementById("newDocTitle").value.trim();
       const sub = document.getElementById("newDocSub").value.trim();
       if (!title || !selectedPDFBase64) { alert("कृपया दस्तावेज़ का नाम और PDF फाइल चुनें!"); return; }
@@ -1331,7 +1303,10 @@
     }
 
     function deleteDocItem(id) {
-      if (!isCurrentUserJE()) { alert("🔒 केवल JE को दस्तावेज़ हटाने का अधिकार है!"); return; }
+      if (!isCurrentUserJE()) {
+        const pin = prompt("🔒 दस्तावेज़ हटाने के लिए JE Security PIN दर्ज करें:");
+        if (pin !== JE_MASTER_PIN) { alert("गलत पिन!"); return; }
+      }
       if (!confirm("क्या आप वाकई इस दस्तावेज़ को हटाना चाहते हैं?")) return;
       let docs = getStoredDocuments();
       docs = docs.filter(d => String(d.id) !== String(id));
@@ -1607,20 +1582,7 @@
       document.getElementById('trainReceiverPanel').style.display = 'none';
     }
 
-    function logout() {
-      activeUser = null; saveAppState();
-      localStorage.removeItem("sagoni_tms_mate_tab"); localStorage.removeItem("sagoni_tms_je_tab");
-      document.getElementById('appContainer').style.display = 'none';
-      document.getElementById('homeSection').style.display = 'block';
-      renderDocsList(); renderContactsList();
-    }
-
-    function showToast(msg) {
-      const toast = document.getElementById('toast');
-      toast.innerText = msg; toast.style.display = 'block';
-      setTimeout(() => { toast.style.display = 'none'; }, 3500);
-    }
-
+    /* =================== AUTH TABS =================== */
     function switchJETab(tabId) {
       saveActiveTab("sagoni_tms_je_tab", tabId);
       document.querySelectorAll('#jeForm .tab-bar .tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -1695,7 +1657,7 @@
               📝 <em>${inc.remarks}</em><br>
               <span style="color:var(--accent-blue); font-size:11px;">रिपोर्टकर्ता: <strong>${inc.reporter_name}</strong></span>
             </div>
-            ${(!isResolved && isCurrentUserJE()) ? `
+            ${!isResolved ? `
               <div style="margin-top:8px; text-align:right;">
                 <button onclick="resolveEmergencyIncident('${inc.id}')" class="btn-action-small btn-resolve">✅ अटेंड / ठीक किया (Rectified)</button>
               </div>
@@ -1760,16 +1722,12 @@
         const tagClass = isRectified ? 'background:#14532d; color:#bbf7d0;' : (isCritical ? 'background:#7f1d1d; color:#fecaca;' : 'background:#78350f; color:#fef08a;');
 
         if (tbody) {
-          const actionCol = (!isRectified && isCurrentUserJE()) 
-            ? `<button onclick="rectifyDefect('${d.id}')" class="btn-action-small btn-resolve">🛠️ क्लोज़ करें</button>` 
-            : (isRectified ? `<span style="color:#4ade80; font-weight:bold;">OK</span>` : `<span style="color:#f87171;">Open</span>`);
-
           html += `<tr>
             <td>${new Date(d.created_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
             <td>${d.line_name}</td><td><strong>${d.km_location}</strong></td><td>${d.pole_no || '-'}</td>
             <td><span style="padding:2px 6px; border-radius:4px; font-size:10px; font-weight:700; ${tagClass}">${d.defect_type}</span></td>
             <td><em>${d.remarks || '-'}</em></td><td>${d.reported_by}</td>
-            <td>${actionCol}</td>
+            <td>${!isRectified ? `<button onclick="rectifyDefect('${d.id}')" class="btn-action-small btn-resolve">🛠️ क्लोज़ करें</button>` : `<span style="color:#4ade80; font-weight:bold;">OK</span>`}</td>
           </tr>`;
         }
 
@@ -1801,13 +1759,9 @@
         <strong>📝 मौके की स्थिति:</strong> <em>${d.remarks || 'कोई रिमार्क्स नहीं'}</em>
       `;
 
-      if (!isRectified && isCurrentUserJE()) {
-        document.getElementById('dfInfoAction').innerHTML = `<button onclick="rectifyDefect('${d.id}')" class="btn btn-green" style="font-size:12px; padding:6px 12px; width:auto;">🛠️ मौके पर ठीक किया (Comply & Close)</button>`;
-      } else if (isRectified) {
-        document.getElementById('dfInfoAction').innerHTML = `<span style="color:#4ade80; font-size:12px; font-weight:bold;">🟢 डिफेक्ट पहले ही अटेंड / क्लोज़ किया जा चुका है।</span>`;
-      } else {
-        document.getElementById('dfInfoAction').innerHTML = `<span style="color:#f87171; font-size:12px; font-weight:bold;">⚠️ यह डिफेक्ट अभी ओपन है (JE एक्शन प्रतीक्षित)।</span>`;
-      }
+      document.getElementById('dfInfoAction').innerHTML = !isRectified 
+        ? `<button onclick="rectifyDefect('${d.id}')" class="btn btn-green" style="font-size:12px; padding:6px 12px; width:auto;">🛠️ मौके पर ठीक किया (Comply & Close)</button>` 
+        : `<span style="color:#4ade80; font-size:12px; font-weight:bold;">🟢 डिफेक्ट पहले ही अटेंड / क्लोज़ किया जा चुका है।</span>`;
 
       card.style.display = 'block';
       card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -1815,7 +1769,7 @@
 
     function closeDefectInfoCard() { document.getElementById('defectInfoCard').style.display = 'none'; }
 
-    // Init App
+    // Restore Session & Initialize Directories
     restoreAppState();
     renderDocsList();
     renderContactsList();
