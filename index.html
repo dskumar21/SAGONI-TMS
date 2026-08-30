@@ -156,6 +156,16 @@
       box-shadow: 0 8px 24px rgba(245, 158, 11, 0.25);
     }
 
+    .bento-card.contacts-hub {
+      background: linear-gradient(135deg, rgba(22, 163, 74, 0.15) 0%, rgba(15, 23, 42, 0.85) 100%);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      cursor: pointer;
+    }
+    .bento-card.contacts-hub:hover {
+      border-color: var(--accent-green);
+      box-shadow: 0 8px 24px rgba(34, 197, 94, 0.25);
+    }
+
     .bento-card.train-hub {
       border: 1px solid rgba(2, 132, 199, 0.4);
       background: linear-gradient(135deg, rgba(2, 132, 199, 0.12) 0%, rgba(15, 23, 42, 0.8) 100%);
@@ -209,6 +219,31 @@
     .btn-amber { background: linear-gradient(135deg, #d97706, #b45309); }
     .btn-purple { background: linear-gradient(135deg, #9333ea, #7e22ce); }
     .btn-csv { background: #059669; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+
+    .btn-call {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      text-decoration: none;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-wa {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: white;
+      text-decoration: none;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
 
     .section-pills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
     .line-selector-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
@@ -355,26 +390,45 @@
       
       <div class="bento-grid">
 
-        <!-- 📂 Important Docs Hub -->
-        <div class="bento-card docs-hub col-12" onclick="openDocsModal()">
+        <!-- 📂 Bento 1: Important Docs Hub (Span 6) -->
+        <div class="bento-card docs-hub col-6" onclick="openDocsModal()">
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 14px;">
-              <div style="background: rgba(245, 158, 11, 0.2); border: 1px solid var(--accent-amber); padding: 10px; border-radius: 12px; font-size: 26px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="background: rgba(245, 158, 11, 0.2); border: 1px solid var(--accent-amber); padding: 10px; border-radius: 12px; font-size: 24px;">
                 📂
               </div>
               <div>
-                <strong style="color: var(--accent-amber); font-size: 15px; display:block;">महत्वपूर्ण दस्तावेज़ व तकनीकी संदर्भ केंद्र</strong>
-                <p style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">Annexure-3/9 SEJ गैप चार्ट, अधिकृत PDF अपलोडर एवं तकनीकी निर्देश</p>
+                <strong style="color: var(--accent-amber); font-size: 14px; display:block;">महत्वपूर्ण दस्तावेज़ व संदर्भ</strong>
+                <p style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">Annexure-3/9 SEJ चार्ट व PDF अपलोडर</p>
               </div>
             </div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span id="docBadgeCount" style="background: #0284c7; color: white; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 20px;">1 File</span>
-              <span style="font-size: 22px; color: var(--accent-amber); font-weight: bold;">›</span>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span id="docBadgeCount" style="background: #0284c7; color: white; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 20px;">1 File</span>
+              <span style="font-size: 20px; color: var(--accent-amber); font-weight: bold;">›</span>
             </div>
           </div>
         </div>
 
-        <!-- 🚆 Train Block Protection -->
+        <!-- 📞 Bento 2: Emergency Contact Directory Hub (Span 6) -->
+        <div class="bento-card contacts-hub col-6" onclick="openContactsModal()">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="background: rgba(34, 197, 94, 0.2); border: 1px solid var(--accent-green); padding: 10px; border-radius: 12px; font-size: 24px;">
+                📞
+              </div>
+              <div>
+                <strong style="color: var(--accent-green); font-size: 14px; display:block;">सेक्शन कांटेक्ट डायरेक्टरी</strong>
+                <p style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">JE, मुकद्दम, कीमैन, SM व अधिकारियों के फ़ोन/WhatsApp</p>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="background: #16a34a; color: white; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 20px;">Call / WA</span>
+              <span style="font-size: 20px; color: var(--accent-green); font-weight: bold;">›</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 🚆 Bento 3: Train Block Protection (Span 8) -->
         <div class="bento-card train-hub col-8">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <strong style="color: var(--accent-blue); font-size: 14px;">🚆 रिलेटिव सेक्शन ब्लॉक सुरक्षा प्रणाली</strong>
@@ -495,7 +549,7 @@
           </div>
         </div>
 
-        <!-- 🔐 Staff Token Login -->
+        <!-- 🔐 Bento 4: Staff Token Login (Span 4) -->
         <div class="bento-card col-4">
           <div style="text-align: center; margin-bottom: 10px;">
             <span style="font-size: 26px;">🔐</span>
@@ -516,11 +570,11 @@
           </div>
         </div>
 
-        <!-- 🚨 Rapid Emergency SOS -->
+        <!-- 🚨 Bento 5: Rapid Emergency SOS (Span 12) -->
         <div class="bento-card emergency-hub col-12">
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <strong style="color: #f87171; font-size: 14px;">🚨 त्वरित आपातकालीन रिपोर्टिंग (Direct SOS)</strong>
-            <span style="font-size: 10px; color: #fca5a5;">बिना लॉगिन 1-टच रिपोर्ट</span>
+            <strong style="color: #f87171; font-size: 14px;">🚨 त्वरित आपातकालीन रिपोर्टिंग (Direct SOS & Instant Alert)</strong>
+            <span style="font-size: 10px; color: #fca5a5;">दर्ज होते ही फ़ोन अलर्ट प्रसारित</span>
           </div>
 
           <div class="sos-grid">
@@ -560,7 +614,7 @@
               </div>
               <div class="form-group"><label>विवरण</label><textarea id="emRemarks" rows="2" placeholder="मौके की स्थिति..." required></textarea></div>
               <div class="form-group"><label>📸 मौके की फोटो</label><input type="file" id="emPhoto" accept="image/*" capture="environment" style="padding:6px;"></div>
-              <button type="submit" id="emBtn" class="btn btn-red">🚨 तुरंत इमरजेंसी अलर्ट दर्ज करें</button>
+              <button type="submit" id="emBtn" class="btn btn-red">🚨 तुरंत इमरजेंसी दर्ज करें एवं मोबाइल अलर्ट भेजें</button>
             </form>
           </div>
         </div>
@@ -858,10 +912,37 @@
     </div>
   </div>
 
+  <!-- ======================= 📞 इमरजेंसी कांटेक्ट डायरेक्टरी MODAL ======================= -->
+  <div id="contactsModal" class="modal-overlay">
+    <div class="modal-bento-content">
+      
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; padding-bottom:10px; margin-bottom:14px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:22px;">📞</span>
+          <strong style="color:var(--accent-green); font-size:16px;">सेक्शन आपातकालीन संपर्क डायरेक्टरी</strong>
+        </div>
+        <button onclick="closeContactsModal()" style="background:none; border:none; color:#f87171; font-size:22px; cursor:pointer; font-weight:bold;">✕</button>
+      </div>
+
+      <!-- Emergency Help Notice -->
+      <div style="background:rgba(239,68,68,0.15); border:1px solid #ef4444; border-radius:10px; padding:10px; font-size:11px; color:#fecaca; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+        <span style="font-size:20px;">🚨</span>
+        <span>घटना या आपातकाल की स्थिति में नीचे दिए गए बटनों पर टच करके तुरंत कॉल या WhatsApp संदेश भेजें।</span>
+      </div>
+
+      <!-- Contacts List Container -->
+      <div id="contactsListContainer"></div>
+
+    </div>
+  </div>
+
   <script>
     const SUPABASE_URL = "https://jhdkpdsrrgwqzxwftcyc.supabase.co";
     const SUPABASE_KEY = "sb_publishable_GL2DEQ5U-COnS8ifSz4Zgg_8ooV-wGv";
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // 🚨 JE / इन-चार्ज का अलर्ट मोबाइल नंबर (यहाँ अपना 10 अंकों का नंबर सेट करें)
+    const JE_EMERGENCY_MOBILE = "919425000000"; 
 
     let activeUser = null;
     let audioContext = null;
@@ -890,6 +971,58 @@
       "KEY01": { name: "सुरेश कीमैन", role: "keyman", beat: "UP Line (1157-1165)" },
       "PAT01": { name: "राकेश पेट्रोलमैन", role: "keyman", beat: "Night Patrol (1157-1165)" }
     };
+
+    /* =================== 📞 कांटेक्ट डायरेक्टरी डेटा =================== */
+    const SECTION_CONTACTS = [
+      { designation: "Section Engineer (JE P-Way)", name: "JE (P-Way) Sagoni In-Charge", phone: "+919425111111", category: "In-Charge" },
+      { designation: "Assistant Divisional Engineer (ADEN)", name: "ADEN Damoh / Katni", phone: "+919425222222", category: "Officer" },
+      { designation: "Senior Section Engineer (SSE)", name: "SSE (P-Way) Main Section", phone: "+919425333333", category: "Officer" },
+      { designation: "Station Master (सगोनी)", name: "Station Superintendent Sagoni", phone: "+919425444444", category: "Station" },
+      { designation: "Station Master (रतनगांव)", name: "SM Ratangaon Station", phone: "+919425555555", category: "Station" },
+      { designation: "गोला पट्टी (IBH Cabin)", name: "IBH Switchman Gholapatti", phone: "+919425666666", category: "Station" },
+      { designation: "गैंग-01 मुकद्दम", name: "रामलाल मुकद्दम (Gang-01)", phone: "+919425777777", category: "Staff" },
+      { designation: "गैंग-02 मुकद्दम", name: "श्याम सिंह मुकद्दम (Gang-02)", phone: "+919425888888", category: "Staff" },
+      { designation: "कीमैन (UP Line)", name: "सुरेश कीमैन (1157-1165)", phone: "+919425999999", category: "Staff" },
+      { designation: "नाइट पेट्रोलमैन", name: "राकेश पेट्रोलमैन (UP/DN Line)", phone: "+919425000011", category: "Staff" },
+      { designation: "रेलवे कंट्रोल रूम (जबलपुर)", name: "P-Way Control / Test Room", phone: "+919425000022", category: "Control" }
+    ];
+
+    function renderContactsList() {
+      const container = document.getElementById("contactsListContainer");
+      container.innerHTML = "";
+
+      SECTION_CONTACTS.forEach(c => {
+        const cleanNumber = c.phone.replace(/[^0-9]/g, '');
+        const item = document.createElement("div");
+        item.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:rgba(11,19,41,0.7); border:1px solid #334155; border-radius:12px; padding:12px; margin-bottom:10px;";
+        
+        item.innerHTML = `
+          <div>
+            <div style="font-size:10px; color:var(--accent-blue); font-weight:800; text-transform:uppercase;">${c.designation}</div>
+            <strong style="font-size:13px; color:#f8fafc; display:block; margin:2px 0;">${c.name}</strong>
+            <span style="font-size:11px; color:#94a3b8; font-family:monospace;">📞 ${c.phone}</span>
+          </div>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <a href="tel:${c.phone}" class="btn-call" title="सीधा कॉल करें">
+              📞 कॉल
+            </a>
+            <a href="https://wa.me/${cleanNumber}?text=नमस्ते,%20सगोनी%20पी-वे%20सेक्शन%20ट्रैक%20अलर्ट:" target="_blank" class="btn-wa" title="WhatsApp मैसेज करें">
+              💬 WhatsApp
+            </a>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function openContactsModal() {
+      renderContactsList();
+      document.getElementById("contactsModal").style.display = "flex";
+    }
+
+    function closeContactsModal() {
+      document.getElementById("contactsModal").style.display = "none";
+    }
 
     /* =================== 📄 CLIENT-SIDE JS PDF ENGINE (ANNEXURE 3/9) =================== */
     function generateAnnexure39PDF() {
@@ -1074,7 +1207,6 @@
       document.getElementById('btnTabDocAdd').classList.toggle('active', tabName === 'docAddSec');
     }
 
-    // 🛡️ Magic Byte + Extension + Size Validation
     function handlePDFSelection(e) {
       const file = e.target.files[0];
       if (!file) return;
@@ -1115,7 +1247,6 @@
       readerHeader.readAsArrayBuffer(headerBlob);
     }
 
-    // Direct Upload - No PIN required
     function saveNewUploadedPDF() {
       const title = document.getElementById("newDocTitle").value.trim();
       const sub = document.getElementById("newDocSub").value.trim();
@@ -1142,7 +1273,6 @@
         return;
       }
 
-      // Reset Form
       document.getElementById("newDocTitle").value = "";
       document.getElementById("newDocSub").value = "";
       document.getElementById("pdfFileInput").value = "";
@@ -1169,7 +1299,6 @@
       document.body.removeChild(link);
     }
 
-    // Deletion: Strict Security PIN Verification
     function deleteDocItem(id) {
       if (!isCurrentUserJE()) {
         const pin = prompt("🔒 दस्तावेज़ हटाने के लिए JE Security PIN दर्ज करें:");
@@ -1198,8 +1327,10 @@
     }
 
     window.addEventListener("click", function(e) {
-      const modal = document.getElementById("docsModal");
-      if (e.target === modal) closeDocsModal();
+      const docsModal = document.getElementById("docsModal");
+      const contactsModal = document.getElementById("contactsModal");
+      if (e.target === docsModal) closeDocsModal();
+      if (e.target === contactsModal) closeContactsModal();
     });
 
     /* =================== CSV EXPORT & TMS CORE FUNCTIONS =================== */
@@ -1684,30 +1815,43 @@
         if (fileInput.files.length > 0) photoBase64 = await compressImageFile(fileInput.files[0]);
 
         const empId = document.getElementById('emEmpId').value.trim().toUpperCase();
+        const incType = document.getElementById('emIncidentType').value;
+        const line = document.getElementById('emLine').value;
+        const km = parseFloat(document.getElementById('emKm').value);
+        const pole = document.getElementById('emPole').value;
+        const train = document.getElementById('emTrain').value || 'N/A';
+        const remarks = document.getElementById('emRemarks').value;
+
         const payload = {
           reporter_emp_id: empId,
           reporter_name: STAFF_DATA[empId] ? STAFF_DATA[empId].name : empId,
-          incident_type: document.getElementById('emIncidentType').value,
-          line_name: document.getElementById('emLine').value,
-          km_location: parseFloat(document.getElementById('emKm').value),
-          pole_no: document.getElementById('emPole').value,
-          train_no: document.getElementById('emTrain').value || 'N/A',
-          remarks: document.getElementById('emRemarks').value,
+          incident_type: incType,
+          line_name: line,
+          km_location: km,
+          pole_no: pole,
+          train_no: train,
+          remarks: remarks,
           photo_url: photoBase64
         };
 
         const { error } = await db.from('emergency_incidents').insert([payload]);
-        btn.innerText = "🚨 तुरंत इमरजेंसी अलर्ट दर्ज करें";
+        btn.innerText = "🚨 तुरंत इमरजेंसी दर्ज करें एवं मोबाइल अलर्ट भेजें";
         btn.disabled = false;
 
         if (error) alert('त्रुटि: ' + error.message);
         else {
           closeEmergencyForm();
-          showToast('✅ आपातकालीन अलर्ट दर्ज हो गया!');
+          showToast('✅ आपातकालीन अलर्ट डेटाबेस में दर्ज हो गया!');
           e.target.reset();
+
+          // 📲 ऑटोमैटिक WhatsApp/SMS अलर्ट ट्रिगर
+          const alertMessage = encodeURIComponent(`🚨 *सगोनी पी-वे सेक्शन आपातकालीन अलर्ट!*\n\n⚠️ *घटना:* ${incType}\n📍 *स्थान:* ${line} @ Km ${km} (खंभा: ${pole})\n🚆 *गाड़ी सं.:* ${train}\n👤 *रिपोर्टकर्ता:* ${payload.reporter_name} (${empId})\n📝 *विवरण:* ${remarks}`);
+          
+          // मोबाइल WhatsApp पर सीधे संदेश खोलने का ट्रिगर
+          window.open(`https://wa.me/${JE_EMERGENCY_MOBILE}?text=${alertMessage}`, '_blank');
         }
       } catch (err) {
-        btn.innerText = "🚨 तुरंत इमरजेंसी अलर्ट दर्ज करें";
+        btn.innerText = "🚨 तुरंत इमरजेंसी दर्ज करें एवं मोबाइल अलर्ट भेजें";
         btn.disabled = false;
         alert('त्रुटि: ' + err.message);
       }
