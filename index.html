@@ -220,29 +220,57 @@
     .btn-purple { background: linear-gradient(135deg, #9333ea, #7e22ce); }
     .btn-csv { background: #059669; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
 
-    .btn-call {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: white;
-      text-decoration: none;
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-size: 11px;
-      font-weight: 700;
+    /* Crisp, Balanced Contact Action Buttons */
+    .btn-contact-action {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      justify-content: center;
+      gap: 5px;
+      height: 32px;
+      padding: 0 10px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+      white-space: nowrap;
+      box-sizing: border-box;
     }
-    .btn-wa {
-      background: linear-gradient(135deg, #22c55e, #16a34a);
-      color: white;
-      text-decoration: none;
-      padding: 6px 10px;
+    .btn-contact-action:active {
+      transform: scale(0.96);
+    }
+    .btn-contact-call {
+      background: #2563eb;
+      color: #ffffff;
+    }
+    .btn-contact-wa {
+      background: #16a34a;
+      color: #ffffff;
+    }
+    .btn-contact-icon {
+      background: transparent;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      width: 32px;
+      height: 32px;
+      padding: 0;
       border-radius: 8px;
-      font-size: 11px;
-      font-weight: 700;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+    .btn-contact-icon:hover {
+      border-color: #64748b;
+      background: rgba(255,255,255,0.05);
+    }
+    .btn-contact-icon.del:hover {
+      border-color: #ef4444;
+      color: #f87171;
     }
 
     .section-pills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
@@ -422,7 +450,7 @@
               </div>
             </div>
             <div style="display: flex; align-items: center; gap: 6px;">
-              <span style="background: #16a34a; color: white; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 20px;">Call / WA</span>
+              <span id="contactCountBadge" style="background: #16a34a; color: white; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 20px;">Direct Dial</span>
               <span style="font-size: 20px; color: var(--accent-green); font-weight: bold;">›</span>
             </div>
           </div>
@@ -912,7 +940,7 @@
     </div>
   </div>
 
-  <!-- ======================= 📞 इमरजेंसी कांटेक्ट डायरेक्टरी MODAL ======================= -->
+  <!-- ======================= 📞 इमरजेंसी कांटेक्ट डायरेक्टरी BENTO MODAL ======================= -->
   <div id="contactsModal" class="modal-overlay">
     <div class="modal-bento-content">
       
@@ -924,14 +952,54 @@
         <button onclick="closeContactsModal()" style="background:none; border:none; color:#f87171; font-size:22px; cursor:pointer; font-weight:bold;">✕</button>
       </div>
 
-      <!-- Emergency Help Notice -->
-      <div style="background:rgba(239,68,68,0.15); border:1px solid #ef4444; border-radius:10px; padding:10px; font-size:11px; color:#fecaca; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
-        <span style="font-size:20px;">🚨</span>
-        <span>घटना या आपातकाल की स्थिति में नीचे दिए गए बटनों पर टच करके तुरंत कॉल या WhatsApp संदेश भेजें।</span>
+      <!-- Tab Switcher for Contacts -->
+      <div class="tab-bar">
+        <button class="tab-btn active" id="btnTabContactList" onclick="switchContactTab('contactListSec')">📋 डायरेक्टरी सूची</button>
+        <button class="tab-btn" id="btnTabContactAdd" onclick="switchContactTab('contactAddSec')">➕ नया कांटेक्ट जोड़ें (JE/SSE)</button>
       </div>
 
-      <!-- Contacts List Container -->
-      <div id="contactsListContainer"></div>
+      <!-- Tab 1: Contacts List -->
+      <div id="contactListSec">
+        <div id="contactsListContainer"></div>
+      </div>
+
+      <!-- Tab 2: Add / Edit Contact Form (JE / SSE Protected) -->
+      <div id="contactAddSec" style="display: none;">
+        <div style="background:rgba(11,19,41,0.6); border:1px solid rgba(34, 197, 94, 0.4); border-radius:12px; padding:14px;">
+          <strong id="contactFormHeading" style="color:var(--accent-green); font-size:13px; display:block; margin-bottom:10px;">➕ नया आधिकारिक कांटेक्ट जोड़ें</strong>
+          
+          <input type="hidden" id="editContactId" value="">
+
+          <div class="form-group">
+            <label>पदनाम / विभाग (Designation / Office)</label>
+            <input type="text" id="cntDesignation" placeholder="उदा: SSE / JE / मुकद्दम Gang-03 / SM">
+          </div>
+
+          <div class="form-group">
+            <label>अधिकारी / कर्मचारी का नाम (Name)</label>
+            <input type="text" id="cntName" placeholder="उदा: श्री रमेश कुमार">
+          </div>
+
+          <div class="form-group">
+            <label>मोबाइल / CUG नंबर (Phone Number)</label>
+            <input type="tel" id="cntPhone" placeholder="उदा: +919425XXXXXX या 9425XXXXXX">
+          </div>
+
+          <div class="form-group">
+            <label>🔐 JE/SSE सुरक्षा पिन (Security PIN)</label>
+            <input type="password" id="cntSecurityPin" placeholder="JE Security PIN दर्ज करें (1162)" style="letter-spacing:2px;">
+          </div>
+
+          <div class="grid-2" style="margin-top: 8px;">
+            <button type="button" onclick="saveContactForm()" class="btn btn-green" style="font-size:13px;">
+              💾 कांटेक्ट सुरक्षित करें
+            </button>
+            <button type="button" onclick="resetContactForm()" class="btn btn-blue" style="background:#475569; font-size:13px;">
+              रद्द करें
+            </button>
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>
@@ -941,7 +1009,7 @@
     const SUPABASE_KEY = "sb_publishable_GL2DEQ5U-COnS8ifSz4Zgg_8ooV-wGv";
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // 🚨 JE / इन-चार्ज का अलर्ट मोबाइल नंबर (यहाँ अपना 10 अंकों का नंबर सेट करें)
+    // 🚨 JE / इन-चार्ज का अलर्ट मोबाइल नंबर
     const JE_EMERGENCY_MOBILE = "919425000000"; 
 
     let activeUser = null;
@@ -954,7 +1022,7 @@
     let selectedPDFBase64 = null;
     let selectedPDFName = "";
 
-    const JE_MASTER_PIN = "1162"; // JE Master PIN for Deletion
+    const JE_MASTER_PIN = "1162"; // JE Master PIN for Deletion & Contact Management
 
     const senderMovements = new Map([
       ['sndMv1', { name: 'रतनगांव से सगोनी', block: 'रतनगांव-सगोनी' }]
@@ -972,51 +1040,184 @@
       "PAT01": { name: "राकेश पेट्रोलमैन", role: "keyman", beat: "Night Patrol (1157-1165)" }
     };
 
-    /* =================== 📞 कांटेक्ट डायरेक्टरी डेटा =================== */
-    const SECTION_CONTACTS = [
-      { designation: "Section Engineer (JE P-Way)", name: "JE (P-Way) Sagoni In-Charge", phone: "+919425111111", category: "In-Charge" },
-      { designation: "Assistant Divisional Engineer (ADEN)", name: "ADEN Damoh / Katni", phone: "+919425222222", category: "Officer" },
-      { designation: "Senior Section Engineer (SSE)", name: "SSE (P-Way) Main Section", phone: "+919425333333", category: "Officer" },
-      { designation: "Station Master (सगोनी)", name: "Station Superintendent Sagoni", phone: "+919425444444", category: "Station" },
-      { designation: "Station Master (रतनगांव)", name: "SM Ratangaon Station", phone: "+919425555555", category: "Station" },
-      { designation: "गोला पट्टी (IBH Cabin)", name: "IBH Switchman Gholapatti", phone: "+919425666666", category: "Station" },
-      { designation: "गैंग-01 मुकद्दम", name: "रामलाल मुकद्दम (Gang-01)", phone: "+919425777777", category: "Staff" },
-      { designation: "गैंग-02 मुकद्दम", name: "श्याम सिंह मुकद्दम (Gang-02)", phone: "+919425888888", category: "Staff" },
-      { designation: "कीमैन (UP Line)", name: "सुरेश कीमैन (1157-1165)", phone: "+919425999999", category: "Staff" },
-      { designation: "नाइट पेट्रोलमैन", name: "राकेश पेट्रोलमैन (UP/DN Line)", phone: "+919425000011", category: "Staff" },
-      { designation: "रेलवे कंट्रोल रूम (जबलपुर)", name: "P-Way Control / Test Room", phone: "+919425000022", category: "Control" }
+    /* =================== 📞 कांटेक्ट डायरेक्टरी (EDIT / ADD / DELETE + PIN) =================== */
+    const DEFAULT_SECTION_CONTACTS = [
+      { id: "c1", designation: "Section Engineer (JE P-Way)", name: "JE (P-Way) Sagoni In-Charge", phone: "+919425111111" },
+      { id: "c2", designation: "Assistant Divisional Engineer (ADEN)", name: "ADEN Damoh / Katni", phone: "+919425222222" },
+      { id: "c3", designation: "Senior Section Engineer (SSE)", name: "SSE (P-Way) Main Section", phone: "+919425333333" },
+      { id: "c4", designation: "Station Master (सगोनी)", name: "Station Superintendent Sagoni", phone: "+919425444444" },
+      { id: "c5", designation: "Station Master (रतनगांव)", name: "SM Ratangaon Station", phone: "+919425555555" },
+      { id: "c6", designation: "गोला पट्टी (IBH Cabin)", name: "IBH Switchman Gholapatti", phone: "+919425666666" },
+      { id: "c7", designation: "गैंग-01 मुकद्दम", name: "रामलाल मुकद्दम (Gang-01)", phone: "+919425777777" },
+      { id: "c8", designation: "गैंग-02 मुकद्दम", name: "श्याम सिंह मुकद्दम (Gang-02)", phone: "+919425888888" },
+      { id: "c9", designation: "कीमैन (UP Line)", name: "सुरेश कीमैन (1157-1165)", phone: "+919425999999" },
+      { id: "c10", designation: "नाइट पेट्रोलमैन", name: "राकेश पेट्रोलमैन (UP/DN Line)", phone: "+919425000011" },
+      { id: "c11", designation: "रेलवे कंट्रोल रूम (जबलपुर)", name: "P-Way Control / Test Room", phone: "+919425000022" }
     ];
 
+    function getStoredContacts() {
+      const stored = localStorage.getItem("sagoni_tms_contacts_v2");
+      if (stored) {
+        try { return JSON.parse(stored); } catch (e) { return DEFAULT_SECTION_CONTACTS; }
+      }
+      return DEFAULT_SECTION_CONTACTS;
+    }
+
     function renderContactsList() {
+      const contacts = getStoredContacts();
       const container = document.getElementById("contactsListContainer");
+      const badge = document.getElementById("contactCountBadge");
+      badge.textContent = `${contacts.length} Contacts`;
+
       container.innerHTML = "";
 
-      SECTION_CONTACTS.forEach(c => {
+      if (contacts.length === 0) {
+        container.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:18px; font-size:12px;">कोई कांटेक्ट उपलब्ध नहीं है।</div>';
+        return;
+      }
+
+      contacts.forEach(c => {
         const cleanNumber = c.phone.replace(/[^0-9]/g, '');
         const item = document.createElement("div");
-        item.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:rgba(11,19,41,0.7); border:1px solid #334155; border-radius:12px; padding:12px; margin-bottom:10px;";
+        item.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:rgba(11,19,41,0.7); border:1px solid #334155; border-radius:12px; padding:12px; margin-bottom:10px; gap:8px; flex-wrap:wrap;";
         
         item.innerHTML = `
-          <div>
-            <div style="font-size:10px; color:var(--accent-blue); font-weight:800; text-transform:uppercase;">${c.designation}</div>
-            <strong style="font-size:13px; color:#f8fafc; display:block; margin:2px 0;">${c.name}</strong>
+          <div style="flex:1; min-width:180px;">
+            <div style="font-size:10px; color:var(--accent-blue); font-weight:800; text-transform:uppercase; letter-spacing:0.5px;">${c.designation}</div>
+            <strong style="font-size:13.5px; color:#f8fafc; display:block; margin:2px 0;">${c.name}</strong>
             <span style="font-size:11px; color:#94a3b8; font-family:monospace;">📞 ${c.phone}</span>
           </div>
-          <div style="display:flex; gap:6px; align-items:center;">
-            <a href="tel:${c.phone}" class="btn-call" title="सीधा कॉल करें">
-              📞 कॉल
+          
+          <div style="display:flex; gap:6px; align-items:center; flex-wrap:nowrap;">
+            <!-- Call Button -->
+            <a href="tel:${c.phone}" class="btn-contact-action btn-contact-call" title="कॉल करें">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              कॉल
             </a>
-            <a href="https://wa.me/${cleanNumber}?text=नमस्ते,%20सगोनी%20पी-वे%20सेक्शन%20ट्रैक%20अलर्ट:" target="_blank" class="btn-wa" title="WhatsApp मैसेज करें">
-              💬 WhatsApp
+
+            <!-- WhatsApp Button -->
+            <a href="https://wa.me/${cleanNumber}?text=नमस्ते,%20सगोनी%20पी-वे%20सेक्शन%20ट्रैक%20अलर्ट:" target="_blank" class="btn-contact-action btn-contact-wa" title="WhatsApp भेजें">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+              WhatsApp
             </a>
+
+            <!-- Edit Button (JE/SSE) -->
+            <button onclick="editContactPrompt('${c.id}')" class="btn-contact-icon" title="एडिट करें">
+              ✏️
+            </button>
+
+            <!-- Delete Button (JE/SSE) -->
+            <button onclick="deleteContactPrompt('${c.id}')" class="btn-contact-icon del" title="हटाएं">
+              🗑️
+            </button>
           </div>
         `;
         container.appendChild(item);
       });
     }
 
+    function switchContactTab(tabName) {
+      document.getElementById('contactListSec').style.display = (tabName === 'contactListSec') ? 'block' : 'none';
+      document.getElementById('contactAddSec').style.display = (tabName === 'contactAddSec') ? 'block' : 'none';
+      document.getElementById('btnTabContactList').classList.toggle('active', tabName === 'contactListSec');
+      document.getElementById('btnTabContactAdd').classList.toggle('active', tabName === 'contactAddSec');
+    }
+
+    function resetContactForm() {
+      document.getElementById('editContactId').value = "";
+      document.getElementById('cntDesignation').value = "";
+      document.getElementById('cntName').value = "";
+      document.getElementById('cntPhone').value = "";
+      document.getElementById('cntSecurityPin').value = "";
+      document.getElementById('contactFormHeading').innerText = "➕ नया आधिकारिक कांटेक्ट जोड़ें";
+      switchContactTab('contactListSec');
+    }
+
+    function saveContactForm() {
+      const id = document.getElementById('editContactId').value;
+      const desig = document.getElementById('cntDesignation').value.trim();
+      const name = document.getElementById('cntName').value.trim();
+      const phone = document.getElementById('cntPhone').value.trim();
+      const pin = document.getElementById('cntSecurityPin').value.trim();
+
+      // Authority Check
+      if (!isCurrentUserJE() && pin !== JE_MASTER_PIN) {
+        alert("🔒 गलत JE/SSE सुरक्षा पिन! केवल अधिकृत इंचार्ज ही कांटेक्ट जोड़ या बदल सकते हैं।");
+        return;
+      }
+
+      if (!desig || !name || !phone) {
+        alert("कृपया पदनाम, नाम और फ़ोन नंबर तीनों दर्ज करें!");
+        return;
+      }
+
+      let contacts = getStoredContacts();
+
+      if (id) {
+        // Update Existing Contact
+        contacts = contacts.map(c => c.id === id ? { ...c, designation: desig, name: name, phone: phone } : c);
+        showToast("✅ कांटेक्ट सफलतापूर्वक अपडेट हो गया!");
+      } else {
+        // Add New Contact
+        const newContact = {
+          id: "c_" + Date.now(),
+          designation: desig,
+          name: name,
+          phone: phone
+        };
+        contacts.push(newContact);
+        showToast("✅ नया कांटेक्ट सफलतापूर्वक जुड़ गया!");
+      }
+
+      localStorage.setItem("sagoni_tms_contacts_v2", JSON.stringify(contacts));
+      resetContactForm();
+      renderContactsList();
+      switchContactTab('contactListSec');
+    }
+
+    function editContactPrompt(contactId) {
+      if (!isCurrentUserJE()) {
+        const pin = prompt("🔒 कांटेक्ट एडिट करने के लिए JE/SSE Security PIN दर्ज करें:");
+        if (pin !== JE_MASTER_PIN) {
+          alert("गलत पिन! केवल JE/SSE को कांटेक्ट बदलने का अधिकार है।");
+          return;
+        }
+      }
+
+      const contacts = getStoredContacts();
+      const contact = contacts.find(c => c.id === contactId);
+      if (!contact) return;
+
+      document.getElementById('editContactId').value = contact.id;
+      document.getElementById('cntDesignation').value = contact.designation;
+      document.getElementById('cntName').value = contact.name;
+      document.getElementById('cntPhone').value = contact.phone;
+      document.getElementById('cntSecurityPin').value = JE_MASTER_PIN;
+      document.getElementById('contactFormHeading').innerText = `✏️ कांटेक्ट एडिट करें (${contact.name})`;
+
+      switchContactTab('contactAddSec');
+    }
+
+    function deleteContactPrompt(contactId) {
+      if (!isCurrentUserJE()) {
+        const pin = prompt("🔒 कांटेक्ट हटाने के लिए JE/SSE Security PIN दर्ज करें:");
+        if (pin !== JE_MASTER_PIN) {
+          alert("गलत पिन! केवल JE/SSE को कांटेक्ट हटाने का अधिकार है।");
+          return;
+        }
+      }
+
+      if (!confirm("क्या आप वाकई इस कांटेक्ट को डायरेक्टरी से हटाना चाहते हैं?")) return;
+      let contacts = getStoredContacts();
+      contacts = contacts.filter(c => c.id !== contactId);
+      localStorage.setItem("sagoni_tms_contacts_v2", JSON.stringify(contacts));
+      renderContactsList();
+      showToast("🗑️ कांटेक्ट सफलतापूर्वक हटा दिया गया!");
+    }
+
     function openContactsModal() {
       renderContactsList();
+      switchContactTab('contactListSec');
       document.getElementById("contactsModal").style.display = "flex";
     }
 
@@ -1745,6 +1946,7 @@
       }
 
       renderDocsList();
+      renderContactsList();
     }
 
     function logout() {
@@ -1752,6 +1954,7 @@
       document.getElementById('appContainer').style.display = 'none';
       document.getElementById('homeSection').style.display = 'block';
       renderDocsList();
+      renderContactsList();
     }
 
     function showToast(msg) {
@@ -1847,7 +2050,6 @@
           // 📲 ऑटोमैटिक WhatsApp/SMS अलर्ट ट्रिगर
           const alertMessage = encodeURIComponent(`🚨 *सगोनी पी-वे सेक्शन आपातकालीन अलर्ट!*\n\n⚠️ *घटना:* ${incType}\n📍 *स्थान:* ${line} @ Km ${km} (खंभा: ${pole})\n🚆 *गाड़ी सं.:* ${train}\n👤 *रिपोर्टकर्ता:* ${payload.reporter_name} (${empId})\n📝 *विवरण:* ${remarks}`);
           
-          // मोबाइल WhatsApp पर सीधे संदेश खोलने का ट्रिगर
           window.open(`https://wa.me/${JE_EMERGENCY_MOBILE}?text=${alertMessage}`, '_blank');
         }
       } catch (err) {
@@ -1934,6 +2136,7 @@
     }
 
     renderDocsList();
+    renderContactsList();
   </script>
 </body>
 </html>
