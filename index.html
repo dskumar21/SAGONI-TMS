@@ -94,6 +94,7 @@
     .bento-card.docs-hub { background: linear-gradient(135deg, rgba(30, 58, 138, 0.4) 0%, rgba(15, 23, 42, 0.85) 100%); border: 1px solid rgba(245, 158, 11, 0.45); cursor: pointer; }
     .bento-card.contacts-hub { background: linear-gradient(135deg, rgba(22, 163, 74, 0.15) 0%, rgba(15, 23, 42, 0.85) 100%); border: 1px solid rgba(34, 197, 94, 0.4); cursor: pointer; }
     .bento-card.train-hub { border: 1px solid rgba(2, 132, 199, 0.4); background: linear-gradient(135deg, rgba(2, 132, 199, 0.12) 0%, rgba(15, 23, 42, 0.8) 100%); }
+    .bento-card.patrol-hub { border: 1px solid rgba(168, 85, 247, 0.4); background: linear-gradient(135deg, rgba(168, 85, 247, 0.12) 0%, rgba(15, 23, 42, 0.8) 100%); }
     .bento-card.emergency-hub { border: 1px solid rgba(239, 68, 68, 0.4); background: linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(20, 10, 18, 0.8) 100%); }
 
     .form-group { margin-bottom: 12px; }
@@ -253,6 +254,40 @@
               <span id="contactCountBadge" style="background: #16a34a; color: white; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 20px;">Direct Dial</span>
               <span style="font-size: 20px; color: var(--accent-green); font-weight: bold;">›</span>
             </div>
+          </div>
+        </div>
+
+        <!-- 🛰️ Bento 3.1: Standalone GPS Live Patrol Widget (Home Page) -->
+        <div class="bento-card patrol-hub col-12">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <strong style="color:#c084fc; font-size:14px;">🛰️ GPS ट्रैक पेट्रोलिंग (Live Field Tracking Widget)</strong>
+            <span id="homeGpsBadge" style="background:#475569; color:#fff; font-size:10px; font-weight:800; padding:3px 8px; border-radius:6px;">STANDBY</span>
+          </div>
+          <p style="font-size: 11px; color: var(--text-muted); margin-bottom:10px;">कीमैन या पेट्रोलमैन अपना पंजीकृत मोबाइल नंबर डालकर सीधे लाइव पेट्रोलिंग शुरू कर सकते हैं।</p>
+          
+          <div id="homePatrolLoginForm" style="display:block;">
+            <div class="form-group">
+              <label>पेट्रोलमैन / कीमैन का पंजीकृत मोबाइल नंबर</label>
+              <input type="tel" id="homePatrolPhone" placeholder="उदा: 9425000011" maxlength="10">
+            </div>
+            <button type="button" onclick="startHomePatrolSession()" class="btn btn-purple" style="font-size:12px;">
+              🟢 GPS पेट्रोलिंग शुरू करें (Start Patrol)
+            </button>
+          </div>
+
+          <div id="homePatrolActiveBox" style="display:none; background:rgba(11,19,41,0.9); border:1px solid #a855f7; border-radius:12px; padding:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <span id="homePatrolStaffName" style="font-size:12px; color:#fef08a; font-weight:bold;">--</span>
+              <span style="color:#ef4444; font-size:11px; font-weight:bold; animation:pulseAlert 1s infinite;">● LIVE RECORDING</span>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:10px; text-align:center;">
+              <div style="background:#0f172a; padding:6px; border-radius:6px;"><span style="font-size:9px; color:#94a3b8;">गति</span><strong id="homePatrolSpeed" style="font-size:13px; color:#4ade80; display:block;">0.0 km/h</strong></div>
+              <div style="background:#0f172a; padding:6px; border-radius:6px;"><span style="font-size:9px; color:#94a3b8;">दूरी</span><strong id="homePatrolDist" style="font-size:13px; color:#fef08a; display:block;">0.00 Km</strong></div>
+              <div style="background:#0f172a; padding:6px; border-radius:6px;"><span style="font-size:9px; color:#94a3b8;">समय</span><strong id="homePatrolTime" style="font-size:13px; color:#38bdf8; display:block;">00:00</strong></div>
+            </div>
+            <button type="button" onclick="stopHomePatrolSession()" class="btn btn-red" style="font-size:12px;">
+              🛑 पेट्रोलिंग समाप्त करें & क्लाउड में भेजें (End & Sync)
+            </button>
           </div>
         </div>
 
@@ -515,40 +550,8 @@
         </div>
       </div>
 
-      <!-- KEYMAN / PATROLMAN SECTION (WITH REAL-TIME GPS TRACKER) -->
+      <!-- KEYMAN / PATROLMAN SECTION -->
       <div id="keymanForm" class="bento-card" style="display: none;">
-        <!-- 🛰️ GPS Live Patrol Telemetry Card -->
-        <div style="background:rgba(11,19,41,0.8); border:1px solid var(--accent-blue); border-radius:12px; padding:14px; margin-bottom:14px;">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <strong style="color:var(--accent-blue); font-size:14px;">🛰️ GPS ट्रैक पेट्रोलिंग ट्रैकर (Live Patrol)</strong>
-            <span id="gpsLiveStatusBadge" style="background:#475569; color:#fff; font-size:10px; font-weight:800; padding:3px 8px; border-radius:6px;">OFFLINE</span>
-          </div>
-
-          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin:10px 0; text-align:center;">
-            <div style="background:#0f172a; padding:8px; border-radius:8px; border:1px solid #334155;">
-              <span style="font-size:10px; color:#94a3b8;">गति (Speed)</span>
-              <strong id="gpsLiveSpeed" style="font-size:14px; color:#4ade80; display:block;">0.0 km/h</strong>
-            </div>
-            <div style="background:#0f172a; padding:8px; border-radius:8px; border:1px solid #334155;">
-              <span style="font-size:10px; color:#94a3b8;">तय दूरी (Distance)</span>
-              <strong id="gpsLiveDistance" style="font-size:14px; color:#fef08a; display:block;">0.00 Km</strong>
-            </div>
-            <div style="background:#0f172a; padding:8px; border-radius:8px; border:1px solid #334155;">
-              <span style="font-size:10px; color:#94a3b8;">समय (Duration)</span>
-              <strong id="gpsLiveDuration" style="font-size:14px; color:#38bdf8; display:block;">00:00</strong>
-            </div>
-          </div>
-
-          <div class="grid-2">
-            <button type="button" id="btnStartPatrol" onclick="toggleGPSPatrolTracking()" class="btn btn-green" style="font-size:12px;">
-              🟢 पेट्रोलिंग शुरू करें (Start Track Patrol)
-            </button>
-            <button type="button" id="btnStopPatrol" onclick="stopGPSPatrolTracking()" class="btn btn-red" style="font-size:12px; display:none;">
-              🛑 पेट्रोलिंग समाप्त करें (End Patrol)
-            </button>
-          </div>
-        </div>
-
         <strong style="font-size: 15px; margin-bottom: 12px; color: var(--accent-blue); display:block;">🔑 डिफेक्ट रिपोर्टिंग (Keyman Beat)</strong>
         <form onsubmit="submitKeymanDefect(event)">
           <div class="form-group">
@@ -607,7 +610,7 @@
           </div>
         </div>
 
-        <!-- 🛰️ Tab: GPS Patrol Monitoring Chart (Real-Time Cloud Fetch) -->
+        <!-- 🛰️ Tab: GPS Patrol Monitoring Chart -->
         <div id="tabPatrolLogs" class="bento-card" style="display: none;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <strong style="color:var(--accent-blue); font-size:14px;">🛰️ कीमैन / पेट्रोलमैन GPS पेट्रोलिंग चार्ट & लाइव टेलीमेट्री</strong>
@@ -876,12 +879,13 @@
     let currentLoginOTP = null;
     let pendingLoginUser = null;
 
-    // GPS Patrol Tracker State
-    let gpsWatchId = null;
-    let patrolStartTime = null;
-    let patrolDurationTimer = null;
-    let patrolDistanceKm = 0;
-    let lastPosition = null;
+    // GPS Patrol Widget State (Home Page Standalone)
+    let homeGpsWatchId = null;
+    let homePatrolStartTime = null;
+    let homePatrolTimer = null;
+    let homePatrolDist = 0;
+    let homeLastPos = null;
+    let homePatrolUserObj = null;
 
     const senderMovements = new Map([['sndMv1', { name: 'रतनगांव से सगोनी', block: 'रतनगांव-सगोनी' }]]);
     const senderLines = new Set(['अप मेन लाइन']);
@@ -929,7 +933,7 @@
       }, 3000);
     }
 
-    /* =================== 🛰️ GPS LIVE PATROL ENGINE (WITH SUPABASE SYNC) =================== */
+    /* =================== 🛰️ HOME PAGE STANDALONE GPS PATROL WIDGET =================== */
     function calculateGeoDistance(lat1, lon1, lat2, lon2) {
       const R = 6371;
       const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -941,78 +945,92 @@
       return R * c;
     }
 
-    function toggleGPSPatrolTracking() {
-      if (!navigator.geolocation) {
-        alert("आपके डिवाइस/ब्राउज़र में GPS सपोर्ट नहीं है!");
+    function startHomePatrolSession() {
+      const phoneInput = document.getElementById('homePatrolPhone').value.trim();
+      const staff = isUserAuthorized(phoneInput);
+
+      if (!staff) {
+        alert("⚠️ अमान्य मोबाइल नंबर! यह नंबर सगोनी पी-वे अधिकृत सूची में पंजीकृत नहीं है।");
         return;
       }
 
-      patrolStartTime = new Date();
-      patrolDistanceKm = 0;
-      lastPosition = null;
+      if (!navigator.geolocation) {
+        alert("आपके डिवाइस में GPS सपोर्ट उपलब्ध नहीं है!");
+        return;
+      }
 
-      document.getElementById('gpsLiveStatusBadge').innerText = "🔴 LIVE PATROLLING";
-      document.getElementById('gpsLiveStatusBadge').style.background = "#dc2626";
-      document.getElementById('btnStartPatrol').style.display = "none";
-      document.getElementById('btnStopPatrol').style.display = "block";
+      homePatrolUserObj = staff;
+      homePatrolStartTime = new Date();
+      homePatrolDist = 0;
+      homeLastPos = null;
 
-      gpsWatchId = navigator.geolocation.watchPosition(
+      document.getElementById('homeGpsBadge').innerText = "LIVE PATROLLING";
+      document.getElementById('homeGpsBadge').style.background = "#dc2626";
+      document.getElementById('homePatrolStaffName').innerText = `👤 ${staff.name} (${staff.beat})`;
+      document.getElementById('homePatrolLoginForm').style.display = 'none';
+      document.getElementById('homePatrolActiveBox').style.display = 'block';
+
+      homeGpsWatchId = navigator.geolocation.watchPosition(
         (pos) => {
           const lat = pos.coords.latitude;
           const lon = pos.coords.longitude;
           const speedKmh = pos.coords.speed ? (pos.coords.speed * 3.6).toFixed(1) : (Math.random() * 2 + 3).toFixed(1);
 
-          if (lastPosition) {
-            const dist = calculateGeoDistance(lastPosition.lat, lastPosition.lon, lat, lon);
-            if (dist > 0.005) patrolDistanceKm += dist;
+          if (homeLastPos) {
+            const dist = calculateGeoDistance(homeLastPos.lat, homeLastPos.lon, lat, lon);
+            if (dist > 0.005) homePatrolDist += dist;
           }
+          homeLastPos = { lat, lon };
 
-          lastPosition = { lat, lon };
-          document.getElementById('gpsLiveSpeed').innerText = `${speedKmh} km/h`;
-          document.getElementById('gpsLiveDistance').innerText = `${patrolDistanceKm.toFixed(2)} Km`;
+          document.getElementById('homePatrolSpeed').innerText = `${speedKmh} km/h`;
+          document.getElementById('homePatrolDist').innerText = `${homePatrolDist.toFixed(2)} Km`;
         },
-        (err) => { console.log("GPS Error: " + err.message); },
+        (err) => { console.log("Home GPS Error: " + err.message); },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
 
-      patrolDurationTimer = setInterval(() => {
-        const diffSecs = Math.floor((new Date() - patrolStartTime) / 1000);
+      homePatrolTimer = setInterval(() => {
+        const diffSecs = Math.floor((new Date() - homePatrolStartTime) / 1000);
         const mins = String(Math.floor(diffSecs / 60)).padStart(2, '0');
         const secs = String(diffSecs % 60).padStart(2, '0');
-        document.getElementById('gpsLiveDuration').innerText = `${mins}:${secs}`;
+        document.getElementById('homePatrolTime').innerText = `${mins}:${secs}`;
       }, 1000);
 
-      showToast("🛰️ GPS पेट्रोलिंग लाइव ट्रैक प्रारंभ हो गया!");
+      showToast(`🛰️ ${staff.name} के लिए जीपीएस पेट्रोलिंग प्रारंभ हो गई!`);
     }
 
-    async function stopGPSPatrolTracking() {
-      if (gpsWatchId) { navigator.geolocation.clearWatch(gpsWatchId); gpsWatchId = null; }
-      if (patrolDurationTimer) { clearInterval(patrolDurationTimer); patrolDurationTimer = null; }
+    async function stopHomePatrolSession() {
+      if (homeGpsWatchId) { navigator.geolocation.clearWatch(homeGpsWatchId); homeGpsWatchId = null; }
+      if (homePatrolTimer) { clearInterval(homePatrolTimer); homePatrolTimer = null; }
 
       const endTime = new Date();
-      const avgSpeed = (patrolDistanceKm > 0) ? ((patrolDistanceKm / ((endTime - patrolStartTime) / 3600000))).toFixed(1) : "3.8";
+      const avgSpeed = (homePatrolDist > 0) ? ((homePatrolDist / ((endTime - homePatrolStartTime) / 3600000))).toFixed(1) : "3.8";
 
       const patrolPayload = {
-        staff_name: activeUser ? activeUser.name : "Keyman",
-        phone: activeUser ? activeUser.phone : "--",
-        beat_section: activeUser ? activeUser.beat : "UP Line Beat",
-        start_time: patrolStartTime ? patrolStartTime.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : "--",
+        staff_name: homePatrolUserObj.name,
+        phone: homePatrolUserObj.phone,
+        beat_section: homePatrolUserObj.beat,
+        start_time: homePatrolStartTime.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}),
         end_time: endTime.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}),
-        total_distance_km: parseFloat(patrolDistanceKm.toFixed(2)),
+        total_distance_km: parseFloat(homePatrolDist.toFixed(2)),
         avg_speed_kmh: `${avgSpeed} km/h`,
         status: "COMPLETED"
       };
 
       // Push to Supabase Cloud
-      await db.from('patrol_tracking_logs').insert([patrolPayload]);
+      const { error } = await db.from('patrol_tracking_logs').insert([patrolPayload]);
 
-      document.getElementById('gpsLiveStatusBadge').innerText = "OFFLINE";
-      document.getElementById('gpsLiveStatusBadge').style.background = "#475569";
-      document.getElementById('btnStartPatrol').style.display = "block";
-      document.getElementById('btnStopPatrol').style.display = "none";
-      document.getElementById('gpsLiveSpeed').innerText = "0.0 km/h";
+      document.getElementById('homeGpsBadge').innerText = "STANDBY";
+      document.getElementById('homeGpsBadge').style.background = "#475569";
+      document.getElementById('homePatrolActiveBox').style.display = 'none';
+      document.getElementById('homePatrolLoginForm').style.display = 'block';
+      document.getElementById('homePatrolPhone').value = "";
 
-      showToast("🛑 GPS पेट्रोलिंग समाप्त एवं Supabase क्लाउड में दर्ज हो गई!");
+      if (error) {
+        alert("क्लाउड सिंक एरर: " + error.message);
+      } else {
+        showToast("🛑 पेट्रोलिंग समाप्त एवं Supabase क्लाउड में सिंक हो गई!");
+      }
     }
 
     async function fetchAndRenderCloudPatrolLogs() {
