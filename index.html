@@ -11,7 +11,6 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Sagoni TMS">
 
-  <!-- Crisp Railway SVG Favicon & Touch Icon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%23070d1e'/%3E%3Ccircle cx='256' cy='256' r='210' fill='%231e3a8a' stroke='%23f59e0b' stroke-width='18'/%3E%3Ccircle cx='256' cy='256' r='175' fill='%230b1329' stroke='%2338bdf8' stroke-width='8' stroke-dasharray='12 12'/%3E%3Cpath d='M150 330 L362 330 L335 190 L177 190 Z' fill='%23ef4444' stroke='%23f59e0b' stroke-width='10'/%3E%3Ccircle cx='205' cy='260' r='24' fill='%23ffffff'/%3E%3Ccircle cx='307' cy='260' r='24' fill='%23ffffff'/%3E%3Crect x='226' cy='145' width='60' height='45' rx='8' fill='%23f59e0b'/%3E%3Cline x1='110' y1='370' x2='402' y2='370' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cline x1='130' y1='398' x2='382' y2='398' stroke='%23f59e0b' stroke-width='12' stroke-linecap='round'/%3E%3Ctext x='256' y='460' font-size='42' font-family='sans-serif' font-weight='900' fill='%23fef08a' text-anchor='middle'%3EWCR TMS%3C/text%3E%3C/svg%3E">
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%23070d1e'/%3E%3Ccircle cx='256' cy='256' r='210' fill='%231e3a8a' stroke='%23f59e0b' stroke-width='18'/%3E%3Ccircle cx='256' cy='256' r='175' fill='%230b1329' stroke='%2338bdf8' stroke-width='8' stroke-dasharray='12 12'/%3E%3Cpath d='M150 330 L362 330 L335 190 L177 190 Z' fill='%23ef4444' stroke='%23f59e0b' stroke-width='10'/%3E%3Ccircle cx='205' cy='260' r='24' fill='%23ffffff'/%3E%3Ccircle cx='307' cy='260' r='24' fill='%23ffffff'/%3E%3Crect x='226' cy='145' width='60' height='45' rx='8' fill='%23f59e0b'/%3E%3Cline x1='110' y1='370' x2='402' y2='370' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cline x1='130' y1='398' x2='382' y2='398' stroke='%23f59e0b' stroke-width='12' stroke-linecap='round'/%3E%3Ctext x='256' y='460' font-size='42' font-family='sans-serif' font-weight='900' fill='%23fef08a' text-anchor='middle'%3EWCR TMS%3C/text%3E%3C/svg%3E">
 
@@ -282,7 +281,7 @@
       border: 2px solid rgba(56, 189, 248, 0.4);
       border-radius: 18px;
       width: 100%;
-      max-width: 600px;
+      max-width: 620px;
       max-height: 88vh;
       overflow-y: auto;
       padding: 18px;
@@ -365,7 +364,7 @@
               </div>
               <div>
                 <strong style="color: var(--accent-amber); font-size: 15px; display:block;">महत्वपूर्ण दस्तावेज़ व तकनीकी संदर्भ केंद्र</strong>
-                <p style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">Annexure-3/9 SEJ गैप चार्ट, सुरक्षित अपलोड्स एवं अधिकृत तकनीकी संदर्भ</p>
+                <p style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">Annexure-3/9 SEJ गैप चार्ट, अधिकृत PDF अपलोडर एवं तकनीकी निर्देश</p>
               </div>
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
@@ -814,11 +813,10 @@
         <button onclick="closeDocsModal()" style="background:none; border:none; color:#f87171; font-size:22px; cursor:pointer; font-weight:bold;">✕</button>
       </div>
 
-      <!-- Tab Switcher -->
+      <!-- Tab Switcher (दोनों टैब हमेशा दिखेंगे) -->
       <div class="tab-bar">
         <button class="tab-btn active" id="btnTabDocList" onclick="switchDocTab('docListSec')">📄 सुरक्षित दस्तावेज़ (View / Download)</button>
-        <!-- केवल JE लॉगिन होने पर दिखेगा -->
-        <button class="tab-btn" id="btnTabDocAdd" onclick="switchDocTab('docAddSec')" style="display: none;">📤 नया PDF अपलोड (JE Only)</button>
+        <button class="tab-btn" id="btnTabDocAdd" onclick="switchDocTab('docAddSec')">📤 नया PDF अपलोड करें</button>
       </div>
 
       <!-- Tab 1: List View -->
@@ -826,10 +824,10 @@
         <div id="docsContainerList"></div>
       </div>
 
-      <!-- Tab 2: Admin/JE Only Direct PDF File Upload Box -->
+      <!-- Tab 2: Direct PDF File Upload Box with JE Security PIN Authorization -->
       <div id="docAddSec" style="display: none;">
         <div style="background:rgba(11,19,41,0.6); border:1px solid rgba(56, 189, 248, 0.3); border-radius:12px; padding:14px;">
-          <strong style="color:var(--accent-blue); font-size:13px; display:block; margin-bottom:10px;">📤 डिवाइस से अधिकृत PDF फाइल अपलोड करें (Max 5MB)</strong>
+          <strong style="color:var(--accent-blue); font-size:13px; display:block; margin-bottom:10px;">📤 डिवाइस (मोबाइल/लैपटॉप) से PDF फाइल अपलोड करें</strong>
           
           <div class="form-group">
             <label>दस्तावेज़ का नाम (Title)</label>
@@ -842,13 +840,18 @@
           </div>
 
           <div class="form-group">
-            <label>PDF फाइल चुनें (*.pdf Only)</label>
+            <label>PDF फाइल चुनें (*.pdf Only • Max 5MB)</label>
             <div class="file-dropzone" onclick="document.getElementById('pdfFileInput').click()">
               <span style="font-size:26px; display:block; margin-bottom:4px;">📄</span>
               <span id="chosenFileName" style="font-size:12px; color:#38bdf8; font-weight:bold;">फ़ाइल सेलेक्ट करने के लिए यहाँ टच करें</span>
               <p style="font-size:10px; color:#94a3b8; margin-top:2px;">(Magic Byte Verification • Anti-Virus Protected)</p>
             </div>
             <input type="file" id="pdfFileInput" accept="application/pdf" style="display:none;" onchange="handlePDFSelection(event)">
+          </div>
+
+          <div class="form-group">
+            <label>🔐 JE ऑथराइजेशन पिन दर्ज करें</label>
+            <input type="password" id="jeAuthPin" placeholder="JE Security PIN (डिफ़ॉल्ट: 1162)" style="letter-spacing:2px;">
           </div>
 
           <button type="button" onclick="saveNewUploadedPDF()" class="btn btn-blue" style="font-size:13px; margin-top:4px;">
@@ -874,6 +877,8 @@
 
     let selectedPDFBase64 = null;
     let selectedPDFName = "";
+
+    const JE_MASTER_PIN = "1162"; // JE Authorization PIN
 
     const senderMovements = new Map([
       ['sndMv1', { name: 'रतनगांव से सगोनी', block: 'रतनगांव-सगोनी' }]
@@ -999,7 +1004,7 @@
       }
     }
 
-    /* =================== 📁 RBAC & SECURE PDF STORAGE =================== */
+    /* =================== 📁 SECURE PIN-BASED PDF REPOSITORY =================== */
     const DEFAULT_DOCUMENTS = [
       {
         id: 1,
@@ -1027,15 +1032,6 @@
       const badge = document.getElementById("docBadgeCount");
       badge.textContent = `${docs.length} File${docs.length > 1 ? 's' : ''}`;
 
-      // Show/Hide Upload tab based on JE Login Status
-      const btnTabDocAdd = document.getElementById("btnTabDocAdd");
-      if (isCurrentUserJE()) {
-        btnTabDocAdd.style.display = 'inline-block';
-      } else {
-        btnTabDocAdd.style.display = 'none';
-        switchDocTab('docListSec');
-      }
-
       listContainer.innerHTML = "";
       docs.forEach((d) => {
         const item = document.createElement("div");
@@ -1047,7 +1043,7 @@
         } else {
           actionBtn = `
             <button onclick="downloadUploadedPDF('${d.id}')" class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;">📥 खोलें / PDF</button>
-            ${isCurrentUserJE() ? `<button onclick="deleteDocItem(${d.id})" style="background:none; border:none; color:#ef4444; font-size:16px; cursor:pointer; margin-left:8px;" title="केवल JE द्वारा हटाएं">🗑️</button>` : ''}
+            <button onclick="deleteDocItem('${d.id}')" style="background:none; border:none; color:#ef4444; font-size:16px; cursor:pointer; margin-left:8px;" title="JE द्वारा हटाएं">🗑️</button>
           `;
         }
 
@@ -1068,51 +1064,43 @@
     }
 
     function switchDocTab(tabName) {
-      if (tabName === 'docAddSec' && !isCurrentUserJE()) {
-        alert("🔒 केवल JE (Section Engineer) को ही नया दस्तावेज़ अपलोड करने की अनुमति है!");
-        return;
-      }
       document.getElementById('docListSec').style.display = (tabName === 'docListSec') ? 'block' : 'none';
       document.getElementById('docAddSec').style.display = (tabName === 'docAddSec') ? 'block' : 'none';
       document.getElementById('btnTabDocList').classList.toggle('active', tabName === 'docListSec');
       document.getElementById('btnTabDocAdd').classList.toggle('active', tabName === 'docAddSec');
     }
 
-    // 🛡️ Strict Anti-Virus & Magic Header Verification
+    // 🛡️ Magic Byte + Extension + Size Validation
     function handlePDFSelection(e) {
       const file = e.target.files[0];
       if (!file) return;
 
-      // 1. File Size Limitation (Max 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        alert("⚠️ फाइल साइज़ बहुत बड़ा है! कृपया 5MB से छोटी PDF फाइल चुनें।");
+        alert("⚠️ फाइल साइज़ 5MB से अधिक है! कृपया छोटी PDF फाइल चुनें।");
         e.target.value = "";
         return;
       }
 
-      // 2. MIME & Extension Check
       if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
-        alert("⚠️ अमान्य फाइल फॉर्मेट! केवल वास्तविक PDF फाइल ही स्वीकार की जाएगी।");
+        alert("⚠️ अमान्य फॉर्मेट! केवल वास्तविक PDF फाइल ही स्वीकार की जाएगी।");
         e.target.value = "";
         return;
       }
 
-      // 3. Binary Magic Byte Validation (%PDF)
       const headerBlob = file.slice(0, 5);
       const readerHeader = new FileReader();
       readerHeader.onload = function(evt) {
         const arr = new Uint8Array(evt.target.result);
         const header = String.fromCharCode.apply(null, arr);
         if (!header.startsWith("%PDF")) {
-          alert("🚨 सुरक्षा चेतावनी: यह फाइल वैध PDF नहीं है या संदेहास्पद (Corrupted/Virus) है!");
+          alert("🚨 सुरक्षा चेतावनी: यह फाइल वैध PDF नहीं है (Corrupted / Suspicious File)!");
           document.getElementById('pdfFileInput').value = "";
           selectedPDFBase64 = null;
           return;
         }
 
-        // Passed security tests: Read file as Base64
         selectedPDFName = file.name;
-        document.getElementById('chosenFileName').innerText = `✅ सुरक्षित PDF: ${file.name}`;
+        document.getElementById('chosenFileName').innerText = `✅ चयनित PDF: ${file.name}`;
 
         const fullReader = new FileReader();
         fullReader.onload = function(evtFull) {
@@ -1124,13 +1112,15 @@
     }
 
     function saveNewUploadedPDF() {
-      if (!isCurrentUserJE()) {
-        alert("🔒 अनधिकृत प्रयास: केवल JE ही दस्तावेज़ सुरक्षित कर सकते हैं!");
-        return;
-      }
-
       const title = document.getElementById("newDocTitle").value.trim();
       const sub = document.getElementById("newDocSub").value.trim();
+      const enteredPin = document.getElementById("jeAuthPin").value.trim();
+
+      // Check JE Authority (Either Logged in as JE or entered correct JE Master PIN)
+      if (!isCurrentUserJE() && enteredPin !== JE_MASTER_PIN) {
+        alert("🔒 गलत JE ऑथराइजेशन पिन! केवल JE (Section Engineer) ही दस्तावेज़ सुरक्षित कर सकते हैं।");
+        return;
+      }
 
       if (!title || !selectedPDFBase64) {
         alert("कृपया दस्तावेज़ का नाम लिखें और एक वैध PDF फाइल चुनें!");
@@ -1144,20 +1134,21 @@
         sub: sub || selectedPDFName || "Authorised Track Document",
         fileData: selectedPDFBase64,
         isBuiltIn: false,
-        uploadedBy: activeUser ? activeUser.name : "JE P-Way"
+        uploadedBy: activeUser ? activeUser.name : "JE (P-Way)"
       };
 
       try {
         docs.push(newDoc);
         localStorage.setItem("sagoni_tms_documents_v2", JSON.stringify(docs));
       } catch (err) {
-        alert("ब्राउज़र स्टोरेज सीमा पार हो गई है। कृपया कम पृष्ठों वाली PDF अपलोड करें।");
+        alert("ब्राउज़र स्टोरेज सीमा भर गई है। कृपया कम पृष्ठों वाली PDF अपलोड करें।");
         return;
       }
 
       // Reset Form
       document.getElementById("newDocTitle").value = "";
       document.getElementById("newDocSub").value = "";
+      document.getElementById("jeAuthPin").value = "";
       document.getElementById("pdfFileInput").value = "";
       document.getElementById("chosenFileName").innerText = "फ़ाइल सेलेक्ट करने के लिए यहाँ टच करें";
       selectedPDFBase64 = null;
@@ -1184,15 +1175,19 @@
 
     function deleteDocItem(id) {
       if (!isCurrentUserJE()) {
-        alert("🔒 केवल JE को दस्तावेज़ हटाने का अधिकार है!");
-        return;
+        const pin = prompt("🔒 दस्तावेज़ हटाने के लिए JE Security PIN दर्ज करें:");
+        if (pin !== JE_MASTER_PIN) {
+          alert("गलत पिन! केवल JE को दस्तावेज़ हटाने की अनुमति है।");
+          return;
+        }
       }
+
       if (!confirm("क्या आप वाकई इस दस्तावेज़ को हटाना चाहते हैं?")) return;
       let docs = getStoredDocuments();
-      docs = docs.filter(d => d.id !== id);
+      docs = docs.filter(d => String(d.id) !== String(id));
       localStorage.setItem("sagoni_tms_documents_v2", JSON.stringify(docs));
       renderDocsList();
-      showToast("🗑️ दस्तावेज़ हटा दिया गया!");
+      showToast("🗑️ दस्तावेज़ सफलतापूर्वक हटा दिया गया!");
     }
 
     function openDocsModal() {
@@ -1621,7 +1616,6 @@
         loadDefects();
       }
 
-      // Re-evaluate Document UI Permissions
       renderDocsList();
     }
 
