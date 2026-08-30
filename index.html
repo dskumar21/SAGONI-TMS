@@ -791,7 +791,7 @@
       <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; padding-bottom:10px; margin-bottom:14px;">
         <div style="display:flex; align-items:center; gap:8px;">
           <span style="font-size:22px;">📂</span>
-          <strong style="color:var(--accent-amber); font-size:16px;">महत्वपूर्ण दस्तावेज़ व तकनीकी संदर्भ</strong>
+          <strong style="color:var(--accent-amber); font-size:16px;">महत्वपूर्ण दस्तावेज़ व संदर्भ</strong>
         </div>
         <button onclick="closeDocsModal()" style="background:none; border:none; color:#f87171; font-size:22px; cursor:pointer; font-weight:bold;">✕</button>
       </div>
@@ -911,6 +911,22 @@
       if (isCurrentUserSE()) return true;
       const pin = prompt("🔒 Security PIN दर्ज करें:");
       return (pin === SE_MASTER_PIN);
+    }
+
+    /* =================== TOAST NOTIFICATION ENGINE =================== */
+    function showToast(message) {
+      let toast = document.getElementById("toast");
+      if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "toast";
+        toast.style.cssText = "display:none; position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#065f46; color:#ecfdf5; padding:10px 20px; border-radius:10px; font-size:13px; font-weight:700; z-index:99999; box-shadow:0 4px 12px rgba(0,0,0,0.5);";
+        document.body.appendChild(toast);
+      }
+      toast.innerText = message;
+      toast.style.display = "block";
+      setTimeout(() => {
+        toast.style.display = "none";
+      }, 3000);
     }
 
     /* =================== 🛰️ GPS LIVE PATROL ENGINE (WITH SUPABASE SYNC) =================== */
@@ -1667,11 +1683,10 @@
         return;
       }
 
-      const totalCount = (docs ? docs.length : 0) + 1; // +1 for Annexure 3/9 Builtin
+      const totalCount = (docs ? docs.length : 0) + 1;
       if (badge) badge.textContent = `${totalCount} Files`;
       container.innerHTML = "";
 
-      // 1. Built-in Annexure 3/9 Gap Chart Card
       const builtInCard = document.createElement("div");
       builtInCard.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:rgba(11,19,41,0.7); border:1px solid #334155; border-radius:12px; padding:12px; margin-bottom:10px;";
       builtInCard.innerHTML = `
@@ -1688,7 +1703,6 @@
       `;
       container.appendChild(builtInCard);
 
-      // 2. Render Uploaded Cloud Documents
       if (docs && docs.length > 0) {
         docs.forEach((d) => {
           const item = document.createElement("div");
@@ -1778,6 +1792,7 @@
       link.href = data.file_data;
       link.download = `${docTitle.replace(/\s+/g, '_')}.pdf`;
       document.body.appendChild(link); link.click(); document.body.removeChild(link);
+      showToast("📥 PDF फाइल डाउनलोड हो रही है...");
     }
 
     async function deleteCloudDocItem(id) {
@@ -1850,502 +1865,6 @@
         showToast('✅ Annexure-3/9 PDF डाउनलोड हो गया!');
       } catch (err) { alert('त्रुटि: ' + err.message); }
     }
-
-    /* =================== CSV EXPORTS =================== */
-    function downloadCSVFile(csvContent, fileName) {
-      const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob); link.download = fileName;
-      document.body.appendChild(link); link.click(); document.body.removeChild(link);
-    }
-
-    async function exportMusterToCSV() {
-      const { data } = await db.from('gang_muster_attendance').select('*').order('created_at', { ascending: false });
-      if (!data || data.length === 0) { alert('डेटा उपलब्ध नहीं है!'); return; }
-      let csv = "समय,मुकद्दम,गैंग,कुल,कार्य पर,कीमैन,वॉचमैन,नाइट,सिक,छुट्टी,गैरहाजिर,रिमार्क्स\n";
-      data.forEach(r => { csv += `"${new Date(r.created_at).toLocaleString()}","${r.mate_name}","${r.gang_no}",${r.total_sanctioned},${r.on_track_work},${r.keyman_duty},${r.watchman_patrol},${r.night_rest},${r.sick_medical},${r.on_leave},${r.absent},"${r.remarks || ''}"\n`; });
-      downloadCSVFile(csv, `Muster_Report_${new Date().toISOString().split('T')[0]}.csv`);
-    }
-
-    async function exportWorkLogsToCSV() {
-      const { data } = await db.from('daily_work_logs').select('*').order('created_at', { ascending: false });
-      if (!data || data.length === 0) { alert('डेटा उपलब्ध नहीं है!'); return; }
-      let csv = "समय,मुकद्दम,गैंग,लाइन,From Km,To Km,कार्य,प्रगति\n";
-      data.forEach(r => { csv += `"${new Date(r.created_at).toLocaleString()}","${r.mate_name}","${r.gang_no}","${r.line_name}",${r.from_km},${r.to_km},"${r.work_type}","${r.output_details}"\n`; });
-      downloadCSVFile(csv, `Work_Logs_${new Date().toISOString().split('T')[0]}.csv`);
-    }
-
-    async function exportDefectsToCSV() {
-      const { data } = await db.from('track_defects').select('*').order('created_at', { ascending: false });
-      if (!data || data.length === 0) { alert('डेटा उपलब्ध नहीं है!'); return; }
-      let csv = "समय,रिपोर्टकर्ता,लाइन,Km,खंभा,डिफेक्ट स्थिति,रिमार्क्स\n";
-      data.forEach(r => { csv += `"${new Date(r.created_at).toLocaleString()}","${r.reported_by}","${r.line_name}",${r.km_location},"${r.pole_no || ''}","${r.defect_type}","${r.remarks || ''}"\n`; });
-      downloadCSVFile(csv, `Defects_Report_${new Date().toISOString().split('T')[0]}.csv`);
-    }
-
-    async function exportEmergenciesToCSV() {
-      const { data } = await db.from('emergency_incidents').select('*').order('created_at', { ascending: false });
-      if (!data || data.length === 0) { alert('डेटा उपलब्ध नहीं है!'); return; }
-      let csv = "समय,रिपोर्टकर्ता,घटना,लाइन,Km,खंभा,गाड़ी संख्या,विवरण\n";
-      data.forEach(r => { csv += `"${new Date(r.created_at).toLocaleString()}","${r.reporter_name}","${r.incident_type}","${r.line_name}",${r.km_location},"${r.pole_no || ''}","${r.train_no || ''}","${r.remarks || ''}"\n`; });
-      downloadCSVFile(csv, `Emergency_Report_${new Date().toISOString().split('T')[0]}.csv`);
-    }
-
-    /* =================== GANG FORMS =================== */
-    function switchMateTab(tabId) {
-      saveActiveTab("sagoni_tms_mate_tab", tabId);
-      document.getElementById('mateMusterCard').style.display = 'none';
-      document.getElementById('mateDiaryCard').style.display = 'none';
-      document.getElementById('btnMateTabMuster').classList.toggle('active', tabId === 'mateMusterCard');
-      document.getElementById('btnMateTabDiary').classList.toggle('active', tabId === 'mateDiaryCard');
-      document.getElementById(tabId).style.display = 'block';
-    }
-
-    function calculateMusterTotal() {
-      const track = parseInt(document.getElementById('mstTrackWork').value) || 0;
-      const keyman = parseInt(document.getElementById('mstKeyman').value) || 0;
-      const watchman = parseInt(document.getElementById('mstWatchman').value) || 0;
-      const night = parseInt(document.getElementById('mstNight').value) || 0;
-      const sick = parseInt(document.getElementById('mstSick').value) || 0;
-      const leave = parseInt(document.getElementById('mstLeave').value) || 0;
-      const absent = parseInt(document.getElementById('mstAbsent').value) || 0;
-
-      const total = track + keyman + watchman + night + sick + leave + absent;
-      document.getElementById('mstTotalSum').innerText = total;
-      document.getElementById('mWorkingLabour').value = track;
-    }
-
-    async function submitMorningMuster(e) {
-      e.preventDefault();
-      const btn = document.getElementById('mstBtn'); btn.innerText = "सबमिट हो रहा है..."; btn.disabled = true;
-
-      const payload = {
-        emp_id: activeUser.emp_id, mate_name: activeUser.name, gang_no: activeUser.beat,
-        total_sanctioned: parseInt(document.getElementById('mstTotalSum').innerText) || 0,
-        on_track_work: parseInt(document.getElementById('mstTrackWork').value) || 0,
-        keyman_duty: parseInt(document.getElementById('mstKeyman').value) || 0,
-        watchman_patrol: parseInt(document.getElementById('mstWatchman').value) || 0,
-        night_rest: parseInt(document.getElementById('mstNight').value) || 0,
-        sick_medical: parseInt(document.getElementById('mstSick').value) || 0,
-        on_leave: parseInt(document.getElementById('mstLeave').value) || 0,
-        absent: parseInt(document.getElementById('mstAbsent').value) || 0,
-        remarks: document.getElementById('mstRemarks').value || '8:00 AM मस्टर OK'
-      };
-
-      const { error } = await db.from('gang_muster_attendance').insert([payload]);
-      btn.innerText = "💾 सुबह 8:00 AM मस्टर सबमिट करें"; btn.disabled = false;
-      if (error) alert('एरर: ' + error.message);
-      else { showToast('✅ सुबह की हाजिरी दर्ज हो गई!'); switchMateTab('mateDiaryCard'); }
-    }
-
-    async function submitMateWork(e) {
-      e.preventDefault();
-      const btn = document.getElementById('mBtn'); btn.innerText = "सेव हो रहा है..."; btn.disabled = true;
-
-      const payload = {
-        emp_id: activeUser.emp_id, gang_no: activeUser.beat, line_name: document.getElementById('mLine').value,
-        from_km: parseFloat(document.getElementById('mFromKm').value), to_km: parseFloat(document.getElementById('mToKm').value),
-        work_type: document.getElementById('mWorkType').value,
-        output_details: `[लेबर: ${document.getElementById('mWorkingLabour').value}] ${document.getElementById('mOutput').value}`,
-        mate_name: activeUser.name
-      };
-
-      const { error } = await db.from('daily_work_logs').insert([payload]);
-      btn.innerText = "💾 कार्य डायरी डेटाबेस में सुरक्षित करें"; btn.disabled = false;
-      if (error) alert('एरर: ' + error.message);
-      else { showToast('✅ कार्य डायरी सुरक्षित हो गई!'); e.target.reset(); }
-    }
-
-    async function loadMusterLogs() {
-      const tbody = document.getElementById('musterTableBody');
-      tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;">लोड हो रहा है...</td></tr>';
-      const { data } = await db.from('gang_muster_attendance').select('*').order('created_at', { ascending: false }).limit(10);
-      if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="11" style="text-align:center; color:#94a3b8;">कोई मस्टर रिकॉर्ड नहीं।</td></tr>'; return; }
-      let html = '';
-      data.forEach(m => {
-        html += `<tr>
-          <td>${new Date(m.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
-          <td><strong style="color:var(--accent-purple);">${m.mate_name}</strong><br><span style="font-size:9px; color:#64748b;">${m.gang_no}</span></td>
-          <td><strong style="color:#fef08a;">${m.total_sanctioned}</strong></td>
-          <td><strong style="color:#4ade80;">${m.on_track_work}</strong></td>
-          <td>${m.keyman_duty}</td><td>${m.watchman_patrol}</td><td>${m.night_rest}</td>
-          <td><span style="color:#f87171;">${m.sick_medical}</span></td><td><span style="color:#f59e0b;">${m.on_leave}</span></td>
-          <td><span style="color:#ef4444; font-weight:bold;">${m.absent}</span></td><td><em>${m.remarks || '-'}</em></td>
-        </tr>`;
-      });
-      tbody.innerHTML = html;
-    }
-
-    /* =================== AUDIO & TRAIN ALERTS =================== */
-    function initAudio() {
-      if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioContext.state === 'suspended') audioContext.resume();
-    }
-    function playTone(freq, type, duration) {
-      try {
-        initAudio();
-        const osc = audioContext.createOscillator(); const gain = audioContext.createGain();
-        osc.type = type; osc.frequency.setValueAtTime(freq, audioContext.currentTime);
-        gain.gain.setValueAtTime(0.05, audioContext.currentTime);
-        osc.connect(gain); gain.connect(audioContext.destination);
-        osc.start(); osc.stop(audioContext.currentTime + duration);
-      } catch (e) {}
-    }
-    function speakHindiAlert(text) {
-      try {
-        if ('speechSynthesis' in window) {
-          window.speechSynthesis.cancel();
-          const utterance = new SpeechSynthesisUtterance(text.replace(/[-_➔→]/g, ' '));
-          utterance.lang = 'hi-IN'; utterance.volume = 1.0; utterance.rate = 0.85;
-          const voices = window.speechSynthesis.getVoices();
-          const hiVoice = voices.find(v => v.lang.includes('hi'));
-          if (hiVoice) utterance.voice = hiVoice;
-          window.speechSynthesis.speak(utterance);
-        }
-      } catch (e) {}
-    }
-    function triggerSirenSound(alertType, movementText, lineText, trainNo) {
-      stopAlarmSound(); initAudio();
-      document.getElementById('sirenAlarmBox').style.display = 'block';
-      document.getElementById('floatingStopBar').style.display = 'block';
-      const voiceText = alertType === 'DISPATCHED' ? `सावधान। ${lineText} पर ${movementText} के लिए गाड़ी छोड़ दी गई है। कृपया तुरंत ट्रैक से हटें।` : `सावधान। ${lineText} पर ${movementText} में गाड़ी ब्लॉक हो चुकी है।`;
-      speakHindiAlert(voiceText);
-      let toggle = false;
-      alarmInterval = setInterval(() => { playTone(toggle ? 900 : 650, 'sawtooth', 0.18); toggle = !toggle; }, 320);
-      voiceInterval = setInterval(() => speakHindiAlert(voiceText), 6500);
-      autoStopTimer = setTimeout(() => stopAlarmSound(), 40000);
-    }
-    function stopAlarmSound() {
-      if (alarmInterval) clearInterval(alarmInterval);
-      if (voiceInterval) clearInterval(voiceInterval);
-      if (autoStopTimer) clearTimeout(autoStopTimer);
-      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-      document.getElementById('sirenAlarmBox').style.display = 'none';
-      document.getElementById('floatingStopBar').style.display = 'none';
-    }
-
-    function toggleSenderMovement(btnId, mvName, blockName) {
-      const btn = document.getElementById(btnId);
-      if (senderMovements.has(btnId)) {
-        if (senderMovements.size === 1) return;
-        senderMovements.delete(btnId); btn.classList.remove('selected');
-      } else { senderMovements.set(btnId, { name: mvName, block: blockName }); btn.classList.add('selected'); }
-    }
-    function toggleSenderLine(btnId, lineName) {
-      const btn = document.getElementById(btnId);
-      if (senderLines.has(lineName)) {
-        if (senderLines.size === 1) return;
-        senderLines.delete(lineName); btn.classList.remove('selected');
-      } else { senderLines.add(lineName); btn.classList.add('selected'); }
-    }
-
-    function handleSenderFormSubmit(e) {
-      e.preventDefault();
-      const phone = document.getElementById('sndPhone').value.trim();
-      const staff = isUserAuthorized(phone);
-      if (!staff) { alert("⚠️ यह मोबाइल नंबर अधिकृत सूची में नहीं है!"); return; }
-      sendMultiLiveTrainAlert('DISPATCHED', staff);
-    }
-
-    async function sendMultiLiveTrainAlert(alertType, staffObj) {
-      const train = document.getElementById('sndTrain').value || 'गाड़ी';
-      const payloads = [];
-      senderMovements.forEach(mv => {
-        senderLines.forEach(ln => {
-          payloads.push({ sender_id: `${staffObj.name} (${staffObj.emp_id})`, line_name: ln, alert_type: alertType, train_no: train, location_note: JSON.stringify({ block: mv.block, movement: mv.name }) });
-        });
-      });
-      const { error } = await db.from('train_live_alerts').insert(payloads);
-      if (error) alert('त्रुटि: ' + error.message);
-      else showToast(`✅ लाइव अलर्ट प्रसारित हो गया!`);
-    }
-
-    function selectReceiverBlock(blockName) {
-      myLockedBlock = blockName; document.getElementById('selectedReceiverBlock').value = blockName;
-      ['rcvLocGhul', 'rcvLocYard', 'rcvLocRat'].forEach(id => document.getElementById(id).classList.remove('selected'));
-      if (blockName === 'गोला पट्टी-सगोनी') document.getElementById('rcvLocGhul').classList.add('selected');
-      if (blockName === 'सगोनी यार्ड') document.getElementById('rcvLocYard').classList.add('selected');
-      if (blockName === 'रतनगांव-सगोनी') document.getElementById('rcvLocRat').classList.add('selected');
-    }
-    function toggleReceiverLine(btnId, lineName) {
-      const btn = document.getElementById(btnId);
-      if (mySubscribedLines.has(lineName)) {
-        if (mySubscribedLines.size === 1) return;
-        mySubscribedLines.delete(lineName); btn.classList.remove('selected');
-      } else { mySubscribedLines.add(lineName); btn.classList.add('selected'); }
-    }
-    function handleReceiverLockSubmit(e) {
-      e.preventDefault();
-      const phone = document.getElementById('rcvPhone').value.trim();
-      const staff = isUserAuthorized(phone);
-      if (!staff) { alert("⚠️ यह मोबाइल नंबर अधिकृत सूची में नहीं है!"); return; }
-      lockAndStartMonitoring();
-    }
-    function lockAndStartMonitoring() {
-      initAudio();
-      document.querySelectorAll('#rcvBlockGrid .pills-btn, #rcvLineGrid .pills-btn').forEach(btn => btn.classList.add('locked'));
-      speakHindiAlert(`${myLockedBlock} का लोकेशन रूट लॉक हो गया है।`);
-      document.getElementById('receiverControls').style.display = 'none';
-      document.getElementById('receiverUnlockBar').style.display = 'block';
-
-      if (!realtimeChannel) {
-        realtimeChannel = db.channel('public:train_live_alerts')
-          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'train_live_alerts' }, payload => {
-            const alertData = payload.new;
-            let note = { block: '', movement: '' };
-            try { note = JSON.parse(alertData.location_note); } catch(e){}
-            const blockMatches = (note.block === myLockedBlock) || (myLockedBlock === 'सगोनी यार्ड');
-            const lineMatches = mySubscribedLines.has(alertData.line_name);
-
-            if (blockMatches && lineMatches) {
-              const isDispatched = alertData.alert_type === 'DISPATCHED';
-              document.getElementById('sirenAlertTitle').innerText = isDispatched ? `🚨 ${note.movement} (${alertData.line_name}): गाड़ी छोड़ दी गई!` : `⛔ ${note.movement} (${alertData.line_name}): गाड़ी ब्लॉक हो चुकी है!`;
-              document.getElementById('sirenAlertDesc').innerText = `ट्रेन सं.: ${alertData.train_no} | प्रेषक: ${alertData.sender_id}`;
-              document.getElementById('sirenAlarmBox').scrollIntoView({ behavior: 'smooth' });
-              triggerSirenSound(alertData.alert_type, note.movement, alertData.line_name, alertData.train_no);
-            }
-          }).subscribe();
-      }
-      showToast(`🔒 ${myLockedBlock} सुरक्षित रूप से लॉक हो गया!`);
-    }
-    function unlockReceiverSettings() {
-      document.querySelectorAll('#rcvBlockGrid .pills-btn, #rcvLineGrid .pills-btn').forEach(btn => btn.classList.remove('locked'));
-      document.getElementById('receiverControls').style.display = 'block';
-      document.getElementById('receiverUnlockBar').style.display = 'none';
-    }
-    function openTrainMode(mode) {
-      closeTrainPanels();
-      if (mode === 'sender') document.getElementById('trainSenderPanel').style.display = 'block';
-      if (mode === 'receiver') document.getElementById('trainReceiverPanel').style.display = 'block';
-    }
-    function closeTrainPanels() {
-      document.getElementById('trainSenderPanel').style.display = 'none';
-      document.getElementById('trainReceiverPanel').style.display = 'none';
-    }
-
-    /* =================== AUTH TABS =================== */
-    function switchAdminTab(tabId) {
-      saveActiveTab("sagoni_tms_adm_tab", tabId);
-      document.querySelectorAll('#adminForm .tab-bar .tab-btn').forEach(btn => btn.classList.remove('active'));
-      const activeBtn = document.getElementById('admTab_' + tabId);
-      if (activeBtn) activeBtn.classList.add('active');
-
-      ['tabMusterLog', 'tabPatrolLogs', 'tabEmergency', 'tabMate', 'tabDefects', 'tabMap', 'tabBroadcast', 'tabMonthlyReport', 'tabLoginLogs'].forEach(t => document.getElementById(t).style.display = 'none');
-      document.getElementById(tabId).style.display = 'block';
-
-      if (tabId === 'tabMap') loadDefects();
-      if (tabId === 'tabPatrolLogs') fetchAndRenderCloudPatrolLogs();
-      if (tabId === 'tabLoginLogs') renderLoginAuditLogs();
-      if (tabId === 'tabBroadcast') renderBroadcastRecipientsList();
-      if (tabId === 'tabMonthlyReport' && !latestReportData) generateMonthlySectionSummary();
-    }
-
-    /* =================== SOS & EMERGENCY HANDLERS =================== */
-    function selectEmergencyType(type) {
-      document.getElementById('selectedTypeTitle').innerText = 'रिपोर्ट: ' + type;
-      document.getElementById('emIncidentType').value = type;
-      document.getElementById('inlineEmergencyForm').style.display = 'block';
-      document.getElementById('inlineEmergencyForm').scrollIntoView({ behavior: 'smooth' });
-    }
-    function closeEmergencyForm() { document.getElementById('inlineEmergencyForm').style.display = 'none'; }
-
-    async function submitEmergencyIncident(e) {
-      e.preventDefault();
-      const btn = document.getElementById('emBtn'); 
-      btn.innerText = "⏳ जांच व कंप्रेस हो रहा है..."; 
-      btn.disabled = true;
-
-      try {
-        const phone = document.getElementById('emPhone').value.trim();
-        const staff = isUserAuthorized(phone);
-
-        if (!staff) {
-          alert("❌ अमान्य मोबाइल नंबर! यह नंबर सगोनी पी-वे अधिकृत सूची में पंजीकृत नहीं है।");
-          btn.innerText = "🚨 तुरंत इमरजेंसी दर्ज करें";
-          btn.disabled = false;
-          return;
-        }
-
-        const fileInput = document.getElementById('emPhoto');
-        let compressedPhoto = null;
-        if (fileInput.files.length > 0) {
-          compressedPhoto = await compressImageFile(fileInput.files[0], 1000, 0.65);
-        }
-
-        const incType = document.getElementById('emIncidentType').value;
-        const line = document.getElementById('emLine').value;
-        const km = parseFloat(document.getElementById('emKm').value);
-        const pole = document.getElementById('emPole').value;
-        const train = document.getElementById('emTrain').value || 'N/A';
-        const remarks = document.getElementById('emRemarks').value;
-
-        const payload = {
-          reporter_emp_id: staff.emp_id, 
-          reporter_name: `${staff.name} (${phone})`,
-          incident_type: incType, 
-          line_name: line, 
-          km_location: km, 
-          pole_no: pole, 
-          train_no: train, 
-          remarks: remarks,
-          photo_url: compressedPhoto
-        };
-
-        const { error } = await db.from('emergency_incidents').insert([payload]);
-        btn.innerText = "🚨 तुरंत इमरजेंसी दर्ज करें"; 
-        btn.disabled = false;
-
-        if (error) alert('त्रुटि: ' + error.message);
-        else {
-          closeEmergencyForm(); 
-          showToast('✅ आपातकालीन अलर्ट दर्ज हो गया!'); 
-          e.target.reset();
-          document.getElementById('compressStatusText').innerText = '';
-        }
-      } catch (err) { 
-        btn.innerText = "🚨 तुरंत इमरजेंसी दर्ज करें"; 
-        btn.disabled = false; 
-        alert('त्रुटि: ' + err.message); 
-      }
-    }
-
-    async function loadEmergencies() {
-      const container = document.getElementById('emergencyLiveList');
-      const { data } = await db.from('emergency_incidents').select('*').order('created_at', { ascending: false }).limit(15);
-      if (!data || data.length === 0) {
-        container.innerHTML = '<div style="color:#22c55e; padding:10px; background:#0b1329; border-radius:10px; text-align:center;">🟢 कोई सक्रिय अलर्ट नहीं है।</div>';
-        return;
-      }
-      let html = '';
-      data.forEach(inc => {
-        const isResolved = (inc.remarks && inc.remarks.includes('[RESOLVED'));
-        const badge = isResolved ? '<span style="background:#16a34a; color:#fff; font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px;">RESOLVED</span>' : '<span style="background:#ef4444; color:#fff; font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px;">ACTIVE</span>';
-        
-        const seDeleteOption = `<button onclick="deleteEmergencyIncident('${inc.id}')" class="btn-action-small" style="background:#7f1d1d; color:#fca5a5; margin-left:6px;">🗑️ हटाएं</button>`;
-
-        html += `
-          <div style="background:#0b1329; border-left:4px solid ${isResolved ? '#22c55e' : '#ef4444'}; padding:12px; border-radius:10px; margin-bottom:10px;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <div><strong style="color:${isResolved ? '#4ade80' : '#ef4444'}; font-size:13px;">${inc.incident_type}</strong> ${badge}</div>
-              <span style="color:#94a3b8; font-size:10px;">${new Date(inc.created_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span>
-            </div>
-            <div style="margin-top:4px; font-size:12px;">
-              📍 <strong>${inc.line_name} @ Km ${inc.km_location}</strong> (${inc.pole_no}) | 🚆 <strong>गाड़ी सं.:</strong> ${inc.train_no}<br>
-              📝 <em>${inc.remarks}</em><br>
-              <span style="color:var(--accent-blue); font-size:11px;">रिपोर्टकर्ता: <strong>${inc.reporter_name}</strong></span>
-            </div>
-            ${inc.photo_url ? `<div style="margin-top:8px;"><img src="${inc.photo_url}" style="max-width:100%; max-height:200px; border-radius:8px; border:1px solid #334155; object-fit:contain;"></div>` : ''}
-            
-            <div style="margin-top:8px; text-align:right;">
-              ${!isResolved ? `<button onclick="resolveEmergencyIncident('${inc.id}')" class="btn-action-small btn-resolve">✅ अटेंड / ठीक किया (Rectified)</button>` : ''}
-              ${seDeleteOption}
-            </div>
-          </div>
-        `;
-      });
-      container.innerHTML = html;
-    }
-
-    /* =================== KEYMAN DEFECTS & 2D PLOT =================== */
-    async function submitKeymanDefect(e) {
-      e.preventDefault();
-      const btn = document.getElementById('kBtn'); btn.innerText = "सेव हो रहा है..."; btn.disabled = true;
-      const payload = {
-        emp_id: activeUser.emp_id, line_name: document.getElementById('kLine').value,
-        km_location: parseFloat(document.getElementById('kKm').value), pole_no: document.getElementById('kPole').value,
-        defect_type: document.getElementById('kDefect').value, remarks: document.getElementById('kRemarks').value,
-        reported_by: activeUser.name
-      };
-      const { error } = await db.from('track_defects').insert([payload]);
-      btn.innerText = "डिफेक्ट दर्ज करें"; btn.disabled = false;
-      if (error) alert('एरर: ' + error.message);
-      else { showToast('✅ डिफेक्ट अलर्ट दर्ज हो गया!'); e.target.reset(); }
-    }
-
-    async function loadGangWork() {
-      const tbody = document.getElementById('gangWorkTableBody');
-      const { data } = await db.from('daily_work_logs').select('*').order('created_at', { ascending: false });
-      if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">कोई रिकॉर्ड नहीं।</td></tr>'; return; }
-      let html = '';
-      data.forEach(w => {
-        html += `<tr><td>${new Date(w.created_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td><td><strong style="color:#4ade80;">${w.mate_name}</strong></td><td><span style="background:#78350f; color:#fef08a; padding:2px 6px; border-radius:4px; font-size:10px;">${w.line_name}</span></td><td>${w.from_km} - ${w.to_km}</td><td>${w.work_type}</td><td><strong style="color:var(--accent-blue);">${w.output_details}</strong></td></tr>`;
-      });
-      tbody.innerHTML = html;
-    }
-
-    let loadedDefectsData = [];
-
-    async function loadDefects() {
-      const tbody = document.getElementById('defectsTableBody');
-      const upTrack = document.getElementById('upLineTrack');
-      const dnTrack = document.getElementById('dnLineTrack');
-      const thirdTrack = document.getElementById('thirdLineTrack');
-
-      if (upTrack) upTrack.innerHTML = '';
-      if (dnTrack) dnTrack.innerHTML = '';
-      if (thirdTrack) thirdTrack.innerHTML = '';
-
-      const { data } = await db.from('track_defects').select('*').order('created_at', { ascending: false });
-      if (!data || data.length === 0) {
-        if (tbody) tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#4ade80;">🟢 कोई ओपन डिफेक्ट नहीं है।</td></tr>';
-        return;
-      }
-
-      loadedDefectsData = data;
-      let html = '';
-
-      data.forEach((d, idx) => {
-        const isRectified = d.defect_type.includes('🟢') || d.defect_type.includes('Rectified');
-        const isCritical = d.defect_type.includes('Fracture') || d.defect_type.includes('🔴');
-        const tagClass = isRectified ? 'background:#14532d; color:#bbf7d0;' : (isCritical ? 'background:#7f1d1d; color:#fecaca;' : 'background:#78350f; color:#fef08a;');
-
-        if (tbody) {
-          html += `<tr>
-            <td>${new Date(d.created_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
-            <td>${d.line_name}</td><td><strong>${d.km_location}</strong></td><td>${d.pole_no || '-'}</td>
-            <td><span style="padding:2px 6px; border-radius:4px; font-size:10px; font-weight:700; ${tagClass}">${d.defect_type}</span></td>
-            <td><em>${d.remarks || '-'}</em></td><td>${d.reported_by}</td>
-            <td>${!isRectified ? `<button onclick="rectifyDefect('${d.id}')" class="btn-action-small btn-resolve">🛠️ क्लोज़ करें</button>` : `<span style="color:#4ade80; font-weight:bold;">OK</span>`}</td>
-          </tr>`;
-        }
-
-        if (d.km_location >= 1157 && d.km_location <= 1173) {
-          const percent = ((d.km_location - 1157) / 16) * 100;
-          const markerColor = isRectified ? '#22c55e' : (isCritical ? '#ef4444' : '#f59e0b');
-          const dot = `<div class="track-defect-dot" style="left:${percent}%; background:${markerColor};" onclick="showDefectDetails(${idx})" title="क्लिक करें: ${d.defect_type} @ Km ${d.km_location}"></div>`;
-
-          if ((d.line_name.includes('UP') || d.line_name.includes('अप')) && upTrack) upTrack.innerHTML += dot;
-          if ((d.line_name.includes('DN') || d.line_name.includes('डाउन')) && dnTrack) dnTrack.innerHTML += dot;
-          if ((d.line_name.includes('3rd') || d.line_name.includes('थर्ड')) && thirdTrack) thirdTrack.innerHTML += dot;
-        }
-      });
-
-      if (tbody) tbody.innerHTML = html;
-    }
-
-    function showDefectDetails(idx) {
-      const d = loadedDefectsData[idx];
-      if (!d) return;
-
-      const card = document.getElementById('defectInfoCard');
-      const isRectified = d.defect_type.includes('🟢') || d.defect_type.includes('Rectified');
-      
-      document.getElementById('dfInfoType').innerText = `🔍 डिफेक्ट: ${d.defect_type}`;
-      document.getElementById('dfInfoBody').innerHTML = `
-        <strong>📍 लाइन:</strong> ${d.line_name} | <strong>Km ${d.km_location}</strong> (खंभा: ${d.pole_no || 'N/A'})<br>
-        <strong>👤 रिपोर्टकर्ता:</strong> ${d.reported_by} | <strong>समय:</strong> ${new Date(d.created_at).toLocaleString()}<br>
-        <strong>📝 मौके की स्थिति:</strong> <em>${d.remarks || 'कोई रिमार्क्स नहीं'}</em>
-      `;
-
-      document.getElementById('dfInfoAction').innerHTML = !isRectified 
-        ? `<button onclick="rectifyDefect('${d.id}')" class="btn btn-green" style="font-size:12px; padding:6px 12px; width:auto;">🛠️ मौके पर ठीक किया (Comply & Close)</button>` 
-        : `<span style="color:#4ade80; font-size:12px; font-weight:bold;">🟢 डिफेक्ट पहले ही अटेंड / क्लोज़ किया जा चुका है।</span>`;
-
-      card.style.display = 'block';
-      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-
-    function closeDefectInfoCard() { document.getElementById('defectInfoCard').style.display = 'none'; }
 
     // Init & State Restoration
     restoreAppState();
