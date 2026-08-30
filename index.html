@@ -813,7 +813,7 @@
         <button onclick="closeDocsModal()" style="background:none; border:none; color:#f87171; font-size:22px; cursor:pointer; font-weight:bold;">✕</button>
       </div>
 
-      <!-- Tab Switcher (दोनों टैब हमेशा दिखेंगे) -->
+      <!-- Tab Switcher -->
       <div class="tab-bar">
         <button class="tab-btn active" id="btnTabDocList" onclick="switchDocTab('docListSec')">📄 सुरक्षित दस्तावेज़ (View / Download)</button>
         <button class="tab-btn" id="btnTabDocAdd" onclick="switchDocTab('docAddSec')">📤 नया PDF अपलोड करें</button>
@@ -824,7 +824,7 @@
         <div id="docsContainerList"></div>
       </div>
 
-      <!-- Tab 2: Direct PDF File Upload Box with JE Security PIN Authorization -->
+      <!-- Tab 2: Direct PDF Upload Form (No PIN Required for Uploading) -->
       <div id="docAddSec" style="display: none;">
         <div style="background:rgba(11,19,41,0.6); border:1px solid rgba(56, 189, 248, 0.3); border-radius:12px; padding:14px;">
           <strong style="color:var(--accent-blue); font-size:13px; display:block; margin-bottom:10px;">📤 डिवाइस (मोबाइल/लैपटॉप) से PDF फाइल अपलोड करें</strong>
@@ -849,13 +849,8 @@
             <input type="file" id="pdfFileInput" accept="application/pdf" style="display:none;" onchange="handlePDFSelection(event)">
           </div>
 
-          <div class="form-group">
-            <label>🔐 JE ऑथराइजेशन पिन दर्ज करें</label>
-            <input type="password" id="jeAuthPin" placeholder="JE Security PIN (डिफ़ॉल्ट: 1162)" style="letter-spacing:2px;">
-          </div>
-
           <button type="button" onclick="saveNewUploadedPDF()" class="btn btn-blue" style="font-size:13px; margin-top:4px;">
-            🔒 अधिकृत रूप से सुरक्षित करें (Save Document)
+            💾 लिस्ट में सुरक्षित करें (Save Document)
           </button>
         </div>
       </div>
@@ -878,7 +873,7 @@
     let selectedPDFBase64 = null;
     let selectedPDFName = "";
 
-    const JE_MASTER_PIN = "1162"; // JE Authorization PIN
+    const JE_MASTER_PIN = "1162"; // JE Master PIN for Deletion
 
     const senderMovements = new Map([
       ['sndMv1', { name: 'रतनगांव से सगोनी', block: 'रतनगांव-सगोनी' }]
@@ -1004,10 +999,10 @@
       }
     }
 
-    /* =================== 📁 SECURE PIN-BASED PDF REPOSITORY =================== */
+    /* =================== 📁 DYNAMIC PDF REPOSITORY (WITH PIN-PROTECTED DELETION) =================== */
     const DEFAULT_DOCUMENTS = [
       {
-        id: 1,
+        id: "annexure-3-9-default",
         title: "Annexure-3/9 (Para 338, 347, 350)",
         sub: "SEJ Gaps Chart • Zone-III (60 kg, td=38°C) • 73°C to -2°C",
         isBuiltIn: true
@@ -1015,7 +1010,7 @@
     ];
 
     function getStoredDocuments() {
-      const stored = localStorage.getItem("sagoni_tms_documents_v2");
+      const stored = localStorage.getItem("sagoni_tms_documents_v3");
       if (stored) {
         try { return JSON.parse(stored); } catch (e) { return DEFAULT_DOCUMENTS; }
       }
@@ -1033,17 +1028,26 @@
       badge.textContent = `${docs.length} File${docs.length > 1 ? 's' : ''}`;
 
       listContainer.innerHTML = "";
+
+      if (docs.length === 0) {
+        listContainer.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:18px; font-size:12px;">कोई दस्तावेज़ उपलब्ध नहीं है। ऊपर दिए गए "नया PDF अपलोड करें" टैब से नया दस्तावेज़ जोड़ें।</div>';
+        return;
+      }
+
       docs.forEach((d) => {
         const item = document.createElement("div");
         item.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:rgba(11,19,41,0.7); border:1px solid #334155; border-radius:12px; padding:12px; margin-bottom:10px;";
         
         let actionBtn = '';
         if (d.isBuiltIn) {
-          actionBtn = `<button onclick="generateAnnexure39PDF()" class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;">📥 डाउनलोड PDF</button>`;
+          actionBtn = `
+            <button onclick="generateAnnexure39PDF()" class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;">📥 डाउनलोड PDF</button>
+            <button onclick="deleteDocItem('${d.id}')" style="background:none; border:none; color:#ef4444; font-size:16px; cursor:pointer; margin-left:8px;" title="PIN डालकर हटाएं">🗑️</button>
+          `;
         } else {
           actionBtn = `
             <button onclick="downloadUploadedPDF('${d.id}')" class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;">📥 खोलें / PDF</button>
-            <button onclick="deleteDocItem('${d.id}')" style="background:none; border:none; color:#ef4444; font-size:16px; cursor:pointer; margin-left:8px;" title="JE द्वारा हटाएं">🗑️</button>
+            <button onclick="deleteDocItem('${d.id}')" style="background:none; border:none; color:#ef4444; font-size:16px; cursor:pointer; margin-left:8px;" title="PIN डालकर हटाएं">🗑️</button>
           `;
         }
 
@@ -1111,16 +1115,10 @@
       readerHeader.readAsArrayBuffer(headerBlob);
     }
 
+    // Direct Upload - No PIN required
     function saveNewUploadedPDF() {
       const title = document.getElementById("newDocTitle").value.trim();
       const sub = document.getElementById("newDocSub").value.trim();
-      const enteredPin = document.getElementById("jeAuthPin").value.trim();
-
-      // Check JE Authority (Either Logged in as JE or entered correct JE Master PIN)
-      if (!isCurrentUserJE() && enteredPin !== JE_MASTER_PIN) {
-        alert("🔒 गलत JE ऑथराइजेशन पिन! केवल JE (Section Engineer) ही दस्तावेज़ सुरक्षित कर सकते हैं।");
-        return;
-      }
 
       if (!title || !selectedPDFBase64) {
         alert("कृपया दस्तावेज़ का नाम लिखें और एक वैध PDF फाइल चुनें!");
@@ -1129,33 +1127,31 @@
 
       const docs = getStoredDocuments();
       const newDoc = {
-        id: Date.now(),
+        id: String(Date.now()),
         title: title,
-        sub: sub || selectedPDFName || "Authorised Track Document",
+        sub: sub || selectedPDFName || "Track Document",
         fileData: selectedPDFBase64,
-        isBuiltIn: false,
-        uploadedBy: activeUser ? activeUser.name : "JE (P-Way)"
+        isBuiltIn: false
       };
 
       try {
         docs.push(newDoc);
-        localStorage.setItem("sagoni_tms_documents_v2", JSON.stringify(docs));
+        localStorage.setItem("sagoni_tms_documents_v3", JSON.stringify(docs));
       } catch (err) {
-        alert("ब्राउज़र स्टोरेज सीमा भर गई है। कृपया कम पृष्ठों वाली PDF अपलोड करें।");
+        alert("ब्राउज़र स्टोरेज सीमा भर गई है। कृपया कम साइज़ वाली PDF अपलोड करें।");
         return;
       }
 
       // Reset Form
       document.getElementById("newDocTitle").value = "";
       document.getElementById("newDocSub").value = "";
-      document.getElementById("jeAuthPin").value = "";
       document.getElementById("pdfFileInput").value = "";
       document.getElementById("chosenFileName").innerText = "फ़ाइल सेलेक्ट करने के लिए यहाँ टच करें";
       selectedPDFBase64 = null;
 
       renderDocsList();
       switchDocTab('docListSec');
-      showToast("✅ PDF फाइल अधिकृत रूप से सुरक्षित हो गई!");
+      showToast("✅ PDF फाइल सुरक्षित रूप से स्टोर हो गई!");
     }
 
     function downloadUploadedPDF(docId) {
@@ -1173,6 +1169,7 @@
       document.body.removeChild(link);
     }
 
+    // Deletion: Strict Security PIN Verification
     function deleteDocItem(id) {
       if (!isCurrentUserJE()) {
         const pin = prompt("🔒 दस्तावेज़ हटाने के लिए JE Security PIN दर्ज करें:");
@@ -1182,10 +1179,10 @@
         }
       }
 
-      if (!confirm("क्या आप वाकई इस दस्तावेज़ को हटाना चाहते हैं?")) return;
+      if (!confirm("क्या आप वाकई इस दस्तावेज़ को सूची से हटाना चाहते हैं?")) return;
       let docs = getStoredDocuments();
       docs = docs.filter(d => String(d.id) !== String(id));
-      localStorage.setItem("sagoni_tms_documents_v2", JSON.stringify(docs));
+      localStorage.setItem("sagoni_tms_documents_v3", JSON.stringify(docs));
       renderDocsList();
       showToast("🗑️ दस्तावेज़ सफलतापूर्वक हटा दिया गया!");
     }
