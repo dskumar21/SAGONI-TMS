@@ -14,8 +14,6 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%23070d1e'/%3E%3Ccircle cx='256' cy='256' r='210' fill='%231e3a8a' stroke='%23f59e0b' stroke-width='18'/%3E%3Ccircle cx='256' cy='256' r='175' fill='%230b1329' stroke='%2338bdf8' stroke-width='8' stroke-dasharray='12 12'/%3E%3Cpath d='M150 330 L362 330 L335 190 L177 190 Z' fill='%23ef4444' stroke='%23f59e0b' stroke-width='10'/%3E%3Ccircle cx='205' cy='260' r='24' fill='%23ffffff'/%3E%3Ccircle cx='307' cy='260' r='24' fill='%23ffffff'/%3E%3Crect x='226' cy='145' width='60' height='45' rx='8' fill='%23f59e0b'/%3E%3Cline x1='110' y1='370' x2='402' y2='370' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cline x1='130' y1='398' x2='382' y2='398' stroke='%23f59e0b' stroke-width='12' stroke-linecap='round'/%3E%3Ctext x='256' y='460' font-size='42' font-family='sans-serif' font-weight='900' fill='%23fef08a' text-anchor='middle'%3EWCR TMS%3C/text%3E%3C/svg%3E">
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%23070d1e'/%3E%3Ccircle cx='256' cy='256' r='210' fill='%231e3a8a' stroke='%23f59e0b' stroke-width='18'/%3E%3Ccircle cx='256' cy='256' r='175' fill='%230b1329' stroke='%2338bdf8' stroke-width='8' stroke-dasharray='12 12'/%3E%3Cpath d='M150 330 L362 330 L335 190 L177 190 Z' fill='%23ef4444' stroke='%23f59e0b' stroke-width='10'/%3E%3Ccircle cx='205' cy='260' r='24' fill='%23ffffff'/%3E%3Ccircle cx='307' cy='260' r='24' fill='%23ffffff'/%3E%3Crect x='226' cy='145' width='60' height='45' rx='8' fill='%23f59e0b'/%3E%3Cline x1='110' y1='370' x2='402' y2='370' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cline x1='130' y1='398' x2='382' y2='398' stroke='%23f59e0b' stroke-width='12' stroke-linecap='round'/%3E%3Ctext x='256' y='460' font-size='42' font-family='sans-serif' font-weight='900' fill='%23fef08a' text-anchor='middle'%3EWCR TMS%3C/text%3E%3C/svg%3E">
 
-  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Sagoni%20P-Way%20TMS%22%2C%22short_name%22%3A%22Sagoni%20TMS%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23070d1e%22%2C%22theme_color%22%3A%22%23070d1e%22%7D">
-
   <!-- Supabase CDN Client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   
@@ -917,7 +915,7 @@
 
     /* =================== 🛰️ GPS LIVE PATROL ENGINE =================== */
     function calculateGeoDistance(lat1, lon1, lat2, lon2) {
-      const R = 6371; // Earth Radius in Km
+      const R = 6371;
       const dLat = (lat2 - lat1) * Math.PI / 180;
       const dLon = (lon2 - lon1) * Math.PI / 180;
       const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
@@ -950,21 +948,17 @@
 
           if (lastPosition) {
             const dist = calculateGeoDistance(lastPosition.lat, lastPosition.lon, lat, lon);
-            if (dist > 0.005) patrolDistanceKm += dist; // Filter minor drift
+            if (dist > 0.005) patrolDistanceKm += dist;
           }
 
           lastPosition = { lat, lon };
-
           document.getElementById('gpsLiveSpeed').innerText = `${speedKmh} km/h`;
           document.getElementById('gpsLiveDistance').innerText = `${patrolDistanceKm.toFixed(2)} Km`;
         },
-        (err) => {
-          console.log("GPS Error: " + err.message);
-        },
+        (err) => { console.log("GPS Error: " + err.message); },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
 
-      // Duration Clock
       patrolDurationTimer = setInterval(() => {
         const diffSecs = Math.floor((new Date() - patrolStartTime) / 1000);
         const mins = String(Math.floor(diffSecs / 60)).padStart(2, '0');
@@ -976,19 +970,12 @@
     }
 
     function stopGPSPatrolTracking() {
-      if (gpsWatchId) {
-        navigator.geolocation.clearWatch(gpsWatchId);
-        gpsWatchId = null;
-      }
-      if (patrolDurationTimer) {
-        clearInterval(patrolDurationTimer);
-        patrolDurationTimer = null;
-      }
+      if (gpsWatchId) { navigator.geolocation.clearWatch(gpsWatchId); gpsWatchId = null; }
+      if (patrolDurationTimer) { clearInterval(patrolDurationTimer); patrolDurationTimer = null; }
 
       const endTime = new Date();
       const avgSpeed = (patrolDistanceKm > 0) ? ((patrolDistanceKm / ((endTime - patrolStartTime) / 3600000))).toFixed(1) : "3.8";
 
-      // Store Patrol Session Record
       const patrolRecord = {
         id: Date.now(),
         date: new Date().toLocaleDateString(),
@@ -1056,7 +1043,7 @@
 
       const storedLogs = JSON.parse(localStorage.getItem("sagoni_tms_login_audit") || "[]");
       storedLogs.unshift(auditLog);
-      if (storedLogs.length > 30) storedLogs.pop(); // Keep recent 30 sessions
+      if (storedLogs.length > 30) storedLogs.pop();
       localStorage.setItem("sagoni_tms_login_audit", JSON.stringify(storedLogs));
     }
 
@@ -1170,7 +1157,7 @@
 
       activeUser = pendingLoginUser;
       saveAppState();
-      logStaffLoginSession(activeUser); // Log audit entry
+      logStaffLoginSession(activeUser);
 
       document.getElementById('uName').innerText = activeUser.name;
       document.getElementById('uRole').innerText = activeUser.role.toUpperCase();
@@ -1198,7 +1185,7 @@
 
       cancelOTPLogin();
       renderDocsList();
-      renderContactsList();
+      fetchAndRenderCloudContacts();
       showToast(`🎉 स्वागत है, ${activeUser.name}! लॉगिन सफल रहा।`);
     }
 
@@ -1270,7 +1257,8 @@
       document.getElementById('appContainer').style.display = 'none';
       document.getElementById('homeSection').style.display = 'block';
       cancelOTPLogin();
-      renderDocsList(); renderContactsList();
+      renderDocsList(); 
+      fetchAndRenderCloudContacts();
     }
 
     /* =================== 📢 SE BROADCAST =================== */
@@ -1542,32 +1530,29 @@
       } catch (err) { alert("PDF तैयार करने में त्रुटि: " + err.message); }
     }
 
-    /* =================== 📞 CONTACT DIRECTORY =================== */
-    const DEFAULT_SECTION_CONTACTS = [
-      { id: "c1", designation: "Sectional Engineer (SE P-Way In-Charge)", name: "SE (P-Way) Sagoni Section", phone: "9752418177" },
-      { id: "c2", designation: "Junior Engineer (JE P-Way)", name: "JE (P-Way) Sagoni Section", phone: "9425111111" },
-      { id: "c3", designation: "Assistant Divisional Engineer (ADEN)", name: "ADEN Damoh / Katni", phone: "9425222222" },
-      { id: "c4", designation: "Senior Section Engineer (SSE)", name: "SSE (P-Way) Main Section", phone: "9425333333" },
-      { id: "c5", designation: "Station Master (सगोनी)", name: "Station Superintendent Sagoni", phone: "9425444444" },
-      { id: "c6", designation: "Station Master (रतनगांव)", name: "SM Ratangaon Station", phone: "9425555555" },
-      { id: "c7", designation: "गोला पट्टी (IBH Cabin)", name: "IBH Switchman Gholapatti", phone: "9425666666" },
-      { id: "c8", designation: "गैंग-01 मुकद्दम", name: "रामलाल मुकद्दम (Gang-01)", phone: "9425777777" },
-      { id: "c9", designation: "गैंग-02 मुकद्दम", name: "श्याम सिंह मुकद्दम (Gang-02)", phone: "9425888888" },
-      { id: "c10", designation: "कीमैन (UP Line)", name: "सुरेश कीमैन (1157-1165)", phone: "9425999999" },
-      { id: "c11", designation: "नाइट पेट्रोलमैन", name: "राकेश पेट्रोलमैन (UP/DN Line)", phone: "9425000011" },
-      { id: "c12", designation: "रेलवे कंट्रोल रूम (जबलपुर)", name: "P-Way Control / Test Room", phone: "9425000022" }
-    ];
-
-    function getStoredContacts() {
-      const stored = localStorage.getItem("sagoni_tms_contacts_v2");
-      if (stored) { try { return JSON.parse(stored); } catch (e) { return DEFAULT_SECTION_CONTACTS; } }
-      return DEFAULT_SECTION_CONTACTS;
-    }
-
-    function renderContactsList() {
-      const contacts = getStoredContacts();
+    /* =================== 📞 SUPABASE CLOUD CONTACT DIRECTORY =================== */
+    async function fetchAndRenderCloudContacts() {
       const container = document.getElementById("contactsListContainer");
-      document.getElementById("contactCountBadge").textContent = `${contacts.length} Contacts`;
+      const badge = document.getElementById("contactCountBadge");
+      container.innerHTML = '<div style="text-align:center; color:#38bdf8; padding:12px;">क्लाउड डेटाबेस से कांटेक्ट लोड हो रहे हैं...</div>';
+
+      const { data: contacts, error } = await db
+        .from('section_contacts')
+        .select('*')
+        .order('id', { ascending: true });
+
+      if (error) {
+        container.innerHTML = `<div style="color:#ef4444; padding:12px;">डेटाबेस एरर: ${error.message}</div>`;
+        return;
+      }
+
+      if (!contacts || contacts.length === 0) {
+        container.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:18px;">डेटाबेस में कोई कांटेक्ट नहीं मिला। "नया कांटेक्ट जोड़ें" से एंट्री करें।</div>';
+        if (badge) badge.textContent = "0 Contacts";
+        return;
+      }
+
+      if (badge) badge.textContent = `${contacts.length} Contacts`;
       container.innerHTML = "";
 
       contacts.forEach(c => {
@@ -1584,8 +1569,8 @@
           <div style="display:flex; gap:6px; align-items:center;">
             <a href="tel:${c.phone}" class="btn-contact-action btn-contact-call">📞 कॉल</a>
             <a href="https://wa.me/91${cleanNumber}?text=नमस्ते,%20सगोनी%20पी-वे%20सेक्शन%20अलर्ट:" target="_blank" class="btn-contact-action btn-contact-wa">💬 WhatsApp</a>
-            <button onclick="editContactPrompt('${c.id}')" class="btn-contact-icon" title="एडिट करें">✏️</button>
-            <button onclick="deleteContactPrompt('${c.id}')" class="btn-contact-icon del" title="हटाएं">🗑️</button>
+            <button onclick="editCloudContactPrompt(${c.id}, '${c.designation}', '${c.name}', '${c.phone}')" class="btn-contact-icon" title="एडिट करें">✏️</button>
+            <button onclick="deleteCloudContact(${c.id})" class="btn-contact-icon del" title="हटाएं">🗑️</button>
           </div>
         `;
         container.appendChild(item);
@@ -1608,7 +1593,7 @@
       switchContactTab('contactListSec');
     }
 
-    function saveContactForm() {
+    async function saveContactForm() {
       if (!verifySEAuthority()) {
         alert("🔒 केवल SE ही कांटेक्ट सुरक्षित या अपडेट कर सकते हैं!");
         return;
@@ -1620,41 +1605,50 @@
 
       if (!desig || !name || !phone) { alert("कृपया सभी विवरण दर्ज करें!"); return; }
 
-      let contacts = getStoredContacts();
-      if (id) contacts = contacts.map(c => c.id === id ? { ...c, designation: desig, name: name, phone: phone } : c);
-      else contacts.push({ id: "c_" + Date.now(), designation: desig, name: name, phone: phone });
+      let res;
+      if (id) {
+        res = await db.from('section_contacts').update({ designation: desig, name: name, phone: phone }).eq('id', id);
+      } else {
+        res = await db.from('section_contacts').insert([{ designation: desig, name: name, phone: phone }]);
+      }
 
-      localStorage.setItem("sagoni_tms_contacts_v2", JSON.stringify(contacts));
-      resetContactForm();
-      renderContactsList();
-      showToast("✅ कांटेक्ट डायरेक्टरी अपडेट हो गई!");
+      if (res.error) {
+        alert("डेटाबेस में सेव नहीं हो पाया: " + res.error.message);
+      } else {
+        showToast("✅ Supabase डेटाबेस में कांटेक्ट सुरक्षित हो गया!");
+        resetContactForm();
+        fetchAndRenderCloudContacts();
+      }
     }
 
-    function editContactPrompt(contactId) {
-      if (!verifySEAuthority()) { alert("🔒 केवल SE को अधिकार है!"); return; }
-      const contacts = getStoredContacts();
-      const contact = contacts.find(c => c.id === contactId);
-      if (!contact) return;
-
-      document.getElementById('editContactId').value = contact.id;
-      document.getElementById('cntDesignation').value = contact.designation;
-      document.getElementById('cntName').value = contact.name;
-      document.getElementById('cntPhone').value = contact.phone;
-      document.getElementById('contactFormHeading').innerText = `✏️ कांटेक्ट एडिट करें (${contact.name})`;
+    function editCloudContactPrompt(id, desig, name, phone) {
+      if (!verifySEAuthority()) return;
+      document.getElementById('editContactId').value = id;
+      document.getElementById('cntDesignation').value = desig;
+      document.getElementById('cntName').value = name;
+      document.getElementById('cntPhone').value = phone;
+      document.getElementById('contactFormHeading').innerText = `✏️ कांटेक्ट एडिट करें (${name})`;
       switchContactTab('contactAddSec');
     }
 
-    function deleteContactPrompt(contactId) {
-      if (!verifySEAuthority()) { alert("🔒 केवल SE को हटाने का अधिकार है!"); return; }
-      if (!confirm("क्या आप वाकई इस कांटेक्ट को हटाना चाहते हैं?")) return;
-      let contacts = getStoredContacts();
-      contacts = contacts.filter(c => c.id !== contactId);
-      localStorage.setItem("sagoni_tms_contacts_v2", JSON.stringify(contacts));
-      renderContactsList();
-      showToast("🗑️ कांटेक्ट हटा दिया गया!");
+    async function deleteCloudContact(id) {
+      if (!verifySEAuthority()) return;
+      if (!confirm("क्या आप वाकई इस कांटेक्ट को डेटाबेस से हटाना चाहते हैं?")) return;
+
+      const { error } = await db.from('section_contacts').delete().eq('id', id);
+      if (error) {
+        alert("डिलीट एरर: " + error.message);
+      } else {
+        showToast("🗑️ Supabase से कांटेक्ट हटा दिया गया!");
+        fetchAndRenderCloudContacts();
+      }
     }
 
-    function openContactsModal() { renderContactsList(); switchContactTab('contactListSec'); document.getElementById("contactsModal").style.display = "flex"; }
+    function openContactsModal() { 
+      fetchAndRenderCloudContacts(); 
+      switchContactTab('contactListSec'); 
+      document.getElementById("contactsModal").style.display = "flex"; 
+    }
     function closeContactsModal() { document.getElementById("contactsModal").style.display = "none"; }
 
     /* =================== 📄 PDF REPOSITORY =================== */
@@ -2253,10 +2247,10 @@
 
     function closeDefectInfoCard() { document.getElementById('defectInfoCard').style.display = 'none'; }
 
-    // Restore State
+    // Init & State Restoration
     restoreAppState();
     renderDocsList();
-    renderContactsList();
+    fetchAndRenderCloudContacts();
   </script>
 </body>
 </html>
