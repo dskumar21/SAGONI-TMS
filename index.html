@@ -5,19 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WCR Sagoni P-Way Section TMS</title>
 
+  <!-- 📱 MOBILE PWA & APP ICON EMBED (NO EXTERNAL FILES NEEDED) -->
   <meta name="theme-color" content="#0b1329">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Sagoni TMS">
 
+  <!-- Crisp Railway SVG Favicon & Touch Icon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%230b1329'/%3E%3Ccircle cx='256' cy='256' r='210' fill='%231e3a8a' stroke='%23f59e0b' stroke-width='18'/%3E%3Ccircle cx='256' cy='256' r='175' fill='%230f172a' stroke='%2338bdf8' stroke-width='8' stroke-dasharray='12 12'/%3E%3Cpath d='M150 330 L362 330 L335 190 L177 190 Z' fill='%23ef4444' stroke='%23f59e0b' stroke-width='10'/%3E%3Ccircle cx='205' cy='260' r='24' fill='%23ffffff'/%3E%3Ccircle cx='307' cy='260' r='24' fill='%23ffffff'/%3E%3Crect x='226' cy='145' width='60' height='45' rx='8' fill='%23f59e0b'/%3E%3Cline x1='110' y1='370' x2='402' y2='370' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cline x1='130' y1='398' x2='382' y2='398' stroke='%23f59e0b' stroke-width='12' stroke-linecap='round'/%3E%3Ctext x='256' y='460' font-size='42' font-family='sans-serif' font-weight='900' fill='%23fef08a' text-anchor='middle'%3EWCR TMS%3C/text%3E%3C/svg%3E">
   
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%230b1329'/%3E%3Ccircle cx='256' cy='256' r='210' fill='%231e3a8a' stroke='%23f59e0b' stroke-width='18'/%3E%3Ccircle cx='256' cy='256' r='175' fill='%230f172a' stroke='%2338bdf8' stroke-width='8' stroke-dasharray='12 12'/%3E%3Cpath d='M150 330 L362 330 L335 190 L177 190 Z' fill='%23ef4444' stroke='%23f59e0b' stroke-width='10'/%3E%3Ccircle cx='205' cy='260' r='24' fill='%23ffffff'/%3E%3Ccircle cx='307' cy='260' r='24' fill='%23ffffff'/%3E%3Crect x='226' cy='145' width='60' height='45' rx='8' fill='%23f59e0b'/%3E%3Cline x1='110' y1='370' x2='402' y2='370' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cline x1='130' y1='398' x2='382' y2='398' stroke='%23f59e0b' stroke-width='12' stroke-linecap='round'/%3E%3Ctext x='256' y='460' font-size='42' font-family='sans-serif' font-weight='900' fill='%23fef08a' text-anchor='middle'%3EWCR TMS%3C/text%3E%3C/svg%3E">
 
+  <!-- PWA Web Manifest Data URI (Auto App-Mode) -->
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Sagoni%20P-Way%20TMS%22%2C%22short_name%22%3A%22Sagoni%20TMS%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230b1329%22%2C%22theme_color%22%3A%22%230b1329%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20512%20512'%253E%253Crect%20width%3D'512'%20height%3D'512'%20rx%3D'110'%20fill%3D'%25230b1329'%2F%253E%253Ccircle%20cx%3D'256'%20cy%3D'256'%20r%3D'210'%20fill%3D'%25231e3a8a'%20stroke%3D'%2523f59e0b'%20stroke-width%3D'18'%2F%253E%253Ccircle%20cx%3D'256'%20cy%3D'256'%20r%3D'175'%20fill%3D'%25230f172a'%20stroke%3D'%252338bdf8'%20stroke-width%3D'8'%20stroke-dasharray%3D'12%2012'%2F%253E%253Cpath%20d%3D'M150%20330%20L362%20330%20L335%20190%20L177%20190%20Z'%20fill%3D'%2523ef4444'%20stroke%3D'%2523f59e0b'%20stroke-width%3D'10'%2F%253E%253Ccircle%20cx%3D'205'%20cy%3D'260'%20r%3D'24'%20fill%3D'%2523ffffff'%2F%253E%253Ccircle%20cx%3D'307'%20cy%3D'260'%20r%3D'24'%20fill%3D'%2523ffffff'%2F%253E%253Crect%20x%3D'226'%20cy%3D'145'%20width%3D'60'%20height%3D'45'%20rx%3D'8'%20fill%3D'%2523f59e0b'%2F%253E%253Cline%20x1%3D'110'%20y1%3D'370'%20x2%3D'402'%20y2%3D'370'%20stroke%3D'%252338bdf8'%20stroke-width%3D'18'%20stroke-linecap%3D'round'%2F%253E%253Cline%20x1%3D'130'%20y1%3D'398'%20x2%3D'382'%20y2%3D'398'%20stroke%3D'%2523f59e0b'%20stroke-width%3D'12'%20stroke-linecap%3D'round'%2F%253E%253Ctext%20x%3D'256'%20y%3D'460'%20font-size%3D'42'%20font-family%3D'sans-serif'%20font-weight%3D'900'%20fill%3D'%2523fef08a'%20text-anchor%3D'middle'%253EWCR%20TMS%253C%2Ftext%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
+
+  <!-- Supabase CDN Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    
     body {
       background-color: #0b1329;
       background-image: 
@@ -29,20 +35,29 @@
       min-height: 100vh;
       padding: 12px;
     }
-    .container { max-width: 800px; margin: 0 auto; }
+    .container { max-width: 760px; margin: 0 auto; }
     
     .header {
       background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-      border-radius: 12px; border: 2px solid #f59e0b; padding: 14px 10px; margin-bottom: 14px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6); text-align: center;
+      border-radius: 12px;
+      border: 2px solid #f59e0b;
+      padding: 14px 10px;
+      margin-bottom: 14px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+      text-align: center;
     }
     .header .ir-zone { font-size: 11px; font-weight: 900; color: #f59e0b; letter-spacing: 1.5px; text-transform: uppercase; }
     .header h1 { font-size: 17px; font-weight: 900; color: #38bdf8; margin: 3px 0; }
+    .header p { font-size: 10px; color: #cbd5e1; font-weight: 600; }
     .sec-badge { display: inline-block; background: #0284c7; color: #ffffff; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 6px; margin-top: 4px; border: 1px solid #38bdf8; }
 
     .card {
-      background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4); margin-bottom: 12px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      margin-bottom: 12px;
     }
     .card-emergency { border: 2px solid #ef4444; background: #20131d; }
     .card-train-safety { border: 2px solid #0284c7; background: #0f2338; }
@@ -65,23 +80,34 @@
 
     .section-pills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 4px; }
     .line-selector-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 4px; }
-    .pills-btn { background: #0f172a; border: 2px solid #334155; color: #cbd5e1; padding: 9px 4px; border-radius: 8px; font-size: 11px; font-weight: 700; text-align: center; cursor: pointer; user-select: none; }
+    .pills-btn { background: #0f172a; border: 2px solid #334155; color: #cbd5e1; padding: 9px 4px; border-radius: 8px; font-size: 11px; font-weight: 700; text-align: center; cursor: pointer; transition: 0.2s; user-select: none; }
     .pills-btn.selected { background: #0284c7; border-color: #38bdf8; color: white; box-shadow: 0 0 10px rgba(56,189,248,0.4); }
+    .pills-btn.locked { opacity: 0.7; pointer-events: none; }
 
     .sos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
-    .sos-item { background: #0f172a; border: 1px solid #dc2626; border-radius: 8px; padding: 10px 4px; text-align: center; cursor: pointer; }
-    .sos-item:hover { background: #7f1d1d; }
+    .sos-item { background: #0f172a; border: 1px solid #dc2626; border-radius: 8px; padding: 10px 4px; text-align: center; cursor: pointer; transition: 0.2s; }
+    .sos-item:hover { background: #7f1d1d; border-color: #f87171; }
     .sos-icon { font-size: 22px; display: block; margin-bottom: 4px; }
     .sos-label { font-size: 10px; font-weight: 700; color: #fecaca; }
+
+    .train-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+    .train-item { background: #0f172a; border: 1px solid #0284c7; border-radius: 8px; padding: 12px 8px; text-align: center; cursor: pointer; }
+    .train-item:hover { background: #075985; }
 
     .user-bar { background: #0f172a; border: 1px solid #334155; padding: 10px 12px; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
     .user-info { font-size: 12px; }
     .user-info strong { color: #38bdf8; font-size: 13px; }
 
-    .toast { display: none; background: #065f46; border: 1px solid #34d399; color: #ecfdf5; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 600; text-align: center; margin-bottom: 12px; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 99999; }
+    .toast { display: none; background: #065f46; border: 1px solid #34d399; color: #ecfdf5; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 600; text-align: center; margin-bottom: 12px; }
     
-    .tab-bar { display: flex; gap: 6px; margin-bottom: 12px; background: #0f172a; padding: 4px; border-radius: 8px; border: 1px solid #334155; overflow-x: auto; }
-    .tab-btn { flex: 1; min-width: 85px; padding: 8px 4px; border: none; background: transparent; color: #94a3b8; font-size: 11px; font-weight: 700; border-radius: 6px; cursor: pointer; text-align: center; white-space: nowrap; }
+    #sirenAlarmBox { display: none; background: #7f1d1d; border: 3px solid #ef4444; border-radius: 12px; padding: 18px 12px; text-align: center; margin-bottom: 14px; animation: pulseAlert 0.8s infinite alternate; }
+    @keyframes pulseAlert { 0% { box-shadow: 0 0 10px #ef4444; transform: scale(0.99); } 100% { box-shadow: 0 0 25px #dc2626; transform: scale(1.01); background: #991b1b; } }
+
+    #floatingStopBar { display: none; position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 480px; z-index: 10000; }
+    #floatingStopBar button { background: #ffffff; color: #b91c1c; border: 3px solid #ef4444; border-radius: 50px; font-size: 16px; font-weight: 900; padding: 14px; box-shadow: 0 10px 25px rgba(0,0,0,0.6); width: 100%; cursor: pointer; }
+
+    .tab-bar { display: flex; gap: 6px; margin-bottom: 12px; background: #0f172a; padding: 4px; border-radius: 8px; border: 1px solid #334155; }
+    .tab-btn { flex: 1; padding: 8px 4px; border: none; background: transparent; color: #94a3b8; font-size: 11px; font-weight: 700; border-radius: 6px; cursor: pointer; text-align: center; transition: 0.2s; }
     .tab-btn.active { background: #2563eb; color: white; }
 
     .table-responsive { max-height: 380px; overflow-y: auto; overflow-x: auto; border: 1px solid #334155; border-radius: 8px; }
@@ -90,300 +116,480 @@
     td { padding: 8px 10px; border-bottom: 1px solid rgba(51, 65, 85, 0.4); color: #cbd5e1; }
     tr:nth-child(even) { background-color: rgba(15, 23, 42, 0.4); }
 
-    .modal-overlay { position: fixed; inset: 0; background: rgba(7, 13, 30, 0.88); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 10001; padding: 12px; }
-    .modal-content { background: #1e293b; border: 2px solid #38bdf8; border-radius: 14px; width: 100%; max-width: 600px; max-height: 85vh; overflow-y: auto; padding: 16px; }
+    .muster-box { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+    .muster-title { font-size: 13px; font-weight: 700; color: #38bdf8; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 4px; }
   </style>
 </head>
 <body>
 
+  <div id="floatingStopBar">
+    <button onclick="stopAlarmSound()">🔕 अलार्म बंद करें (Acknowledge & Stop)</button>
+  </div>
+
   <div class="container">
+    
     <div class="header">
       <div class="ir-zone">पश्चिम मध्य रेल | WCR JABALPUR</div>
       <h1>सगोनी पी-वे ट्रैक मैनेजमेंट सिस्टम</h1>
-      <span class="sec-badge">Km 1157 से 1173 (रतनगांव - सगोनी - गोला पट्टी)</span>
+      <span class="sec-badge">Km 1157.000 से 1173.000 (16 Km)</span>
+      <p style="margin-top: 4px;">रतनगांव ➔ सगोनी ➔ गोला पट्टी (IBH)</p>
+    </div>
+
+    <div id="sirenAlarmBox">
+      <div style="font-size: 32px; margin-bottom: 4px;">🚨 📢 ⚠️</div>
+      <h2 id="sirenAlertTitle" style="color: #fff; font-size: 18px; font-weight: 900;">ट्रेन आ रही है! तुरंत ट्रैक छोड़ें!</h2>
+      <p id="sirenAlertDesc" style="color: #fecaca; font-size: 13px; margin: 6px 0 14px 0;">--</p>
+      <button onclick="stopAlarmSound()" class="btn" style="background:#fff; color:#991b1b; font-size:15px; font-weight:900; box-shadow:0 4px 10px rgba(0,0,0,0.4);">🔕 अलार्म बंद करें (Stop Sound)</button>
     </div>
 
     <div id="toast" class="toast"></div>
 
-    <!-- HOME DASHBOARD -->
     <div id="homeSection">
-      
-      <!-- QUICK HUD BUTTONS FOR MODALS -->
-      <div class="grid-2" style="margin-bottom: 12px;">
-        <button onclick="openDocsModal()" class="btn btn-amber" style="font-size: 12px;">📂 महत्वपूर्ण दस्तावेज़ (PDF)</button>
-        <button onclick="openContactsModal()" class="btn btn-green" style="font-size: 12px;">📞 सेक्शन कांटेक्ट डायरेक्टरी</button>
+
+      <div class="card card-train-safety">
+        <div style="text-align: center;">
+          <strong style="color: #38bdf8; font-size: 15px;">🚆 रिलेटिव सेक्शन ब्लॉक चेतावनी प्रणाली</strong>
+          <p style="font-size: 11px; color: #94a3b8; margin-top: 2px;">रतनगांव ➔ सगोनी ➔ गोला पट्टी (IBH)</p>
+        </div>
+
+        <div class="train-grid">
+          <div class="train-item" onclick="openTrainMode('sender')">
+            <span style="font-size: 24px; display:block; margin-bottom:4px;">📢</span>
+            <strong style="color:#38bdf8; font-size:12px;">गाड़ी सूचना दें</strong><br>
+            <span style="color:#94a3b8; font-size:10px;">(Sender / Dispatcher)</span>
+          </div>
+          <div class="train-item" onclick="openTrainMode('receiver')">
+            <span style="font-size: 24px; display:block; margin-bottom:4px;">📡</span>
+            <strong style="color:#4ade80; font-size:12px;">गाड़ी अलर्ट सुनें</strong><br>
+            <span style="color:#94a3b8; font-size:10px;">(Receiver / Locked Route)</span>
+          </div>
+        </div>
+
+        <!-- SENDER FORM -->
+        <div id="trainSenderPanel" style="display: none; margin-top: 14px; border-top: 1px dashed #0284c7; padding-top: 12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <strong style="color:#38bdf8; font-size:13px;">📢 ट्रेन डिस्पैच (एक साथ कई सेक्शन चुनें)</strong>
+            <button onclick="closeTrainPanels()" style="background:none; border:none; color:#f87171; cursor:pointer;">✖</button>
+          </div>
+          
+          <form onsubmit="handleSenderFormSubmit(event)">
+            <div class="form-group">
+              <label>आपकी ID / स्टेशन (Sender ID)</label>
+              <input type="text" id="sndEmpId" placeholder="उदा: SM_SAGONI, GATE_1162, JE01" required>
+            </div>
+
+            <div class="form-group">
+              <label>1. मूवमेंट व ब्लॉक सेक्शन चुनें (टच करें):</label>
+              <div class="section-pills-grid" id="sndMovementGrid">
+                <div class="pills-btn selected" id="sndMv1" onclick="toggleSenderMovement('sndMv1', 'रतनगांव से सगोनी', 'रतनगांव-सगोनी')">🔼 UP: रतनगांव ➔ सगोनी</div>
+                <div class="pills-btn" id="sndMv2" onclick="toggleSenderMovement('sndMv2', 'सगोनी से गोला पट्टी', 'गोला पट्टी-सगोनी')">🔼 UP: सगोनी ➔ गोला पट्टी</div>
+                <div class="pills-btn" id="sndMv3" onclick="toggleSenderMovement('sndMv3', 'गोला पट्टी से सगोनी', 'गोला पट्टी-सगोनी')">🔽 DN: गोला पट्टी ➔ सगोनी</div>
+                <div class="pills-btn" id="sndMv4" onclick="toggleSenderMovement('sndMv4', 'सगोनी से रतनगांव', 'रतनगांव-सगोनी')">🔽 DN: सगोनी ➔ रतनगांव</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>2. प्रभावित लाइन चुनें (एक या अधिक चुनें):</label>
+              <div class="line-selector-grid" id="sndLinesGrid">
+                <div class="pills-btn selected" id="sndL_upMain" onclick="toggleSenderLine('sndL_upMain', 'अप मेन लाइन')">अप मेन लाइन</div>
+                <div class="pills-btn" id="sndL_dnMain" onclick="toggleSenderLine('sndL_dnMain', 'डाउन मेन लाइन')">डाउन मेन लाइन</div>
+                <div class="pills-btn" id="sndL_3rdMain" onclick="toggleSenderLine('sndL_3rdMain', 'थर्ड मेन लाइन')">थर्ड मेन लाइन</div>
+                <div class="pills-btn" id="sndL_upLoop" onclick="toggleSenderLine('sndL_upLoop', 'अप लूप लाइन')">अप लूप लाइन</div>
+                <div class="pills-btn" id="sndL_dnLoop" onclick="toggleSenderLine('sndL_dnLoop', 'डाउन लूप लाइन')">डाउन लूप लाइन</div>
+                <div class="pills-btn" id="sndL_3rdLoop" onclick="toggleSenderLine('sndL_3rdLoop', 'थर्ड लूप लाइन')">थर्ड लूप लाइन</div>
+                <div class="pills-btn" id="sndL_lh" onclick="toggleSenderLine('sndL_lh', 'लॉन्ग हॉल साइडिंग')" style="grid-column: span 3;">लॉन्ग हॉल साइडिंग</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>गाड़ी सं. / विवरण</label>
+              <input type="text" id="sndTrain" placeholder="उदा: 12181 / मालगाड़ी / लाइट इंजन">
+            </div>
+
+            <div class="grid-2" style="margin-top: 8px;">
+              <button type="submit" class="btn btn-red" style="font-size:13px;">🚨 गाड़ी छोड़ दी गई (Broadcast Alert)</button>
+              <button type="button" onclick="sendMultiLiveTrainAlert('BLOCKED')" class="btn btn-amber" style="font-size:13px;">⛔ गाड़ी ब्लॉक हो चुकी है (Broadcast Alert)</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- RECEIVER FORM -->
+        <div id="trainReceiverPanel" style="display: none; margin-top: 14px; border-top: 1px dashed #0284c7; padding-top: 12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <strong style="color:#4ade80; font-size:13px;">📡 रिलेटिव लोकेशन मॉनिटर (रूट लॉक)</strong>
+            <button onclick="closeTrainPanels()" style="background:none; border:none; color:#f87171; cursor:pointer;">✖</button>
+          </div>
+          
+          <form onsubmit="handleReceiverLockSubmit(event)">
+            <div class="form-group">
+              <label>आपकी ID (Trackman / Mate ID)</label>
+              <input type="text" id="rcvEmpId" placeholder="उदा: MATE01, KEY01">
+            </div>
+
+            <div class="form-group">
+              <label>1. आपकी कार्य लोकेशन (Block Section):</label>
+              <div class="section-pills-grid" id="rcvBlockGrid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="pills-btn selected" id="rcvLocGhul" onclick="selectReceiverBlock('गोला पट्टी-सगोनी')">गोला पट्टी – सगोनी</div>
+                <div class="pills-btn" id="rcvLocYard" onclick="selectReceiverBlock('सगोनी यार्ड')">सगोनी यार्ड क्षेत्र</div>
+                <div class="pills-btn" id="rcvLocRat" onclick="selectReceiverBlock('रतनगांव-सगोनी')">सगोनी – रतनगांव</div>
+              </div>
+              <input type="hidden" id="selectedReceiverBlock" value="गोला पट्टी-सगोनी">
+            </div>
+
+            <div class="form-group">
+              <label>2. किन-किन लाइनों पर नजर रखनी है? (टच करके चुनें):</label>
+              <div class="line-selector-grid" id="rcvLineGrid">
+                <div class="pills-btn selected" id="rcvL_upMain" onclick="toggleReceiverLine('rcvL_upMain', 'अप मेन लाइन')">अप मेन लाइन</div>
+                <div class="pills-btn selected" id="rcvL_dnMain" onclick="toggleReceiverLine('rcvL_dnMain', 'डाउन मेन लाइन')">डाउन मेन लाइन</div>
+                <div class="pills-btn selected" id="rcvL_3rdMain" onclick="toggleReceiverLine('rcvL_3rdMain', 'थर्ड मेन लाइन')">थर्ड मेन लाइन</div>
+                <div class="pills-btn" id="rcvL_upLoop" onclick="toggleReceiverLine('rcvL_upLoop', 'अप लूप लाइन')">अप लूप लाइन</div>
+                <div class="pills-btn" id="rcvL_dnLoop" onclick="toggleReceiverLine('rcvL_dnLoop', 'डाउन लूप लाइन')">डाउन लूप लाइन</div>
+                <div class="pills-btn" id="rcvL_3rdLoop" onclick="toggleReceiverLine('rcvL_3rdLoop', 'थर्ड लूप लाइन')">थर्ड लूप लाइन</div>
+                <div class="pills-btn" id="rcvL_lh" onclick="toggleReceiverLine('rcvL_lh', 'लॉन्ग हॉल साइडिंग')" style="grid-column: span 3;">लॉन्ग हॉल साइडिंग</div>
+              </div>
+            </div>
+
+            <div id="receiverControls">
+              <button type="submit" id="btnLockMonitor" class="btn btn-green" style="font-size:14px; font-weight:800;">
+                🔒 लोकेशन व रूट लॉक करें (Start Safe Monitoring)
+              </button>
+              <div id="rcvStatus" style="font-size:11px; color:#94a3b8; text-align:center; margin-top:6px;">स्टेटस: लोकेशन लॉक करने के बाद ही सक्रिय होगा</div>
+            </div>
+
+            <div id="receiverUnlockBar" style="display: none; margin-top: 8px;">
+              <button type="button" onclick="unlockReceiverSettings()" class="btn" style="background:#475569; font-size:12px;">
+                🔓 अनलॉक करें / लोकेशन बदलें
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
 
-      <!-- GPS STANDALONE TRACKER WIDGET -->
-      <div class="card card-train-safety" style="border-color:#a855f7; background:#181028;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-          <strong style="color:#c084fc; font-size:14px;">🛰️ GPS ट्रैक पेट्रोलिंग (Live Field Widget)</strong>
-          <span id="homeGpsBadge" style="background:#475569; color:#fff; font-size:10px; font-weight:800; padding:3px 8px; border-radius:6px;">STANDBY</span>
-        </div>
-        <div id="homePatrolLoginForm">
-          <div class="form-group">
-            <label>कीमैन / पेट्रोलमैन का CUG मोबाइल नंबर</label>
-            <input type="tel" id="homePatrolPhone" placeholder="उदा: 9425000011" maxlength="10">
-          </div>
-          <button type="button" onclick="startHomePatrolSession()" class="btn btn-purple" style="font-size:12px;">🟢 पेट्रोलिंग शुरू करें</button>
-        </div>
-        <div id="homePatrolActiveBox" style="display:none; background:#0f172a; border:1px solid #a855f7; border-radius:8px; padding:10px;">
-          <div style="font-size:12px; color:#fef08a; font-weight:bold; margin-bottom:6px;" id="homePatrolStaffName">--</div>
-          <div class="grid-3" style="text-align:center; margin-bottom:8px;">
-            <div style="background:#1e293b; padding:4px;"><span style="font-size:9px; color:#94a3b8;">गति</span><strong id="homePatrolSpeed" style="font-size:12px; color:#4ade80; display:block;">0.0 km/h</strong></div>
-            <div style="background:#1e293b; padding:4px;"><span style="font-size:9px; color:#94a3b8;">दूरी</span><strong id="homePatrolDist" style="font-size:12px; color:#fef08a; display:block;">0.00 Km</strong></div>
-            <div style="background:#1e293b; padding:4px;"><span style="font-size:9px; color:#94a3b8;">समय</span><strong id="homePatrolTime" style="font-size:12px; color:#38bdf8; display:block;">00:00</strong></div>
-          </div>
-          <button type="button" onclick="stopHomePatrolSession()" class="btn btn-red" style="font-size:11px;">🛑 समाप्त करें & क्लाउड सिंक करें</button>
-        </div>
-      </div>
-
-      <!-- STAFF LOGIN FORM -->
+      <!-- LOGIN FORM -->
       <div class="card">
-        <div style="text-align: center; margin-bottom: 12px;">
-          <span style="font-size: 22px;">🔐</span>
-          <h2 style="font-size: 14px; margin-top: 2px;">SE / JE / मुकद्दम स्टाफ लॉगिन</h2>
+        <div style="text-align: center; margin-bottom: 14px;">
+          <span style="font-size: 26px;">🔐</span>
+          <h2 style="font-size: 15px; margin-top: 4px;">स्टाफ लॉगिन (Staff Access)</h2>
+          <p style="font-size: 11px; color: #94a3b8;">दैनिक कार्य / डायरी / हाजिरी भरने हेतु टोकन दर्ज करें</p>
         </div>
+        
         <form onsubmit="handleLogin(event)">
           <div class="form-group">
-            <label>Employee ID / टोकन</label>
-            <input type="text" id="empIdInput" placeholder="उदा: JE01, MATE01, KEY01" required>
+            <label>Employee ID / टोकन नंबर</label>
+            <input type="text" id="empIdInput" placeholder="उदा: JE01, MATE01, KEY01" autofocus required>
           </div>
-          <button type="submit" class="btn btn-blue">डैशबोर्ड खोलें</button>
+
+          <button type="submit" class="btn btn-blue">लॉगिन करें (Press Enter)</button>
         </form>
-        <div style="margin-top: 10px; font-size: 10px; color: #64748b; text-align: center;">
-          टोकन्स: <code>JE01</code> | <code>MATE01</code> | <code>KEY01</code> | <code>PAT01</code>
+
+        <div style="margin-top: 14px; font-size: 11px; color: #64748b; line-height: 1.6; border-top: 1px solid #334155; padding-top: 8px;">
+          <strong>लॉगिन टोकन्स:</strong> <code>JE01</code> | <code>MATE01</code> | <code>KEY01</code> | <code>PAT01</code>
         </div>
       </div>
 
-      <!-- SOS EMERGENCY FORM -->
       <div class="card card-emergency">
         <div style="text-align: center;">
-          <strong style="color: #f87171; font-size: 13px;">🚨 त्वरित आपातकालीन रिपोर्टिंग (Direct SOS)</strong>
-        </div>
-        <div class="sos-grid">
-          <div class="sos-item" onclick="selectEmergencyType('🐮 CRO')"><span class="sos-icon">🐮</span><span class="sos-label">C.R.O.</span></div>
-          <div class="sos-item" onclick="selectEmergencyType('🔥 Hot Axle')"><span class="sos-icon">🔥</span><span class="sos-label">Hot Axle</span></div>
-          <div class="sos-item" onclick="selectEmergencyType('🛑 Train Fail')"><span class="sos-icon">🛑</span><span class="sos-label">Train Fail</span></div>
-          <div class="sos-item" onclick="selectEmergencyType('⚠️ Obstruction')"><span class="sos-icon">⚠️</span><span class="sos-label">Obstruction</span></div>
+          <strong style="color: #f87171; font-size: 14px;">🚨 त्वरित आपातकालीन रिपोर्टिंग (Direct SOS)</strong>
+          <p style="font-size: 11px; color: #94a3b8; margin-top: 2px;">बिना लॉगिन किए तुरंत घटना दर्ज करें:</p>
         </div>
 
-        <div id="inlineEmergencyForm" style="display: none; margin-top: 12px; border-top: 1px dashed #ef4444; padding-top: 10px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <strong id="selectedTypeTitle" style="color:#38bdf8; font-size:12px;">--</strong>
-            <button onclick="closeEmergencyForm()" style="background:none; border:none; color:#f87171; font-weight:bold; cursor:pointer;">✖</button>
+        <div class="sos-grid">
+          <div class="sos-item" onclick="selectEmergencyType('🐮 CRO (Cattle Run Over)')"><span class="sos-icon">🐮</span><span class="sos-label">C.R.O.</span></div>
+          <div class="sos-item" onclick="selectEmergencyType('🔥 Hot Axle / Brake Binding')"><span class="sos-icon">🔥</span><span class="sos-label">Hot Axle</span></div>
+          <div class="sos-item" onclick="selectEmergencyType('🛑 Train Stalled / Failure')"><span class="sos-icon">🛑</span><span class="sos-label">Train Fail</span></div>
+          <div class="sos-item" onclick="selectEmergencyType('⚠️ Sabotage / Obstruction')"><span class="sos-icon">⚠️</span><span class="sos-label">Sabotage</span></div>
+        </div>
+
+        <div id="inlineEmergencyForm" style="display: none; margin-top: 16px; border-top: 1px dashed #ef4444; padding-top: 12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong id="selectedTypeTitle" style="color:#38bdf8; font-size:13px;">--</strong>
+            <button onclick="closeEmergencyForm()" style="background:none; border:none; color:#f87171; font-size:16px; cursor:pointer; font-weight:bold;">✖</button>
           </div>
+
           <form onsubmit="submitEmergencyIncident(event)">
             <input type="hidden" id="emIncidentType">
-            <div class="form-group"><label>Employee ID</label><input type="text" id="emEmpId" placeholder="उदा: KEY01" required></div>
+            <div class="form-group"><label>आपकी Employee ID / नाम</label><input type="text" id="emEmpId" placeholder="उदा: KEY01, MATE01" required></div>
             <div class="grid-2">
-              <div class="form-group"><label>लाइन</label><select id="emLine"><option>UP Main Line</option><option>DN Main Line</option><option>3rd Main Line</option></select></div>
-              <div class="form-group"><label>गाड़ी सं.</label><input type="text" id="emTrain" placeholder="12181"></div>
+              <div class="form-group">
+                <label>लाइन (Line)</label>
+                <select id="emLine">
+                  <option>UP Main Line</option>
+                  <option>DN Main Line</option>
+                  <option>3rd Main Line</option>
+                  <option>UP Loop Line</option>
+                  <option>DN Loop Line</option>
+                  <option>3rd Loop Line</option>
+                  <option>Long Haul Siding</option>
+                </select>
+              </div>
+              <div class="form-group"><label>गाड़ी सं.</label><input type="text" id="emTrain" placeholder="12181 / GOODS"></div>
             </div>
             <div class="grid-2">
               <div class="form-group"><label>Km Location</label><input type="number" id="emKm" step="0.001" min="1157" max="1173" placeholder="1164.200" required></div>
               <div class="form-group"><label>खंभा नंबर</label><input type="text" id="emPole" placeholder="1164/18" required></div>
             </div>
-            <div class="form-group"><label>विवरण</label><textarea id="emRemarks" rows="2" placeholder="विवरण..." required></textarea></div>
-            <div class="form-group"><label>📸 फोटो</label><input type="file" id="emPhoto" accept="image/*" capture="environment" style="padding:4px;"></div>
-            <button type="submit" id="emBtn" class="btn btn-red" style="font-size:12px;">🚨 इमरजेंसी दर्ज करें</button>
+            <div class="form-group"><label>विवरण</label><textarea id="emRemarks" rows="2" placeholder="मौके की स्थिति..." required></textarea></div>
+            <div class="form-group"><label>📸 मौके की फोटो</label><input type="file" id="emPhoto" accept="image/*" capture="environment" style="padding:6px;"></div>
+            <button type="submit" id="emBtn" class="btn btn-red">🚨 तुरंत इमरजेंसी अलर्ट दर्ज करें (Press Enter)</button>
           </form>
         </div>
       </div>
 
     </div>
 
-    <!-- ADMIN / JE / SE DASHBOARD CONTAINER -->
     <div id="appContainer" style="display: none;">
       <div class="user-bar">
         <div class="user-info">
           लॉगिन: <strong id="uName">--</strong> (<span id="uRole">--</span>)<br>
-          <span id="uBeat" style="color: #94a3b8; font-size: 10px;">--</span>
+          <span id="uBeat" style="color: #94a3b8; font-size: 11px;">--</span>
         </div>
         <button onclick="logout()" style="background: none; border: 1px solid #475569; color: #f87171; font-size: 11px; padding: 4px 8px; border-radius: 6px; cursor: pointer;">लॉगआउट</button>
       </div>
 
-      <!-- MATE SECTION -->
       <div id="mateForm" style="display: none;">
-        <div class="tab-bar">
-          <button class="tab-btn active" id="btnMateTabMuster" onclick="switchMateTab('mateMusterCard')">🌅 मस्टर</button>
-          <button class="tab-btn" id="btnMateTabDiary" onclick="switchMateTab('mateDiaryCard')">🛠️ कार्य डायरी</button>
+        <div class="tab-bar" style="margin-bottom: 12px;">
+          <button class="tab-btn active" id="btnMateTabMuster" onclick="switchMateTab('mateMusterCard')">🌅 सुबह 08:00 AM मस्टर (हाजिरी)</button>
+          <button class="tab-btn" id="btnMateTabDiary" onclick="switchMateTab('mateDiaryCard')">🛠️ दैनिक कार्य डायरी & प्रगति</button>
         </div>
+
         <div id="mateMusterCard" class="card">
-          <h3 style="font-size: 14px; color: #38bdf8; margin-bottom: 8px;">🌅 सुबह का गैंग मस्टर</h3>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 style="font-size: 15px; color: #38bdf8;">🌅 सुबह का गैंग मस्टर (Morning Attendance)</h3>
+            <span style="font-size:11px; color:#4ade80; font-weight:bold;">समय: 08:00 AM</span>
+          </div>
+
           <form onsubmit="submitMorningMuster(event)">
-            <div class="grid-3">
-              <div class="form-group"><label>ऑन ट्रैक</label><input type="number" id="mstTrackWork" value="12" onchange="calculateMusterTotal()" required></div>
-              <div class="form-group"><label>कीमैन</label><input type="number" id="mstKeyman" value="2" onchange="calculateMusterTotal()" required></div>
-              <div class="form-group"><label>वॉचमैन</label><input type="number" id="mstWatchman" value="1" onchange="calculateMusterTotal()" required></div>
+            <div class="muster-box">
+              <div class="muster-title">👥 ऑन-ड्यूटी कार्य आवंटन (Working Breakdown)</div>
+              <div class="grid-3">
+                <div class="form-group">
+                  <label>🟢 ऑन ट्रैक कार्य</label>
+                  <input type="number" id="mstTrackWork" min="0" value="12" onchange="calculateMusterTotal()" required>
+                </div>
+                <div class="form-group">
+                  <label>🔑 कीमैन ड्यूटी</label>
+                  <input type="number" id="mstKeyman" min="0" value="2" onchange="calculateMusterTotal()" required>
+                </div>
+                <div class="form-group">
+                  <label>🔦 वॉचमैन / गेट</label>
+                  <input type="number" id="mstWatchman" min="0" value="1" onchange="calculateMusterTotal()" required>
+                </div>
+              </div>
             </div>
-            <div class="grid-4">
-              <div class="form-group"><label>नाइट</label><input type="number" id="mstNight" value="1" onchange="calculateMusterTotal()" required></div>
-              <div class="form-group"><label>सिक</label><input type="number" id="mstSick" value="0" onchange="calculateMusterTotal()" required></div>
-              <div class="form-group"><label>छुट्टी</label><input type="number" id="mstLeave" value="1" onchange="calculateMusterTotal()" required></div>
-              <div class="form-group"><label>गैरहाजिर</label><input type="number" id="mstAbsent" value="0" onchange="calculateMusterTotal()" required></div>
+
+            <div class="muster-box">
+              <div class="muster-title" style="color:#f59e0b;">🏖️ अनुपस्थिति / अन्य (Non-Available)</div>
+              <div class="grid-4">
+                <div class="form-group">
+                  <label>🌙 नाइट रेस्ट</label>
+                  <input type="number" id="mstNight" min="0" value="1" onchange="calculateMusterTotal()" required>
+                </div>
+                <div class="form-group">
+                  <label>🏥 सिक / मेडिकल</label>
+                  <input type="number" id="mstSick" min="0" value="0" onchange="calculateMusterTotal()" required>
+                </div>
+                <div class="form-group">
+                  <label>🏖️ छुट्टी (Leave)</label>
+                  <input type="number" id="mstLeave" min="0" value="1" onchange="calculateMusterTotal()" required>
+                </div>
+                <div class="form-group">
+                  <label>🔴 गैरहाजिर</label>
+                  <input type="number" id="mstAbsent" min="0" value="0" onchange="calculateMusterTotal()" required>
+                </div>
+              </div>
             </div>
-            <div style="background:#0369a1; padding:8px; border-radius:6px; display:flex; justify-content:space-between; margin-bottom:10px; font-size:12px;">
-              <span>कुल स्ट्रेंथ:</span><strong id="mstTotalSum" style="color:#fef08a;">16</strong>
+
+            <div style="background:#0369a1; padding:10px 12px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <span style="font-size:12px; font-weight:700; color:white;">कुल गैंग स्ट्रेंथ (Total Headcount):</span>
+              <strong id="mstTotalSum" style="font-size:16px; color:#fef08a;">16</strong>
             </div>
-            <button type="submit" id="mstBtn" class="btn btn-purple" style="font-size:12px;">मस्टर सबमिट करें</button>
+
+            <div class="form-group">
+              <label>मुकद्दम रिमार्क्स (Remarks / विशेष विवरण)</label>
+              <textarea id="mstRemarks" rows="2" placeholder="उदा: आज 2 आदमी गेट 1162 पर तैनात किए गए हैं..."></textarea>
+            </div>
+
+            <button type="submit" id="mstBtn" class="btn btn-purple">💾 सुबह 8:00 AM मस्टर सबमिट करें (Press Enter)</button>
           </form>
         </div>
+
         <div id="mateDiaryCard" class="card" style="display: none;">
-          <h3 style="font-size: 14px; color: #4ade80; margin-bottom: 8px;">🛠️ कार्य प्रगति डायरी</h3>
+          <h3 style="font-size: 15px; margin-bottom: 12px; color: #4ade80;">🛠️ दैनिक कार्य डायरी & मैनपॉवर पोजिशनिंग</h3>
           <form onsubmit="submitMateWork(event)">
-            <div class="form-group"><label>लाइन</label><select id="mLine"><option>UP Main Line</option><option>DN Main Line</option><option>3rd Main Line</option></select></div>
-            <div class="grid-2">
-              <div class="form-group"><label>From Km</label><input type="number" id="mFromKm" step="0.001" value="1157.000" required></div>
-              <div class="form-group"><label>To Km</label><input type="number" id="mToKm" step="0.001" value="1157.450" required></div>
+            <div class="form-group">
+              <label>लाइन (Line)</label>
+              <select id="mLine">
+                <option>UP Main Line</option>
+                <option>DN Main Line</option>
+                <option>3rd Main Line</option>
+                <option>UP Loop Line</option>
+                <option>DN Loop Line</option>
+                <option>3rd Loop Line</option>
+                <option>Long Haul Siding</option>
+              </select>
             </div>
-            <div class="form-group"><label>कार्य प्रकार</label><select id="mWorkType"><option>Through Packing</option><option>Slack Picking</option><option>ERC Greasing</option></select></div>
+
             <div class="grid-2">
-              <div class="form-group"><label>लेबर</label><input type="number" id="mWorkingLabour" value="12" required></div>
-              <div class="form-group"><label>आउटपुट</label><input type="text" id="mOutput" placeholder="75 Sleepers" required></div>
+              <div class="form-group"><label>From Km</label><input type="number" id="mFromKm" step="0.001" min="1157" max="1173" value="1157.000" required></div>
+              <div class="form-group"><label>To Km</label><input type="number" id="mToKm" step="0.001" min="1157" max="1173" value="1157.450" required></div>
             </div>
-            <button type="submit" id="mBtn" class="btn btn-green" style="font-size:12px;">डायरी सेव करें</button>
+
+            <div class="form-group">
+              <label>कार्य का प्रकार</label>
+              <select id="mWorkType">
+                <option>Through Packing (थ्रू पैकिंग)</option>
+                <option>Slack Picking (स्लैक पिकिंग)</option>
+                <option>ERC & Liner Greasing</option>
+                <option>Joint Lubrication & Destressing</option>
+                <option>Ballast Boxing / Dressing</option>
+                <option>Turnout Overhauling (सगोनी यार्ड)</option>
+                <option>Casual Sleeper Renewal</option>
+              </select>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label>मौके पर कार्यरत कुल लेबर</label>
+                <input type="number" id="mWorkingLabour" min="1" value="12" required>
+              </div>
+              <div class="form-group">
+                <label>आउटपुट / प्रगति विवरण</label>
+                <input type="text" id="mOutput" placeholder="उदा: 75 Sleeper Packed" required>
+              </div>
+            </div>
+
+            <button type="submit" id="mBtn" class="btn btn-green">💾 कार्य डायरी डेटाबेस में सुरक्षित करें (Press Enter)</button>
           </form>
         </div>
       </div>
 
-      <!-- KEYMAN SECTION -->
       <div id="keymanForm" class="card" style="display: none;">
-        <h3 style="font-size: 14px; color: #38bdf8; margin-bottom: 8px;">🔑 डिफेक्ट रिपोर्टिंग</h3>
+        <h3 style="font-size: 15px; margin-bottom: 12px; color: #38bdf8;">🔑 डिफेक्ट रिपोर्टिंग (Keyman)</h3>
         <form onsubmit="submitKeymanDefect(event)">
-          <div class="form-group"><label>लाइन</label><select id="kLine"><option>UP Main Line</option><option>DN Main Line</option><option>3rd Main Line</option></select></div>
+          <div class="form-group">
+            <label>लाइन</label>
+            <select id="kLine">
+              <option>UP Main Line</option>
+              <option>DN Main Line</option>
+              <option>3rd Main Line</option>
+              <option>UP Loop Line</option>
+              <option>DN Loop Line</option>
+              <option>3rd Loop Line</option>
+              <option>Long Haul Siding</option>
+            </select>
+          </div>
           <div class="grid-2">
-            <div class="form-group"><label>Km</label><input type="number" id="kKm" step="0.001" placeholder="1162.400" required></div>
+            <div class="form-group"><label>Km</label><input type="number" id="kKm" step="0.001" min="1157" max="1173" placeholder="1162.400" required></div>
             <div class="form-group"><label>खंभा</label><input type="text" id="kPole" placeholder="1162/14" required></div>
           </div>
-          <div class="form-group"><label>डिफेक्ट</label><select id="kDefect"><option>🟢 Normal OK</option><option>🔴 Weld Fracture</option><option>🟡 Missing ERC</option></select></div>
-          <div class="form-group"><label>रिमार्क्स</label><textarea id="kRemarks" rows="2" placeholder="विवरण..."></textarea></div>
-          <button type="submit" id="kBtn" class="btn btn-blue" style="font-size:12px;">डिफेक्ट दर्ज करें</button>
+          <div class="form-group">
+            <label>डिफेक्ट का प्रकार</label>
+            <select id="kDefect">
+              <option>🟢 Normal - Routine Beat OK</option><option>🔴 Weld Fracture / Crack</option>
+              <option>🟡 Missing ERC / Liners</option><option>🟡 Loose Fishbolts</option><option>🟡 Bad Riding / Slack</option>
+            </select>
+          </div>
+          <div class="form-group"><label>रिमार्क्स</label><textarea id="kRemarks" rows="2" placeholder="मौके की स्थिति..."></textarea></div>
+          <button type="submit" id="kBtn" class="btn btn-blue">डिफेक्ट दर्ज करें (Press Enter)</button>
         </form>
       </div>
 
-      <!-- SE / JE DASHBOARD -->
       <div id="jeForm" style="display: none;">
         <div class="tab-bar">
-          <button class="tab-btn active" onclick="switchJETab('tabMusterLog')">📋 मस्टर</button>
-          <button class="tab-btn" onclick="switchJETab('tabPatrolLogs')">🛰️ GPS चार्ट</button>
-          <button class="tab-btn" onclick="switchJETab('tabEmergency')">🚨 आपातकाल</button>
-          <button class="tab-btn" onclick="switchJETab('tabMate')">🛠️ डायरी</button>
+          <button class="tab-btn active" onclick="switchJETab('tabMusterLog')">📋 मस्टर & हाजिरी</button>
+          <button class="tab-btn" onclick="switchJETab('tabEmergency')">🚨 आपात अलर्ट्स</button>
+          <button class="tab-btn" onclick="switchJETab('tabMate')">🛠️ कार्य डायरी</button>
           <button class="tab-btn" onclick="switchJETab('tabDefects')">⚠️ डिफेक्ट्स</button>
-          <button class="tab-btn" onclick="switchJETab('tabMap')">🗺️ मैप</button>
+          <button class="tab-btn" onclick="switchJETab('tabMap')">🗺️ 2D स्केल</button>
         </div>
 
         <div id="tabMusterLog" class="card">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <strong style="color:#38bdf8; font-size:13px;">📋 गैंग मस्टर रजिस्टर</strong>
-            <button onclick="exportMusterToCSV()" class="btn-csv">📥 Excel</button>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong style="color:#a855f7; font-size:14px;">📋 सुबह 08:00 AM गैंग हाजिरी & पोजिशनिंग</strong>
+            <div style="display:flex; gap:6px;">
+              <button onclick="exportMusterToCSV()" class="btn-csv">📥 Download Excel (CSV)</button>
+              <button onclick="loadMusterLogs()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
+            </div>
           </div>
           <div class="table-responsive">
             <table>
-              <thead><tr><th>समय</th><th>मुकद्दम</th><th>कुल</th><th>कार्य पर</th><th>कीमैन</th><th>रिमार्क्स</th></tr></thead>
-              <tbody id="musterTableBody"><tr><td colspan="6" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
-            </table>
-          </div>
-        </div>
-
-        <div id="tabPatrolLogs" class="card" style="display: none;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <strong style="color:#38bdf8; font-size:13px;">🛰️ GPS पेट्रोलिंग चार्ट</strong>
-            <button onclick="fetchAndRenderCloudPatrolLogs()" class="btn-csv">🔄 Refresh</button>
-          </div>
-          <div class="table-responsive">
-            <table>
-              <thead><tr><th>दिनांक</th><th>नाम</th><th>बीट</th><th>समय</th><th>दूरी</th><th>गति</th></tr></thead>
-              <tbody id="patrolLogsTableBody"><tr><td colspan="6" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
+              <thead>
+                <tr>
+                  <th>समय</th>
+                  <th>गैंग/मुकद्दम</th>
+                  <th>कुल</th>
+                  <th>कार्य पर</th>
+                  <th>कीमैन</th>
+                  <th>वॉचमैन</th>
+                  <th>नाइट</th>
+                  <th>सिक</th>
+                  <th>छुट्टी</th>
+                  <th>गैरहाजिर</th>
+                  <th>रिमार्क्स</th>
+                </tr>
+              </thead>
+              <tbody id="musterTableBody"><tr><td colspan="11" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
             </table>
           </div>
         </div>
 
         <div id="tabEmergency" class="card" style="display: none;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <strong style="color:#ef4444; font-size:13px;">🚨 आपातकालीन घटनाएं</strong>
-            <button onclick="loadEmergencies()" class="btn-csv">🔄 Refresh</button>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong style="color:#ef4444; font-size:14px;">🚨 आपातकालीन घटना रजिस्टर</strong>
+            <div style="display:flex; gap:6px;">
+              <button onclick="exportEmergenciesToCSV()" class="btn-csv">📥 Download Excel (CSV)</button>
+              <button onclick="loadEmergencies()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
+            </div>
           </div>
           <div id="emergencyLiveList">लोड हो रहा है...</div>
         </div>
 
         <div id="tabMate" class="card" style="display: none;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <strong style="color:#4ade80; font-size:13px;">🛠️ कार्य प्रगति डायरी</strong>
-            <button onclick="loadGangWork()" class="btn-csv">🔄 Refresh</button>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong style="color:#4ade80; font-size:14px;">🛠️ दैनिक कार्य प्रगति रजिस्टर</strong>
+            <div style="display:flex; gap:6px;">
+              <button onclick="exportWorkLogsToCSV()" class="btn-csv">📥 Download Excel (CSV)</button>
+              <button onclick="loadGangWork()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
+            </div>
           </div>
           <div class="table-responsive">
             <table>
-              <thead><tr><th>समय</th><th>मुकद्दम</th><th>लाइन</th><th>Km</th><th>कार्य</th></tr></thead>
-              <tbody id="gangWorkTableBody"><tr><td colspan="5" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
+              <thead><tr><th>समय</th><th>गैंग/मुकद्दम</th><th>लाइन</th><th>Km Range</th><th>कार्य</th><th>प्रगति</th></tr></thead>
+              <tbody id="gangWorkTableBody"><tr><td colspan="6" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
             </table>
           </div>
         </div>
 
         <div id="tabDefects" class="card" style="display: none;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <strong style="color:#f87171; font-size:13px;">⚠️ ट्रैक डिफेक्ट्स</strong>
-            <button onclick="loadDefects()" class="btn-csv">🔄 Refresh</button>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong style="color:#f87171; font-size:14px;">⚠️ ट्रैक डिफेक्ट & अलर्ट रजिस्टर</strong>
+            <div style="display:flex; gap:6px;">
+              <button onclick="exportDefectsToCSV()" class="btn-csv">📥 Download Excel (CSV)</button>
+              <button onclick="loadDefects()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
+            </div>
           </div>
           <div class="table-responsive">
             <table>
-              <thead><tr><th>समय</th><th>लाइन</th><th>Km</th><th>स्थिति</th><th>रिपोर्टर</th></tr></thead>
-              <tbody id="defectsTableBody"><tr><td colspan="5" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
+              <thead><tr><th>समय</th><th>लाइन</th><th>Km</th><th>खंभा</th><th>स्थिति</th><th>रिमार्क्स</th><th>रिपोर्टकर्ता</th></tr></thead>
+              <tbody id="defectsTableBody"><tr><td colspan="7" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
             </table>
           </div>
         </div>
 
         <div id="tabMap" class="card" style="display: none;">
-          <strong style="color:#38bdf8; font-size:13px; display:block; margin-bottom:6px;">🗺️ 16 Km लीनियर ट्रैक मॉनिटर</strong>
-          <div style="background: #0f172a; padding:12px; border-radius:8px; border:1px solid #334155;">
-            <div style="font-size:11px; color:#cbd5e1; margin-bottom:2px;">UP Line:</div>
-            <div id="upLineTrack" style="height:6px; background:#1e293b; border-radius:3px; position:relative; margin-bottom:8px;"></div>
-            <div style="font-size:11px; color:#cbd5e1; margin-bottom:2px;">DN Line:</div>
-            <div id="dnLineTrack" style="height:6px; background:#1e293b; border-radius:3px; position:relative;"></div>
+          <strong style="color:#38bdf8; font-size:14px; display:block; margin-bottom:6px;">🗺️ 16 Km लीनियर ट्रैक मॉनिटर (सगोनी 1157 - 1173)</strong>
+          <div style="background: #0f172a; padding:16px 12px; border-radius:8px; border:1px solid #334155;">
+            <div style="display:flex; justify-content:space-between; font-size:10px; color:#64748b; margin-bottom:4px;"><span>Km 1157.0 (रतनगांव)</span><span>Km 1165.0 (सगोनी)</span><span>Km 1173.0 (गोला पट्टी IBH)</span></div>
+            <div style="font-size:11px; color:#cbd5e1; margin-bottom:2px;">UP Main Line:</div>
+            <div id="upLineTrack" style="height:7px; background:#1e293b; border-radius:4px; position:relative; margin-bottom:8px; border:1px solid #475569;"></div>
+            <div style="font-size:11px; color:#cbd5e1; margin-bottom:2px;">DN Main Line:</div>
+            <div id="dnLineTrack" style="height:7px; background:#1e293b; border-radius:4px; position:relative; margin-bottom:8px; border:1px solid #475569;"></div>
+            <div style="font-size:11px; color:#cbd5e1; margin-bottom:2px;">3rd Main Line:</div>
+            <div id="thirdLineTrack" style="height:7px; background:#1e293b; border-radius:4px; position:relative; border:1px solid #475569;"></div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- DOCUMENTS MODAL -->
-  <div id="docsModal" class="modal-overlay">
-    <div class="modal-content">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid #334155; padding-bottom:8px;">
-        <strong style="color:#f59e0b; font-size:14px;">📂 महत्वपूर्ण दस्तावेज़ व संदर्भ</strong>
-        <button onclick="closeDocsModal()" style="background:none; border:none; color:#f87171; font-size:18px; cursor:pointer;">✕</button>
-      </div>
-      <div class="tab-bar">
-        <button class="tab-btn active" id="btnTabDocList" onclick="switchDocTab('docListSec')">📄 सूची</button>
-        <button class="tab-btn" id="btnTabDocAdd" onclick="switchDocTab('docAddSec')">📤 अपलोड</button>
-      </div>
-      <div id="docListSec"><div id="docsContainerList">लोड हो रहा है...</div></div>
-      <div id="docAddSec" style="display:none;">
-        <div class="form-group"><label>दस्तावेज़ नाम</label><input type="text" id="newDocTitle" placeholder="नाम लिखें"></div>
-        <div class="form-group"><label>PDF फाइल</label><input type="file" id="pdfFileInput" accept="application/pdf" onchange="handlePDFSelection(event)" style="padding:4px;"></div>
-        <button type="button" onclick="saveNewUploadedPDF()" class="btn btn-blue" style="font-size:12px;">💾 क्लाउड में सेव करें</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- CONTACTS MODAL -->
-  <div id="contactsModal" class="modal-overlay">
-    <div class="modal-content">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid #334155; padding-bottom:8px;">
-        <strong style="color:#22c55e; font-size:14px;">📞 सेक्शन कांटेक्ट डायरेक्टरी</strong>
-        <button onclick="closeContactsModal()" style="background:none; border:none; color:#f87171; font-size:18px; cursor:pointer;">✕</button>
-      </div>
-      <div class="tab-bar">
-        <button class="tab-btn active" id="btnTabContactList" onclick="switchContactTab('contactListSec')">📋 सूची</button>
-        <button class="tab-btn" id="btnTabContactAdd" onclick="switchContactTab('contactAddSec')">➕ नया जोड़ें</button>
-      </div>
-      <div id="contactListSec"><div id="contactsListContainer">लोड हो रहा है...</div></div>
-      <div id="contactAddSec" style="display:none;">
-        <div class="form-group"><label>पदनाम</label><input type="text" id="cntDesignation" placeholder="उदा: SSE / JE / SM"></div>
-        <div class="form-group"><label>नाम</label><input type="text" id="cntName" placeholder="श्री नाम"></div>
-        <div class="form-group"><label>मोबाइल नंबर</label><input type="tel" id="cntPhone" placeholder="98XXXXXXXX" maxlength="10"></div>
-        <button type="button" onclick="saveContactForm()" class="btn btn-green" style="font-size:12px;">💾 सेव करें</button>
-      </div>
     </div>
   </div>
 
@@ -392,149 +598,416 @@
     const SUPABASE_KEY = "sb_publishable_GL2DEQ5U-COnS8ifSz4Zgg_8ooV-wGv";
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const SE_MASTER_PIN = "1162";
     let activeUser = null;
-    let selectedPDFBase64 = null;
-    let selectedPDFName = "";
+    let audioContext = null;
+    let alarmInterval = null;
+    let voiceInterval = null;
+    let autoStopTimer = null;
+    let realtimeChannel = null;
 
-    // GPS Patrol State
-    let homeGpsWatchId = null, homePatrolStartTime = null, homePatrolTimer = null, homePatrolDist = 0, homeLastPos = null, homePatrolUserObj = null;
+    const senderMovements = new Map([
+      ['sndMv1', { name: 'रतनगांव से सगोनी', block: 'रतनगांव-सगोनी' }]
+    ]);
+    const senderLines = new Set(['अप मेन लाइन']);
 
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      if (!t) return;
-      t.innerText = msg; t.style.display = 'block';
-      setTimeout(() => { t.style.display = 'none'; }, 3000);
+    let myLockedBlock = 'गोला पट्टी-सगोनी';
+    const mySubscribedLines = new Set(['अप मेन लाइन', 'डाउन मेन लाइन', 'थर्ड मेन लाइन']);
+
+    const STAFF_DATA = {
+      "JE01": { name: "JE (P-Way) Sagoni", role: "je", beat: "Section 1157 - 1173" },
+      "MATE01": { name: "रामलाल मुकद्दम", role: "mate", beat: "Gang-01 (1157-1162)" },
+      "MATE02": { name: "श्याम सिंह", role: "mate", beat: "Gang-02 (1162-1168)" },
+      "KEY01": { name: "सुरेश कीमैन", role: "keyman", beat: "UP Line (1157-1165)" },
+      "PAT01": { name: "राकेश पेट्रोलमैन", role: "keyman", beat: "Night Patrol (1157-1165)" }
+    };
+
+    function downloadCSVFile(csvContent, fileName) {
+      const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
 
-    function verifySEAuthority() {
-      if (activeUser && activeUser.role === 'se') return true;
-      const pin = prompt("🔒 SE सुरक्षा पिन दर्ज करें (1162):");
-      return pin === SE_MASTER_PIN;
+    async function exportMusterToCSV() {
+      const { data, error } = await db.from('gang_muster_attendance').select('*').order('created_at', { ascending: false });
+      if (error || !data || data.length === 0) { alert('डाउनलोड करने के लिए कोई डेटा उपलब्ध नहीं है!'); return; }
+
+      let csv = "तारीख व समय,मुकद्दम का नाम,गैंग नंबर,कुल लेबर,ऑन ट्रैक कार्य,कीमैन ड्यूटी,वॉचमैन/गेट,नाइट ड्यूटी,सिक/मेडिकल,छुट्टी,गैरहाजिर,रिमार्क्स\n";
+      data.forEach(r => {
+        const time = new Date(r.created_at).toLocaleString();
+        csv += `"${time}","${r.mate_name}","${r.gang_no}",${r.total_sanctioned},${r.on_track_work},${r.keyman_duty},${r.watchman_patrol},${r.night_rest},${r.sick_medical},${r.on_leave},${r.absent},"${r.remarks || ''}"\n`;
+      });
+      const dateStr = new Date().toISOString().split('T')[0];
+      downloadCSVFile(csv, `Gang_Muster_Attendance_${dateStr}.csv`);
     }
 
-    // Safe Data Loaders (Won't freeze app if tables are empty or missing)
+    async function exportWorkLogsToCSV() {
+      const { data, error } = await db.from('daily_work_logs').select('*').order('created_at', { ascending: false });
+      if (error || !data || data.length === 0) { alert('डाउनलोड करने के लिए कोई डेटा उपलब्ध नहीं है!'); return; }
+
+      let csv = "तारीख व समय,मुकद्दम का नाम,गैंग नंबर,लाइन,From Km,To Km,कार्य का प्रकार,प्रगति विवरण\n";
+      data.forEach(r => {
+        const time = new Date(r.created_at).toLocaleString();
+        csv += `"${time}","${r.mate_name}","${r.gang_no}","${r.line_name}",${r.from_km},${r.to_km},"${r.work_type}","${r.output_details}"\n`;
+      });
+      const dateStr = new Date().toISOString().split('T')[0];
+      downloadCSVFile(csv, `Gang_Daily_Work_Logs_${dateStr}.csv`);
+    }
+
+    async function exportDefectsToCSV() {
+      const { data, error } = await db.from('track_defects').select('*').order('created_at', { ascending: false });
+      if (error || !data || data.length === 0) { alert('डाउनलोड करने के लिए कोई डेटा उपलब्ध नहीं है!'); return; }
+
+      let csv = "तारीख व समय,रिपोर्टकर्ता,लाइन,Km लोकेशन,खंभा नंबर,डिफेक्ट प्रकार,रिमार्क्स\n";
+      data.forEach(r => {
+        const time = new Date(r.created_at).toLocaleString();
+        csv += `"${time}","${r.reported_by}","${r.line_name}",${r.km_location},"${r.pole_no || ''}","${r.defect_type}","${r.remarks || ''}"\n`;
+      });
+      const dateStr = new Date().toISOString().split('T')[0];
+      downloadCSVFile(csv, `Track_Defects_Report_${dateStr}.csv`);
+    }
+
+    async function exportEmergenciesToCSV() {
+      const { data, error } = await db.from('emergency_incidents').select('*').order('created_at', { ascending: false });
+      if (error || !data || data.length === 0) { alert('डाउनलोड करने के लिए कोई डेटा उपलब्ध नहीं है!'); return; }
+
+      let csv = "तारीख व समय,रिपोर्टकर्ता,घटना का प्रकार,लाइन,Km लोकेशन,खंभा नंबर,गाड़ी संख्या,विवरण\n";
+      data.forEach(r => {
+        const time = new Date(r.created_at).toLocaleString();
+        csv += `"${time}","${r.reporter_name} (${r.reporter_emp_id})","${r.incident_type}","${r.line_name}",${r.km_location},"${r.pole_no || ''}","${r.train_no || ''}","${r.remarks || ''}"\n`;
+      });
+      const dateStr = new Date().toISOString().split('T')[0];
+      downloadCSVFile(csv, `Emergency_Incidents_Report_${dateStr}.csv`);
+    }
+
+    function switchMateTab(tabId) {
+      document.getElementById('mateMusterCard').style.display = 'none';
+      document.getElementById('mateDiaryCard').style.display = 'none';
+      document.getElementById('btnMateTabMuster').classList.remove('active');
+      document.getElementById('btnMateTabDiary').classList.remove('active');
+
+      document.getElementById(tabId).style.display = 'block';
+      if (tabId === 'mateMusterCard') document.getElementById('btnMateTabMuster').classList.add('active');
+      if (tabId === 'mateDiaryCard') document.getElementById('btnMateTabDiary').classList.add('active');
+    }
+
+    function calculateMusterTotal() {
+      const track = parseInt(document.getElementById('mstTrackWork').value) || 0;
+      const keyman = parseInt(document.getElementById('mstKeyman').value) || 0;
+      const watchman = parseInt(document.getElementById('mstWatchman').value) || 0;
+      const night = parseInt(document.getElementById('mstNight').value) || 0;
+      const sick = parseInt(document.getElementById('mstSick').value) || 0;
+      const leave = parseInt(document.getElementById('mstLeave').value) || 0;
+      const absent = parseInt(document.getElementById('mstAbsent').value) || 0;
+
+      const total = track + keyman + watchman + night + sick + leave + absent;
+      document.getElementById('mstTotalSum').innerText = total;
+      document.getElementById('mWorkingLabour').value = track;
+    }
+
+    async function submitMorningMuster(e) {
+      e.preventDefault();
+      const btn = document.getElementById('mstBtn');
+      btn.innerText = "हाजिरी सबमिट हो रही है...";
+      btn.disabled = true;
+
+      const totalSum = parseInt(document.getElementById('mstTotalSum').innerText) || 0;
+      const payload = {
+        emp_id: activeUser.emp_id,
+        mate_name: activeUser.name,
+        gang_no: activeUser.beat,
+        total_sanctioned: totalSum,
+        on_track_work: parseInt(document.getElementById('mstTrackWork').value) || 0,
+        keyman_duty: parseInt(document.getElementById('mstKeyman').value) || 0,
+        watchman_patrol: parseInt(document.getElementById('mstWatchman').value) || 0,
+        night_rest: parseInt(document.getElementById('mstNight').value) || 0,
+        sick_medical: parseInt(document.getElementById('mstSick').value) || 0,
+        on_leave: parseInt(document.getElementById('mstLeave').value) || 0,
+        absent: parseInt(document.getElementById('mstAbsent').value) || 0,
+        remarks: document.getElementById('mstRemarks').value || '8:00 AM मस्टर OK'
+      };
+
+      const { error } = await db.from('gang_muster_attendance').insert([payload]);
+      btn.innerText = "💾 सुबह 8:00 AM मस्टर सबमिट करें (Press Enter)";
+      btn.disabled = false;
+
+      if (error) {
+        alert('डेटाबेस एरर: ' + error.message);
+      } else {
+        showToast('✅ सुबह 08:00 AM की गैंग हाजिरी सुरक्षित हो गई!');
+        switchMateTab('mateDiaryCard');
+      }
+    }
+
+    async function submitMateWork(e) {
+      e.preventDefault();
+      const btn = document.getElementById('mBtn');
+      btn.innerText = "डायरी सेव हो रही है...";
+      btn.disabled = true;
+
+      const payload = {
+        emp_id: activeUser.emp_id,
+        gang_no: activeUser.beat,
+        line_name: document.getElementById('mLine').value,
+        from_km: parseFloat(document.getElementById('mFromKm').value),
+        to_km: parseFloat(document.getElementById('mToKm').value),
+        work_type: document.getElementById('mWorkType').value,
+        output_details: `[लेबर: ${document.getElementById('mWorkingLabour').value}] ${document.getElementById('mOutput').value}`,
+        mate_name: activeUser.name
+      };
+
+      const { error } = await db.from('daily_work_logs').insert([payload]);
+      btn.innerText = "💾 कार्य डायरी डेटाबेस में सुरक्षित करें (Press Enter)";
+      btn.disabled = false;
+
+      if (error) alert('एरर: ' + error.message);
+      else {
+        showToast('✅ दैनिक कार्य डायरी सफलता से सुरक्षित हो गई!');
+        e.target.reset();
+      }
+    }
+
     async function loadMusterLogs() {
-      const tb = document.getElementById('musterTableBody');
-      if (!tb) return;
-      try {
-        const { data, error } = await db.from('gang_muster_attendance').select('*').order('created_at', { ascending: false }).limit(10);
-        if (error || !data || data.length === 0) { tb.innerHTML = '<tr><td colspan="6" style="text-align:center;">कोई मस्टर रिकॉर्ड नहीं।</td></tr>'; return; }
-        let h = '';
-        data.forEach(m => {
-          h += `<tr><td>${new Date(m.created_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td><td><strong>${m.mate_name}</strong></td><td>${m.total_sanctioned}</td><td>${m.on_track_work}</td><td>${m.keyman_duty}</td><td><em>${m.remarks || '-'}</em></td></tr>`;
-        });
-        tb.innerHTML = h;
-      } catch(e) { tb.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#ef4444;">लोड त्रुटि</td></tr>'; }
+      const tbody = document.getElementById('musterTableBody');
+      tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;">लोड हो रहा है...</td></tr>';
+
+      const { data, error } = await db.from('gang_muster_attendance').select('*').order('created_at', { ascending: false }).limit(10);
+      if (error || !data || data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="11" style="text-align:center; color:#94a3b8;">आज अभी तक किसी मुकद्दम ने मस्टर सबमिट नहीं किया।</td></tr>';
+        return;
+      }
+
+      let html = '';
+      data.forEach(m => {
+        const time = new Date(m.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        html += `<tr>
+          <td>${time}</td>
+          <td><strong style="color:#a855f7;">${m.mate_name}</strong><br><span style="font-size:9px; color:#64748b;">${m.gang_no}</span></td>
+          <td><strong style="color:#fef08a;">${m.total_sanctioned}</strong></td>
+          <td><strong style="color:#4ade80;">${m.on_track_work}</strong></td>
+          <td>${m.keyman_duty}</td>
+          <td>${m.watchman_patrol}</td>
+          <td>${m.night_rest}</td>
+          <td><span style="color:#f87171;">${m.sick_medical}</span></td>
+          <td><span style="color:#f59e0b;">${m.on_leave}</span></td>
+          <td><span style="color:#ef4444; font-weight:bold;">${m.absent}</span></td>
+          <td><em>${m.remarks || '-'}</em></td>
+        </tr>`;
+      });
+      tbody.innerHTML = html;
     }
 
-    async function loadEmergencies() {
-      const el = document.getElementById('emergencyLiveList');
-      if (!el) return;
-      try {
-        const { data } = await db.from('emergency_incidents').select('*').order('created_at', { ascending: false }).limit(10);
-        if (!data || data.length === 0) { el.innerHTML = '<div style="color:#22c55e; text-align:center;">🟢 कोई सक्रिय आपातकाल नहीं।</div>'; return; }
-        let h = '';
-        data.forEach(i => {
-          h += `<div style="background:#0f172a; border-left:4px solid #ef4444; padding:8px; border-radius:6px; margin-bottom:6px; font-size:11px;"><strong>${i.incident_type}</strong> - ${i.line_name} Km ${i.km_location}<br><em>${i.remarks}</em></div>`;
-        });
-        el.innerHTML = h;
-      } catch(e) { el.innerHTML = 'त्रुटि'; }
+    function initAudio() {
+      if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioContext.state === 'suspended') audioContext.resume();
     }
 
-    async function loadGangWork() {
-      const tb = document.getElementById('gangWorkTableBody');
-      if (!tb) return;
+    function playTone(freq, type, duration) {
       try {
-        const { data } = await db.from('daily_work_logs').select('*').order('created_at', { ascending: false }).limit(10);
-        if (!data || data.length === 0) { tb.innerHTML = '<tr><td colspan="5" style="text-align:center;">कोई डायरी नहीं।</td></tr>'; return; }
-        let h = '';
-        data.forEach(w => {
-          h += `<tr><td>${new Date(w.created_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td><td>${w.mate_name}</td><td>${w.line_name}</td><td>${w.from_km}-${w.to_km}</td><td>${w.work_type}</td></tr>`;
-        });
-        tb.innerHTML = h;
-      } catch(e) { tb.innerHTML = 'त्रुटि'; }
+        initAudio();
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+        gain.gain.setValueAtTime(0.05, audioContext.currentTime);
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        osc.start();
+        osc.stop(audioContext.currentTime + duration);
+      } catch (e) { console.log(e); }
     }
 
-    async function loadDefects() {
-      const tb = document.getElementById('defectsTableBody');
-      if (!tb) return;
+    function speakHindiAlert(text) {
       try {
-        const { data } = await db.from('track_defects').select('*').order('created_at', { ascending: false }).limit(10);
-        if (!data || data.length === 0) { tb.innerHTML = '<tr><td colspan="5" style="text-align:center;">कोई डिफेक्ट नहीं।</td></tr>'; return; }
-        let h = '';
-        data.forEach(d => {
-          h += `<tr><td>${new Date(d.created_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td><td>${d.line_name}</td><td>${d.km_location}</td><td>${d.defect_type}</td><td>${d.reported_by}</td></tr>`;
-        });
-        tb.innerHTML = h;
-      } catch(e) { tb.innerHTML = 'त्रुटि'; }
-    }
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const cleanText = text.replace(/[-_➔→]/g, ' ');
+          const utterance = new SpeechSynthesisUtterance(cleanText);
+          utterance.lang = 'hi-IN';
+          utterance.volume = 1.0;
+          utterance.rate = 0.85;
+          utterance.pitch = 0.95;
 
-    async function fetchAndRenderCloudPatrolLogs() {
-      const tb = document.getElementById('patrolLogsTableBody');
-      if (!tb) return;
-      try {
-        const { data } = await db.from('patrol_tracking_logs').select('*').order('created_at', { ascending: false }).limit(10);
-        if (!data || data.length === 0) { tb.innerHTML = '<tr><td colspan="6" style="text-align:center;">कोई GPS रिकॉर्ड नहीं।</td></tr>'; return; }
-        let h = '';
-        data.forEach(p => {
-          h += `<tr><td>${p.patrol_date || 'आज'}</td><td>${p.staff_name}</td><td>${p.beat_section}</td><td>${p.start_time} - ${p.end_time}</td><td>${p.total_distance_km} Km</td><td>${p.avg_speed_kmh}</td></tr>`;
-        });
-        tb.innerHTML = h;
-      } catch(e) { tb.innerHTML = 'त्रुटि'; }
-    }
+          const voices = window.speechSynthesis.getVoices();
+          const hiVoice = voices.find(v => v.lang.includes('hi') || v.lang.includes('HI'));
+          if (hiVoice) utterance.voice = hiVoice;
 
-    // Standalone GPS Widget
-    function startHomePatrolSession() {
-      const phone = document.getElementById('homePatrolPhone').value.trim();
-      const staff = STAFF_PHONE_MAP[phone];
-      if (!staff) { alert("⚠️ अमान्य CUG मोबाइल नंबर!"); return; }
-      if (!navigator.geolocation) { alert("GPS उपलब्ध नहीं है!"); return; }
-
-      homePatrolUserObj = staff; homePatrolStartTime = new Date(); homePatrolDist = 0; homeLastPos = null;
-      document.getElementById('homeGpsBadge').innerText = "LIVE";
-      document.getElementById('homeGpsBadge').style.background = "#dc2626";
-      document.getElementById('homePatrolStaffName').innerText = `👤 ${staff.name} (${staff.beat})`;
-      document.getElementById('homePatrolLoginForm').style.display = 'none';
-      document.getElementById('homePatrolActiveBox').style.display = 'block';
-
-      homeGpsWatchId = navigator.geolocation.watchPosition((pos) => {
-        const lat = pos.coords.latitude, lon = pos.coords.longitude;
-        if (homeLastPos) {
-          const d = calculateGeoDistance(homeLastPos.lat, homeLastPos.lon, lat, lon);
-          if (d > 0.005) homePatrolDist += d;
+          window.speechSynthesis.speak(utterance);
         }
-        homeLastPos = { lat, lon };
-        document.getElementById('homePatrolDist').innerText = `${homePatrolDist.toFixed(2)} Km`;
-      }, null, { enableHighAccuracy: true });
-
-      homePatrolTimer = setInterval(() => {
-        const s = Math.floor((new Date() - homePatrolStartTime) / 1000);
-        document.getElementById('homePatrolTime').innerText = `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
-      }, 1000);
-      showToast("🛰️ GPS पेट्रोलिंग शुरू हुई!");
+      } catch (e) { console.log("Voice error:", e); }
     }
 
-    async function stopHomePatrolSession() {
-      if (homeGpsWatchId) { navigator.geolocation.clearWatch(homeGpsWatchId); homeGpsWatchId = null; }
-      if (homePatrolTimer) { clearInterval(homePatrolTimer); homePatrolTimer = null; }
-      try {
-        await db.from('patrol_tracking_logs').insert([{
-          staff_name: homePatrolUserObj.name, phone: homePatrolUserObj.phone, beat_section: homePatrolUserObj.beat,
-          start_time: homePatrolStartTime.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}),
-          end_time: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}),
-          total_distance_km: parseFloat(homePatrolDist.toFixed(2)), avg_speed_kmh: "3.8 km/h", status: "COMPLETED"
-        }]);
-      } catch(e){}
-      document.getElementById('homeGpsBadge').innerText = "STANDBY";
-      document.getElementById('homeGpsBadge').style.background = "#475569";
-      document.getElementById('homePatrolActiveBox').style.display = 'none';
-      document.getElementById('homePatrolLoginForm').style.display = 'block';
-      document.getElementById('homePatrolPhone').value = "";
-      showToast("🛑 पेट्रोलिंग समाप्त व सिंक हो गई!");
+    function triggerSirenSound(alertType, movementText, lineText, trainNo) {
+      stopAlarmSound();
+      initAudio();
+
+      document.getElementById('sirenAlarmBox').style.display = 'block';
+      document.getElementById('floatingStopBar').style.display = 'block';
+
+      const voiceText = alertType === 'DISPATCHED'
+        ? `सावधान। ${lineText} पर ${movementText} के लिए गाड़ी छोड़ दी गई है। कृपया तुरंत ट्रैक से हटें।`
+        : `सावधान। ${lineText} पर ${movementText} में गाड़ी ब्लॉक हो चुकी है।`;
+
+      speakHindiAlert(voiceText);
+
+      if (alertType === 'DISPATCHED') {
+        let toggle = false;
+        alarmInterval = setInterval(() => {
+          playTone(toggle ? 900 : 650, 'sawtooth', 0.18);
+          toggle = !toggle;
+        }, 320);
+      } else {
+        alarmInterval = setInterval(() => {
+          playTone(400, 'square', 0.25);
+        }, 700);
+      }
+
+      voiceInterval = setInterval(() => speakHindiAlert(voiceText), 6500);
+      autoStopTimer = setTimeout(() => stopAlarmSound(), 40000);
     }
 
-    function calculateGeoData(lat1, lon1, lat2, lon2) { return 0.1; }
+    function stopAlarmSound() {
+      if (alarmInterval) { clearInterval(alarmInterval); alarmInterval = null; }
+      if (voiceInterval) { clearInterval(voiceInterval); voiceInterval = null; }
+      if (autoStopTimer) { clearTimeout(autoStopTimer); autoStopTimer = null; }
+      if ('speechSynthesis' in window) { window.speechSynthesis.cancel(); }
+      
+      document.getElementById('sirenAlarmBox').style.display = 'none';
+      document.getElementById('floatingStopBar').style.display = 'none';
+    }
+
+    function toggleSenderMovement(btnId, mvName, blockName) {
+      const btn = document.getElementById(btnId);
+      if (senderMovements.has(btnId)) {
+        if (senderMovements.size === 1) { alert('कम से कम एक मूवमेंट चुनना आवश्यक है!'); return; }
+        senderMovements.delete(btnId);
+        btn.classList.remove('selected');
+      } else {
+        senderMovements.set(btnId, { name: mvName, block: blockName });
+        btn.classList.add('selected');
+      }
+    }
+
+    function toggleSenderLine(btnId, lineName) {
+      const btn = document.getElementById(btnId);
+      if (senderLines.has(lineName)) {
+        if (senderLines.size === 1) { alert('कम से कम एक लाइन चुनना आवश्यक है!'); return; }
+        senderLines.delete(lineName);
+        btn.classList.remove('selected');
+      } else {
+        senderLines.add(lineName);
+        btn.classList.add('selected');
+      }
+    }
+
+    function handleSenderFormSubmit(e) {
+      e.preventDefault();
+      sendMultiLiveTrainAlert('DISPATCHED');
+    }
+
+    async function sendMultiLiveTrainAlert(alertType) {
+      const senderId = document.getElementById('sndEmpId').value.trim().toUpperCase() || 'P-WAY_USER';
+      const train = document.getElementById('sndTrain').value || 'गाड़ी';
+
+      const payloads = [];
+      senderMovements.forEach(mv => {
+        senderLines.forEach(ln => {
+          payloads.push({
+            sender_id: senderId,
+            line_name: ln,
+            alert_type: alertType,
+            train_no: train,
+            location_note: JSON.stringify({ block: mv.block, movement: mv.name })
+          });
+        });
+      });
+
+      const { error } = await db.from('train_live_alerts').insert(payloads);
+      if (error) alert('त्रुटि: ' + error.message);
+      else showToast(`✅ ${payloads.length} सेक्शन्स/लाइनों पर एक साथ लाइव अलर्ट प्रसारित हो गया!`);
+    }
+
+    function selectReceiverBlock(blockName) {
+      myLockedBlock = blockName;
+      document.getElementById('selectedReceiverBlock').value = blockName;
+      ['rcvLocGhul', 'rcvLocYard', 'rcvLocRat'].forEach(id => document.getElementById(id).classList.remove('selected'));
+      if (blockName === 'गोला पट्टी-सगोनी') document.getElementById('rcvLocGhul').classList.add('selected');
+      if (blockName === 'सगोनी यार्ड') document.getElementById('rcvLocYard').classList.add('selected');
+      if (blockName === 'रतनगांव-सगोनी') document.getElementById('rcvLocRat').classList.add('selected');
+    }
+
+    function toggleReceiverLine(btnId, lineName) {
+      const btn = document.getElementById(btnId);
+      if (mySubscribedLines.has(lineName)) {
+        if (mySubscribedLines.size === 1) { alert('कम से कम एक लाइन चुनना आवश्यक है!'); return; }
+        mySubscribedLines.delete(lineName);
+        btn.classList.remove('selected');
+      } else {
+        mySubscribedLines.add(lineName);
+        btn.classList.add('selected');
+      }
+    }
+
+    function handleReceiverLockSubmit(e) {
+      e.preventDefault();
+      lockAndStartMonitoring();
+    }
+
+    function lockAndStartMonitoring() {
+      initAudio();
+      document.querySelectorAll('#rcvBlockGrid .pills-btn, #rcvLineGrid .pills-btn').forEach(btn => btn.classList.add('locked'));
+      
+      speakHindiAlert(`${myLockedBlock} का लोकेशन रूट लॉक हो गया है।`);
+      document.getElementById('receiverControls').style.display = 'none';
+      document.getElementById('receiverUnlockBar').style.display = 'block';
+
+      if (!realtimeChannel) {
+        realtimeChannel = db.channel('public:train_live_alerts')
+          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'train_live_alerts' }, payload => {
+            const alertData = payload.new;
+            let note = { block: '', movement: '' };
+            try { note = JSON.parse(alertData.location_note); } catch(e){}
+
+            const blockMatches = (note.block === myLockedBlock) || (myLockedBlock === 'सगोनी यार्ड');
+            const lineMatches = mySubscribedLines.has(alertData.line_name);
+
+            if (blockMatches && lineMatches) {
+              const isDispatched = alertData.alert_type === 'DISPATCHED';
+              document.getElementById('sirenAlertTitle').innerText = isDispatched 
+                ? `🚨 ${note.movement} (${alertData.line_name}): गाड़ी छोड़ दी गई!` 
+                : `⛔ ${note.movement} (${alertData.line_name}): गाड़ी ब्लॉक हो चुकी है!`;
+              document.getElementById('sirenAlertDesc').innerText = `ट्रेन सं.: ${alertData.train_no} | प्रेषक: ${alertData.sender_id}`;
+              document.getElementById('sirenAlarmBox').scrollIntoView({ behavior: 'smooth' });
+
+              triggerSirenSound(alertData.alert_type, note.movement, alertData.line_name, alertData.train_no);
+            }
+          })
+          .subscribe();
+      }
+
+      showToast(`🔒 ${myLockedBlock} सुरक्षित रूप से लॉक हो गया!`);
+    }
+
+    function unlockReceiverSettings() {
+      document.querySelectorAll('#rcvBlockGrid .pills-btn, #rcvLineGrid .pills-btn').forEach(btn => btn.classList.remove('locked'));
+      document.getElementById('receiverControls').style.display = 'block';
+      document.getElementById('receiverUnlockBar').style.display = 'none';
+    }
+
+    function openTrainMode(mode) {
+      closeTrainPanels();
+      if (mode === 'sender') document.getElementById('trainSenderPanel').style.display = 'block';
+      if (mode === 'receiver') document.getElementById('trainReceiverPanel').style.display = 'block';
+    }
+
+    function closeTrainPanels() {
+      document.getElementById('trainSenderPanel').style.display = 'none';
+      document.getElementById('trainReceiverPanel').style.display = 'none';
+    }
 
     function handleLogin(e) {
       if (e) e.preventDefault();
@@ -552,13 +1025,15 @@
       if (activeUser.role === 'mate') {
         document.getElementById('mateForm').style.display = 'block';
         switchMateTab('mateMusterCard');
-      } else if (activeUser.role === 'keyman') {
-        document.getElementById('keymanForm').style.display = 'block';
-      } else if (activeUser.role === 'je') {
-        document.getElementById('jeForm').style.display = 'block';
-        setTimeout(() => { loadMusterLogs(); loadEmergencies(); loadGangWork(); loadDefects(); }, 100);
       }
-      showToast(`🎉 स्वागत है, ${activeUser.name}!`);
+      if (activeUser.role === 'keyman') document.getElementById('keymanForm').style.display = 'block';
+      if (activeUser.role === 'je') {
+        document.getElementById('jeForm').style.display = 'block';
+        loadMusterLogs();
+        loadEmergencies();
+        loadGangWork();
+        loadDefects();
+      }
     }
 
     function logout() {
@@ -567,98 +1042,171 @@
       document.getElementById('homeSection').style.display = 'block';
     }
 
-    // Contacts & Documents Modals
-    async function fetchAndRenderCloudContacts() {
-      const c = document.getElementById("contactsListContainer");
-      if (!c) return;
-      try {
-        const { data } = await db.from('section_contacts').select('*');
-        if (!data || data.length === 0) { c.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:10px;">कोई कांटेक्ट नहीं मिला।</div>'; return; }
-        let h = '';
-        data.forEach(x => {
-          h += `<div style="display:flex; justify-content:space-between; background:#0f172a; padding:8px; border-radius:6px; margin-bottom:6px; font-size:12px;"><span><strong>${x.name}</strong> (${x.designation}) - ${x.phone}</span><a href="tel:${x.phone}" style="color:#38bdf8; text-decoration:none;">📞 कॉल</a></div>`;
-        });
-        c.innerHTML = h;
-      } catch(e) { c.innerHTML = 'एरर'; }
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 3500);
     }
 
-    async function saveContactForm() {
-      const desig = document.getElementById('cntDesignation').value.trim();
-      const name = document.getElementById('cntName').value.trim();
-      const phone = document.getElementById('cntPhone').value.trim();
-      if (!desig || !name || !phone) { alert("सभी फ़ील्ड भरें!"); return; }
-      try {
-        await db.from('section_contacts').insert([{ designation: desig, name: name, phone: phone }]);
-        showToast("✅ कांटेक्ट सेव हो गया!");
-        document.getElementById('cntDesignation').value = ""; document.getElementById('cntName').value = ""; document.getElementById('cntPhone').value = "";
-        fetchAndRenderCloudContacts();
-      } catch(e){ alert("एरर"); }
+    function switchJETab(tabId) {
+      document.querySelectorAll('.tab-bar .tab-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      ['tabMusterLog', 'tabEmergency', 'tabMate', 'tabDefects', 'tabMap'].forEach(t => document.getElementById(t).style.display = 'none');
+      document.getElementById(tabId).style.display = 'block';
     }
 
-    function openContactsModal() { try{fetchAndRenderCloudContacts();}catch(e){} document.getElementById("contactsModal").style.display = "flex"; }
-    function closeContactsModal() { document.getElementById("contactsModal").style.display = "none"; }
-
-    async function fetchAndRenderCloudDocs() {
-      const c = document.getElementById("docsContainerList");
-      if (!c) return;
-      try {
-        const { data } = await db.from('section_documents').select('*');
-        if (!data || data.length === 0) { c.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:10px;">कोई दस्तावेज़ नहीं।</div>'; return; }
-        let h = '';
-        data.forEach(d => {
-          h += `<div style="display:flex; justify-content:space-between; background:#0f172a; padding:8px; border-radius:6px; margin-bottom:6px; font-size:12px;"><span>📄 <strong>${d.title}</strong></span><button onclick="downloadUploadedPDF('${d.id}', '${d.title}')" class="btn btn-blue" style="width:auto; padding:3px 8px; font-size:10px;">📥 खोलें</button></div>`;
-        });
-        c.innerHTML = h;
-      } catch(e){ c.innerHTML = 'एरर'; }
-    }
-
-    async function saveNewUploadedPDF() {
-      const title = document.getElementById("newDocTitle").value.trim();
-      if (!title || !selectedPDFBase64) { alert("शीर्षक और PDF चुनें!"); return; }
-      try {
-        await db.from('section_documents').insert([{ title: title, file_data: selectedPDFBase64 }]);
-        showToast("✅ PDF सुरक्षित हो गई!");
-        document.getElementById("newDocTitle").value = ""; selectedPDFBase64 = null;
-        fetchAndRenderCloudDocs();
-      } catch(e){ alert("एरर"); }
-    }
-
-    function handlePDFSelection(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (evt) => { selectedPDFBase64 = evt.target.result; };
-      reader.readAsDataURL(file);
-    }
-
-    async function downloadUploadedPDF(docId, docTitle) {
-      try {
-        const { data } = await db.from('section_documents').select('file_data').eq('id', docId).single();
-        if (!data || !data.file_data) { alert("फाइल नहीं मिली!"); return; }
-        const link = document.createElement("a");
-        link.href = data.file_data; link.download = `${docTitle}.pdf`;
-        document.body.appendChild(link); link.click(); document.body.removeChild(link);
-        showToast("📥 डाउनलोड हो रहा है...");
-      } catch(e){ alert("एरर"); }
-    }
-
-    function openDocsModal() { try{fetchAndRenderCloudDocs();}catch(e){} document.getElementById("docsModal").style.display = "flex"; }
-    function closeDocsModal() { document.getElementById("docsModal").style.display = "none"; }
-
-    function switchContactTab(t) {
-      document.getElementById('contactListSec').style.display = (t === 'contactListSec') ? 'block' : 'none';
-      document.getElementById('contactAddSec').style.display = (t === 'contactAddSec') ? 'block' : 'none';
-    }
-    function switchDocTab(t) {
-      document.getElementById('docListSec').style.display = (t === 'docListSec') ? 'block' : 'none';
-      document.getElementById('docAddSec').style.display = (t === 'docAddSec') ? 'block' : 'none';
-    }
-    function selectEmergencyType(t) {
-      document.getElementById('selectedTypeTitle').innerText = t;
-      document.getElementById('emIncidentType').value = t;
+    function selectEmergencyType(type) {
+      document.getElementById('selectedTypeTitle').innerText = 'रिपोर्ट: ' + type;
+      document.getElementById('emIncidentType').value = type;
       document.getElementById('inlineEmergencyForm').style.display = 'block';
+      document.getElementById('inlineEmergencyForm').scrollIntoView({ behavior: 'smooth' });
     }
-    function closeEmergencyForm() { document.getElementById('inlineEmergencyForm').style.display = 'none'; }
+
+    function closeEmergencyForm() {
+      document.getElementById('inlineEmergencyForm').style.display = 'none';
+    }
+
+    function compressImageFile(file) {
+      return new Promise((resolve) => {
+        if (!file) { resolve(null); return; }
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (e) => {
+          const img = new Image();
+          img.src = e.target.result;
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let width = img.width, height = img.height, maxDim = 800;
+            if (width > height) { if (width > maxDim) { height = Math.round((height * maxDim) / width); width = maxDim; } }
+            else { if (height > maxDim) { width = Math.round((width * maxDim) / height); height = maxDim; } }
+            canvas.width = width; canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            resolve(canvas.toDataURL('image/jpeg', 0.6));
+          };
+          img.onerror = () => resolve(null);
+        };
+        reader.onerror = () => resolve(null);
+      });
+    }
+
+    async function submitEmergencyIncident(e) {
+      e.preventDefault();
+      const btn = document.getElementById('emBtn');
+      btn.innerText = "⚡ फोटो अपलोड हो रही है...";
+      btn.disabled = true;
+
+      try {
+        const fileInput = document.getElementById('emPhoto');
+        let photoBase64 = null;
+        if (fileInput.files.length > 0) photoBase64 = await compressImageFile(fileInput.files[0]);
+
+        const empId = document.getElementById('emEmpId').value.trim().toUpperCase();
+        const payload = {
+          reporter_emp_id: empId,
+          reporter_name: STAFF_DATA[empId] ? STAFF_DATA[empId].name : empId,
+          incident_type: document.getElementById('emIncidentType').value,
+          line_name: document.getElementById('emLine').value,
+          km_location: parseFloat(document.getElementById('emKm').value),
+          pole_no: document.getElementById('emPole').value,
+          train_no: document.getElementById('emTrain').value || 'N/A',
+          remarks: document.getElementById('emRemarks').value,
+          photo_url: photoBase64
+        };
+
+        const { error } = await db.from('emergency_incidents').insert([payload]);
+        btn.innerText = "🚨 तुरंत इमरजेंसी अलर्ट दर्ज करें (Press Enter)";
+        btn.disabled = false;
+
+        if (error) alert('त्रुटि: ' + error.message);
+        else {
+          closeEmergencyForm();
+          showToast('✅ आपातकालीन अलर्ट 1 सेकंड में दर्ज हो गया!');
+          e.target.reset();
+        }
+      } catch (err) {
+        btn.innerText = "🚨 तुरंत इमरजेंसी अलर्ट दर्ज करें (Press Enter)";
+        btn.disabled = false;
+        alert('त्रुटि: ' + err.message);
+      }
+    }
+
+    async function loadEmergencies() {
+      const container = document.getElementById('emergencyLiveList');
+      const { data } = await db.from('emergency_incidents').select('*').order('created_at', { ascending: false }).limit(10);
+      if (!data || data.length === 0) {
+        container.innerHTML = '<div style="color:#22c55e; padding:10px; background:#0f172a; border-radius:6px; text-align:center;">🟢 कोई सक्रिय अलर्ट नहीं है।</div>';
+        return;
+      }
+      let html = '';
+      data.forEach(inc => {
+        const time = new Date(inc.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        html += `<div style="background:#0f172a; border-left:4px solid #ef4444; padding:10px; border-radius:8px; margin-bottom:8px;">
+          <div style="display:flex; justify-content:space-between;"><strong style="color:#ef4444; font-size:13px;">${inc.incident_type}</strong><span style="color:#94a3b8; font-size:10px;">${time}</span></div>
+          <div style="margin-top:4px; font-size:12px;">📍 <strong>${inc.line_name} @ Km ${inc.km_location}</strong> (${inc.pole_no})<br>🚆 <strong>गाड़ी सं.:</strong> ${inc.train_no} | <em>${inc.remarks}</em><br><span style="color:#38bdf8; font-size:11px;">रिपोर्टकर्ता: <strong>${inc.reporter_name}</strong></span></div>
+          ${inc.photo_url ? `<div style="margin-top:8px;"><img src="${inc.photo_url}" style="max-width:100%; max-height:220px; border-radius:6px; border:1px solid #334155; object-fit:contain;"></div>` : ''}
+        </div>`;
+      });
+      container.innerHTML = html;
+    }
+
+    async function submitKeymanDefect(e) {
+      e.preventDefault();
+      const btn = document.getElementById('kBtn');
+      btn.innerText = "सेव हो रहा है...";
+      btn.disabled = true;
+
+      const payload = {
+        emp_id: activeUser.emp_id, line_name: document.getElementById('kLine').value,
+        km_location: parseFloat(document.getElementById('kKm').value), pole_no: document.getElementById('kPole').value,
+        defect_type: document.getElementById('kDefect').value, remarks: document.getElementById('kRemarks').value,
+        reported_by: activeUser.name
+      };
+
+      const { error } = await db.from('track_defects').insert([payload]);
+      btn.innerText = "डिफेक्ट दर्ज करें (Press Enter)";
+      btn.disabled = false;
+      if (error) alert('एरर: ' + error.message);
+      else { showToast('✅ डिफेक्ट अलर्ट दर्ज हो गया!'); e.target.reset(); }
+    }
+
+    async function loadGangWork() {
+      const tbody = document.getElementById('gangWorkTableBody');
+      const { data } = await db.from('daily_work_logs').select('*').order('created_at', { ascending: false });
+      if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">कोई रिकॉर्ड नहीं।</td></tr>'; return; }
+      let html = '';
+      data.forEach(w => {
+        const time = new Date(w.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        html += `<tr><td>${time}</td><td><strong style="color:#4ade80;">${w.mate_name}</strong></td><td><span style="background:#78350f; color:#fef08a; padding:2px 6px; border-radius:4px; font-size:10px;">${w.line_name}</span></td><td>${w.from_km} - ${w.to_km}</td><td>${w.work_type}</td><td><strong style="color:#38bdf8;">${w.output_details}</strong></td></tr>`;
+      });
+      tbody.innerHTML = html;
+    }
+
+    async function loadDefects() {
+      const tbody = document.getElementById('defectsTableBody');
+      const upTrack = document.getElementById('upLineTrack'), dnTrack = document.getElementById('dnLineTrack'), thirdTrack = document.getElementById('thirdLineTrack');
+      upTrack.innerHTML = ''; dnTrack.innerHTML = ''; thirdTrack.innerHTML = '';
+      const { data } = await db.from('track_defects').select('*').order('created_at', { ascending: false });
+      if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#4ade80;">🟢 कोई ओपन डिफेक्ट नहीं है।</td></tr>'; return; }
+      let html = '';
+      data.forEach(d => {
+        const isCritical = d.defect_type.includes('Fracture') || d.defect_type.includes('🔴');
+        const tagClass = isCritical ? 'background:#7f1d1d; color:#fecaca;' : (d.defect_type.includes('🟢') ? 'background:#14532d; color:#bbf7d0;' : 'background:#78350f; color:#fef08a;');
+        const time = new Date(d.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+        html += `<tr><td>${time}</td><td>${d.line_name}</td><td><strong>${d.km_location}</strong></td><td>${d.pole_no || '-'}</td><td><span style="padding:2px 6px; border-radius:4px; font-size:10px; font-weight:700; ${tagClass}">${d.defect_type}</span></td><td><em>${d.remarks || '-'}</em></td><td>${d.reported_by}</td></tr>`;
+        if (d.km_location >= 1157 && d.km_location <= 1173) {
+          const percent = ((d.km_location - 1157) / 16) * 100;
+          const markerColor = isCritical ? '#ef4444' : (d.defect_type.includes('🟢') ? '#22c55e' : '#f59e0b');
+          const dot = `<div style="position:absolute; left:${percent}%; top:-3px; width:12px; height:12px; background:${markerColor}; border-radius:50%; border:2px solid #0f172a;"></div>`;
+          if (d.line_name.includes('UP') || d.line_name.includes('अप')) upTrack.innerHTML += dot;
+          if (d.line_name.includes('DN') || d.line_name.includes('डाउन')) dnTrack.innerHTML += dot;
+          if (d.line_name.includes('3rd') || d.line_name.includes('थर्ड')) thirdTrack.innerHTML += dot;
+        }
+      });
+      tbody.innerHTML = html;
+    }
   </script>
 </body>
 </html>
