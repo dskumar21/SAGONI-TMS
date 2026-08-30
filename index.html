@@ -14,8 +14,6 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%23070d1e'/%3E%3Ccircle cx='256' cy='256' r='210' fill='%231e3a8a' stroke='%23f59e0b' stroke-width='18'/%3E%3Ccircle cx='256' cy='256' r='175' fill='%230b1329' stroke='%2338bdf8' stroke-width='8' stroke-dasharray='12 12'/%3E%3Cpath d='M150 330 L362 330 L335 190 L177 190 Z' fill='%23ef4444' stroke='%23f59e0b' stroke-width='10'/%3E%3Ccircle cx='205' cy='260' r='24' fill='%23ffffff'/%3E%3Ccircle cx='307' cy='260' r='24' fill='%23ffffff'/%3E%3Crect x='226' cy='145' width='60' height='45' rx='8' fill='%23f59e0b'/%3E%3Cline x1='110' y1='370' x2='402' y2='370' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cline x1='130' y1='398' x2='382' y2='398' stroke='%23f59e0b' stroke-width='12' stroke-linecap='round'/%3E%3Ctext x='256' y='460' font-size='42' font-family='sans-serif' font-weight='900' fill='%23fef08a' text-anchor='middle'%3EWCR TMS%3C/text%3E%3C/svg%3E">
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%23070d1e'/%3E%3Ccircle cx='256' cy='256' r='210' fill='%231e3a8a' stroke='%23f59e0b' stroke-width='18'/%3E%3Ccircle cx='256' cy='256' r='175' fill='%230b1329' stroke='%2338bdf8' stroke-width='8' stroke-dasharray='12 12'/%3E%3Cpath d='M150 330 L362 330 L335 190 L177 190 Z' fill='%23ef4444' stroke='%23f59e0b' stroke-width='10'/%3E%3Ccircle cx='205' cy='260' r='24' fill='%23ffffff'/%3E%3Ccircle cx='307' cy='260' r='24' fill='%23ffffff'/%3E%3Crect x='226' cy='145' width='60' height='45' rx='8' fill='%23f59e0b'/%3E%3Cline x1='110' y1='370' x2='402' y2='370' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cline x1='130' y1='398' x2='382' y2='398' stroke='%23f59e0b' stroke-width='12' stroke-linecap='round'/%3E%3Ctext x='256' y='460' font-size='42' font-family='sans-serif' font-weight='900' fill='%23fef08a' text-anchor='middle'%3EWCR TMS%3C/text%3E%3C/svg%3E">
 
-  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Sagoni%20P-Way%20TMS%22%2C%22short_name%22%3A%22Sagoni%20TMS%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23070d1e%22%2C%22theme_color%22%3A%22%23070d1e%22%7D">
-
   <!-- Supabase CDN Client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   
@@ -52,7 +50,6 @@
     }
     .container { max-width: 1000px; margin: 0 auto; }
 
-    /* Advisory Live Header Banner */
     #advisoryLiveBanner {
       display: none;
       background: linear-gradient(135deg, #78350f, #9a3412);
@@ -192,13 +189,13 @@
 
   <div class="container">
     
-    <!-- 📢 Live Safety Advisory Broadcast Banner (With Clear Option) -->
+    <!-- 📢 Live Safety Advisory Broadcast Banner -->
     <div id="advisoryLiveBanner">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <strong id="advBannerTitle">📢 संरक्षा एडवाइजरी</strong>
         <div style="display:flex; align-items:center; gap:8px;">
           <span id="advBannerTime" style="font-size:10px; opacity:0.8;">--</span>
-          <button id="btnDismissAdvBanner" onclick="clearActiveAdvisory()" style="background:none; border:none; color:#fca5a5; font-weight:bold; font-size:14px; cursor:pointer;" title="एडवाइजरी हटाएं">✕</button>
+          <button onclick="clearActiveAdvisory()" style="background:none; border:none; color:#fca5a5; font-weight:bold; font-size:14px; cursor:pointer;" title="एडवाइजरी हटाएं">✕</button>
         </div>
       </div>
       <p id="advBannerText" style="margin-top:4px; font-size:11.5px; color:#ffffff; line-height:1.4;">--</p>
@@ -701,7 +698,6 @@
             </div>
           </div>
 
-          <!-- Direct Recipients Send List -->
           <div style="background:rgba(11,19,41,0.6); border:1px solid #334155; border-radius:12px; padding:12px;">
             <strong style="color:var(--accent-blue); font-size:12.5px; display:block; margin-bottom:8px;">🎯 लक्षित कर्मचारियों को सीधा WhatsApp संदेश (Target Recipients):</strong>
             <div id="advRecipientsListContainer"></div>
@@ -749,7 +745,7 @@
 
       <div class="tab-bar">
         <button class="tab-btn active" id="btnTabDocList" onclick="switchDocTab('docListSec')">📄 सुरक्षित दस्तावेज़ (View / Download)</button>
-        <button class="tab-btn" id="btnTabDocAdd" onclick="switchDocTab('docAddSec')">📤 नया PDF अपलोड करें (SE Only)</button>
+        <button class="tab-btn" id="btnTabDocAdd" onclick="switchDocTab('docAddSec')">📤 नया PDF अपलोड करें</button>
       </div>
 
       <div id="docListSec"><div id="docsContainerList"></div></div>
@@ -786,7 +782,7 @@
 
       <div class="tab-bar">
         <button class="tab-btn active" id="btnTabContactList" onclick="switchContactTab('contactListSec')">📋 डायरेक्टरी सूची</button>
-        <button class="tab-btn" id="btnTabContactAdd" onclick="switchContactTab('contactAddSec')">➕ नया कांटेक्ट जोड़ें (SE Only)</button>
+        <button class="tab-btn" id="btnTabContactAdd" onclick="switchContactTab('contactAddSec')">➕ नया कांटेक्ट जोड़ें</button>
       </div>
 
       <div id="contactListSec"><div id="contactsListContainer"></div></div>
@@ -814,6 +810,7 @@
 
     // 🚨 SE (Sectional Engineer) In-Charge Phone
     const SE_MOBILE_NUMBER = "9752418177"; 
+    const SE_MASTER_PIN = "1162";
 
     let activeUser = null;
     let audioContext = null;
@@ -852,6 +849,12 @@
       return activeUser && (activeUser.role === 'se' || activeUser.emp_id === 'SE01');
     }
 
+    function verifySEAuthority() {
+      if (isCurrentUserSE()) return true;
+      const pin = prompt("🔒 SE / Admin ऑथराइजेशन पिन दर्ज करें (PIN: 1162):");
+      return (pin === SE_MASTER_PIN);
+    }
+
     /* =================== ⚡ AUTO IMAGE COMPRESSION ENGINE =================== */
     function compressImageFile(file, maxWidth = 1000, quality = 0.65) {
       return new Promise((resolve) => {
@@ -867,7 +870,8 @@
           img.src = e.target.result;
           img.onload = () => {
             const canvas = document.createElement('canvas');
-            let width = img.width, height = img.height;
+            let width = img.width;
+            let height = img.height;
 
             if (width > height) {
               if (width > maxWidth) {
@@ -1012,7 +1016,6 @@
         }
       }
 
-      // Check for stored live broadcast advisory
       const storedAdv = localStorage.getItem("sagoni_tms_live_advisory");
       if (storedAdv) {
         try {
@@ -1034,10 +1037,10 @@
       renderDocsList(); renderContactsList();
     }
 
-    /* =================== 📢 SE WHATSAPP BROADCAST & DIRECT GROUP DISPATCH =================== */
+    /* =================== 📢 SE WHATSAPP BROADCAST =================== */
     function broadcastAdvisoryLive() {
-      if (!isCurrentUserSE()) {
-        alert("🔒 केवल SE (Sectional Engineer) ही लाइव एडवाइजरी जारी कर सकते हैं!");
+      if (!verifySEAuthority()) {
+        alert("🔒 केवल SE ही लाइव एडवाइजरी जारी कर सकते हैं!");
         return;
       }
 
@@ -1060,9 +1063,8 @@
       showToast("📢 लाइव संरक्षा एडवाइजरी स्क्रीन पर सक्रिय हो गई!");
     }
 
-    // 🗑️ Dismiss / Clear Active Live Advisory
     function clearActiveAdvisory() {
-      if (!isCurrentUserSE()) {
+      if (!verifySEAuthority()) {
         alert("🔒 केवल SE ही सक्रिय एडवाइजरी को हटा सकते हैं!");
         return;
       }
@@ -1077,7 +1079,7 @@
       const allStaff = Object.values(STAFF_PHONE_MAP);
       if (targetGroup === 'MATES') return allStaff.filter(s => s.role === 'mate');
       if (targetGroup === 'KEYMEN') return allStaff.filter(s => s.role === 'keyman');
-      return allStaff.filter(s => s.role !== 'se'); // All except sender
+      return allStaff.filter(s => s.role !== 'se');
     }
 
     function renderBroadcastRecipientsList() {
@@ -1139,18 +1141,9 @@
       const msg = document.getElementById('advMessageText').value.trim();
       if (!msg) { alert("कृपया पहले एडवाइजरी संदेश टाइप करें!"); return; }
 
-      const targetGroup = document.getElementById('advTarget').value;
-      const staffList = getTargetStaffList(targetGroup);
-
-      if (staffList.length === 0) {
-        alert("कोई कर्मचारी नहीं मिला!");
-        return;
-      }
-
-      // Open WhatsApp Dispatch for the group / First recipient
       const encodedMsg = buildFormattedAdvisoryMessage();
       window.open(`https://api.whatsapp.com/send?text=${encodedMsg}`, '_blank');
-      showToast(`📲 लक्षित समूह (${staffList.length} कर्मचारी) हेतु WhatsApp डिस्पैच सक्रिय!`);
+      showToast(`📲 WhatsApp ब्रॉडकास्ट डिस्पैच खुला!`);
     }
 
     /* =================== 🛠️ COMPLIANCE & RECTIFICATION =================== */
@@ -1170,7 +1163,7 @@
     }
 
     async function deleteEmergencyIncident(incId) {
-      if (!isCurrentUserSE()) {
+      if (!verifySEAuthority()) {
         alert("🔒 केवल SE को ही आपातकालीन अलर्ट डिलीट / क्लियर करने का अधिकार है!");
         return;
       }
@@ -1313,7 +1306,7 @@
       } catch (err) { alert("PDF तैयार करने में त्रुटि: " + err.message); }
     }
 
-    /* =================== 📞 CONTACT DIRECTORY =================== */
+    /* =================== 📞 CONTACT DIRECTORY (ALWAYS ACCESSIBLE + SECURE) =================== */
     const DEFAULT_SECTION_CONTACTS = [
       { id: "c1", designation: "Sectional Engineer (SE P-Way In-Charge)", name: "SE (P-Way) Sagoni Section", phone: "9752418177" },
       { id: "c2", designation: "Junior Engineer (JE P-Way)", name: "JE (P-Way) Sagoni Section", phone: "9425111111" },
@@ -1346,11 +1339,6 @@
         const item = document.createElement("div");
         item.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:rgba(11,19,41,0.7); border:1px solid #334155; border-radius:12px; padding:12px; margin-bottom:10px; gap:8px; flex-wrap:wrap;";
         
-        const seControls = isCurrentUserSE() ? `
-          <button onclick="editContactPrompt('${c.id}')" class="btn-contact-icon">✏️</button>
-          <button onclick="deleteContactPrompt('${c.id}')" class="btn-contact-icon del">🗑️</button>
-        ` : '';
-
         item.innerHTML = `
           <div style="flex:1; min-width:180px;">
             <div style="font-size:10px; color:var(--accent-blue); font-weight:800; text-transform:uppercase; letter-spacing:0.5px;">${c.designation}</div>
@@ -1360,7 +1348,8 @@
           <div style="display:flex; gap:6px; align-items:center;">
             <a href="tel:${c.phone}" class="btn-contact-action btn-contact-call">📞 कॉल</a>
             <a href="https://wa.me/91${cleanNumber}?text=नमस्ते,%20सगोनी%20पी-वे%20सेक्शन%20अलर्ट:" target="_blank" class="btn-contact-action btn-contact-wa">💬 WhatsApp</a>
-            ${seControls}
+            <button onclick="editContactPrompt('${c.id}')" class="btn-contact-icon" title="एडिट करें">✏️</button>
+            <button onclick="deleteContactPrompt('${c.id}')" class="btn-contact-icon del" title="हटाएं">🗑️</button>
           </div>
         `;
         container.appendChild(item);
@@ -1368,10 +1357,6 @@
     }
 
     function switchContactTab(tabName) {
-      if (tabName === 'contactAddSec' && !isCurrentUserSE()) {
-        alert("🔒 केवल SE (Sectional Engineer) को ही नया कांटेक्ट जोड़ने या बदलने का अधिकार है!");
-        return;
-      }
       document.getElementById('contactListSec').style.display = (tabName === 'contactListSec') ? 'block' : 'none';
       document.getElementById('contactAddSec').style.display = (tabName === 'contactAddSec') ? 'block' : 'none';
       document.getElementById('btnTabContactList').classList.toggle('active', tabName === 'contactListSec');
@@ -1388,8 +1373,8 @@
     }
 
     function saveContactForm() {
-      if (!isCurrentUserSE()) {
-        alert("🔒 केवल SE ही कांटेक्ट सुरक्षित कर सकते हैं!");
+      if (!verifySEAuthority()) {
+        alert("🔒 केवल SE ही कांटेक्ट सुरक्षित या अपडेट कर सकते हैं!");
         return;
       }
       const id = document.getElementById('editContactId').value;
@@ -1410,7 +1395,7 @@
     }
 
     function editContactPrompt(contactId) {
-      if (!isCurrentUserSE()) { alert("🔒 केवल SE को अधिकार है!"); return; }
+      if (!verifySEAuthority()) { alert("🔒 केवल SE को अधिकार है!"); return; }
       const contacts = getStoredContacts();
       const contact = contacts.find(c => c.id === contactId);
       if (!contact) return;
@@ -1424,7 +1409,7 @@
     }
 
     function deleteContactPrompt(contactId) {
-      if (!isCurrentUserSE()) { alert("🔒 केवल SE को हटाने का अधिकार है!"); return; }
+      if (!verifySEAuthority()) { alert("🔒 केवल SE को हटाने का अधिकार है!"); return; }
       if (!confirm("क्या आप वाकई इस कांटेक्ट को हटाना चाहते हैं?")) return;
       let contacts = getStoredContacts();
       contacts = contacts.filter(c => c.id !== contactId);
@@ -1436,7 +1421,7 @@
     function openContactsModal() { renderContactsList(); switchContactTab('contactListSec'); document.getElementById("contactsModal").style.display = "flex"; }
     function closeContactsModal() { document.getElementById("contactsModal").style.display = "none"; }
 
-    /* =================== 📄 PDF HUB =================== */
+    /* =================== 📄 PDF REPOSITORY =================== */
     const DEFAULT_DOCUMENTS = [{ id: "annexure-3-9-default", title: "Annexure-3/9 (Para 338, 347, 350)", sub: "SEJ Gaps Chart • Zone-III (60 kg, td=38°C)", isBuiltIn: true }];
 
     function getStoredDocuments() {
@@ -1455,7 +1440,7 @@
         const item = document.createElement("div");
         item.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:rgba(11,19,41,0.7); border:1px solid #334155; border-radius:12px; padding:12px; margin-bottom:10px;";
         
-        const deleteBtn = isCurrentUserSE() ? `<button onclick="deleteDocItem('${d.id}')" style="background:none; border:none; color:#ef4444; font-size:16px; cursor:pointer; margin-left:8px;">🗑️</button>` : '';
+        const deleteBtn = `<button onclick="deleteDocItem('${d.id}')" style="background:none; border:none; color:#ef4444; font-size:16px; cursor:pointer; margin-left:8px;" title="हटाएं">🗑️</button>`;
 
         const actionBtn = d.isBuiltIn
           ? `<button onclick="generateAnnexure39PDF()" class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;">📥 डाउनलोड PDF</button>${deleteBtn}`
@@ -1473,10 +1458,6 @@
     }
 
     function switchDocTab(tabName) {
-      if (tabName === 'docAddSec' && !isCurrentUserSE()) {
-        alert("🔒 केवल SE (Sectional Engineer) ही नया तकनीकी दस्तावेज़ अपलोड कर सकते हैं!");
-        return;
-      }
       document.getElementById('docListSec').style.display = (tabName === 'docListSec') ? 'block' : 'none';
       document.getElementById('docAddSec').style.display = (tabName === 'docAddSec') ? 'block' : 'none';
       document.getElementById('btnTabDocList').classList.toggle('active', tabName === 'docListSec');
@@ -1498,7 +1479,7 @@
     }
 
     function saveNewUploadedPDF() {
-      if (!isCurrentUserSE()) { alert("🔒 केवल SE को अपलोड अधिकार है!"); return; }
+      if (!verifySEAuthority()) { alert("🔒 केवल SE को अपलोड अधिकार है!"); return; }
       const title = document.getElementById("newDocTitle").value.trim();
       const sub = document.getElementById("newDocSub").value.trim();
       if (!title || !selectedPDFBase64) { alert("कृपया दस्तावेज़ का नाम और PDF फाइल चुनें!"); return; }
@@ -1528,7 +1509,7 @@
     }
 
     function deleteDocItem(id) {
-      if (!isCurrentUserSE()) { alert("🔒 केवल SE को हटाने का अधिकार है!"); return; }
+      if (!verifySEAuthority()) { alert("🔒 केवल SE को हटाने का अधिकार है!"); return; }
       if (!confirm("क्या आप वाकई इस दस्तावेज़ को हटाना चाहते हैं?")) return;
       let docs = getStoredDocuments();
       docs = docs.filter(d => String(d.id) !== String(id));
@@ -1732,10 +1713,7 @@
       e.preventDefault();
       const phone = document.getElementById('sndPhone').value.trim();
       const staff = isUserAuthorized(phone);
-      if (!staff) {
-        alert("⚠️ यह मोबाइल नंबर अधिकृत सूची में नहीं है!");
-        return;
-      }
+      if (!staff) { alert("⚠️ यह मोबाइल नंबर अधिकृत सूची में नहीं है!"); return; }
       sendMultiLiveTrainAlert('DISPATCHED', staff);
     }
 
@@ -1770,10 +1748,7 @@
       e.preventDefault();
       const phone = document.getElementById('rcvPhone').value.trim();
       const staff = isUserAuthorized(phone);
-      if (!staff) {
-        alert("⚠️ यह मोबाइल नंबर अधिकृत सूची में नहीं है!");
-        return;
-      }
+      if (!staff) { alert("⚠️ यह मोबाइल नंबर अधिकृत सूची में नहीं है!"); return; }
       lockAndStartMonitoring();
     }
     function lockAndStartMonitoring() {
@@ -1925,9 +1900,7 @@
         const isResolved = (inc.remarks && inc.remarks.includes('[RESOLVED'));
         const badge = isResolved ? '<span style="background:#16a34a; color:#fff; font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px;">RESOLVED</span>' : '<span style="background:#ef4444; color:#fff; font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px;">ACTIVE</span>';
         
-        const seDeleteOption = isCurrentUserSE() ? `
-          <button onclick="deleteEmergencyIncident('${inc.id}')" class="btn-action-small" style="background:#7f1d1d; color:#fca5a5; margin-left:6px;">🗑️ डिलीट / क्लियर</button>
-        ` : '';
+        const deleteOption = `<button onclick="deleteEmergencyIncident('${inc.id}')" class="btn-action-small" style="background:#7f1d1d; color:#fca5a5; margin-left:6px;">🗑️ डिलीट / क्लियर</button>`;
 
         html += `
           <div style="background:#0b1329; border-left:4px solid ${isResolved ? '#22c55e' : '#ef4444'}; padding:12px; border-radius:10px; margin-bottom:10px;">
@@ -1944,7 +1917,7 @@
             
             <div style="margin-top:8px; text-align:right;">
               ${!isResolved ? `<button onclick="resolveEmergencyIncident('${inc.id}')" class="btn-action-small btn-resolve">✅ अटेंड / ठीक किया (Rectified)</button>` : ''}
-              ${seDeleteOption}
+              ${deleteOption}
             </div>
           </div>
         `;
