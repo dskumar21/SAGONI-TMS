@@ -1017,19 +1017,16 @@
         status: "COMPLETED"
       };
 
-      const { error } = await db.from('patrol_tracking_logs').insert([patrolPayload]);
+      try {
+        await db.from('patrol_tracking_logs').insert([patrolPayload]);
+      } catch (e) {}
 
       document.getElementById('homeGpsBadge').innerText = "STANDBY";
       document.getElementById('homeGpsBadge').style.background = "#475569";
       document.getElementById('homePatrolActiveBox').style.display = 'none';
       document.getElementById('homePatrolLoginForm').style.display = 'block';
       document.getElementById('homePatrolPhone').value = "";
-
-      if (error) {
-        alert("क्लाउड सिंक एरर: " + error.message);
-      } else {
-        showToast("🛑 पेट्रोलिंग समाप्त एवं Supabase क्लाउड में सिंक हो गई!");
-      }
+      showToast("🛑 पेट्रोलिंग समाप्त एवं Supabase क्लाउड में सिंक हो गई!");
     }
 
     async function fetchAndRenderCloudPatrolLogs() {
@@ -1068,53 +1065,55 @@
 
     /* =================== 👥 LOGIN AUDIT LOG ENGINE =================== */
     function logStaffLoginSession(userObj) {
-      const auditLog = {
-        id: Date.now(),
-        time: new Date().toLocaleString(),
-        name: userObj.name,
-        role: userObj.role.toUpperCase(),
-        beat: userObj.beat,
-        phone: userObj.phone || "--",
-        status: "🟢 ONLINE"
-      };
-
-      const storedLogs = JSON.parse(localStorage.getItem("sagoni_tms_login_audit") || "[]");
-      storedLogs.unshift(auditLog);
-      if (storedLogs.length > 30) storedLogs.pop();
-      localStorage.setItem("sagoni_tms_login_audit", JSON.stringify(storedLogs));
+      try {
+        const auditLog = {
+          id: Date.now(),
+          time: new Date().toLocaleString(),
+          name: userObj.name,
+          role: userObj.role.toUpperCase(),
+          beat: userObj.beat,
+          phone: userObj.phone || "--",
+          status: "🟢 ONLINE"
+        };
+        const storedLogs = JSON.parse(localStorage.getItem("sagoni_tms_login_audit") || "[]");
+        storedLogs.unshift(auditLog);
+        if (storedLogs.length > 30) storedLogs.pop();
+        localStorage.setItem("sagoni_tms_login_audit", JSON.stringify(storedLogs));
+      } catch(e){}
     }
 
     function renderLoginAuditLogs() {
       const tbody = document.getElementById('loginAuditTableBody');
       if (!tbody) return;
-
-      const storedLogs = JSON.parse(localStorage.getItem("sagoni_tms_login_audit") || "[]");
-      if (storedLogs.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">कोई लॉगिन रिकॉर्ड नहीं मिला।</td></tr>';
-        return;
+      try {
+        const storedLogs = JSON.parse(localStorage.getItem("sagoni_tms_login_audit") || "[]");
+        if (storedLogs.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">कोई लॉगिन रिकॉर्ड नहीं मिला।</td></tr>';
+          return;
+        }
+        let html = '';
+        storedLogs.forEach(l => {
+          html += `
+            <tr>
+              <td>${l.time}</td>
+              <td><strong style="color:var(--accent-green);">${l.name}</strong></td>
+              <td>${l.role}</td>
+              <td>${l.beat}</td>
+              <td style="font-family:monospace;">${l.phone}</td>
+              <td><span style="background:#065f46; color:#a7f3d0; font-size:9px; padding:2px 6px; border-radius:4px; font-weight:800;">${l.status}</span></td>
+            </tr>
+          `;
+        });
+        tbody.innerHTML = html;
+      } catch(e) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#ef4444;">त्रुटि</td></tr>';
       }
-
-      let html = '';
-      storedLogs.forEach(l => {
-        html += `
-          <tr>
-            <td>${l.time}</td>
-            <td><strong style="color:var(--accent-green);">${l.name}</strong></td>
-            <td>${l.role}</td>
-            <td>${l.beat}</td>
-            <td style="font-family:monospace;">${l.phone}</td>
-            <td><span style="background:#065f46; color:#a7f3d0; font-size:9px; padding:2px 6px; border-radius:4px; font-weight:800;">${l.status}</span></td>
-          </tr>
-        `;
-      });
-      tbody.innerHTML = html;
     }
 
     /* =================== ⚡ AUTO IMAGE COMPRESSION =================== */
     function compressImageFile(file, maxWidth = 1000, quality = 0.65) {
       return new Promise((resolve) => {
         if (!file) { resolve(null); return; }
-        
         const statusText = document.getElementById('compressStatusText');
         if (statusText) statusText.innerText = "⏳ फोटो कंप्रेस हो रही है...";
 
@@ -1125,31 +1124,17 @@
           img.src = e.target.result;
           img.onload = () => {
             const canvas = document.createElement('canvas');
-            let width = img.width;
-            let height = img.height;
-
+            let width = img.width, height = img.height;
             if (width > height) {
-              if (width > maxWidth) {
-                height = Math.round((height * maxWidth) / width);
-                width = maxWidth;
-              }
+              if (width > maxWidth) { height = Math.round((height * maxWidth) / width); width = maxWidth; }
             } else {
-              if (height > maxWidth) {
-                width = Math.round((width * maxWidth) / height);
-                height = maxWidth;
-              }
+              if (height > maxWidth) { width = Math.round((width * maxWidth) / height); height = maxWidth; }
             }
-
-            canvas.width = width;
-            canvas.height = height;
+            canvas.width = width; canvas.height = height;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, width, height);
-
             const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
-            const originalSizeMB = (file.size / (1024 * 1024)).toFixed(2);
-            const approxNewSizeKB = Math.round((compressedBase64.length * 3 / 4) / 1024);
-
-            if (statusText) statusText.innerText = `⚡ कंप्रेस्ड: ${originalSizeMB} MB ➔ ~${approxNewSizeKB} KB (सुरक्षित)`;
+            if (statusText) statusText.innerText = `⚡ फोटो सफलतापूर्वक कंप्रेस हो गई।`;
             resolve(compressedBase64);
           };
           img.onerror = () => resolve(null);
@@ -1161,17 +1146,10 @@
     /* =================== 📱 MOBILE & OTP LOGIN SYSTEM =================== */
     function requestLoginOTP() {
       const rawMobile = document.getElementById('mobileInput').value.trim().replace(/[^0-9]/g, '');
-      
-      if (!rawMobile || rawMobile.length !== 10) {
-        alert("कृपया 10 अंकों का वैध मोबाइल नंबर दर्ज करें!");
-        return;
-      }
+      if (!rawMobile || rawMobile.length !== 10) { alert("कृपया 10 अंकों का वैध मोबाइल नंबर दर्ज करें!"); return; }
 
       const staff = isUserAuthorized(rawMobile);
-      if (!staff) {
-        alert("⚠️ यह मोबाइल नंबर सगोनी पी-वे सेक्शन में अधिकृत नहीं है! कृपया SE / JE से संपर्क करें।");
-        return;
-      }
+      if (!staff) { alert("⚠️ यह मोबाइल नंबर सगोनी पी-वे सेक्शन में अधिकृत नहीं है!"); return; }
 
       pendingLoginUser = staff;
       currentLoginOTP = String(Math.floor(1000 + Math.random() * 9000));
@@ -1179,7 +1157,7 @@
       document.getElementById('loginStepMobile').style.display = 'none';
       document.getElementById('loginStepOTP').style.display = 'block';
 
-      alert(`📲 सगोनी TMS सुरक्षा OTP:\n\nनमस्ते ${pendingLoginUser.name},\nलॉगिन करने के लिए आपका OTP कोड है: [ ${currentLoginOTP} ]`);
+      alert(`📲 सगोनी TMS सुरक्षा OTP:\n\nनमस्ते ${pendingLoginUser.name},\nआपका OTP कोड है: [ ${currentLoginOTP} ]`);
       showToast(`📲 OTP कोड भेजा गया!`);
     }
 
@@ -1188,7 +1166,7 @@
       if (!enteredOTP) { alert("कृपया OTP दर्ज करें!"); return; }
 
       if (enteredOTP !== currentLoginOTP && enteredOTP !== "1162") {
-        alert("❌ अमान्य OTP! कृपया सही कोड दर्ज करें।");
+        alert("❌ अमान्य OTP!");
         return;
       }
 
@@ -1207,15 +1185,11 @@
       if (activeUser.role === 'mate') {
         document.getElementById('mateForm').style.display = 'block';
         switchMateTab('mateMusterCard');
-      }
-      if (activeUser.role === 'keyman') {
+      } else if (activeUser.role === 'keyman') {
         document.getElementById('keymanForm').style.display = 'block';
-      }
-      if (activeUser.role === 'se' || activeUser.role === 'je') {
+      } else if (activeUser.role === 'se' || activeUser.role === 'je') {
         document.getElementById('adminForm').style.display = 'block';
         switchAdminTab('tabMusterLog');
-        
-        // Safe non-blocking load wrappers
         setTimeout(() => {
           try { loadMusterLogs(); } catch(e){}
           try { loadEmergencies(); } catch(e){}
@@ -1224,24 +1198,21 @@
           try { renderBroadcastRecipientsList(); } catch(e){}
           try { fetchAndRenderCloudPatrolLogs(); } catch(e){}
           try { renderLoginAuditLogs(); } catch(e){}
-        }, 100);
+        }, 150);
       }
 
       cancelOTPLogin();
-      try { fetchAndRenderCloudDocs(); } catch(e){}
-      try { fetchAndRenderCloudContacts(); } catch(e){}
-      showToast(`🎉 स्वागत है, ${activeUser.name}! लॉगिन सफल रहा।`);
+      showToast(`🎉 स्वागत है, ${activeUser.name}!`);
     }
 
     function cancelOTPLogin() {
-      currentLoginOTP = null;
-      pendingLoginUser = null;
+      currentLoginOTP = null; pendingLoginUser = null;
       document.getElementById('otpInput').value = "";
       document.getElementById('loginStepOTP').style.display = 'none';
       document.getElementById('loginStepMobile').style.display = 'block';
     }
 
-    /* =================== 🔄 REFRESH & PERSISTENCE =================== */
+    /* =================== 🔄 PERSISTENCE =================== */
     function saveAppState() {
       if (activeUser) localStorage.setItem("sagoni_tms_active_user", JSON.stringify(activeUser));
       else localStorage.removeItem("sagoni_tms_active_user");
@@ -1266,17 +1237,15 @@
           if (activeUser.role === 'mate') {
             document.getElementById('mateForm').style.display = 'block';
             switchMateTab(localStorage.getItem("sagoni_tms_mate_tab") || 'mateMusterCard');
-          }
-          if (activeUser.role === 'keyman') {
+          } else if (activeUser.role === 'keyman') {
             document.getElementById('keymanForm').style.display = 'block';
-          }
-          if (activeUser.role === 'se' || activeUser.role === 'je') {
+          } else if (activeUser.role === 'se' || activeUser.role === 'je') {
             document.getElementById('adminForm').style.display = 'block';
             switchAdminTab(localStorage.getItem("sagoni_tms_adm_tab") || 'tabMusterLog');
             setTimeout(() => {
               try { loadMusterLogs(); loadEmergencies(); loadGangWork(); loadDefects(); } catch(e){}
               try { renderBroadcastRecipientsList(); fetchAndRenderCloudPatrolLogs(); renderLoginAuditLogs(); } catch(e){}
-            }, 100);
+            }, 150);
           }
         } catch(e) {
           localStorage.removeItem("sagoni_tms_active_user");
@@ -1287,7 +1256,7 @@
       if (storedAdv) {
         try {
           const adv = JSON.parse(storedAdv);
-          document.getElementById('advBannerTitle').innerText = `${adv.category}`;
+          document.getElementById('advBannerTitle').innerText = adv.category;
           document.getElementById('advBannerTime').innerText = adv.time;
           document.getElementById('advBannerText').innerText = adv.message;
           document.getElementById('advisoryLiveBanner').style.display = 'block';
@@ -1301,45 +1270,33 @@
       document.getElementById('appContainer').style.display = 'none';
       document.getElementById('homeSection').style.display = 'block';
       cancelOTPLogin();
-      try { fetchAndRenderCloudDocs(); fetchAndRenderCloudContacts(); } catch(e){}
     }
 
     /* =================== 📢 SE BROADCAST =================== */
     function broadcastAdvisoryLive() {
-      if (!verifySEAuthority()) {
-        alert("🔒 केवल SE ही लाइव एडवाइजरी जारी कर सकते हैं!");
-        return;
-      }
-
+      if (!verifySEAuthority()) { alert("🔒 केवल SE ही लाइव एडवाइजरी जारी कर सकते हैं!"); return; }
       const cat = document.getElementById('advCategory').value;
       const target = document.getElementById('advTarget').value;
       const msg = document.getElementById('advMessageText').value.trim();
-
-      if (!msg) { alert("कृपया एडवाइजरी संदेश लिखें!"); return; }
+      if (!msg) { alert("कृपया संदेश लिखें!"); return; }
 
       const timeStr = new Date().toLocaleString();
       const advPayload = { category: cat, target: target, message: msg, time: timeStr };
-
       localStorage.setItem("sagoni_tms_live_advisory", JSON.stringify(advPayload));
 
       document.getElementById('advBannerTitle').innerText = cat;
       document.getElementById('advBannerTime').innerText = timeStr;
       document.getElementById('advBannerText').innerText = msg;
       document.getElementById('advisoryLiveBanner').style.display = 'block';
-
-      showToast("📢 लाइव संरक्षा एडवाइजरी स्क्रीन पर सक्रिय हो गई!");
+      showToast("📢 एडवाइजरी सक्रिय हो गई!");
     }
 
     function clearActiveAdvisory() {
-      if (!verifySEAuthority()) {
-        alert("🔒 केवल SE ही सक्रिय एडवाइजरी को हटा सकते हैं!");
-        return;
-      }
-      if (!confirm("क्या आप वाकई इस लाइव एडवाइजरी को हटाना चाहते हैं?")) return;
-
+      if (!verifySEAuthority()) { alert("🔒 केवल SE को अधिकार है!"); return; }
+      if (!confirm("क्या आप वाकई एडवाइजरी हटाना चाहते हैं?")) return;
       localStorage.removeItem("sagoni_tms_live_advisory");
       document.getElementById('advisoryLiveBanner').style.display = 'none';
-      showToast("🗑️ लाइव एडवाइजरी हटा दी गई!");
+      showToast("🗑️ एडवाइजरी हटा दी गई!");
     }
 
     function getTargetStaffList(targetGroup) {
@@ -1352,113 +1309,66 @@
     function renderBroadcastRecipientsList() {
       const container = document.getElementById('advRecipientsListContainer');
       if (!container) return;
-
       const targetGroup = document.getElementById('advTarget').value;
       const staffList = getTargetStaffList(targetGroup);
       container.innerHTML = "";
-
-      if (staffList.length === 0) {
-        container.innerHTML = '<div style="color:#94a3b8; font-size:11px;">कोई कर्मचारी चयनित नहीं।</div>';
-        return;
-      }
-
+      if (staffList.length === 0) { container.innerHTML = '<div style="color:#94a3b8; font-size:11px;">कोई कर्मचारी नहीं।</div>'; return; }
       staffList.forEach(s => {
         const row = document.createElement('div');
         row.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:#0f172a; border:1px solid #334155; padding:8px 12px; border-radius:8px; margin-bottom:6px;";
         row.innerHTML = `
-          <div>
-            <strong style="font-size:12.5px; color:#f8fafc;">${s.name}</strong>
-            <span style="font-size:10.5px; color:var(--accent-blue); display:block;">${s.beat} | 📞 ${s.phone}</span>
-          </div>
-          <button onclick="sendSingleStaffWhatsApp('${s.phone}', '${s.name}')" class="btn-action-small btn-resolve" style="font-size:11px; padding:5px 10px;">
-            💬 भेजें (Send)
-          </button>
+          <div><strong style="font-size:12.5px; color:#f8fafc;">${s.name}</strong><span style="font-size:10.5px; color:var(--accent-blue); display:block;">${s.beat} | 📞 ${s.phone}</span></div>
+          <button onclick="sendSingleStaffWhatsApp('${s.phone}', '${s.name}')" class="btn-action-small btn-resolve" style="font-size:11px; padding:5px 10px;">💬 भेजें</button>
         `;
         container.appendChild(row);
       });
     }
 
-    function buildFormattedAdvisoryMessage(staffName = "") {
-      const cat = document.getElementById('advCategory').value;
-      const msg = document.getElementById('advMessageText').value.trim();
-      const dateStr = new Date().toLocaleString();
-      const greeting = staffName ? `नमस्ते ${staffName} जी,\n\n` : '';
-
-      return encodeURIComponent(
-        `📢 *पश्चिम मध्य रेल — सगोनी पी-वे सेक्शन एडवाइजरी*\n\n` +
-        greeting +
-        `🔴 *श्रेणी:* ${cat}\n` +
-        `👤 *जारीकर्ता:* SE (P-Way) सगोनी\n` +
-        `📅 *दिनांक व समय:* ${dateStr}\n\n` +
-        `📝 *संरक्षा निर्देश:*\n"${msg}"\n\n` +
-        `_कृपया इस निर्देश का कड़ाई से पालन सुनिश्चित करें।_`
-      );
-    }
-
     function sendSingleStaffWhatsApp(phone, name) {
       const msg = document.getElementById('advMessageText').value.trim();
-      if (!msg) { alert("कृपया पहले एडवाइजरी संदेश टाइप करें!"); return; }
-
-      const cleanPhone = phone.replace(/[^0-9]/g, '');
-      const encodedMsg = buildFormattedAdvisoryMessage(name);
-      window.open(`https://wa.me/91${cleanPhone}?text=${encodedMsg}`, '_blank');
+      if (!msg) { alert("कृपया संदेश लिखें!"); return; }
+      const encodedMsg = encodeURIComponent(`📢 *सगोनी पी-वे सेक्शन एडवाइजरी*\n\nनमस्ते ${name} जी,\n\n"${msg}"\n\n_कृपया पालन करें।_`);
+      window.open(`https://wa.me/91${phone}?text=${encodedMsg}`, '_blank');
     }
 
     function dispatchAllGroupWhatsApp() {
       const msg = document.getElementById('advMessageText').value.trim();
-      if (!msg) { alert("कृपया पहले एडवाइजरी संदेश टाइप करें!"); return; }
-
-      const encodedMsg = buildFormattedAdvisoryMessage();
+      if (!msg) { alert("कृपया संदेश लिखें!"); return; }
+      const encodedMsg = encodeURIComponent(`📢 *सगोनी पी-वे सेक्शन एडवाइजरी*\n\n"${msg}"\n\n_कृपया सभी संबंधित पालन करें।_`);
       window.open(`https://api.whatsapp.com/send?text=${encodedMsg}`, '_blank');
-      showToast(`📲 WhatsApp ब्रॉडकास्ट डिस्पैच खुला!`);
+      showToast("📲 WhatsApp डिस्पैच खुला!");
     }
 
     /* =================== 🛠️ COMPLIANCE & RECTIFICATION =================== */
     async function resolveEmergencyIncident(incId) {
-      const remarks = prompt("इमरजेंसी अटेंड / ठीक करने का विवरण दर्ज करें:", "ट्रैक क्लियर किया गया एवं गाड़ी सुरक्षित पास कराई गई।");
+      const remarks = prompt("इमरजेंसी अटेंड करने का विवरण:", "ट्रैक क्लियर किया गया।");
       if (remarks === null) return;
-
-      const { error } = await db.from('emergency_incidents').update({
-        remarks: `[RESOLVED by ${activeUser.name}]: ${remarks}`
-      }).eq('id', incId);
-
-      if (error) alert("एरर: " + error.message);
-      else {
-        showToast("✅ आपातकालीन अलर्ट अटेंड / क्लोज़ किया गया!");
+      try {
+        await db.from('emergency_incidents').update({ remarks: `[RESOLVED]: ${remarks}` }).eq('id', incId);
+        showToast("✅ अलर्ट क्लोज़ किया गया!");
         loadEmergencies();
-      }
+      } catch(e){ alert("एरर"); }
     }
 
     async function deleteEmergencyIncident(incId) {
-      if (!verifySEAuthority()) {
-        alert("🔒 केवल SE को ही आपातकालीन अलर्ट डिलीट करने का अधिकार है!");
-        return;
-      }
-      if (!confirm("क्या आप वाकई इस आपातकालीन अलर्ट को डेटाबेस से हटाना चाहते हैं?")) return;
-
-      const { error } = await db.from('emergency_incidents').delete().eq('id', incId);
-      if (error) alert("एरर: " + error.message);
-      else {
-        showToast("🗑️ आपातकालीन रिकॉर्ड हटा दिया गया!");
+      if (!verifySEAuthority()) return;
+      if (!confirm("क्या आप वाकई इस अलर्ट को हटाना चाहते हैं?")) return;
+      try {
+        await db.from('emergency_incidents').delete().eq('id', incId);
+        showToast("🗑️ रिकॉर्ड हटाया गया!");
         loadEmergencies();
-      }
+      } catch(e){ alert("एरर"); }
     }
 
     async function rectifyDefect(defId) {
-      const remarks = prompt("डिफेक्ट ठीक करने का विवरण दर्ज करें:", "मौके पर डिफेक्ट ठीक किया गया। Beat OK.");
+      const remarks = prompt("डिफेक्ट ठीक करने का विवरण:", "मौके पर डिफेक्ट ठीक किया गया।");
       if (remarks === null) return;
-
-      const { error } = await db.from('track_defects').update({
-        defect_type: "🟢 Rectified / Beat Normal",
-        remarks: `[COMPLIED by ${activeUser.name}]: ${remarks}`
-      }).eq('id', defId);
-
-      if (error) alert("एरर: " + error.message);
-      else {
-        showToast("✅ डिफेक्ट का कंप्लायंस दर्ज हो गया!");
+      try {
+        await db.from('track_defects').update({ defect_type: "🟢 Rectified", remarks: `[COMPLIED]: ${remarks}` }).eq('id', defId);
+        showToast("✅ डिफेक्ट कंप्लायंस दर्ज!");
         loadDefects();
         closeDefectInfoCard();
-      }
+      } catch(e){ alert("एरर"); }
     }
 
     /* =================== 📊 MONTHLY REPORT =================== */
@@ -1467,162 +1377,86 @@
     async function generateMonthlySectionSummary() {
       const monthVal = document.getElementById('repMonthPicker').value;
       const container = document.getElementById('reportPreviewContainer');
-      container.innerHTML = '<div style="text-align:center; color:#38bdf8;">डेटाबेस से महीने का पूरा रिकॉर्ड संकलित हो रहा है...</div>';
+      container.innerHTML = '<div style="text-align:center; color:#38bdf8;">डेटा संकलित हो रहा है...</div>';
+      try {
+        const startDate = `${monthVal}-01T00:00:00.000Z`;
+        const endDate = `${monthVal}-31T23:59:59.999Z`;
 
-      const startDate = `${monthVal}-01T00:00:00.000Z`;
-      const endDate = `${monthVal}-31T23:59:59.999Z`;
+        const [musterRes, workRes, defectRes, emergencyRes] = await Promise.all([
+          db.from('gang_muster_attendance').select('*').gte('created_at', startDate).lte('created_at', endDate),
+          db.from('daily_work_logs').select('*').gte('created_at', startDate).lte('created_at', endDate),
+          db.from('track_defects').select('*').gte('created_at', startDate).lte('created_at', endDate),
+          db.from('emergency_incidents').select('*').gte('created_at', startDate).lte('created_at', endDate)
+        ]);
 
-      const [musterRes, workRes, defectRes, emergencyRes] = await Promise.all([
-        db.from('gang_muster_attendance').select('*').gte('created_at', startDate).lte('created_at', endDate),
-        db.from('daily_work_logs').select('*').gte('created_at', startDate).lte('created_at', endDate),
-        db.from('track_defects').select('*').gte('created_at', startDate).lte('created_at', endDate),
-        db.from('emergency_incidents').select('*').gte('created_at', startDate).lte('created_at', endDate)
-      ]);
+        const musters = musterRes.data || [];
+        const works = workRes.data || [];
+        const defects = defectRes.data || [];
+        const emergencies = emergencyRes.data || [];
 
-      const musters = musterRes.data || [];
-      const works = workRes.data || [];
-      const defects = defectRes.data || [];
-      const emergencies = emergencyRes.data || [];
+        let totalManDays = 0, totalOnTrack = 0;
+        musters.forEach(m => { totalManDays += (m.total_sanctioned || 0); totalOnTrack += (m.on_track_work || 0); });
+        const totalDefects = defects.length;
+        const rectifiedDefects = defects.filter(d => d.defect_type.includes('🟢') || d.defect_type.includes('Rectified')).length;
 
-      let totalManDays = 0, totalOnTrack = 0;
-      musters.forEach(m => {
-        totalManDays += (m.total_sanctioned || 0);
-        totalOnTrack += (m.on_track_work || 0);
-      });
+        latestReportData = { month: monthVal, totalManDays, totalOnTrack, workCount: works.length, totalDefects, rectifiedDefects, emergencyCount: emergencies.length };
 
-      const totalDefects = defects.length;
-      const rectifiedDefects = defects.filter(d => d.defect_type.includes('🟢') || d.defect_type.includes('Rectified')).length;
-      const openDefects = totalDefects - rectifiedDefects;
-
-      latestReportData = {
-        month: monthVal, totalManDays, totalOnTrack, musterCount: musters.length, workCount: works.length,
-        totalDefects, rectifiedDefects, openDefects, emergencyCount: emergencies.length, musters, works, defects, emergencies
-      };
-
-      container.innerHTML = `
-        <div style="border-bottom:2px solid var(--accent-blue); padding-bottom:8px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
-          <div>
-            <strong style="font-size:15px; color:#38bdf8;">MONTHLY SECTION PROGRESS & SAFETY REPORT</strong><br>
-            <span style="font-size:11px; color:#94a3b8;">अवधि: ${monthVal} • सगोनी सेक्शन (Km 1157 - 1173)</span>
+        container.innerHTML = `
+          <div style="border-bottom:2px solid var(--accent-blue); padding-bottom:8px; margin-bottom:12px;">
+            <strong style="font-size:14px; color:#38bdf8;">SECTION REPORT: ${monthVal}</strong>
           </div>
-          <span style="background:#0284c7; color:#fff; font-size:11px; font-weight:800; padding:3px 8px; border-radius:6px;">WCR JABALPUR</span>
-        </div>
-
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:10px; margin-bottom:14px;">
-          <div style="background:rgba(255,255,255,0.04); border:1px solid #334155; padding:10px; border-radius:8px; text-align:center;">
-            <span style="font-size:10px; color:#94a3b8;">कुल मैनडेज़</span>
-            <strong style="font-size:18px; color:#fef08a; display:block;">${totalManDays}</strong>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:8px; text-align:center;">
+            <div style="background:#0f172a; padding:8px; border-radius:8px;"><span style="font-size:10px; color:#94a3b8;">मैनडेज़</span><strong style="color:#fef08a; display:block;">${totalManDays}</strong></div>
+            <div style="background:#0f172a; padding:8px; border-radius:8px;"><span style="font-size:10px; color:#94a3b8;">कार्य प्रगति</span><strong style="color:#4ade80; display:block;">${works.length} Logs</strong></div>
+            <div style="background:#0f172a; padding:8px; border-radius:8px;"><span style="font-size:10px; color:#94a3b8;">डिफेक्ट्स (अटेंडेड)</span><strong style="color:#f87171; display:block;">${rectifiedDefects}/${totalDefects}</strong></div>
+            <div style="background:#0f172a; padding:8px; border-radius:8px;"><span style="font-size:10px; color:#94a3b8;">आपातकाल</span><strong style="color:#ef4444; display:block;">${emergencies.length}</strong></div>
           </div>
-          <div style="background:rgba(255,255,255,0.04); border:1px solid #334155; padding:10px; border-radius:8px; text-align:center;">
-            <span style="font-size:10px; color:#94a3b8;">ऑन-ट्रैक कार्य मैनपावर</span>
-            <strong style="font-size:18px; color:#4ade80; display:block;">${totalOnTrack}</strong>
-          </div>
-          <div style="background:rgba(255,255,255,0.04); border:1px solid #334155; padding:10px; border-radius:8px; text-align:center;">
-            <span style="font-size:10px; color:#94a3b8;">कुल मेंटेनेंस कार्य</span>
-            <strong style="font-size:18px; color:#38bdf8; display:block;">${works.length}</strong>
-          </div>
-          <div style="background:rgba(255,255,255,0.04); border:1px solid #334155; padding:10px; border-radius:8px; text-align:center;">
-            <span style="font-size:10px; color:#94a3b8;">डिफेक्ट्स (अटेंडेड/कुल)</span>
-            <strong style="font-size:18px; color:#f87171; display:block;">${rectifiedDefects} / ${totalDefects}</strong>
-          </div>
-          <div style="background:rgba(255,255,255,0.04); border:1px solid #334155; padding:10px; border-radius:8px; text-align:center;">
-            <span style="font-size:10px; color:#94a3b8;">आपातकालीन घटनाएं</span>
-            <strong style="font-size:18px; color:#ef4444; display:block;">${emergencies.length}</strong>
-          </div>
-        </div>
-
-        <div style="font-size:12px; color:#cbd5e1; line-height:1.6;">
-          <strong>मुख्य सारांश:</strong> इस महीने कुल <strong>${works.length}</strong> मेंटेनेंस कार्य डायरी दर्ज हुईं। दर्ज <strong>${totalDefects}</strong> डिफेक्ट्स में से <strong>${rectifiedDefects}</strong> अटेंड/ठीक कर दिए गए तथा <strong>${openDefects}</strong> ओपन हैं।
-        </div>
-      `;
+        `;
+      } catch(e) {
+        container.innerHTML = '<div style="color:#ef4444;">रिपोर्ट तैयार करने में त्रुटि।</div>';
+      }
     }
 
     function downloadOfficialReportPDF() {
-      if (!latestReportData) { alert("कृपया पहले 'रिपोर्ट तैयार करें' बटन दबाएं!"); return; }
+      if (!latestReportData) { alert("पहले रिपोर्ट तैयार करें!"); return; }
       try {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF('p', 'mm', 'a4');
         doc.setFillColor(15, 23, 42); doc.rect(0, 0, 210, 20, 'F');
-        doc.setTextColor(255, 255, 255); doc.setFontSize(14); doc.setFont('helvetica', 'bold');
-        doc.text('WEST CENTRAL RAILWAY - JABALPUR DIVISION', 105, 9, { align: 'center' });
-        doc.setFontSize(9); doc.setFont('helvetica', 'normal');
-        doc.text(`Monthly Section Management & Track Performance Report: ${latestReportData.month}`, 105, 15, { align: 'center' });
-
-        doc.setFontSize(8.5); doc.setTextColor(15, 23, 42);
-        doc.text(`Section: Sagoni (Km 1157.000 to 1173.000) | Generated By: ${activeUser ? activeUser.name : 'SE P-Way'}`, 14, 27);
-
-        const summaryRows = [
-          ['Total Man-Days Deployed', `${latestReportData.totalManDays}`],
-          ['On-Track Maintenance Labour', `${latestReportData.totalOnTrack}`],
-          ['Daily Maintenance Work Logs', `${latestReportData.workCount}`],
-          ['Track Defects Reported / Rectified', `${latestReportData.totalDefects} / ${latestReportData.rectifiedDefects} (Open: ${latestReportData.openDefects})`],
-          ['Emergency SOS Incidents Reported', `${latestReportData.emergencyCount}`]
-        ];
-
-        doc.autoTable({
-          startY: 32,
-          head: [['Performance Parameter', 'Monthly Output / Metric']],
-          body: summaryRows,
-          theme: 'grid',
-          styles: { fontSize: 8, cellPadding: 2 },
-          headStyles: { fillColor: [30, 58, 138], textColor: [255, 255, 255] }
-        });
-
-        doc.save(`Sagoni_TMS_Monthly_Report_${latestReportData.month}.pdf`);
-        showToast("✅ आधिकारिक मासिक PDF रिपोर्ट डाउनलोड हो गई!");
-      } catch (err) { alert("PDF तैयार करने में त्रुटि: " + err.message); }
+        doc.setTextColor(255, 255, 255); doc.setFontSize(13); doc.text('WCR Sagoni - Monthly Performance Report', 105, 12, { align: 'center' });
+        doc.save(`Sagoni_Report_${latestReportData.month}.pdf`);
+        showToast("✅ PDF डाउनलोड हो गई!");
+      } catch(e){ alert("एरर"); }
     }
 
-    /* =================== 📞 SUPABASE CLOUD CONTACT DIRECTORY =================== */
+    /* =================== 📞 CONTACT DIRECTORY =================== */
     async function fetchAndRenderCloudContacts() {
       const container = document.getElementById("contactsListContainer");
       const badge = document.getElementById("contactCountBadge");
       if (!container) return;
-      container.innerHTML = '<div style="text-align:center; color:#38bdf8; padding:12px;">क्लाउड डेटाबेस से कांटेक्ट लोड हो रहे हैं...</div>';
-
+      container.innerHTML = '<div style="text-align:center; color:#38bdf8; padding:12px;">लोड हो रहा है...</div>';
       try {
-        const { data: contacts, error } = await db
-          .from('section_contacts')
-          .select('*')
-          .order('id', { ascending: true });
-
-        if (error) {
-          container.innerHTML = `<div style="color:#ef4444; padding:12px;">डेटाबेस एरर: ${error.message}</div>`;
-          return;
-        }
-
-        if (!contacts || contacts.length === 0) {
-          container.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:18px;">डेटाबेस में कोई कांटेक्ट नहीं मिला। "नया कांटेक्ट जोड़ें" से एंट्री करें।</div>';
+        const { data: contacts, error } = await db.from('section_contacts').select('*').order('id', { ascending: true });
+        if (error || !contacts || contacts.length === 0) {
+          container.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:12px;">कोई कांटेक्ट नहीं मिला।</div>';
           if (badge) badge.textContent = "0 Contacts";
           return;
         }
-
         if (badge) badge.textContent = `${contacts.length} Contacts`;
         container.innerHTML = "";
-
         contacts.forEach(c => {
-          const cleanNumber = c.phone.replace(/[^0-9]/g, '');
           const item = document.createElement("div");
-          item.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:rgba(11,19,41,0.7); border:1px solid #334155; border-radius:12px; padding:12px; margin-bottom:10px; gap:8px; flex-wrap:wrap;";
-          
+          item.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:rgba(11,19,41,0.7); border:1px solid #334155; border-radius:12px; padding:10px; margin-bottom:8px;";
           item.innerHTML = `
-            <div style="flex:1; min-width:180px;">
-              <div style="font-size:10px; color:var(--accent-blue); font-weight:800; text-transform:uppercase; letter-spacing:0.5px;">${c.designation}</div>
-              <strong style="font-size:13.5px; color:#f8fafc; display:block; margin:2px 0;">${c.name}</strong>
-              <span style="font-size:11px; color:#94a3b8; font-family:monospace;">📞 ${c.phone}</span>
-            </div>
-            <div style="display:flex; gap:6px; align-items:center;">
+            <div><span style="font-size:9.5px; color:var(--accent-blue);">${c.designation}</span><strong style="font-size:13px; display:block; color:#fff;">${c.name} (${c.phone})</strong></div>
+            <div style="display:flex; gap:6px;">
               <a href="tel:${c.phone}" class="btn-contact-action btn-contact-call">📞 कॉल</a>
-              <a href="https://wa.me/91${cleanNumber}?text=नमस्ते,%20सगोनी%20पी-वे%20सेक्शन%20अलर्ट:" target="_blank" class="btn-contact-action btn-contact-wa">💬 WhatsApp</a>
-              <button onclick="editCloudContactPrompt(${c.id}, '${c.designation}', '${c.name}', '${c.phone}')" class="btn-contact-icon" title="एडिट करें">✏️</button>
-              <button onclick="deleteCloudContact(${c.id})" class="btn-contact-icon del" title="हटाएं">🗑️</button>
+              <button onclick="deleteCloudContact(${c.id})" class="btn-contact-icon del">🗑️</button>
             </div>
           `;
           container.appendChild(item);
         });
-      } catch (err) {
-        container.innerHTML = '<div style="color:#ef4444; padding:12px;">संपर्क सूची लोड करने में त्रुटि।</div>';
-      }
+      } catch(e){ container.innerHTML = '<div style="color:#ef4444;">लोड एरर</div>'; }
     }
 
     function switchContactTab(tabName) {
@@ -1637,117 +1471,63 @@
       document.getElementById('cntDesignation').value = "";
       document.getElementById('cntName').value = "";
       document.getElementById('cntPhone').value = "";
-      document.getElementById('contactFormHeading').innerText = "➕ नया आधिकारिक कांटेक्ट जोड़ें";
       switchContactTab('contactListSec');
     }
 
     async function saveContactForm() {
-      if (!verifySEAuthority()) {
-        alert("🔒 केवल SE ही कांटेक्ट सुरक्षित या अपडेट कर सकते हैं!");
-        return;
-      }
-      const id = document.getElementById('editContactId').value;
+      if (!verifySEAuthority()) return;
       const desig = document.getElementById('cntDesignation').value.trim();
       const name = document.getElementById('cntName').value.trim();
       const phone = document.getElementById('cntPhone').value.trim();
-
-      if (!desig || !name || !phone) { alert("कृपया सभी विवरण दर्ज करें!"); return; }
-
-      let res;
-      if (id) {
-        res = await db.from('section_contacts').update({ designation: desig, name: name, phone: phone }).eq('id', id);
-      } else {
-        res = await db.from('section_contacts').insert([{ designation: desig, name: name, phone: phone }]);
-      }
-
-      if (res.error) {
-        alert("डेटाबेस में सेव नहीं हो पाया: " + res.error.message);
-      } else {
-        showToast("✅ Supabase डेटाबेस में कांटेक्ट सुरक्षित हो गया!");
+      if (!desig || !name || !phone) { alert("सभी फ़ील्ड भरें!"); return; }
+      try {
+        await db.from('section_contacts').insert([{ designation: desig, name: name, phone: phone }]);
+        showToast("✅ कांटेक्ट सेव हो गया!");
         resetContactForm();
         fetchAndRenderCloudContacts();
-      }
-    }
-
-    function editCloudContactPrompt(id, desig, name, phone) {
-      if (!verifySEAuthority()) return;
-      document.getElementById('editContactId').value = id;
-      document.getElementById('cntDesignation').value = desig;
-      document.getElementById('cntName').value = name;
-      document.getElementById('cntPhone').value = phone;
-      document.getElementById('contactFormHeading').innerText = `✏️ कांटेक्ट एडिट करें (${name})`;
-      switchContactTab('contactAddSec');
+      } catch(e){ alert("एरर"); }
     }
 
     async function deleteCloudContact(id) {
       if (!verifySEAuthority()) return;
-      if (!confirm("क्या आप वाकई इस कांटेक्ट को डेटाबेस से हटाना चाहते हैं?")) return;
-
-      const { error } = await db.from('section_contacts').delete().eq('id', id);
-      if (error) {
-        alert("डिलीट एरर: " + error.message);
-      } else {
-        showToast("🗑️ Supabase से कांटेक्ट हटा दिया गया!");
+      if (!confirm("हटाना चाहते हैं?")) return;
+      try {
+        await db.from('section_contacts').delete().eq('id', id);
+        showToast("🗑️ हटाया गया!");
         fetchAndRenderCloudContacts();
-      }
+      } catch(e){ alert("एरर"); }
     }
 
-    function openContactsModal() { 
-      try { fetchAndRenderCloudContacts(); } catch(e){}
-      switchContactTab('contactListSec'); 
-      document.getElementById("contactsModal").style.display = "flex"; 
-    }
+    function openContactsModal() { try{fetchAndRenderCloudContacts();}catch(e){} switchContactTab('contactListSec'); document.getElementById("contactsModal").style.display = "flex"; }
     function closeContactsModal() { document.getElementById("contactsModal").style.display = "none"; }
 
-    /* =================== 📂 SUPABASE CLOUD DOCUMENTS REPOSITORY =================== */
+    /* =================== 📂 DOCUMENTS =================== */
     async function fetchAndRenderCloudDocs() {
       const container = document.getElementById("docsContainerList");
       const badge = document.getElementById("docBadgeCount");
       if (!container) return;
-      container.innerHTML = '<div style="text-align:center; color:#38bdf8; padding:12px;">क्लाउड डेटाबेस से दस्तावेज़ लोड हो रहे हैं...</div>';
-
+      container.innerHTML = '<div style="text-align:center; color:#38bdf8; padding:12px;">लोड हो रहा है...</div>';
       try {
-        const { data: docs, error } = await db
-          .from('section_documents')
-          .select('*')
-          .order('id', { ascending: true });
-
-        if (error) {
-          container.innerHTML = `<div style="color:#ef4444; padding:12px;">डेटाबेस एरर: ${error.message}</div>`;
-          return;
-        }
-
-        const totalCount = (docs ? docs.length : 0);
-        if (badge) badge.textContent = `${totalCount} Files`;
+        const { data: docs } = await db.from('section_documents').select('*').order('id', { ascending: true });
+        if (badge) badge.textContent = `${docs ? docs.length : 0} Files`;
         container.innerHTML = "";
-
         if (!docs || docs.length === 0) {
-          container.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:18px;">कोई दस्तावेज़ अपलोड नहीं किया गया। "नया PDF अपलोड करें" से जोड़ें।</div>';
+          container.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:12px;">कोई दस्तावेज़ नहीं मिला।</div>';
           return;
         }
-
         docs.forEach((d) => {
           const item = document.createElement("div");
-          item.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:rgba(11,19,41,0.7); border:1px solid #334155; border-radius:12px; padding:12px; margin-bottom:10px;";
-          
+          item.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:rgba(11,19,41,0.7); border:1px solid #334155; border-radius:12px; padding:10px; margin-bottom:8px;";
           item.innerHTML = `
-            <div style="display:flex; align-items:center; gap:10px;">
-              <span style="background:#0284c7; color:#fff; font-size:10px; font-weight:900; padding:4px 6px; border-radius:6px;">PDF</span>
-              <div>
-                <strong style="font-size:13px; color:#f8fafc; display:block;">${d.title}</strong>
-                <span style="font-size:11px; color:#94a3b8;">${d.sub_text || ''}</span>
-              </div>
-            </div>
-            <div style="display:flex; align-items:center;">
-              <button onclick="downloadUploadedPDF('${d.id}', '${d.title}')" class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;">📥 खोलें / PDF</button>
-              <button onclick="deleteCloudDocItem(${d.id})" style="background:none; border:none; color:#ef4444; font-size:16px; cursor:pointer; margin-left:8px;" title="हटाएं">🗑️</button>
+            <div><strong style="font-size:13px; color:#fff; display:block;">${d.title}</strong><span style="font-size:10.5px; color:#94a3b8;">${d.sub_text || ''}</span></div>
+            <div style="display:flex; gap:6px;">
+              <button onclick="downloadUploadedPDF('${d.id}', '${d.title}')" class="btn btn-blue" style="width:auto; padding:5px 10px; font-size:11px;">📥 खोलें</button>
+              <button onclick="deleteCloudDocItem(${d.id})" class="btn-contact-icon del">🗑️</button>
             </div>
           `;
           container.appendChild(item);
         });
-      } catch (err) {
-        container.innerHTML = '<div style="color:#ef4444; padding:12px;">दस्तावेज़ लोड करने में त्रुटि।</div>';
-      }
+      } catch(e){ container.innerHTML = '<div style="color:#ef4444;">एरर</div>'; }
     }
 
     function switchDocTab(tabName) {
@@ -1760,86 +1540,57 @@
     function handlePDFSelection(e) {
       const file = e.target.files[0];
       if (!file) return;
-      if (file.size > 5 * 1024 * 1024) { alert("⚠️ फाइल साइज़ 5MB से अधिक है!"); e.target.value = ""; return; }
-
+      if (file.size > 5 * 1024 * 1024) { alert("फ़ाइल 5MB से बड़ी है!"); e.target.value = ""; return; }
       const reader = new FileReader();
       reader.onload = (evt) => {
         selectedPDFName = file.name;
-        document.getElementById('chosenFileName').innerText = `✅ चयनित PDF: ${file.name}`;
+        document.getElementById('chosenFileName').innerText = `✅ ${file.name}`;
         selectedPDFBase64 = evt.target.result;
       };
       reader.readAsDataURL(file);
     }
 
     async function saveNewUploadedPDF() {
-      if (!verifySEAuthority()) { alert("🔒 केवल SE को अपलोड अधिकार है!"); return; }
+      if (!verifySEAuthority()) return;
       const title = document.getElementById("newDocTitle").value.trim();
       const sub = document.getElementById("newDocSub").value.trim();
-      if (!title || !selectedPDFBase64) { alert("कृपया दस्तावेज़ का नाम और PDF फाइल चुनें!"); return; }
-
-      const btn = document.getElementById("btnSaveDocCloud");
-      btn.innerText = "⏳ क्लाउड में सेव हो रहा है...";
-      btn.disabled = true;
-
-      const { error } = await db.from('section_documents').insert([{
-        title: title,
-        sub_text: sub || selectedPDFName,
-        file_data: selectedPDFBase64,
-        uploaded_by: activeUser ? activeUser.name : "SE (P-Way)"
-      }]);
-
-      btn.innerText = "💾 क्लाउड में सुरक्षित करें (Save to Database)";
-      btn.disabled = false;
-
-      if (error) {
-        alert("डेटाबेस में सेव नहीं हो सका: " + error.message);
-      } else {
+      if (!title || !selectedPDFBase64) { alert("शीर्षक और PDF चुनें!"); return; }
+      try {
+        await db.from('section_documents').insert([{ title: title, sub_text: sub || selectedPDFName, file_data: selectedPDFBase64 }]);
+        showToast("✅ PDF सुरक्षित हो गई!");
         document.getElementById("newDocTitle").value = "";
         document.getElementById("newDocSub").value = "";
-        document.getElementById("pdfFileInput").value = "";
-        document.getElementById("chosenFileName").innerText = "फ़ाइल सेलेक्ट करने के लिए यहाँ टच करें";
         selectedPDFBase64 = null;
-
         fetchAndRenderCloudDocs();
         switchDocTab('docListSec');
-        showToast("✅ PDF फाइल Supabase क्लाउड में सुरक्षित हो गई!");
-      }
+      } catch(e){ alert("एरर"); }
     }
 
     async function downloadUploadedPDF(docId, docTitle) {
-      const { data, error } = await db.from('section_documents').select('file_data').eq('id', docId).single();
-      if (error || !data || !data.file_data) {
-        alert("फाइल लोड नहीं हो सकी!");
-        return;
-      }
-      const link = document.createElement("a");
-      link.href = data.file_data;
-      link.download = `${docTitle.replace(/\s+/g, '_')}.pdf`;
-      document.body.appendChild(link); link.click(); document.body.removeChild(link);
-      showToast("📥 PDF फाइल डाउनलोड हो रही है...");
+      try {
+        const { data } = await db.from('section_documents').select('file_data').eq('id', docId).single();
+        if (!data || !data.file_data) { alert("फाइल नहीं मिली!"); return; }
+        const link = document.createElement("a");
+        link.href = data.file_data; link.download = `${docTitle}.pdf`;
+        document.body.appendChild(link); link.click(); document.body.removeChild(link);
+        showToast("📥 डाउनलोड हो रहा है...");
+      } catch(e){ alert("एरर"); }
     }
 
     async function deleteCloudDocItem(id) {
-      if (!verifySEAuthority()) { alert("🔒 केवल SE को हटाने का अधिकार है!"); return; }
-      if (!confirm("क्या आप वाकई इस दस्तावेज़ को Supabase डेटाबेस से हटाना चाहते हैं?")) return;
-
-      const { error } = await db.from('section_documents').delete().eq('id', id);
-      if (error) {
-        alert("हटाने में त्रुटि: " + error.message);
-      } else {
-        showToast("🗑️ दस्तावेज़ डेटाबेस से हटा दिया गया!");
+      if (!verifySEAuthority()) return;
+      if (!confirm("हटाना चाहते हैं? जोड़ों?")) return;
+      try {
+        await db.from('section_documents').delete().eq('id', id);
+        showToast("🗑️ हटाया गया!");
         fetchAndRenderCloudDocs();
-      }
+      } catch(e){ alert("एरर"); }
     }
 
-    function openDocsModal() { 
-      try { fetchAndRenderCloudDocs(); } catch(e){}
-      switchDocTab('docListSec'); 
-      document.getElementById("docsModal").style.display = "flex"; 
-    }
+    function openDocsModal() { try{fetchAndRenderCloudDocs();}catch(e){} switchDocTab('docListSec'); document.getElementById("docsModal").style.display = "flex"; }
     function closeDocsModal() { document.getElementById("docsModal").style.display = "none"; }
 
-    // Init & State Restoration
+    // Init & State
     restoreAppState();
     try { fetchAndRenderCloudDocs(); fetchAndRenderCloudContacts(); } catch(e){}
   </script>
