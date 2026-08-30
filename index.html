@@ -271,7 +271,7 @@
               <input type="tel" id="homePatrolPhone" placeholder="उदा: 9425000011" maxlength="10">
             </div>
             <button type="button" onclick="startHomePatrolSession()" class="btn btn-purple" style="font-size:12px;">
-              🟢 GPS पेट्रोलिंग शुरू करें (Start Patrol)
+              🟢 पेट्रोलिंग शुरू करें (Start Patrol)
             </button>
           </div>
 
@@ -550,7 +550,7 @@
         </div>
       </div>
 
-      <!-- KEYMAN / PATROLMAN SECTION -->
+      <!-- KEYMAN SECTION -->
       <div id="keymanForm" class="bento-card" style="display: none;">
         <strong style="font-size: 15px; margin-bottom: 12px; color: var(--accent-blue); display:block;">🔑 डिफेक्ट रिपोर्टिंग (Keyman Beat)</strong>
         <form onsubmit="submitKeymanDefect(event)">
@@ -1017,7 +1017,6 @@
         status: "COMPLETED"
       };
 
-      // Push to Supabase Cloud
       const { error } = await db.from('patrol_tracking_logs').insert([patrolPayload]);
 
       document.getElementById('homeGpsBadge').innerText = "STANDBY";
@@ -1038,29 +1037,33 @@
       if (!tbody) return;
       tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#38bdf8;">क्लाउड से पेट्रोलिंग रिकॉर्ड लोड हो रहा है...</td></tr>';
 
-      const { data: patrolLogs, error } = await db.from('patrol_tracking_logs').select('*').order('created_at', { ascending: false }).limit(20);
+      try {
+        const { data: patrolLogs, error } = await db.from('patrol_tracking_logs').select('*').order('created_at', { ascending: false }).limit(20);
 
-      if (error || !patrolLogs || patrolLogs.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#94a3b8;">कोई पेट्रोलिंग रिकॉर्ड उपलब्ध नहीं है।</td></tr>';
-        return;
+        if (error || !patrolLogs || patrolLogs.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#94a3b8;">कोई पेट्रोलिंग रिकॉर्ड उपलब्ध नहीं है।</td></tr>';
+          return;
+        }
+
+        let html = '';
+        patrolLogs.forEach(p => {
+          html += `
+            <tr>
+              <td>${p.patrol_date || new Date(p.created_at).toLocaleDateString()}</td>
+              <td><strong style="color:var(--accent-blue);">${p.staff_name}</strong></td>
+              <td>${p.beat_section}</td>
+              <td>${p.start_time}</td>
+              <td>${p.end_time}</td>
+              <td><strong style="color:#fef08a;">${p.total_distance_km} Km</strong></td>
+              <td><span style="color:#4ade80;">${p.avg_speed_kmh}</span></td>
+              <td><span style="background:#16a34a; color:#fff; font-size:9px; padding:2px 6px; border-radius:4px; font-weight:800;">${p.status}</span></td>
+            </tr>
+          `;
+        });
+        tbody.innerHTML = html;
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#ef4444;">डेटा लोड करने में त्रुटि।</td></tr>';
       }
-
-      let html = '';
-      patrolLogs.forEach(p => {
-        html += `
-          <tr>
-            <td>${p.patrol_date || new Date(p.created_at).toLocaleDateString()}</td>
-            <td><strong style="color:var(--accent-blue);">${p.staff_name}</strong></td>
-            <td>${p.beat_section}</td>
-            <td>${p.start_time}</td>
-            <td>${p.end_time}</td>
-            <td><strong style="color:#fef08a;">${p.total_distance_km} Km</strong></td>
-            <td><span style="color:#4ade80;">${p.avg_speed_kmh}</span></td>
-            <td><span style="background:#16a34a; color:#fff; font-size:9px; padding:2px 6px; border-radius:4px; font-weight:800;">${p.status}</span></td>
-          </tr>
-        `;
-      });
-      tbody.innerHTML = html;
     }
 
     /* =================== 👥 LOGIN AUDIT LOG ENGINE =================== */
@@ -1211,10 +1214,12 @@
       if (activeUser.role === 'se' || activeUser.role === 'je') {
         document.getElementById('adminForm').style.display = 'block';
         switchAdminTab('tabMusterLog');
-        loadMusterLogs(); loadEmergencies(); loadGangWork(); loadDefects();
-        renderBroadcastRecipientsList();
-        fetchAndRenderCloudPatrolLogs();
-        renderLoginAuditLogs();
+        try {
+          loadMusterLogs(); loadEmergencies(); loadGangWork(); loadDefects();
+          renderBroadcastRecipientsList();
+          fetchAndRenderCloudPatrolLogs();
+          renderLoginAuditLogs();
+        } catch(e) {}
       }
 
       cancelOTPLogin();
@@ -1263,10 +1268,12 @@
           if (activeUser.role === 'se' || activeUser.role === 'je') {
             document.getElementById('adminForm').style.display = 'block';
             switchAdminTab(localStorage.getItem("sagoni_tms_adm_tab") || 'tabMusterLog');
-            loadMusterLogs(); loadEmergencies(); loadGangWork(); loadDefects();
-            renderBroadcastRecipientsList();
-            fetchAndRenderCloudPatrolLogs();
-            renderLoginAuditLogs();
+            try {
+              loadMusterLogs(); loadEmergencies(); loadGangWork(); loadDefects();
+              renderBroadcastRecipientsList();
+              fetchAndRenderCloudPatrolLogs();
+              renderLoginAuditLogs();
+            } catch(e) {}
           }
         } catch(e) {
           localStorage.removeItem("sagoni_tms_active_user");
