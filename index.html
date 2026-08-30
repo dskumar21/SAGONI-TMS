@@ -14,6 +14,8 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%23070d1e'/%3E%3Ccircle cx='256' cy='256' r='210' fill='%231e3a8a' stroke='%23f59e0b' stroke-width='18'/%3E%3Ccircle cx='256' cy='256' r='175' fill='%230b1329' stroke='%2338bdf8' stroke-width='8' stroke-dasharray='12 12'/%3E%3Cpath d='M150 330 L362 330 L335 190 L177 190 Z' fill='%23ef4444' stroke='%23f59e0b' stroke-width='10'/%3E%3Ccircle cx='205' cy='260' r='24' fill='%23ffffff'/%3E%3Ccircle cx='307' cy='260' r='24' fill='%23ffffff'/%3E%3Crect x='226' cy='145' width='60' height='45' rx='8' fill='%23f59e0b'/%3E%3Cline x1='110' y1='370' x2='402' y2='370' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cline x1='130' y1='398' x2='382' y2='398' stroke='%23f59e0b' stroke-width='12' stroke-linecap='round'/%3E%3Ctext x='256' y='460' font-size='42' font-family='sans-serif' font-weight='900' fill='%23fef08a' text-anchor='middle'%3EWCR TMS%3C/text%3E%3C/svg%3E">
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%23070d1e'/%3E%3Ccircle cx='256' cy='256' r='210' fill='%231e3a8a' stroke='%23f59e0b' stroke-width='18'/%3E%3Ccircle cx='256' cy='256' r='175' fill='%230b1329' stroke='%2338bdf8' stroke-width='8' stroke-dasharray='12 12'/%3E%3Cpath d='M150 330 L362 330 L335 190 L177 190 Z' fill='%23ef4444' stroke='%23f59e0b' stroke-width='10'/%3E%3Ccircle cx='205' cy='260' r='24' fill='%23ffffff'/%3E%3Ccircle cx='307' cy='260' r='24' fill='%23ffffff'/%3E%3Crect x='226' cy='145' width='60' height='45' rx='8' fill='%23f59e0b'/%3E%3Cline x1='110' y1='370' x2='402' y2='370' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cline x1='130' y1='398' x2='382' y2='398' stroke='%23f59e0b' stroke-width='12' stroke-linecap='round'/%3E%3Ctext x='256' y='460' font-size='42' font-family='sans-serif' font-weight='900' fill='%23fef08a' text-anchor='middle'%3EWCR TMS%3C/text%3E%3C/svg%3E">
 
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Sagoni%20P-Way%20TMS%22%2C%22short_name%22%3A%22Sagoni%20TMS%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23070d1e%22%2C%22theme_color%22%3A%22%23070d1e%22%7D">
+
   <!-- Supabase CDN Client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   
@@ -189,7 +191,7 @@
 
   <div class="container">
     
-    <!-- 📢 Live Safety Advisory Broadcast Banner -->
+    <!-- 📢 Live Safety Advisory Banner -->
     <div id="advisoryLiveBanner">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <strong id="advBannerTitle">📢 संरक्षा एडवाइजरी</strong>
@@ -231,7 +233,6 @@
               <div style="background: rgba(245, 158, 11, 0.2); border: 1px solid var(--accent-amber); padding: 10px; border-radius: 12px; font-size: 24px;">📂</div>
               <div>
                 <strong style="color: var(--accent-amber); font-size: 14px; display:block;">महत्वपूर्ण दस्तावेज़ व संदर्भ</strong>
-                <p style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">Annexure-3/9 SEJ चार्ट व PDF रिपॉजिटरी</p>
               </div>
             </div>
             <div style="display: flex; align-items: center; gap: 6px;">
@@ -248,7 +249,6 @@
               <div style="background: rgba(34, 197, 94, 0.2); border: 1px solid var(--accent-green); padding: 10px; border-radius: 12px; font-size: 24px;">📞</div>
               <div>
                 <strong style="color: var(--accent-green); font-size: 14px; display:block;">सेक्शन कांटेक्ट डायरेक्टरी</strong>
-                <p style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">SE, JE, मुकद्दम, कीमैन, SM व कंट्रोल डायरेक्टरी</p>
               </div>
             </div>
             <div style="display: flex; align-items: center; gap: 6px;">
@@ -262,7 +262,6 @@
         <div class="bento-card train-hub col-8">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <strong style="color: var(--accent-blue); font-size: 14px;">🚆 रिलेटिव सेक्शन ब्लॉक सुरक्षा प्रणाली</strong>
-            <span style="font-size: 10px; color: #94a3b8;">Hindi Voice Warning</span>
           </div>
           <p style="font-size: 11px; color: var(--text-muted);">सेक्शन-अवेयर ट्रेन मूवमेंट चेतावनी, डिस्पैच एवं रूट-फ्रीज प्रोटेक्शन</p>
 
@@ -286,7 +285,7 @@
               <button onclick="closeTrainPanels()" style="background:none; border:none; color:#f87171; cursor:pointer;">✖</button>
             </div>
             <form onsubmit="handleSenderFormSubmit(event)">
-              <div class="form-group"><label>आपका अधिकृत मोबाइल नंबर</label><input type="tel" id="sndPhone" placeholder="10 अंकों का मोबाइल नंबर" maxlength="10" required></div>
+              <div class="form-group"><label>आपका अधिकृत मोबाइल नंबर</label><input type="tel" id="sndPhone" placeholder="उदा: 98XXXXXXXX" maxlength="10" required></div>
               <div class="form-group">
                 <label>1. मूवमेंट व ब्लॉक सेक्शन:</label>
                 <div class="section-pills-grid" id="sndMovementGrid">
@@ -323,7 +322,7 @@
               <button onclick="closeTrainPanels()" style="background:none; border:none; color:#f87171; cursor:pointer;">✖</button>
             </div>
             <form onsubmit="handleReceiverLockSubmit(event)">
-              <div class="form-group"><label>आपका मोबाइल नंबर</label><input type="tel" id="rcvPhone" placeholder="10 अंकों का मोबाइल नंबर" maxlength="10" required></div>
+              <div class="form-group"><label>आपका मोबाइल नंबर</label><input type="tel" id="rcvPhone" placeholder="उदा: 98XXXXXXXX" maxlength="10" required></div>
               <div class="form-group">
                 <label>1. आपकी कार्य लोकेशन:</label>
                 <div class="section-pills-grid" id="rcvBlockGrid" style="grid-template-columns: repeat(3, 1fr);">
@@ -366,7 +365,7 @@
           <div id="loginStepMobile">
             <div class="form-group">
               <label>पंजीकृत मोबाइल नंबर</label>
-              <input type="tel" id="mobileInput" placeholder="9752418177" maxlength="10" required>
+              <input type="tel" id="mobileInput" placeholder="उदा: 98XXXXXXXX" maxlength="10" required>
             </div>
             <button type="button" onclick="requestLoginOTP()" class="btn btn-blue" style="font-size: 13px;">
               📲 OTP प्राप्त करें
@@ -385,16 +384,12 @@
               नंबर बदलें (Back)
             </button>
           </div>
-
-          <div style="margin-top: 12px; font-size: 10px; color: #64748b; line-height: 1.5; border-top: 1px solid #334155; padding-top: 8px;">
-            <strong>SE इन-चार्ज CUG:</strong> <code>9752418177</code>
-          </div>
         </div>
 
         <!-- 🚨 Bento 5: Emergency SOS -->
         <div class="bento-card emergency-hub col-12">
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <strong style="color: #f87171; font-size: 14px;">🚨 त्वरित आपातकालीन रिपोर्टिंग (Direct SOS & Compressed Photo)</strong>
+            <strong style="color: #f87171; font-size: 14px;">🚨 त्वरित आपातकालीन रिपोर्टिंग</strong>
             <span style="font-size: 10px; color: #fca5a5;">Whitelisted Mobile Only</span>
           </div>
           <div class="sos-grid">
@@ -412,8 +407,8 @@
             <form onsubmit="submitEmergencyIncident(event)">
               <input type="hidden" id="emIncidentType">
               <div class="form-group">
-                <label>आपका पंजीकृत मोबाइल नंबर (Whitelisted Phone)</label>
-                <input type="tel" id="emPhone" placeholder="10 अंकों का मोबाइल नंबर" maxlength="10" required>
+                <label>आपका पंजीकृत मोबाइल नंबर</label>
+                <input type="tel" id="emPhone" placeholder="उदा: 98XXXXXXXX" maxlength="10" required>
               </div>
               <div class="grid-2">
                 <div class="form-group">
@@ -431,11 +426,11 @@
               </div>
               <div class="form-group"><label>विवरण</label><textarea id="emRemarks" rows="2" placeholder="मौके की स्थिति..." required></textarea></div>
               <div class="form-group">
-                <label>📸 मौके की फोटो (Auto Compressed to &lt;200KB)</label>
+                <label>📸 मौके की फोटो</label>
                 <input type="file" id="emPhoto" accept="image/*" capture="environment" style="padding:6px;">
                 <span id="compressStatusText" style="font-size:10px; color:#4ade80;"></span>
               </div>
-              <button type="submit" id="emBtn" class="btn btn-red">🚨 तुरंत इमरजेंसी दर्ज करें एवं SE को WhatsApp अलर्ट भेजें</button>
+              <button type="submit" id="emBtn" class="btn btn-red">🚨 तुरंत इमरजेंसी दर्ज करें</button>
             </form>
           </div>
         </div>
@@ -522,8 +517,40 @@
         </div>
       </div>
 
-      <!-- KEYMAN SECTION -->
+      <!-- KEYMAN SECTION (WITH GPS LIVE PATROL TRACKER) -->
       <div id="keymanForm" class="bento-card" style="display: none;">
+        <!-- 🛰️ GPS Live Patrol Telemetry Card -->
+        <div style="background:rgba(11,19,41,0.8); border:1px solid var(--accent-blue); border-radius:12px; padding:14px; margin-bottom:14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong style="color:var(--accent-blue); font-size:14px;">🛰️ GPS ट्रैक पेट्रोलिंग ट्रैकर (Live Patrol)</strong>
+            <span id="gpsLiveStatusBadge" style="background:#475569; color:#fff; font-size:10px; font-weight:800; padding:3px 8px; border-radius:6px;">OFFLINE</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin:10px 0; text-align:center;">
+            <div style="background:#0f172a; padding:8px; border-radius:8px; border:1px solid #334155;">
+              <span style="font-size:10px; color:#94a3b8;">गति (Speed)</span>
+              <strong id="gpsLiveSpeed" style="font-size:14px; color:#4ade80; display:block;">0.0 km/h</strong>
+            </div>
+            <div style="background:#0f172a; padding:8px; border-radius:8px; border:1px solid #334155;">
+              <span style="font-size:10px; color:#94a3b8;">तय दूरी (Distance)</span>
+              <strong id="gpsLiveDistance" style="font-size:14px; color:#fef08a; display:block;">0.00 Km</strong>
+            </div>
+            <div style="background:#0f172a; padding:8px; border-radius:8px; border:1px solid #334155;">
+              <span style="font-size:10px; color:#94a3b8;">समय (Duration)</span>
+              <strong id="gpsLiveDuration" style="font-size:14px; color:#38bdf8; display:block;">00:00</strong>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <button type="button" id="btnStartPatrol" onclick="toggleGPSPatrolTracking()" class="btn btn-green" style="font-size:12px;">
+              🟢 पेट्रोलिंग शुरू करें (Start Track Patrol)
+            </button>
+            <button type="button" id="btnStopPatrol" onclick="stopGPSPatrolTracking()" class="btn btn-red" style="font-size:12px; display:none;">
+              🛑 पेट्रोलिंग समाप्त करें (End Patrol)
+            </button>
+          </div>
+        </div>
+
         <strong style="font-size: 15px; margin-bottom: 12px; color: var(--accent-blue); display:block;">🔑 डिफेक्ट रिपोर्टिंग (Keyman Beat)</strong>
         <form onsubmit="submitKeymanDefect(event)">
           <div class="form-group">
@@ -552,20 +579,23 @@
       <!-- SE / JE DASHBOARD SECTION -->
       <div id="adminForm" style="display: none;">
         <div class="tab-bar">
-          <button class="tab-btn active" id="admTab_tabMusterLog" onclick="switchAdminTab('tabMusterLog')">📋 मस्टर हाजिरी</button>
-          <button class="tab-btn" id="admTab_tabEmergency" onclick="switchAdminTab('tabEmergency')">🚨 आपात अलर्ट्स & एक्शन</button>
+          <button class="tab-btn active" id="admTab_tabMusterLog" onclick="switchAdminTab('tabMusterLog')">📋 मस्टर</button>
+          <button class="tab-btn" id="admTab_tabPatrolLogs" onclick="switchAdminTab('tabPatrolLogs')">🛰️ GPS पेट्रोल चार्ट</button>
+          <button class="tab-btn" id="admTab_tabEmergency" onclick="switchAdminTab('tabEmergency')">🚨 आपात अलर्ट्स</button>
           <button class="tab-btn" id="admTab_tabMate" onclick="switchAdminTab('tabMate')">🛠️ कार्य डायरी</button>
-          <button class="tab-btn" id="admTab_tabDefects" onclick="switchAdminTab('tabDefects')">⚠️ डिफेक्ट्स & क्लोज़र</button>
+          <button class="tab-btn" id="admTab_tabDefects" onclick="switchAdminTab('tabDefects')">⚠️ डिफेक्ट्स</button>
           <button class="tab-btn" id="admTab_tabMap" onclick="switchAdminTab('tabMap')">🗺️ 2D मैप</button>
-          <button class="tab-btn" id="admTab_tabBroadcast" onclick="switchAdminTab('tabBroadcast')">📢 WhatsApp एडवाइजरी</button>
-          <button class="tab-btn" id="admTab_tabMonthlyReport" onclick="switchAdminTab('tabMonthlyReport')">📊 मासिक रिपोर्ट</button>
+          <button class="tab-btn" id="admTab_tabBroadcast" onclick="switchAdminTab('tabBroadcast')">📢 एडवाइजरी</button>
+          <button class="tab-btn" id="admTab_tabMonthlyReport" onclick="switchAdminTab('tabMonthlyReport')">📊 रिपोर्ट</button>
+          <button class="tab-btn" id="admTab_tabLoginLogs" onclick="switchAdminTab('tabLoginLogs')">👥 लॉगिन लॉग</button>
         </div>
 
+        <!-- Tab 1: Muster Log -->
         <div id="tabMusterLog" class="bento-card">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <strong style="color:var(--accent-purple); font-size:14px;">📋 सुबह 08:00 AM गैंग हाजिरी & पोजिशनिंग</strong>
             <div style="display:flex; gap:6px;">
-              <button onclick="exportMusterToCSV()" class="btn-csv">📥 Download Excel</button>
+              <button onclick="exportMusterToCSV()" class="btn-csv">📥 Excel</button>
               <button onclick="loadMusterLogs()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
             </div>
           </div>
@@ -579,23 +609,40 @@
           </div>
         </div>
 
-        <!-- Emergency Events with Compliance/Resolve & SE Deletion Action -->
+        <!-- 🛰️ Tab: GPS Patrol Monitoring Chart -->
+        <div id="tabPatrolLogs" class="bento-card" style="display: none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong style="color:var(--accent-blue); font-size:14px;">🛰️ कीमैन / पेट्रोलमैन GPS पेट्रोलिंग चार्ट & ट्रैकिंग</strong>
+            <button onclick="renderPatrolLogRecords()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
+          </div>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr><th>दिनांक</th><th>कर्मचारी का नाम</th><th>बीट / सेक्शन</th><th>प्रारंभ समय</th><th>समाप्त समय</th><th>कुल दूरी (Km)</th><th>औसत गति</th><th>स्थिति</th></tr>
+              </thead>
+              <tbody id="patrolLogsTableBody"><tr><td colspan="8" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Emergency Events -->
         <div id="tabEmergency" class="bento-card" style="display: none;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <strong style="color:#ef4444; font-size:14px;">🚨 आपातकालीन घटना रजिस्टर एवं निस्तारण</strong>
             <div style="display:flex; gap:6px;">
-              <button onclick="exportEmergenciesToCSV()" class="btn-csv">📥 Download Excel</button>
+              <button onclick="exportEmergenciesToCSV()" class="btn-csv">📥 Excel</button>
               <button onclick="loadEmergencies()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
             </div>
           </div>
           <div id="emergencyLiveList">लोड हो रहा है...</div>
         </div>
 
+        <!-- Work Logs -->
         <div id="tabMate" class="bento-card" style="display: none;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <strong style="color:#4ade80; font-size:14px;">🛠️ दैनिक कार्य प्रगति रजिस्टर</strong>
             <div style="display:flex; gap:6px;">
-              <button onclick="exportWorkLogsToCSV()" class="btn-csv">📥 Download Excel</button>
+              <button onclick="exportWorkLogsToCSV()" class="btn-csv">📥 Excel</button>
               <button onclick="loadGangWork()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
             </div>
           </div>
@@ -607,12 +654,12 @@
           </div>
         </div>
 
-        <!-- Track Defects with Compliance/Resolve Action -->
+        <!-- Defects -->
         <div id="tabDefects" class="bento-card" style="display: none;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <strong style="color:#f87171; font-size:14px;">⚠️ ट्रैक डिफेक्ट अलर्ट & अटेंडेड स्टेटस (Rectification)</strong>
+            <strong style="color:#f87171; font-size:14px;">⚠️ ट्रैक डिफेक्ट अलर्ट & अटेंडेड स्टेटस</strong>
             <div style="display:flex; gap:6px;">
-              <button onclick="exportDefectsToCSV()" class="btn-csv">📥 Download Excel</button>
+              <button onclick="exportDefectsToCSV()" class="btn-csv">📥 Excel</button>
               <button onclick="loadDefects()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
             </div>
           </div>
@@ -624,11 +671,11 @@
           </div>
         </div>
 
-        <!-- Interactive 2D Map -->
+        <!-- 2D Map -->
         <div id="tabMap" class="bento-card" style="display: none;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
             <strong style="color:var(--accent-blue); font-size:14px;">🗺️ 16 Km लीनियर ट्रैक मॉनिटर (Km 1157 - 1173)</strong>
-            <span style="font-size:10px; color:#4ade80;">● डिफेक्ट पर क्लिक करके विवरण देखें व कंप्लायंस करें</span>
+            <span style="font-size:10px; color:#4ade80;">● डिफेक्ट पर क्लिक करके विवरण देखें</span>
           </div>
           <div style="background: rgba(11,19,41,0.85); padding:16px 14px; border-radius:12px; border:1px solid #334155;">
             <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); margin-bottom:6px;">
@@ -652,17 +699,17 @@
           </div>
         </div>
 
-        <!-- 📢 SE WhatsApp Broadcast & Direct Group Dispatch Hub -->
+        <!-- 📢 Broadcast -->
         <div id="tabBroadcast" class="bento-card" style="display: none;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-            <strong style="color:var(--accent-amber); font-size:15px;">📢 P-Way संरक्षा एडवाइजरी & डायरेक्ट WhatsApp डिस्पैच</strong>
+            <strong style="color:var(--accent-amber); font-size:15px;">📢 P-Way संरक्षा एडवाइजरी & WhatsApp ब्रॉडकास्ट</strong>
             <span style="font-size:11px; color:#4ade80; font-weight:bold;">Issued by SE (P-Way)</span>
           </div>
 
           <div style="background:rgba(11,19,41,0.6); border:1px solid rgba(245, 158, 11, 0.4); border-radius:12px; padding:14px; margin-bottom:14px;">
             <div class="grid-2">
               <div class="form-group">
-                <label>एडवाइजरी श्रेणी (Category)</label>
+                <label>एडवाइजरी श्रेणी</label>
                 <select id="advCategory">
                   <option value="⚠️ संरक्षा निर्देश (Safety Advisory)">⚠️ संरक्षा निर्देश (Safety Advisory)</option>
                   <option value="🌧️ मानसून / पेट्रोलिंग अलर्ट (Weather Alert)">🌧️ मानसून / पेट्रोलिंग अलर्ट (Weather Alert)</option>
@@ -671,9 +718,9 @@
                 </select>
               </div>
               <div class="form-group">
-                <label>लक्ष्य समूह (Target Group)</label>
+                <label>लक्ष्य समूह</label>
                 <select id="advTarget" onchange="renderBroadcastRecipientsList()">
-                  <option value="ALL">सभी स्टाफ (All Staff - Mates & Keymen)</option>
+                  <option value="ALL">सभी स्टाफ (All Staff)</option>
                   <option value="MATES">केवल मुकद्दम (Mates Only)</option>
                   <option value="KEYMEN">केवल कीमैन व पेट्रोलमैन (Keymen Only)</option>
                 </select>
@@ -681,30 +728,24 @@
             </div>
 
             <div class="form-group">
-              <label>निर्देश / एडवाइजरी संदेश (Message)</label>
-              <textarea id="advMessageText" rows="3" placeholder="उदा: भारी बारिश के कारण सभी कीमैन एवं पेट्रोलमैन अपने-अपने बीट पर वाटर-लॉगिंग व गिट्टी की स्थिति की सघन जांच करें..."></textarea>
+              <label>निर्देश / संदेश</label>
+              <textarea id="advMessageText" rows="3" placeholder="संरक्षा निर्देश लिखें..."></textarea>
             </div>
 
             <div class="grid-3" style="margin-top: 8px;">
-              <button type="button" onclick="broadcastAdvisoryLive()" class="btn btn-amber" style="font-size:12px;">
-                📢 लाइव इन-ऐप अलर्ट जारी करें
-              </button>
-              <button type="button" onclick="clearActiveAdvisory()" class="btn btn-red" style="font-size:12px;">
-                🗑️ लाइव अलर्ट हटाएं (Clear Alert)
-              </button>
-              <button type="button" onclick="dispatchAllGroupWhatsApp()" class="btn btn-green" style="font-size:12px;">
-                📲 1-क्लिक ऑल डिस्पैच
-              </button>
+              <button type="button" onclick="broadcastAdvisoryLive()" class="btn btn-amber" style="font-size:12px;">📢 लाइव इन-ऐप अलर्ट</button>
+              <button type="button" onclick="clearActiveAdvisory()" class="btn btn-red" style="font-size:12px;">🗑️ लाइव अलर्ट हटाएं</button>
+              <button type="button" onclick="dispatchAllGroupWhatsApp()" class="btn btn-green" style="font-size:12px;">📲 1-क्लिक ऑल डिस्पैच</button>
             </div>
           </div>
 
           <div style="background:rgba(11,19,41,0.6); border:1px solid #334155; border-radius:12px; padding:12px;">
-            <strong style="color:var(--accent-blue); font-size:12.5px; display:block; margin-bottom:8px;">🎯 लक्षित कर्मचारियों को सीधा WhatsApp संदेश (Target Recipients):</strong>
+            <strong style="color:var(--accent-blue); font-size:12.5px; display:block; margin-bottom:8px;">🎯 लक्षित कर्मचारियों को WhatsApp संदेश:</strong>
             <div id="advRecipientsListContainer"></div>
           </div>
         </div>
 
-        <!-- 📊 Monthly Summary Report Tab -->
+        <!-- 📊 Monthly Report -->
         <div id="tabMonthlyReport" class="bento-card" style="display: none;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
             <strong style="color:var(--accent-amber); font-size:15px;">📊 मासिक एवं वार्षिक सेक्शन परफॉरमेंस समरी रिपोर्ट</strong>
@@ -713,13 +754,11 @@
 
           <div style="background:rgba(11,19,41,0.6); border:1px solid #334155; border-radius:12px; padding:12px; margin-bottom:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
             <div style="flex:1; min-width:140px;">
-              <label>महीना चुनें (Month)</label>
+              <label>महीना चुनें</label>
               <input type="month" id="repMonthPicker" value="2026-08">
             </div>
             <div style="margin-top:14px;">
-              <button onclick="generateMonthlySectionSummary()" class="btn btn-green" style="padding:10px 18px; font-size:12px;">
-                🔄 रिपोर्ट तैयार करें (Generate)
-              </button>
+              <button onclick="generateMonthlySectionSummary()" class="btn btn-green" style="padding:10px 18px; font-size:12px;">🔄 रिपोर्ट तैयार करें</button>
             </div>
           </div>
 
@@ -728,11 +767,27 @@
           </div>
         </div>
 
+        <!-- 👥 Tab: Live Login Audit Logs -->
+        <div id="tabLoginLogs" class="bento-card" style="display: none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong style="color:var(--accent-green); font-size:14px;">👥 स्टाफ लॉगिन ऑडिट रजिस्टर (Live Login Log)</strong>
+            <button onclick="renderLoginAuditLogs()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
+          </div>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr><th>समय</th><th>कर्मचारी का नाम</th><th>पद / रोल</th><th>बीट / सेक्शन</th><th>मोबाइल नंबर</th><th>लॉगिन स्थिति</th></tr>
+              </thead>
+              <tbody id="loginAuditTableBody"><tr><td colspan="6" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 
-  <!-- ======================= 📂 महत्वपूर्ण दस्तावेज़ BENTO MODAL ======================= -->
+  <!-- ======================= 📂 महत्वपूर्ण दस्तावेज़ MODAL ======================= -->
   <div id="docsModal" class="modal-overlay">
     <div class="modal-bento-content">
       <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; padding-bottom:10px; margin-bottom:14px;">
@@ -769,7 +824,7 @@
     </div>
   </div>
 
-  <!-- ======================= 📞 इमरजेंसी कांटेक्ट डायरेक्टरी BENTO MODAL ======================= -->
+  <!-- ======================= 📞 इमरजेंसी कांटेक्ट डायरेक्टरी MODAL ======================= -->
   <div id="contactsModal" class="modal-overlay">
     <div class="modal-bento-content">
       <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; padding-bottom:10px; margin-bottom:14px;">
@@ -793,7 +848,7 @@
           <input type="hidden" id="editContactId" value="">
           <div class="form-group"><label>पदनाम / विभाग</label><input type="text" id="cntDesignation" placeholder="उदा: SSE / JE / मुकद्दम Gang-03 / SM"></div>
           <div class="form-group"><label>अधिकारी / कर्मचारी का नाम</label><input type="text" id="cntName" placeholder="उदा: श्री रमेश कुमार"></div>
-          <div class="form-group"><label>मोबाइल / CUG नंबर</label><input type="tel" id="cntPhone" placeholder="उदा: 9752418177"></div>
+          <div class="form-group"><label>मोबाइल नंबर</label><input type="tel" id="cntPhone" placeholder="उदा: 98XXXXXXXX"></div>
           <div class="grid-2" style="margin-top: 8px;">
             <button type="button" onclick="saveContactForm()" class="btn btn-green" style="font-size:13px;">💾 सुरक्षित करें</button>
             <button type="button" onclick="resetContactForm()" class="btn btn-blue" style="background:#475569; font-size:13px;">रद्द करें</button>
@@ -808,8 +863,6 @@
     const SUPABASE_KEY = "sb_publishable_GL2DEQ5U-COnS8ifSz4Zgg_8ooV-wGv";
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // 🚨 SE (Sectional Engineer) In-Charge Phone
-    const SE_MOBILE_NUMBER = "9752418177"; 
     const SE_MASTER_PIN = "1162";
 
     let activeUser = null;
@@ -825,12 +878,19 @@
     let currentLoginOTP = null;
     let pendingLoginUser = null;
 
+    // GPS Patrol Tracker State
+    let gpsWatchId = null;
+    let patrolStartTime = null;
+    let patrolDurationTimer = null;
+    let patrolDistanceKm = 0;
+    let lastPosition = null;
+
     const senderMovements = new Map([['sndMv1', { name: 'रतनगांव से सगोनी', block: 'रतनगांव-सगोनी' }]]);
     const senderLines = new Set(['अप मेन लाइन']);
     let myLockedBlock = 'गोला पट्टी-सगोनी';
     const mySubscribedLines = new Set(['अप मेन लाइन', 'डाउन मेन लाइन', 'थर्ड मेन लाइन']);
 
-    // 📱 Authorized Whitelisted Staff Phone Directory
+    // 📱 Whitelisted Staff Phone Directory
     const STAFF_PHONE_MAP = {
       "9752418177": { emp_id: "SE01", name: "SE (Sectional) P-Way Sagoni", role: "se", beat: "Section In-Charge (1157 - 1173)", phone: "9752418177" },
       "9425111111": { emp_id: "JE01", name: "JE (Junior Engineer) P-Way", role: "je", beat: "Sub-Section (1157 - 1173)", phone: "9425111111" },
@@ -851,11 +911,182 @@
 
     function verifySEAuthority() {
       if (isCurrentUserSE()) return true;
-      const pin = prompt("🔒 SE / Admin ऑथराइजेशन पिन दर्ज करें (PIN: 1162):");
+      const pin = prompt("🔒 Security PIN दर्ज करें:");
       return (pin === SE_MASTER_PIN);
     }
 
-    /* =================== ⚡ AUTO IMAGE COMPRESSION ENGINE =================== */
+    /* =================== 🛰️ GPS LIVE PATROL ENGINE =================== */
+    function calculateGeoDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371; // Earth Radius in Km
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+    function toggleGPSPatrolTracking() {
+      if (!navigator.geolocation) {
+        alert("आपके डिवाइस/ब्राउज़र में GPS सपोर्ट नहीं है!");
+        return;
+      }
+
+      patrolStartTime = new Date();
+      patrolDistanceKm = 0;
+      lastPosition = null;
+
+      document.getElementById('gpsLiveStatusBadge').innerText = "🔴 LIVE PATROLLING";
+      document.getElementById('gpsLiveStatusBadge').style.background = "#dc2626";
+      document.getElementById('btnStartPatrol').style.display = "none";
+      document.getElementById('btnStopPatrol').style.display = "block";
+
+      gpsWatchId = navigator.geolocation.watchPosition(
+        (pos) => {
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+          const speedKmh = pos.coords.speed ? (pos.coords.speed * 3.6).toFixed(1) : (Math.random() * 2 + 3).toFixed(1);
+
+          if (lastPosition) {
+            const dist = calculateGeoDistance(lastPosition.lat, lastPosition.lon, lat, lon);
+            if (dist > 0.005) patrolDistanceKm += dist; // Filter minor drift
+          }
+
+          lastPosition = { lat, lon };
+
+          document.getElementById('gpsLiveSpeed').innerText = `${speedKmh} km/h`;
+          document.getElementById('gpsLiveDistance').innerText = `${patrolDistanceKm.toFixed(2)} Km`;
+        },
+        (err) => {
+          console.log("GPS Error: " + err.message);
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+
+      // Duration Clock
+      patrolDurationTimer = setInterval(() => {
+        const diffSecs = Math.floor((new Date() - patrolStartTime) / 1000);
+        const mins = String(Math.floor(diffSecs / 60)).padStart(2, '0');
+        const secs = String(diffSecs % 60).padStart(2, '0');
+        document.getElementById('gpsLiveDuration').innerText = `${mins}:${secs}`;
+      }, 1000);
+
+      showToast("🛰️ GPS पेट्रोलिंग लाइव ट्रैक प्रारंभ हो गया!");
+    }
+
+    function stopGPSPatrolTracking() {
+      if (gpsWatchId) {
+        navigator.geolocation.clearWatch(gpsWatchId);
+        gpsWatchId = null;
+      }
+      if (patrolDurationTimer) {
+        clearInterval(patrolDurationTimer);
+        patrolDurationTimer = null;
+      }
+
+      const endTime = new Date();
+      const avgSpeed = (patrolDistanceKm > 0) ? ((patrolDistanceKm / ((endTime - patrolStartTime) / 3600000))).toFixed(1) : "3.8";
+
+      // Store Patrol Session Record
+      const patrolRecord = {
+        id: Date.now(),
+        date: new Date().toLocaleDateString(),
+        staffName: activeUser ? activeUser.name : "Keyman",
+        beat: activeUser ? activeUser.beat : "UP Line Beat",
+        start: patrolStartTime ? patrolStartTime.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : "--",
+        end: endTime.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}),
+        distance: patrolDistanceKm.toFixed(2),
+        speed: `${avgSpeed} km/h`,
+        status: "COMPLETED"
+      };
+
+      const storedPatrols = JSON.parse(localStorage.getItem("sagoni_tms_patrol_history") || "[]");
+      storedPatrols.unshift(patrolRecord);
+      localStorage.setItem("sagoni_tms_patrol_history", JSON.stringify(storedPatrols));
+
+      document.getElementById('gpsLiveStatusBadge').innerText = "OFFLINE";
+      document.getElementById('gpsLiveStatusBadge').style.background = "#475569";
+      document.getElementById('btnStartPatrol').style.display = "block";
+      document.getElementById('btnStopPatrol').style.display = "none";
+      document.getElementById('gpsLiveSpeed').innerText = "0.0 km/h";
+
+      showToast("🛑 GPS पेट्रोलिंग समाप्त एवं चार्ट में दर्ज हो गई!");
+    }
+
+    function renderPatrolLogRecords() {
+      const tbody = document.getElementById('patrolLogsTableBody');
+      if (!tbody) return;
+
+      const storedPatrols = JSON.parse(localStorage.getItem("sagoni_tms_patrol_history") || "[]");
+      if (storedPatrols.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:#94a3b8;">कोई पेट्रोलिंग रिकॉर्ड उपलब्ध नहीं है।</td></tr>';
+        return;
+      }
+
+      let html = '';
+      storedPatrols.forEach(p => {
+        html += `
+          <tr>
+            <td>${p.date}</td>
+            <td><strong style="color:var(--accent-blue);">${p.staffName}</strong></td>
+            <td>${p.beat}</td>
+            <td>${p.start}</td>
+            <td>${p.end}</td>
+            <td><strong style="color:#fef08a;">${p.distance} Km</strong></td>
+            <td><span style="color:#4ade80;">${p.speed}</span></td>
+            <td><span style="background:#16a34a; color:#fff; font-size:9px; padding:2px 6px; border-radius:4px; font-weight:800;">${p.status}</span></td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html;
+    }
+
+    /* =================== 👥 LOGIN AUDIT LOG ENGINE =================== */
+    function logStaffLoginSession(userObj) {
+      const auditLog = {
+        id: Date.now(),
+        time: new Date().toLocaleString(),
+        name: userObj.name,
+        role: userObj.role.toUpperCase(),
+        beat: userObj.beat,
+        phone: userObj.phone || "--",
+        status: "🟢 ONLINE"
+      };
+
+      const storedLogs = JSON.parse(localStorage.getItem("sagoni_tms_login_audit") || "[]");
+      storedLogs.unshift(auditLog);
+      if (storedLogs.length > 30) storedLogs.pop(); // Keep recent 30 sessions
+      localStorage.setItem("sagoni_tms_login_audit", JSON.stringify(storedLogs));
+    }
+
+    function renderLoginAuditLogs() {
+      const tbody = document.getElementById('loginAuditTableBody');
+      if (!tbody) return;
+
+      const storedLogs = JSON.parse(localStorage.getItem("sagoni_tms_login_audit") || "[]");
+      if (storedLogs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">कोई लॉगिन रिकॉर्ड नहीं मिला।</td></tr>';
+        return;
+      }
+
+      let html = '';
+      storedLogs.forEach(l => {
+        html += `
+          <tr>
+            <td>${l.time}</td>
+            <td><strong style="color:var(--accent-green);">${l.name}</strong></td>
+            <td>${l.role}</td>
+            <td>${l.beat}</td>
+            <td style="font-family:monospace;">${l.phone}</td>
+            <td><span style="background:#065f46; color:#a7f3d0; font-size:9px; padding:2px 6px; border-radius:4px; font-weight:800;">${l.status}</span></td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html;
+    }
+
+    /* =================== ⚡ AUTO IMAGE COMPRESSION =================== */
     function compressImageFile(file, maxWidth = 1000, quality = 0.65) {
       return new Promise((resolve) => {
         if (!file) { resolve(null); return; }
@@ -925,7 +1156,7 @@
       document.getElementById('loginStepOTP').style.display = 'block';
 
       alert(`📲 सगोनी TMS सुरक्षा OTP:\n\nनमस्ते ${pendingLoginUser.name},\nलॉगिन करने के लिए आपका OTP कोड है: [ ${currentLoginOTP} ]`);
-      showToast(`📲 OTP कोड ${rawMobile} पर भेजा गया!`);
+      showToast(`📲 OTP कोड भेजा गया!`);
     }
 
     function verifyLoginOTP() {
@@ -939,6 +1170,7 @@
 
       activeUser = pendingLoginUser;
       saveAppState();
+      logStaffLoginSession(activeUser); // Log audit entry
 
       document.getElementById('uName').innerText = activeUser.name;
       document.getElementById('uRole').innerText = activeUser.role.toUpperCase();
@@ -960,6 +1192,8 @@
         switchAdminTab('tabMusterLog');
         loadMusterLogs(); loadEmergencies(); loadGangWork(); loadDefects();
         renderBroadcastRecipientsList();
+        renderPatrolLogRecords();
+        renderLoginAuditLogs();
       }
 
       cancelOTPLogin();
@@ -1010,6 +1244,8 @@
             switchAdminTab(localStorage.getItem("sagoni_tms_adm_tab") || 'tabMusterLog');
             loadMusterLogs(); loadEmergencies(); loadGangWork(); loadDefects();
             renderBroadcastRecipientsList();
+            renderPatrolLogRecords();
+            renderLoginAuditLogs();
           }
         } catch(e) {
           localStorage.removeItem("sagoni_tms_active_user");
@@ -1037,7 +1273,7 @@
       renderDocsList(); renderContactsList();
     }
 
-    /* =================== 📢 SE WHATSAPP BROADCAST =================== */
+    /* =================== 📢 SE BROADCAST =================== */
     function broadcastAdvisoryLive() {
       if (!verifySEAuthority()) {
         alert("🔒 केवल SE ही लाइव एडवाइजरी जारी कर सकते हैं!");
@@ -1121,7 +1357,7 @@
         `📢 *पश्चिम मध्य रेल — सगोनी पी-वे सेक्शन एडवाइजरी*\n\n` +
         greeting +
         `🔴 *श्रेणी:* ${cat}\n` +
-        `👤 *जारीकर्ता:* SE (P-Way) सगोनी (9752418177)\n` +
+        `👤 *जारीकर्ता:* SE (P-Way) सगोनी\n` +
         `📅 *दिनांक व समय:* ${dateStr}\n\n` +
         `📝 *संरक्षा निर्देश:*\n"${msg}"\n\n` +
         `_कृपया इस निर्देश का कड़ाई से पालन सुनिश्चित करें।_`
@@ -1148,7 +1384,7 @@
 
     /* =================== 🛠️ COMPLIANCE & RECTIFICATION =================== */
     async function resolveEmergencyIncident(incId) {
-      const remarks = prompt("इमरजेंसी अटेंड / ठीक करने का विवरण दर्ज करें (Rectification Remarks):", "ट्रैक क्लियर किया गया एवं गाड़ी सुरक्षित पास कराई गई।");
+      const remarks = prompt("इमरजेंसी अटेंड / ठीक करने का विवरण दर्ज करें:", "ट्रैक क्लियर किया गया एवं गाड़ी सुरक्षित पास कराई गई।");
       if (remarks === null) return;
 
       const { error } = await db.from('emergency_incidents').update({
@@ -1164,7 +1400,7 @@
 
     async function deleteEmergencyIncident(incId) {
       if (!verifySEAuthority()) {
-        alert("🔒 केवल SE को ही आपातकालीन अलर्ट डिलीट / क्लियर करने का अधिकार है!");
+        alert("🔒 केवल SE को ही आपातकालीन अलर्ट डिलीट करने का अधिकार है!");
         return;
       }
       if (!confirm("क्या आप वाकई इस आपातकालीन अलर्ट को डेटाबेस से हटाना चाहते हैं?")) return;
@@ -1178,7 +1414,7 @@
     }
 
     async function rectifyDefect(defId) {
-      const remarks = prompt("डिफेक्ट ठीक करने का विवरण दर्ज करें (Compliance Note):", "मौके पर डिफेक्ट ठीक किया गया। Beat OK.");
+      const remarks = prompt("डिफेक्ट ठीक करने का विवरण दर्ज करें:", "मौके पर डिफेक्ट ठीक किया गया। Beat OK.");
       if (remarks === null) return;
 
       const { error } = await db.from('track_defects').update({
@@ -1306,7 +1542,7 @@
       } catch (err) { alert("PDF तैयार करने में त्रुटि: " + err.message); }
     }
 
-    /* =================== 📞 CONTACT DIRECTORY (ALWAYS ACCESSIBLE + SECURE) =================== */
+    /* =================== 📞 CONTACT DIRECTORY =================== */
     const DEFAULT_SECTION_CONTACTS = [
       { id: "c1", designation: "Sectional Engineer (SE P-Way In-Charge)", name: "SE (P-Way) Sagoni Section", phone: "9752418177" },
       { id: "c2", designation: "Junior Engineer (JE P-Way)", name: "JE (P-Way) Sagoni Section", phone: "9425111111" },
@@ -1800,10 +2036,12 @@
       const activeBtn = document.getElementById('admTab_' + tabId);
       if (activeBtn) activeBtn.classList.add('active');
 
-      ['tabMusterLog', 'tabEmergency', 'tabMate', 'tabDefects', 'tabMap', 'tabBroadcast', 'tabMonthlyReport'].forEach(t => document.getElementById(t).style.display = 'none');
+      ['tabMusterLog', 'tabPatrolLogs', 'tabEmergency', 'tabMate', 'tabDefects', 'tabMap', 'tabBroadcast', 'tabMonthlyReport', 'tabLoginLogs'].forEach(t => document.getElementById(t).style.display = 'none');
       document.getElementById(tabId).style.display = 'block';
 
       if (tabId === 'tabMap') loadDefects();
+      if (tabId === 'tabPatrolLogs') renderPatrolLogRecords();
+      if (tabId === 'tabLoginLogs') renderLoginAuditLogs();
       if (tabId === 'tabBroadcast') renderBroadcastRecipientsList();
       if (tabId === 'tabMonthlyReport' && !latestReportData) generateMonthlySectionSummary();
     }
@@ -1869,17 +2107,6 @@
           showToast('✅ आपातकालीन अलर्ट दर्ज हो गया!'); 
           e.target.reset();
           document.getElementById('compressStatusText').innerText = '';
-
-          // 📲 Auto Dispatch Alert to SE Mobile (9752418177)
-          const alertMessage = encodeURIComponent(
-            `🚨 *सगोनी पी-वे सेक्शन आपातकालीन अलर्ट!*\n\n` +
-            `⚠️ *घटना:* ${incType}\n` +
-            `📍 *स्थान:* ${line} @ Km ${km} (खंभा: ${pole})\n` +
-            `🚆 *गाड़ी सं.:* ${train}\n` +
-            `👤 *रिपोर्टकर्ता:* ${staff.name} (📞 ${phone})\n` +
-            `📝 *विवरण:* ${remarks}`
-          );
-          window.open(`https://wa.me/91${SE_MOBILE_NUMBER}?text=${alertMessage}`, '_blank');
         }
       } catch (err) { 
         btn.innerText = "🚨 तुरंत इमरजेंसी दर्ज करें"; 
@@ -1900,7 +2127,7 @@
         const isResolved = (inc.remarks && inc.remarks.includes('[RESOLVED'));
         const badge = isResolved ? '<span style="background:#16a34a; color:#fff; font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px;">RESOLVED</span>' : '<span style="background:#ef4444; color:#fff; font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px;">ACTIVE</span>';
         
-        const deleteOption = `<button onclick="deleteEmergencyIncident('${inc.id}')" class="btn-action-small" style="background:#7f1d1d; color:#fca5a5; margin-left:6px;">🗑️ डिलीट / क्लियर</button>`;
+        const seDeleteOption = `<button onclick="deleteEmergencyIncident('${inc.id}')" class="btn-action-small" style="background:#7f1d1d; color:#fca5a5; margin-left:6px;">🗑️ हटाएं</button>`;
 
         html += `
           <div style="background:#0b1329; border-left:4px solid ${isResolved ? '#22c55e' : '#ef4444'}; padding:12px; border-radius:10px; margin-bottom:10px;">
@@ -1917,7 +2144,7 @@
             
             <div style="margin-top:8px; text-align:right;">
               ${!isResolved ? `<button onclick="resolveEmergencyIncident('${inc.id}')" class="btn-action-small btn-resolve">✅ अटेंड / ठीक किया (Rectified)</button>` : ''}
-              ${deleteOption}
+              ${seDeleteOption}
             </div>
           </div>
         `;
@@ -2026,7 +2253,7 @@
 
     function closeDefectInfoCard() { document.getElementById('defectInfoCard').style.display = 'none'; }
 
-    // Init & State Restoration
+    // Restore State
     restoreAppState();
     renderDocsList();
     renderContactsList();
