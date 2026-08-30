@@ -62,6 +62,17 @@
     .card-emergency { border: 2px solid #ef4444; background: #20131d; }
     .card-train-safety { border: 2px solid #0284c7; background: #0f2338; }
 
+    /* 📁 Document Folder Card Styling */
+    .card-docs {
+      border: 2px solid #f59e0b;
+      background: linear-gradient(135deg, #1e293b 0%, #0f2847 100%);
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .card-docs:active {
+      transform: scale(0.98);
+    }
+
     .form-group { margin-bottom: 12px; }
     label { display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 5px; }
     input, select, textarea { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 13px; outline: none; }
@@ -118,6 +129,30 @@
 
     .muster-box { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
     .muster-title { font-size: 13px; font-weight: 700; color: #38bdf8; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 4px; }
+
+    /* Modal / Popups */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 19, 41, 0.85);
+      backdrop-filter: blur(3px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10001;
+      padding: 12px;
+    }
+    .modal-content {
+      background: #1e293b;
+      border: 2px solid #38bdf8;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 520px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    }
   </style>
 </head>
 <body>
@@ -146,6 +181,24 @@
 
     <div id="homeSection">
 
+      <!-- 📁 1. महत्वपूर्ण दस्तावेज़ व तकनीकी संदर्भ फोल्डर (New Feature) -->
+      <div class="card card-docs" onclick="openDocsModal()">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 30px;">📂</span>
+            <div>
+              <strong style="color: #f59e0b; font-size: 14px;">महत्वपूर्ण दस्तावेज़ व संदर्भ (Docs & Manuals)</strong>
+              <p style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">Annexure-3/9 SEJ गैप चार्ट, मैनुअल एवं सर्कुलर्स</p>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span id="docBadgeCount" style="background: #0284c7; color: white; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 10px;">1 File</span>
+            <span style="font-size: 20px; color: #f59e0b;">›</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🚆 2. ट्रेन सेफ्टी पैनल -->
       <div class="card card-train-safety">
         <div style="text-align: center;">
           <strong style="color: #38bdf8; font-size: 15px;">🚆 रिलेटिव सेक्शन ब्लॉक चेतावनी प्रणाली</strong>
@@ -287,6 +340,7 @@
         </div>
       </div>
 
+      <!-- SOS CARD -->
       <div class="card card-emergency">
         <div style="text-align: center;">
           <strong style="color: #f87171; font-size: 14px;">🚨 त्वरित आपातकालीन रिपोर्टिंग (Direct SOS)</strong>
@@ -337,6 +391,7 @@
 
     </div>
 
+    <!-- LOGGED IN VIEW CONTAINER -->
     <div id="appContainer" style="display: none;">
       <div class="user-bar">
         <div class="user-info">
@@ -593,6 +648,45 @@
     </div>
   </div>
 
+  <!-- ======================= 📂 महत्वपूर्ण दस्तावेज़ MODAL POPUP ======================= -->
+  <div id="docsModal" class="modal-overlay">
+    <div class="modal-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; padding-bottom:8px; margin-bottom:12px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:20px;">📂</span>
+          <strong style="color:#f59e0b; font-size:15px;">महत्वपूर्ण दस्तावेज़ व तकनीकी संदर्भ</strong>
+        </div>
+        <button onclick="closeDocsModal()" style="background:none; border:none; color:#f87171; font-size:20px; cursor:pointer; font-weight:bold;">✕</button>
+      </div>
+
+      <!-- Dynamic Documents List -->
+      <div id="docsContainerList" style="margin-bottom: 14px;">
+        <!-- Loaded via JS -->
+      </div>
+
+      <!-- Form to Add New Document / PDF -->
+      <div style="background:#0f172a; border:1px dashed #0284c7; border-radius:8px; padding:12px;">
+        <strong style="color:#38bdf8; font-size:12px; display:block; margin-bottom:8px;">+ नया PDF / दस्तावेज़ जोड़ें</strong>
+        
+        <div class="form-group">
+          <label>दस्तावेज़ का नाम (Title)</label>
+          <input type="text" id="newDocTitle" placeholder="उदा: IRPWM Para 338 या Monsoon Guidelines 2026">
+        </div>
+        <div class="form-group">
+          <label>छोटा विवरण (Subtitle / Specification)</label>
+          <input type="text" id="newDocSub" placeholder="उदा: 60kg Rail Track Inspection Chart">
+        </div>
+        <div class="form-group">
+          <label>PDF फ़ाइल नाम / वेब लिंक (URL)</label>
+          <input type="text" id="newDocUrl" placeholder="उदा: ./Annexure_3_9_SEJ_Gap_Chart_Corrected.pdf या https://...">
+        </div>
+        <button type="button" onclick="addNewDocItem()" class="btn btn-blue" style="padding:8px; font-size:12px;">
+          💾 सूची में सुरक्षित करें
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const SUPABASE_URL = "https://jhdkpdsrrgwqzxwftcyc.supabase.co";
     const SUPABASE_KEY = "sb_publishable_GL2DEQ5U-COnS8ifSz4Zgg_8ooV-wGv";
@@ -621,6 +715,105 @@
       "PAT01": { name: "राकेश पेट्रोलमैन", role: "keyman", beat: "Night Patrol (1157-1165)" }
     };
 
+    /* =================== 📂 महत्वपूर्ण दस्तावेज़ प्रबंधन LOGIC =================== */
+    const DEFAULT_DOCUMENTS = [
+      {
+        id: 1,
+        title: "Annexure-3/9 (Para 338, 347, 350)",
+        sub: "SEJ Gaps Chart • Zone-III (60 kg, td=38°C) • 73°C to -2°C",
+        url: "./Annexure_3_9_SEJ_Gap_Chart_Corrected.pdf",
+        type: "PDF"
+      }
+    ];
+
+    function getStoredDocuments() {
+      const stored = localStorage.getItem("sagoni_tms_documents");
+      if (stored) {
+        try { return JSON.parse(stored); } catch (e) { return DEFAULT_DOCUMENTS; }
+      }
+      return DEFAULT_DOCUMENTS;
+    }
+
+    function renderDocsList() {
+      const docs = getStoredDocuments();
+      const listContainer = document.getElementById("docsContainerList");
+      const badge = document.getElementById("docBadgeCount");
+      badge.textContent = `${docs.length} File${docs.length > 1 ? 's' : ''}`;
+
+      listContainer.innerHTML = "";
+      docs.forEach((d, index) => {
+        const item = document.createElement("div");
+        item.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:#0f172a; border:1px solid #334155; border-radius:8px; padding:10px; margin-bottom:8px;";
+        item.innerHTML = `
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="background:#dc2626; color:#fff; font-size:10px; font-weight:800; padding:3px 6px; border-radius:4px;">${d.type || 'PDF'}</span>
+            <div>
+              <strong style="font-size:13px; color:#f8fafc; display:block;">${d.title}</strong>
+              <span style="font-size:10px; color:#94a3b8;">${d.sub || ''}</span>
+            </div>
+          </div>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <a href="${d.url}" target="_blank" download style="background:#0284c7; color:#fff; text-decoration:none; padding:5px 9px; border-radius:6px; font-size:11px; font-weight:700;">
+              देखें / PDF
+            </a>
+            ${index > 0 ? `<button onclick="deleteDocItem(${d.id})" style="background:none; border:none; color:#ef4444; font-size:15px; cursor:pointer;" title="हटाएं">🗑️</button>` : ''}
+          </div>
+        `;
+        listContainer.appendChild(item);
+      });
+    }
+
+    function addNewDocItem() {
+      const title = document.getElementById("newDocTitle").value.trim();
+      const sub = document.getElementById("newDocSub").value.trim();
+      const url = document.getElementById("newDocUrl").value.trim();
+
+      if (!title || !url) {
+        alert("कृपया कम से कम दस्तावेज़ का नाम और PDF फ़ाइल का लिंक/नाम दर्ज करें!");
+        return;
+      }
+
+      const docs = getStoredDocuments();
+      docs.push({
+        id: Date.now(),
+        title: title,
+        sub: sub || "Technical Reference",
+        url: url,
+        type: "PDF"
+      });
+
+      localStorage.setItem("sagoni_tms_documents", JSON.stringify(docs));
+      document.getElementById("newDocTitle").value = "";
+      document.getElementById("newDocSub").value = "";
+      document.getElementById("newDocUrl").value = "";
+
+      renderDocsList();
+      showToast("✅ नया दस्तावेज़ सफलतापूर्वक सुरक्षित हो गया!");
+    }
+
+    function deleteDocItem(id) {
+      if (!confirm("क्या आप इस दस्तावेज़ को हटाना चाहते हैं?")) return;
+      let docs = getStoredDocuments();
+      docs = docs.filter(d => d.id !== id);
+      localStorage.setItem("sagoni_tms_documents", JSON.stringify(docs));
+      renderDocsList();
+    }
+
+    function openDocsModal() {
+      renderDocsList();
+      document.getElementById("docsModal").style.display = "flex";
+    }
+
+    function closeDocsModal() {
+      document.getElementById("docsModal").style.display = "none";
+    }
+
+    window.addEventListener("click", function(e) {
+      const modal = document.getElementById("docsModal");
+      if (e.target === modal) closeDocsModal();
+    });
+
+    /* =================== CSV EXPORT & TMS FUNCTIONS =================== */
     function downloadCSVFile(csvContent, fileName) {
       const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement("a");
@@ -1207,6 +1400,9 @@
       });
       tbody.innerHTML = html;
     }
+
+    // Initialize document counts on startup
+    renderDocsList();
   </script>
 </body>
 </html>
