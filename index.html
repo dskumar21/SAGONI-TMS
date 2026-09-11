@@ -120,7 +120,7 @@
       </div>
     </div>
 
-    <!-- 2. COMBINED MUKADDAM / GANG HUB (सुबह हाजिरी + शाम कार्य डायरी एक ही जगह) -->
+    <!-- 2. COMBINED MUKADDAM / GANG HUB (सुबह हाजिरी + शाम कार्य डायरी) -->
     <div id="view-mate-hub" class="hidden max-w-3xl mx-auto space-y-4">
       
       <!-- Sub Tab Switcher Inside Mate Section -->
@@ -135,11 +135,16 @@
 
       <!-- SUB-SECTION A: MORNING MUSTER -->
       <div id="subview-morning" class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-        <div class="border-b pb-3 mb-4">
-          <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-            <i data-lucide="sun" class="text-amber-500"></i> सुबह 08:00 बजे: हाजिरी, ड्यूटी व प्रस्तावित कार्य
-          </h2>
-          <p class="text-xs text-slate-500 mt-0.5">सबमिट करते ही फॉर्म खाली हो जाएगा और शाम को कार्य भरते समय हाजिरी स्वतः लोड होगी।</p>
+        <div class="border-b pb-3 mb-4 flex justify-between items-center">
+          <div>
+            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+              <i data-lucide="sun" class="text-amber-500"></i> सुबह 08:00 बजे: हाजिरी, ड्यूटी व प्रस्तावित कार्य
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">सबमिट होते ही फॉर्म स्वतः नया (रीसेट) हो जाएगा।</p>
+          </div>
+          <button type="button" onclick="resetMorningFormToDefaults()" class="text-xs text-slate-500 hover:text-slate-800 border px-2 py-1 rounded bg-slate-50">
+            🔄 रिफ्रेश फॉर्म
+          </button>
         </div>
 
         <form id="form-morning" onsubmit="handleMorningSubmit(event)" class="space-y-4 text-sm">
@@ -164,7 +169,7 @@
             </div>
           </div>
 
-          <!-- Attendance Breakdown -->
+          <!-- Attendance Breakdown (Freshly Zeroed Defaults) -->
           <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100 space-y-3">
             <div class="flex justify-between items-center">
               <h3 class="font-bold text-blue-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
@@ -201,7 +206,7 @@
             </div>
           </div>
 
-          <!-- Duty Breakdown -->
+          <!-- Duty Breakdown (Mate = 1, All Others = 0) -->
           <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
             <div class="flex justify-between items-center">
               <h3 class="font-bold text-slate-800 text-xs uppercase tracking-wider flex items-center gap-1.5">
@@ -212,12 +217,12 @@
 
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 text-xs">
               <div>
-                <label class="block text-slate-600 mb-1">मुकद्दम</label>
-                <input type="number" id="m_mate_count" value="1" min="0" oninput="calculateMorningNumbers()" class="w-full border rounded p-1.5 bg-white text-center">
+                <label class="block text-slate-700 mb-1 font-semibold">मुकद्दम</label>
+                <input type="number" id="m_mate_count" value="1" min="0" oninput="calculateMorningNumbers()" class="w-full border rounded p-1.5 bg-white text-center font-bold">
               </div>
               <div>
                 <label class="block text-slate-600 mb-1">कीमैन</label>
-                <input type="number" id="m_keyman_count" value="1" min="0" oninput="calculateMorningNumbers()" class="w-full border rounded p-1.5 bg-white text-center">
+                <input type="number" id="m_keyman_count" value="0" min="0" oninput="calculateMorningNumbers()" class="w-full border rounded p-1.5 bg-white text-center">
               </div>
               <div>
                 <label class="block text-slate-600 mb-1">पेट्रोलमैन</label>
@@ -225,7 +230,7 @@
               </div>
               <div>
                 <label class="block text-slate-600 mb-1">नाइट वॉचमैन</label>
-                <input type="number" id="m_night_count" value="1" min="0" oninput="calculateMorningNumbers()" class="w-full border rounded p-1.5 bg-white text-center">
+                <input type="number" id="m_night_count" value="0" min="0" oninput="calculateMorningNumbers()" class="w-full border rounded p-1.5 bg-white text-center">
               </div>
               <div>
                 <label class="block text-slate-600 mb-1">ट्रेनिंग</label>
@@ -249,7 +254,7 @@
               </div>
               <div>
                 <label class="block text-slate-600 mb-1">प्रोटेक्शन</label>
-                <input type="number" id="m_prot_count" value="2" min="0" oninput="calculateMorningNumbers()" class="w-full border rounded p-1.5 bg-white text-center">
+                <input type="number" id="m_prot_count" value="0" min="0" oninput="calculateMorningNumbers()" class="w-full border rounded p-1.5 bg-white text-center">
               </div>
               <div>
                 <label class="block text-indigo-700 mb-1 font-semibold">अन्य कार्य</label>
@@ -257,12 +262,12 @@
               </div>
               <div class="bg-emerald-100/70 p-1.5 rounded border border-emerald-300">
                 <label class="block text-emerald-900 font-bold mb-1">कार्य पर (Auto)</label>
-                <input type="number" id="m_onwork_count" value="20" class="w-full border border-emerald-500 rounded p-1 bg-white font-black text-emerald-800 text-center" readonly>
+                <input type="number" id="m_onwork_count" value="24" class="w-full border border-emerald-500 rounded p-1 bg-white font-black text-emerald-800 text-center" readonly>
               </div>
             </div>
           </div>
 
-          <!-- PLANNED WORK WITH ALL RAILWAY MAINTENANCE TYPES -->
+          <!-- PLANNED WORK -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block font-medium text-slate-700 mb-1">आज का प्रस्तावित कार्य (Planned Work)</label>
@@ -310,7 +315,6 @@
           </select>
         </div>
 
-        <!-- Auto-Loaded Morning Data Summary Card -->
         <div id="evening-morning-summary" class="bg-indigo-50/60 p-4 rounded-xl border border-indigo-200 mb-4 text-xs space-y-1.5">
           <div class="flex justify-between font-bold text-indigo-900">
             <span id="e_sum_mate">मुकद्दम: --</span>
@@ -555,8 +559,39 @@
     }
 
     // ----------------------------------------------------
-    // MORNING FORM LOGIC
+    // MORNING FORM: RESET TO CLEAN ZERO DEFAULTS
     // ----------------------------------------------------
+    function resetMorningFormToDefaults() {
+      // 1. Attendance zeroes
+      document.getElementById('m_absent_count').value = 0;
+      document.getElementById('m_leave_count').value = 0;
+      document.getElementById('m_sick_count').value = 0;
+      document.getElementById('m_rest_count').value = 0;
+
+      // 2. Specialized duties: Mate = 1, ALL other = 0
+      document.getElementById('m_mate_count').value = 1;
+      document.getElementById('m_keyman_count').value = 0;
+      document.getElementById('m_patrol_count').value = 0;
+      document.getElementById('m_night_count').value = 0;
+      document.getElementById('m_train_count').value = 0;
+      document.getElementById('m_weld_count').value = 0;
+      document.getElementById('m_smith_count').value = 0;
+      document.getElementById('m_paint_count').value = 0;
+      document.getElementById('m_pump_count').value = 0;
+      document.getElementById('m_prot_count').value = 0;
+      document.getElementById('m_other_count').value = 0;
+
+      // 3. Clear text inputs
+      document.getElementById('m_planned_location').value = "";
+      const subInput = document.getElementById('m_substitute_mate');
+      subInput.value = "";
+      subInput.disabled = true;
+      subInput.className = "w-full border rounded-lg p-2 bg-slate-100 text-slate-400 cursor-not-allowed";
+
+      // 4. Recalculate cleanly
+      calculateMorningNumbers();
+    }
+
     function handleMorningGangChange() {
       const gangVal = document.getElementById('m_gang_no').value;
       const mateSelect = document.getElementById('m_mate_select');
@@ -568,7 +603,7 @@
         <option value="OTHER">-- अन्य कर्मचारी (Substitute / Badli) --</option>
       `;
       handleMorningMateChange();
-      calculateMorningNumbers();
+      resetMorningFormToDefaults();
     }
 
     function handleMorningMateChange() {
@@ -594,6 +629,7 @@
       const sick = Math.max(0, parseInt(document.getElementById('m_sick_count').value) || 0);
       const rest = Math.max(0, parseInt(document.getElementById('m_rest_count').value) || 0);
 
+      // Present = Total - (Absent + Leave + Sick + Rest)
       const present = Math.max(0, total - (absent + leave + sick + rest));
       document.getElementById('m_present_count').value = present;
 
@@ -684,23 +720,8 @@
       } else {
         alert("✅ सुबह 08:00 बजे की हाजिरी दर्ज हो गई!");
         
-        // AUTO CLEAR FORM FIELDS (Only non-fixed values wiped)
-        document.getElementById('m_absent_count').value = 0;
-        document.getElementById('m_leave_count').value = 0;
-        document.getElementById('m_sick_count').value = 0;
-        document.getElementById('m_rest_count').value = 0;
-        document.getElementById('m_patrol_count').value = 0;
-        document.getElementById('m_night_count').value = 1;
-        document.getElementById('m_train_count').value = 0;
-        document.getElementById('m_weld_count').value = 0;
-        document.getElementById('m_smith_count').value = 0;
-        document.getElementById('m_paint_count').value = 0;
-        document.getElementById('m_pump_count').value = 0;
-        document.getElementById('m_prot_count').value = 2;
-        document.getElementById('m_other_count').value = 0;
-        document.getElementById('m_planned_location').value = "";
-        
-        handleMorningGangChange(); // resets present & on_work
+        // Pura form 100% clean zero defaults par reset
+        resetMorningFormToDefaults();
         switchTab('dashboard');
       }
     }
@@ -1034,7 +1055,7 @@
       }
     }
 
-    // Init
+    // Initialize cleanly on load
     handleMorningGangChange();
     filterKeymanByGang();
     loadDashboardData();
