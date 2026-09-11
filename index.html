@@ -68,20 +68,20 @@
 
         <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
           <div class="flex justify-between items-center text-slate-500 text-xs font-semibold">
-            <span>KEYMAN LOGS</span>
-            <i data-lucide="wrench" class="w-4 h-4 text-amber-500"></i>
+            <span>ON TRACK WORK</span>
+            <i data-lucide="hammer" class="w-4 h-4 text-amber-500"></i>
           </div>
-          <div id="stat-keyman-count" class="text-2xl font-bold mt-2 text-amber-600">--</div>
-          <span class="text-xs text-slate-500">Beats Inspected</span>
+          <div id="stat-on-work" class="text-2xl font-bold mt-2 text-amber-600">--</div>
+          <span class="text-xs text-slate-500">Men on Actual Track</span>
         </div>
 
         <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
           <div class="flex justify-between items-center text-slate-500 text-xs font-semibold">
-            <span>INSPECTIONS PENDING</span>
-            <i data-lucide="clipboard-list" class="w-4 h-4 text-purple-500"></i>
+            <span>KEYMAN LOGS</span>
+            <i data-lucide="wrench" class="w-4 h-4 text-purple-500"></i>
           </div>
-          <div id="stat-pending-insp" class="text-2xl font-bold mt-2 text-purple-600">--</div>
-          <span class="text-xs text-slate-500">Target Items</span>
+          <div id="stat-keyman-count" class="text-2xl font-bold mt-2 text-purple-600">--</div>
+          <span class="text-xs text-slate-500">Beats Reported</span>
         </div>
       </div>
 
@@ -109,45 +109,133 @@
       </div>
     </div>
 
-    <!-- 2. MUKADDAM / MATE ENTRY FORM -->
-    <div id="view-mate" class="hidden max-w-2xl mx-auto bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+    <!-- 2. MUKADDAM / MATE ENTRY FORM (ENHANCED MUSTER & DUTY ROSTER) -->
+    <div id="view-mate" class="hidden max-w-3xl mx-auto bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
       <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2 border-b pb-2">
-        <i data-lucide="file-plus" class="text-blue-600"></i> मुकद्दम / मेट दैनिक कार्य डायरी
+        <i data-lucide="file-plus" class="text-blue-600"></i> मुकद्दम / मेट दैनिक कार्य डायरी (Gang Unit Entry)
       </h2>
       <form id="form-gang" onsubmit="handleGangSubmit(event)" class="space-y-4 text-sm">
-        <div class="grid grid-cols-2 gap-4">
+        
+        <!-- Gang Unit and Mate Dropdown -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label class="block font-medium text-slate-700 mb-1">गैंग नंबर (Gang Unit)</label>
-            <select id="gang_no" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white" required>
-              <option value="Unit No. 12">यूनिट नंबर 12</option>
+            <select id="gang_no" onchange="handleGangUnitChange()" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white font-medium" required>
               <option value="Unit No. 13">यूनिट नंबर 13</option>
+              <option value="Unit No. 12">यूनिट नंबर 12</option>
               <option value="Unit No. 14">यूनिट नंबर 14</option>
             </select>
           </div>
+
           <div>
-            <label class="block font-medium text-slate-700 mb-1">मेट का नाम (Mate Name)</label>
-            <input type="text" id="mate_name" class="w-full border rounded-lg p-2" placeholder="उदा. रामेश्वर" required>
+            <label class="block font-medium text-slate-700 mb-1">मुकद्दम / मेट का नाम</label>
+            <select id="mate_select" onchange="handleMateSelectionChange()" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white" required>
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">बदली मेट (यदि अन्य हो)</label>
+            <input 
+              type="text" 
+              id="substitute_mate_name" 
+              disabled 
+              placeholder="कार्यवाहक मेट का नाम" 
+              class="w-full border rounded-lg p-2 bg-slate-100 text-slate-400 cursor-not-allowed"
+            >
           </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-4">
-          <div>
-            <label class="block font-medium text-slate-700 mb-1">कुल संख्या</label>
-            <input type="number" id="total_strength" class="w-full border rounded-lg p-2" value="15" required>
-          </div>
-          <div>
-            <label class="block font-medium text-slate-700 mb-1">उपस्थित (P)</label>
-            <input type="number" id="present_count" class="w-full border rounded-lg p-2" value="14" required>
-          </div>
-          <div>
-            <label class="block font-medium text-slate-700 mb-1">अनुपस्थित (A)</label>
-            <input type="number" id="absent_count" class="w-full border rounded-lg p-2" value="1" required>
+        <!-- 1. Attendance Breakdown Section -->
+        <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100 space-y-3">
+          <h3 class="font-bold text-blue-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="users" class="w-4 h-4 text-blue-600"></i> 1. हाजिरी विवरण (Muster Summary)
+          </h3>
+          <div class="grid grid-cols-2 md:grid-cols-6 gap-3 text-xs">
+            <div>
+              <label class="block font-semibold text-slate-600 mb-1">कुल संख्या (Sanction)</label>
+              <input type="number" id="total_strength" class="w-full border rounded p-1.5 bg-slate-200 font-bold text-slate-800" readonly>
+            </div>
+            <div>
+              <label class="block font-semibold text-emerald-700 mb-1">उपस्थित (Present)</label>
+              <input type="number" id="present_count" value="20" class="w-full border border-emerald-300 rounded p-1.5 bg-white font-bold text-emerald-700" required>
+            </div>
+            <div>
+              <label class="block font-semibold text-rose-700 mb-1">अनुपस्थित (Absent)</label>
+              <input type="number" id="absent_count" value="1" class="w-full border border-rose-300 rounded p-1.5 bg-white font-medium text-rose-700" required>
+            </div>
+            <div>
+              <label class="block font-semibold text-amber-700 mb-1">छुट्टी (Leave)</label>
+              <input type="number" id="leave_count" value="2" class="w-full border border-amber-300 rounded p-1.5 bg-white font-medium text-amber-700">
+            </div>
+            <div>
+              <label class="block font-semibold text-purple-700 mb-1">बीमारी (Sick)</label>
+              <input type="number" id="sick_count" value="0" class="w-full border border-purple-300 rounded p-1.5 bg-white font-medium text-purple-700">
+            </div>
+            <div>
+              <label class="block font-semibold text-cyan-700 mb-1">विश्राम (Rest)</label>
+              <input type="number" id="rest_count" value="2" class="w-full border border-cyan-300 rounded p-1.5 bg-white font-medium text-cyan-700">
+            </div>
           </div>
         </div>
 
+        <!-- 2. Gang Detailed Duty Deployment Breakdown -->
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+          <h3 class="font-bold text-slate-800 text-xs uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="clipboard-list" class="w-4 h-4 text-emerald-600"></i> 2. ड्यूटी वितरण (Gang Deployment Breakdown)
+          </h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 text-xs">
+            <div>
+              <label class="block text-slate-600 mb-1 font-medium">मुकद्दम (Mate)</label>
+              <input type="number" id="mate_count" value="1" class="w-full border rounded p-1.5 bg-white">
+            </div>
+            <div>
+              <label class="block text-slate-600 mb-1 font-medium">कीमैन (Keyman)</label>
+              <input type="number" id="keyman_count" value="1" class="w-full border rounded p-1.5 bg-white">
+            </div>
+            <div>
+              <label class="block text-slate-600 mb-1 font-medium">पेट्रोलमैन</label>
+              <input type="number" id="patrolman_count" value="0" class="w-full border rounded p-1.5 bg-white">
+            </div>
+            <div>
+              <label class="block text-slate-600 mb-1 font-medium">नाइट वॉचमैन</label>
+              <input type="number" id="night_watchman_count" value="1" class="w-full border rounded p-1.5 bg-white">
+            </div>
+            <div>
+              <label class="block text-slate-600 mb-1 font-medium">ट्रेनिंग पर</label>
+              <input type="number" id="training_count" value="0" class="w-full border rounded p-1.5 bg-white">
+            </div>
+            <div>
+              <label class="block text-slate-600 mb-1 font-medium">वेल्डर (Welder)</label>
+              <input type="number" id="welder_count" value="0" class="w-full border rounded p-1.5 bg-white">
+            </div>
+            <div>
+              <label class="block text-slate-600 mb-1 font-medium">ब्लैकस्मिथ</label>
+              <input type="number" id="blacksmith_count" value="0" class="w-full border rounded p-1.5 bg-white">
+            </div>
+            <div>
+              <label class="block text-slate-600 mb-1 font-medium">पेंटर (Painter)</label>
+              <input type="number" id="painter_count" value="0" class="w-full border rounded p-1.5 bg-white">
+            </div>
+            <div>
+              <label class="block text-slate-600 mb-1 font-medium">पंप ड्यूटी (Pump)</label>
+              <input type="number" id="pump_count" value="0" class="w-full border rounded p-1.5 bg-white">
+            </div>
+            <div>
+              <label class="block text-slate-600 mb-1 font-medium">प्रोटेक्शन / फ्लैग</label>
+              <input type="number" id="protection_count" value="2" class="w-full border rounded p-1.5 bg-white">
+            </div>
+            <div class="col-span-2 bg-emerald-100/60 p-1.5 rounded border border-emerald-200">
+              <label class="block text-emerald-900 font-bold mb-1">कार्य पर लगे (On-Work Men)</label>
+              <input type="number" id="on_work_count" value="16" class="w-full border border-emerald-400 rounded p-1 bg-white font-bold text-emerald-800">
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Work Location & Progress -->
         <div class="grid grid-cols-3 gap-4">
           <div>
-            <label class="block font-medium text-slate-700 mb-1">लाइन (Line)</label>
+            <label class="block font-medium text-slate-700 mb-1">लाइन (Track Line)</label>
             <select id="line_name" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white" required>
               <option>UP Line</option>
               <option>DN Line</option>
@@ -156,11 +244,11 @@
           </div>
           <div>
             <label class="block font-medium text-slate-700 mb-1">From Km</label>
-            <input type="number" step="0.001" id="start_km" class="w-full border rounded-lg p-2" placeholder="100.200" required>
+            <input type="number" step="0.001" id="start_km" class="w-full border rounded-lg p-2" placeholder="104.200" required>
           </div>
           <div>
             <label class="block font-medium text-slate-700 mb-1">To Km</label>
-            <input type="number" step="0.001" id="end_km" class="w-full border rounded-lg p-2" placeholder="100.450" required>
+            <input type="number" step="0.001" id="end_km" class="w-full border rounded-lg p-2" placeholder="104.500" required>
           </div>
         </div>
 
@@ -178,52 +266,46 @@
           </div>
           <div>
             <label class="block font-medium text-slate-700 mb-1">आउटपुट (Sleepers / Metres)</label>
-            <input type="number" id="work_output" class="w-full border rounded-lg p-2" placeholder="120" required>
+            <input type="number" id="work_output" class="w-full border rounded-lg p-2" placeholder="140" required>
           </div>
         </div>
 
         <div>
           <label class="block font-medium text-slate-700 mb-1">रिमार्क (Remarks)</label>
-          <textarea id="remarks" rows="2" class="w-full border rounded-lg p-2" placeholder="कार्य विवरण..."></textarea>
+          <textarea id="remarks" rows="2" class="w-full border rounded-lg p-2" placeholder="उदा. 6 रबर पैड बदले, लाइन लेवलिंग पूर्ण..."></textarea>
         </div>
 
-        <button type="submit" id="btn-gang-submit" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-lg hover:bg-blue-700 shadow">
-          डेटा सबमिट करें
+        <button type="submit" id="btn-gang-submit" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-lg hover:bg-blue-700 shadow transition">
+          मुकद्दम डायरी सबमिट करें (Submit Diary)
         </button>
       </form>
     </div>
 
-    <!-- 3. KEYMAN BEAT REPORT FORM (UPDATED WITH P-WAY WORK ITEMS) -->
+    <!-- 3. KEYMAN BEAT REPORT FORM -->
     <div id="view-keyman" class="hidden max-w-3xl mx-auto bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
       <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2 border-b pb-2">
         <i data-lucide="wrench" class="text-emerald-600"></i> कीमैन बीट दैनिक प्रोग्रेस रिपोर्ट
       </h2>
       <form id="form-keyman" onsubmit="handleKeymanSubmit(event)" class="space-y-4 text-sm">
         
-        <!-- Gang Unit Selection -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label class="block font-medium text-slate-700 mb-1">गैंग नंबर (Gang Unit)</label>
             <select id="k_gang_no" onchange="filterKeymanByGang()" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white font-medium" required>
-              <option value="Unit No. 12">यूनिट नंबर 12</option>
               <option value="Unit No. 13">यूनिट नंबर 13</option>
+              <option value="Unit No. 12">यूनिट नंबर 12</option>
               <option value="Unit No. 14">यूनिट नंबर 14</option>
             </select>
           </div>
 
-          <!-- Keyman Name Dropdown -->
           <div>
             <label class="block font-medium text-slate-700 mb-1">कीमैन का नाम (Keyman)</label>
             <select id="k_keyman_select" onchange="handleKeymanSelectionChange()" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white" required>
-              <!-- Filled Dynamically based on Gang -->
             </select>
           </div>
 
-          <!-- Substitute Keyman (Active only if 'Other' selected) -->
           <div>
-            <label class="block font-medium text-slate-700 mb-1">
-              बदली कर्मचारी का नाम (यदि अन्य हो)
-            </label>
+            <label class="block font-medium text-slate-700 mb-1">बदली कर्मचारी (यदि अन्य हो)</label>
             <input 
               type="text" 
               id="k_substitute_name" 
@@ -234,7 +316,6 @@
           </div>
         </div>
 
-        <!-- Line and Beat Auto-filled -->
         <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 grid grid-cols-3 gap-4">
           <div>
             <label class="block text-xs font-semibold text-slate-500 mb-1">लाइन (Auto Track Line)</label>
@@ -250,81 +331,43 @@
           </div>
         </div>
 
-        <!-- NEW P-WAY MAINTENANCE WORK PROGRESS -->
         <div class="border-t pt-3">
           <h3 class="font-bold text-slate-800 text-sm mb-2 flex items-center gap-1.5 text-emerald-700">
             <i data-lucide="check-circle-2" class="w-4 h-4"></i> दैनिक अनुरक्षण कार्य प्रोग्रेस (Maintenance Progress)
           </h3>
 
           <div class="space-y-3">
-            <!-- 1. Ghaas Safai with OHE and Chainage -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 bg-emerald-50/50 p-3 rounded-lg border border-emerald-100">
               <div>
                 <label class="block font-semibold text-slate-700 text-xs mb-1">🌱 1. घास सफाई प्रोग्रेस (OHE खंभा / चेनेज सहित)</label>
-                <input 
-                  type="text" 
-                  id="k_grass_cutting" 
-                  placeholder="उदा. OHE 102/14 से 102/26 (Km 102.350 - 102.650) तक" 
-                  class="w-full border rounded-lg p-2 bg-white text-xs"
-                >
+                <input type="text" id="k_grass_cutting" placeholder="उदा. OHE 104/10 से 104/24 तक" class="w-full border rounded-lg p-2 bg-white text-xs">
               </div>
-
-              <!-- 2. Davai Chhidkaw -->
               <div>
                 <label class="block font-semibold text-slate-700 text-xs mb-1">🧪 2. दवाई छिड़काव (Herbicide Spray)</label>
-                <input 
-                  type="text" 
-                  id="k_herbicide_spray" 
-                  placeholder="उदा. Km 101/0 से 101/5 तक छिड़काव किया / Nil" 
-                  class="w-full border rounded-lg p-2 bg-white text-xs"
-                >
+                <input type="text" id="k_herbicide_spray" placeholder="उदा. Km 104/0 से 104/6 तक / Nil" class="w-full border rounded-lg p-2 bg-white text-xs">
               </div>
             </div>
 
-            <!-- 3, 4, 5 Greasing Works -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div>
                 <label class="block font-medium text-slate-700 text-xs mb-1">🛤️ 3. Curve Greasing</label>
-                <input 
-                  type="text" 
-                  id="k_curve_greasing" 
-                  placeholder="उदा. Curve No. 4, UP Line / Nil" 
-                  class="w-full border rounded-lg p-2 bg-white text-xs"
-                >
+                <input type="text" id="k_curve_greasing" placeholder="उदा. Curve No. 3 / Nil" class="w-full border rounded-lg p-2 bg-white text-xs">
               </div>
-
               <div>
                 <label class="block font-medium text-slate-700 text-xs mb-1">🔩 4. SEJ Greasing</label>
-                <input 
-                  type="text" 
-                  id="k_sej_greasing" 
-                  placeholder="उदा. SEJ Km 104/1-2 greased / Nil" 
-                  class="w-full border rounded-lg p-2 bg-white text-xs"
-                >
+                <input type="text" id="k_sej_greasing" placeholder="उदा. SEJ Km 105/2 greased / Nil" class="w-full border rounded-lg p-2 bg-white text-xs">
               </div>
-
               <div>
                 <label class="block font-medium text-slate-700 text-xs mb-1">🔀 5. Points & Crossing Greasing</label>
-                <input 
-                  type="text" 
-                  id="k_pt_crossing" 
-                  placeholder="उदा. Point No. 102A & B / Nil" 
-                  class="w-full border rounded-lg p-2 bg-white text-xs"
-                >
+                <input type="text" id="k_pt_crossing" placeholder="उदा. Point No. 104 / Nil" class="w-full border rounded-lg p-2 bg-white text-xs">
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Defects & Remarks -->
         <div>
-          <label class="block font-medium text-slate-700 mb-1">⚠️ खामियां / ट्रैक डिफेक्ट / रिमार्क (Defects / Remarks)</label>
-          <textarea 
-            id="k_defects" 
-            rows="2" 
-            class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white" 
-            placeholder="उदा. Km 103/4 पर रबर पैड टूटा हुआ है, SEZ गैप 55mm पाया गया, या 'Nil'"
-          ></textarea>
+          <label class="block font-medium text-slate-700 mb-1">⚠️ खामियां / ट्रैक डिफेक्ट (Defects / Remarks)</label>
+          <textarea id="k_defects" rows="2" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white" placeholder="खामियां या Nil लिखें..."></textarea>
         </div>
 
         <button type="submit" id="btn-keyman-submit" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-lg hover:bg-emerald-700 shadow transition">
@@ -373,8 +416,14 @@
 
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // KEYMAN DIRECTORY (GANG-WISE WITH DEFAULT BEATS)
-    // Aap yahan apne actual Keyman ke naam aur beat km update kar sakte hain:
+    // FIXED GANG MATES & STRENGTH CONFIG
+    const GANG_CONFIG = {
+      'Unit No. 12': { mate: 'श्रीनिवास', totalStrength: 22 },
+      'Unit No. 13': { mate: 'रूप सिंह मीणा', totalStrength: 25 },
+      'Unit No. 14': { mate: 'लाखन', totalStrength: 20 }
+    };
+
+    // KEYMAN DIRECTORY
     const KEYMAN_ROSTER = [
       { id: 'km1', gang: 'Unit No. 12', name: 'रामेश्वर दयाल', line: 'UP Line', startKm: 100.000, endKm: 104.000 },
       { id: 'km2', gang: 'Unit No. 12', name: 'भगवान दास', line: 'DN Line', startKm: 100.000, endKm: 104.000 },
@@ -395,11 +444,45 @@
       document.getElementById(`tab-${tabId}`).className = "tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-blue-600 text-white transition";
 
       if (tabId === 'dashboard') loadDashboardData();
+      if (tabId === 'mate') handleGangUnitChange();
       if (tabId === 'keyman') filterKeymanByGang();
       if (tabId === 'inspections') loadInspections();
     }
 
-    // Gang select badalne par Keyman dropdown update karna
+    // Gang Unit Badalne Par Mate aur Strength Auto Set Hona
+    function handleGangUnitChange() {
+      const gangVal = document.getElementById('gang_no').value;
+      const mateSelect = document.getElementById('mate_select');
+      const conf = GANG_CONFIG[gangVal];
+
+      document.getElementById('total_strength').value = conf.totalStrength;
+
+      mateSelect.innerHTML = `
+        <option value="REGULAR">${conf.mate} (रेगुलर मुकद्दम)</option>
+        <option value="OTHER">-- अन्य कर्मचारी (Substitute / Badli) --</option>
+      `;
+
+      handleMateSelectionChange();
+    }
+
+    function handleMateSelectionChange() {
+      const selectVal = document.getElementById('mate_select').value;
+      const subInput = document.getElementById('substitute_mate_name');
+
+      if (selectVal === 'OTHER') {
+        subInput.disabled = false;
+        subInput.className = "w-full border rounded-lg p-2 bg-white text-slate-800 border-amber-400 focus:ring-1 focus:ring-amber-500";
+        subInput.focus();
+        subInput.required = true;
+      } else {
+        subInput.disabled = true;
+        subInput.value = "";
+        subInput.required = false;
+        subInput.className = "w-full border rounded-lg p-2 bg-slate-100 text-slate-400 cursor-not-allowed";
+      }
+    }
+
+    // Keyman Gang filter
     function filterKeymanByGang() {
       const selectedGang = document.getElementById('k_gang_no').value;
       const selectEl = document.getElementById('k_keyman_select');
@@ -407,38 +490,31 @@
       const filtered = KEYMAN_ROSTER.filter(k => k.gang === selectedGang);
 
       let optionsHtml = filtered.map(k => `<option value="${k.id}">${k.name} (${k.line})</option>`).join('');
-      // Option for Substitute / Other employee
       optionsHtml += `<option value="OTHER">-- अन्य कर्मचारी (Substitute / Badli) --</option>`;
       
       selectEl.innerHTML = optionsHtml;
       handleKeymanSelectionChange();
     }
 
-    // Keyman select karne par Auto-Beat fill hona aur Badli text field active/inactive hona
     function handleKeymanSelectionChange() {
       const selectEl = document.getElementById('k_keyman_select');
       const selectedVal = selectEl.value;
       const subInput = document.getElementById('k_substitute_name');
 
       if (selectedVal === 'OTHER') {
-        // Active Substitute Input
         subInput.disabled = false;
         subInput.className = "w-full border rounded-lg p-2 bg-white text-slate-800 border-amber-400 focus:ring-1 focus:ring-amber-500";
         subInput.focus();
         subInput.required = true;
-
-        // Clear Auto beat taaki user manually daal sake
         document.getElementById('k_line_name').value = "UP Line";
         document.getElementById('k_start_km').value = "";
         document.getElementById('k_end_km').value = "";
       } else {
-        // Disable and lock Substitute Input
         subInput.disabled = true;
         subInput.value = "";
         subInput.required = false;
         subInput.className = "w-full border rounded-lg p-2 bg-slate-100 text-slate-400 cursor-not-allowed";
 
-        // Auto Fill Beat details
         const record = KEYMAN_ROSTER.find(k => k.id === selectedVal);
         if (record) {
           document.getElementById('k_line_name').value = record.line;
@@ -448,7 +524,7 @@
       }
     }
 
-    // Load Dashboard Data
+    // Dashboard Data
     async function loadDashboardData() {
       try {
         const { data: gangs } = await supabaseClient
@@ -465,6 +541,7 @@
 
         if (gangs && gangs.length > 0) {
           document.getElementById('stat-gang-present').innerText = gangs[0].present_count + ' Men';
+          document.getElementById('stat-on-work').innerText = (gangs[0].on_work_count || '--') + ' Men';
         }
         if (keymans) {
           document.getElementById('stat-keyman-count').innerText = keymans.length;
@@ -476,16 +553,18 @@
           gangListEl.innerHTML = gangs.map(item => `
             <div class="py-3">
               <div class="flex justify-between font-semibold text-slate-800">
-                <span>${item.gang_no} (${item.mate_name || 'Mate'}) — <span class="text-blue-600">${item.line_name}</span></span>
+                <span>${item.gang_no} (${item.mate_name || 'Mate'}) ${item.substitute_mate_name ? `<span class="text-xs text-amber-600">(बदली: ${item.substitute_mate_name})</span>` : ''} — <span class="text-blue-600">${item.line_name}</span></span>
                 <span class="text-xs bg-slate-100 px-2 py-0.5 rounded text-slate-500">${item.report_date}</span>
               </div>
               <p class="text-xs text-slate-600 mt-1">
-                📍 Km ${item.start_km} to ${item.end_km} | कार्य: <b>${item.work_type}</b> (${item.work_output || 0} Slprs)
+                📍 Km ${item.start_km} to ${item.end_km} | कार्य: <b>${item.work_type}</b> (${item.work_output || 0} Slprs/M)
               </p>
-              <div class="text-xs text-slate-400 mt-1 flex justify-between">
-                <span>उपस्थिति: ${item.present_count} P / ${item.absent_count} A</span>
-                <span class="text-amber-700 italic">${item.remarks || ''}</span>
+              <div class="text-xs text-slate-500 mt-1 flex flex-wrap gap-2">
+                <span class="bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded border border-emerald-200">कार्य पर: <b>${item.on_work_count || 0}</b></span>
+                <span class="bg-slate-50 text-slate-600 px-1.5 py-0.5 rounded">P: ${item.present_count} / A: ${item.absent_count}</span>
+                <span class="bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded">L: ${item.leave_count || 0} / S: ${item.sick_count || 0} / R: ${item.rest_count || 0}</span>
               </div>
+              ${item.remarks ? `<p class="text-xs text-slate-400 mt-1 italic">रिमार्क: ${item.remarks}</p>` : ''}
             </div>
           `).join('');
         } else {
@@ -518,6 +597,69 @@
 
       } catch (err) {
         console.error("Dashboard Load Error:", err);
+      }
+    }
+
+    // Submit Gang Form
+    async function handleGangSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-gang-submit');
+      btn.innerText = "सबमिट हो रहा है...";
+      btn.disabled = true;
+
+      const gangVal = document.getElementById('gang_no').value;
+      const mateSelectVal = document.getElementById('mate_select').value;
+      let finalMate = GANG_CONFIG[gangVal].mate;
+      let subMate = null;
+
+      if (mateSelectVal === 'OTHER') {
+        finalMate = "बदली मेट";
+        subMate = document.getElementById('substitute_mate_name').value;
+      }
+
+      const payload = {
+        gang_no: gangVal,
+        mate_name: finalMate,
+        substitute_mate_name: subMate,
+        total_strength: parseInt(document.getElementById('total_strength').value),
+        present_count: parseInt(document.getElementById('present_count').value),
+        absent_count: parseInt(document.getElementById('absent_count').value),
+        leave_count: parseInt(document.getElementById('leave_count').value || 0),
+        sick_count: parseInt(document.getElementById('sick_count').value || 0),
+        rest_count: parseInt(document.getElementById('rest_count').value || 0),
+        
+        mate_count: parseInt(document.getElementById('mate_count').value || 0),
+        keyman_count: parseInt(document.getElementById('keyman_count').value || 0),
+        patrolman_count: parseInt(document.getElementById('patrolman_count').value || 0),
+        night_watchman_count: parseInt(document.getElementById('night_watchman_count').value || 0),
+        training_count: parseInt(document.getElementById('training_count').value || 0),
+        welder_count: parseInt(document.getElementById('welder_count').value || 0),
+        blacksmith_count: parseInt(document.getElementById('blacksmith_count').value || 0),
+        painter_count: parseInt(document.getElementById('painter_count').value || 0),
+        pump_count: parseInt(document.getElementById('pump_count').value || 0),
+        protection_count: parseInt(document.getElementById('protection_count').value || 0),
+        on_work_count: parseInt(document.getElementById('on_work_count').value || 0),
+
+        line_name: document.getElementById('line_name').value,
+        start_km: parseFloat(document.getElementById('start_km').value),
+        end_km: parseFloat(document.getElementById('end_km').value),
+        work_type: document.getElementById('work_type').value,
+        work_output: parseInt(document.getElementById('work_output').value),
+        remarks: document.getElementById('remarks').value
+      };
+
+      const { error } = await supabaseClient.from('gang_daily_reports').insert([payload]);
+
+      btn.innerText = "मुकद्दम डायरी सबमिट करें (Submit Diary)";
+      btn.disabled = false;
+
+      if (error) {
+        alert("Error: " + error.message);
+      } else {
+        alert("✅ मुकद्दम दैनिक डायरी सफलतापूर्वक दर्ज हो गई!");
+        document.getElementById('form-gang').reset();
+        handleGangUnitChange();
+        switchTab('dashboard');
       }
     }
 
@@ -570,41 +712,6 @@
       }
     }
 
-    // Gang Form Submission
-    async function handleGangSubmit(e) {
-      e.preventDefault();
-      const btn = document.getElementById('btn-gang-submit');
-      btn.innerText = "सबमिट हो रहा है...";
-      btn.disabled = true;
-
-      const payload = {
-        gang_no: document.getElementById('gang_no').value,
-        mate_name: document.getElementById('mate_name').value,
-        total_strength: parseInt(document.getElementById('total_strength').value),
-        present_count: parseInt(document.getElementById('present_count').value),
-        absent_count: parseInt(document.getElementById('absent_count').value),
-        line_name: document.getElementById('line_name').value,
-        start_km: parseFloat(document.getElementById('start_km').value),
-        end_km: parseFloat(document.getElementById('end_km').value),
-        work_type: document.getElementById('work_type').value,
-        work_output: parseInt(document.getElementById('work_output').value),
-        remarks: document.getElementById('remarks').value
-      };
-
-      const { error } = await supabaseClient.from('gang_daily_reports').insert([payload]);
-
-      btn.innerText = "डेटा सबमिट करें";
-      btn.disabled = false;
-
-      if (error) {
-        alert("Error: " + error.message);
-      } else {
-        alert("✅ मुकद्दम डायरी दर्ज हो गई!");
-        document.getElementById('form-gang').reset();
-        switchTab('dashboard');
-      }
-    }
-
     // Load Inspection Table
     async function loadInspections() {
       const { data } = await supabaseClient.from('inspections').select('*').order('scheduled_date', { ascending: true });
@@ -652,7 +759,8 @@
       }
     }
 
-    // Init
+    // Init Calls
+    handleGangUnitChange();
     filterKeymanByGang();
     loadDashboardData();
   </script>
