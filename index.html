@@ -120,10 +120,8 @@
       </div>
     </div>
 
-    <!-- 2. COMBINED MUKADDAM / GANG HUB (सुबह हाजिरी + शाम कार्य डायरी) -->
+    <!-- 2. COMBINED MUKADDAM / GANG HUB -->
     <div id="view-mate-hub" class="hidden max-w-3xl mx-auto space-y-4">
-      
-      <!-- Sub Tab Switcher Inside Mate Section -->
       <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-sm flex gap-2">
         <button onclick="switchMateSubTab('morning')" id="subtab-btn-morning" class="flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-amber-500 text-white">
           <i data-lucide="sun" class="w-4 h-4"></i> 1. सुबह 08:00 हाजिरी व प्रस्तावित प्लान
@@ -152,8 +150,8 @@
             <div>
               <label class="block font-medium text-slate-700 mb-1">गैंग नंबर (Gang Unit)</label>
               <select id="m_gang_no" onchange="handleMorningGangChange()" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white font-medium" required>
-                <option value="Unit No. 13">यूनिट नंबर 13</option>
                 <option value="Unit No. 12">यूनिट नंबर 12</option>
+                <option value="Unit No. 13">यूनिट नंबर 13</option>
                 <option value="Unit No. 14">यूनिट नंबर 14</option>
               </select>
             </div>
@@ -169,13 +167,13 @@
             </div>
           </div>
 
-          <!-- Attendance Breakdown (Freshly Zeroed Defaults) -->
+          <!-- Attendance Breakdown -->
           <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100 space-y-3">
             <div class="flex justify-between items-center">
               <h3 class="font-bold text-blue-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
                 <i data-lucide="users" class="w-4 h-4 text-blue-600"></i> 1. हाजिरी विवरण (Muster)
               </h3>
-              <span class="text-xs font-semibold text-blue-700">ऑटो-बैलेंस (कुल = 25)</span>
+              <span class="text-xs font-semibold text-blue-700">ऑटो-बैलेंस</span>
             </div>
             
             <div class="grid grid-cols-2 md:grid-cols-6 gap-3 text-xs">
@@ -206,7 +204,7 @@
             </div>
           </div>
 
-          <!-- Duty Breakdown (Mate = 1, All Others = 0) -->
+          <!-- Duty Breakdown -->
           <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
             <div class="flex justify-between items-center">
               <h3 class="font-bold text-slate-800 text-xs uppercase tracking-wider flex items-center gap-1.5">
@@ -309,8 +307,8 @@
         <div class="mb-4">
           <label class="block font-medium text-slate-700 mb-1 text-sm">गैंग नंबर सेलेक्ट करें</label>
           <select id="e_gang_no" onchange="fetchMorningMusterForEvening()" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white font-medium text-sm">
-            <option value="Unit No. 13">यूनिट नंबर 13</option>
             <option value="Unit No. 12">यूनिट नंबर 12</option>
+            <option value="Unit No. 13">यूनिट नंबर 13</option>
             <option value="Unit No. 14">यूनिट नंबर 14</option>
           </select>
         </div>
@@ -383,18 +381,24 @@
 
     </div>
 
-    <!-- 3. KEYMAN BEAT REPORT -->
+    <!-- 3. KEYMAN BEAT REPORT (UPDATED WITH DYNAMIC SINGLE WORK LIST & SERIAL ORDER) -->
     <div id="view-keyman" class="hidden max-w-3xl mx-auto bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-      <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2 border-b pb-2">
-        <i data-lucide="wrench" class="text-emerald-600"></i> कीमैन बीट दैनिक प्रोग्रेस रिपोर्ट
-      </h2>
+      <div class="border-b pb-3 mb-4">
+        <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+          <i data-lucide="wrench" class="text-emerald-600"></i> कीमैन बीट दैनिक प्रोग्रेस रिपोर्ट
+        </h2>
+        <p class="text-xs text-slate-500 mt-0.5">तीनों लाइनों का संयुक्त निरीक्षण — कार्य चुनते ही संबंधित इनपुट बॉक्स स्वतः खुल जाएगा।</p>
+      </div>
+
       <form id="form-keyman" onsubmit="handleKeymanSubmit(event)" class="space-y-4 text-sm">
+        
+        <!-- Gang Serial Order: Unit 12, 13, 14 -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label class="block font-medium text-slate-700 mb-1">गैंग नंबर (Gang Unit)</label>
             <select id="k_gang_no" onchange="filterKeymanByGang()" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white font-medium" required>
-              <option value="Unit No. 13">यूनिट नंबर 13</option>
               <option value="Unit No. 12">यूनिट नंबर 12</option>
+              <option value="Unit No. 13">यूनिट नंबर 13</option>
               <option value="Unit No. 14">यूनिट नंबर 14</option>
             </select>
           </div>
@@ -406,62 +410,56 @@
 
           <div>
             <label class="block font-medium text-slate-700 mb-1">बदली कर्मचारी (यदि अन्य हो)</label>
-            <input type="text" id="k_substitute_name" disabled placeholder="कर्मचारी का नाम लिखें" class="w-full border rounded-lg p-2 bg-slate-100 text-slate-400 cursor-not-allowed">
+            <input type="text" id="k_substitute_name" disabled placeholder="कार्यवाहक कीमैन का नाम" class="w-full border rounded-lg p-2 bg-slate-100 text-slate-400 cursor-not-allowed">
           </div>
         </div>
 
-        <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 grid grid-cols-3 gap-4">
+        <!-- Beat Length (Line name completely removed) -->
+        <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-semibold text-slate-500 mb-1">लाइन (Auto Track Line)</label>
-            <input type="text" id="k_line_name" class="w-full border rounded p-1.5 bg-white font-semibold text-slate-700" required>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">📍 बीट शुरू Km (Start Km)</label>
+            <input type="number" step="0.001" id="k_start_km" class="w-full border rounded p-2 bg-white font-semibold text-slate-700" placeholder="उदा. 100.000" required>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-500 mb-1">बीट शुरू Km</label>
-            <input type="number" step="0.001" id="k_start_km" class="w-full border rounded p-1.5 bg-white font-semibold text-slate-700" required>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-500 mb-1">बीट खत्म Km</label>
-            <input type="number" step="0.001" id="k_end_km" class="w-full border rounded p-1.5 bg-white font-semibold text-slate-700" required>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">🏁 बीट खत्म Km (End Km)</label>
+            <input type="number" step="0.001" id="k_end_km" class="w-full border rounded p-2 bg-white font-semibold text-slate-700" placeholder="उदा. 104.000" required>
           </div>
         </div>
 
-        <div class="border-t pt-3">
-          <h3 class="font-bold text-slate-800 text-sm mb-2 flex items-center gap-1.5 text-emerald-700">
-            <i data-lucide="check-circle-2" class="w-4 h-4"></i> दैनिक अनुरक्षण कार्य प्रोग्रेस
-          </h3>
+        <!-- DYNAMIC SINGLE WORK ITEM SELECTION -->
+        <div class="border rounded-xl p-4 bg-emerald-50/40 border-emerald-100 space-y-3">
+          <div>
+            <label class="block font-bold text-slate-800 text-xs mb-1 uppercase tracking-wider text-emerald-800">
+              🛠️ दैनिक अनुरक्षण कार्य का चयन करें (Select Work)
+            </label>
+            <select id="k_work_category" onchange="handleKeymanWorkCategoryChange()" class="w-full border border-emerald-300 rounded-lg p-2.5 bg-white font-medium text-slate-800" required>
+              <option value="grass_cutting">🌱 1. घास सफाई कार्य (Grass Cutting)</option>
+              <option value="herbicide_spray">🧪 2. दवाई छिड़काव (Herbicide Spray)</option>
+              <option value="curve_greasing">🛤️ 3. Curve Greasing</option>
+              <option value="sej_greasing">🔩 4. SEJ Greasing</option>
+              <option value="pt_crossing_greasing">🔀 5. Points & Crossing Greasing</option>
+              <option value="general_patrol">🔍 6. सामान्य बीट पेट्रोलिंग / अन्य कार्य</option>
+            </select>
+          </div>
 
-          <div class="space-y-3">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 bg-emerald-50/50 p-3 rounded-lg border border-emerald-100">
-              <div>
-                <label class="block font-semibold text-slate-700 text-xs mb-1">🌱 1. घास सफाई (OHE/Km सहित)</label>
-                <input type="text" id="k_grass_cutting" placeholder="उदा. OHE 104/10 से 104/24 तक" class="w-full border rounded-lg p-2 bg-white text-xs">
-              </div>
-              <div>
-                <label class="block font-semibold text-slate-700 text-xs mb-1">🧪 2. दवाई छिड़काव</label>
-                <input type="text" id="k_herbicide_spray" placeholder="उदा. Km 104/0 से 104/6 / Nil" class="w-full border rounded-lg p-2 bg-white text-xs">
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <div>
-                <label class="block font-medium text-slate-700 text-xs mb-1">🛤️ 3. Curve Greasing</label>
-                <input type="text" id="k_curve_greasing" placeholder="Curve No. / Nil" class="w-full border rounded-lg p-2 bg-white text-xs">
-              </div>
-              <div>
-                <label class="block font-medium text-slate-700 text-xs mb-1">🔩 4. SEJ Greasing</label>
-                <input type="text" id="k_sej_greasing" placeholder="SEJ Km / Nil" class="w-full border rounded-lg p-2 bg-white text-xs">
-              </div>
-              <div>
-                <label class="block font-medium text-slate-700 text-xs mb-1">🔀 5. Points/Crossing Greasing</label>
-                <input type="text" id="k_pt_crossing" placeholder="Pt No. / Nil" class="w-full border rounded-lg p-2 bg-white text-xs">
-              </div>
-            </div>
+          <!-- Dynamic Input Box which adapts based on work selection -->
+          <div id="dynamic-work-detail-box" class="bg-white p-3 rounded-lg border border-emerald-200">
+            <label id="k_work_label" class="block font-semibold text-slate-700 text-xs mb-1">
+              घास सफाई प्रोग्रेस विवरण (OHE खंभा संख्या एवं चेनेज सहित भरें)
+            </label>
+            <input 
+              type="text" 
+              id="k_work_details" 
+              placeholder="उदा. OHE 102/12 से 102/26 (Km 102.300 से 102.650 तक)" 
+              class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white text-xs"
+              required
+            >
           </div>
         </div>
 
         <div>
-          <label class="block font-medium text-slate-700 mb-1">⚠️ खामियां / डिफेक्ट (Defects)</label>
-          <textarea id="k_defects" rows="2" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white" placeholder="खामियां या Nil लिखें..."></textarea>
+          <label class="block font-medium text-slate-700 mb-1">⚠️ ट्रैक खामियां / डिफेक्ट (Defects / Remarks)</label>
+          <textarea id="k_defects" rows="2" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white" placeholder="उदा. SEZ गैप 52mm, रबर पैड मिसिंग, या 'Nil' लिखें..."></textarea>
         </div>
 
         <button type="submit" id="btn-keyman-submit" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-lg hover:bg-emerald-700 shadow transition">
@@ -507,18 +505,20 @@
 
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+    // GANG CONFIG IN SERIAL ORDER: 12, 13, 14
     const GANG_CONFIG = {
-      'Unit No. 13': { mate: 'रूप सिंह मीणा', totalStrength: 25 },
       'Unit No. 12': { mate: 'श्रीनिवास', totalStrength: 22 },
+      'Unit No. 13': { mate: 'रूप सिंह मीणा', totalStrength: 25 },
       'Unit No. 14': { mate: 'लाखन', totalStrength: 20 }
     };
 
+    // KEYMAN DIRECTORY (All 3 lines handled by single keyman per unit)
     const KEYMAN_ROSTER = [
-      { id: 'km3', gang: 'Unit No. 13', name: 'सुरेश कुमार', line: 'UP Line', startKm: 104.000, endKm: 108.000 },
-      { id: 'km4', gang: 'Unit No. 13', name: 'राम सहाय', line: 'DN Line', startKm: 104.000, endKm: 108.000 },
-      { id: 'km1', gang: 'Unit No. 12', name: 'रामेश्वर दयाल', line: 'UP Line', startKm: 100.000, endKm: 104.000 },
-      { id: 'km2', gang: 'Unit No. 12', name: 'भगवान दास', line: 'DN Line', startKm: 100.000, endKm: 104.000 },
-      { id: 'km5', gang: 'Unit No. 14', name: 'महेंद्र सिंह', line: '3rd Line', startKm: 100.000, endKm: 105.000 },
+      { id: 'km1', gang: 'Unit No. 12', name: 'रामेश्वर दयाल', startKm: 100.000, endKm: 104.000 },
+      { id: 'km2', gang: 'Unit No. 12', name: 'भगवान दास', startKm: 100.000, endKm: 104.000 },
+      { id: 'km3', gang: 'Unit No. 13', name: 'सुरेश कुमार', startKm: 104.000, endKm: 108.000 },
+      { id: 'km4', gang: 'Unit No. 13', name: 'राम सहाय', startKm: 104.000, endKm: 108.000 },
+      { id: 'km5', gang: 'Unit No. 14', name: 'महेंद्र सिंह', startKm: 108.000, endKm: 116.000 },
     ];
 
     lucide.createIcons();
@@ -562,13 +562,11 @@
     // MORNING FORM: RESET TO CLEAN ZERO DEFAULTS
     // ----------------------------------------------------
     function resetMorningFormToDefaults() {
-      // 1. Attendance zeroes
       document.getElementById('m_absent_count').value = 0;
       document.getElementById('m_leave_count').value = 0;
       document.getElementById('m_sick_count').value = 0;
       document.getElementById('m_rest_count').value = 0;
 
-      // 2. Specialized duties: Mate = 1, ALL other = 0
       document.getElementById('m_mate_count').value = 1;
       document.getElementById('m_keyman_count').value = 0;
       document.getElementById('m_patrol_count').value = 0;
@@ -581,14 +579,12 @@
       document.getElementById('m_prot_count').value = 0;
       document.getElementById('m_other_count').value = 0;
 
-      // 3. Clear text inputs
       document.getElementById('m_planned_location').value = "";
       const subInput = document.getElementById('m_substitute_mate');
       subInput.value = "";
       subInput.disabled = true;
       subInput.className = "w-full border rounded-lg p-2 bg-slate-100 text-slate-400 cursor-not-allowed";
 
-      // 4. Recalculate cleanly
       calculateMorningNumbers();
     }
 
@@ -629,7 +625,6 @@
       const sick = Math.max(0, parseInt(document.getElementById('m_sick_count').value) || 0);
       const rest = Math.max(0, parseInt(document.getElementById('m_rest_count').value) || 0);
 
-      // Present = Total - (Absent + Leave + Sick + Rest)
       const present = Math.max(0, total - (absent + leave + sick + rest));
       document.getElementById('m_present_count').value = present;
 
@@ -719,8 +714,6 @@
         alert("Error: " + error.message);
       } else {
         alert("✅ सुबह 08:00 बजे की हाजिरी दर्ज हो गई!");
-        
-        // Pura form 100% clean zero defaults par reset
         resetMorningFormToDefaults();
         switchTab('dashboard');
       }
@@ -848,14 +841,14 @@
     }
 
     // ----------------------------------------------------
-    // KEYMAN LOGIC
+    // KEYMAN SECTION LOGIC (DYNAMIC WORK & NO LINE)
     // ----------------------------------------------------
     function filterKeymanByGang() {
       const selectedGang = document.getElementById('k_gang_no').value;
       const selectEl = document.getElementById('k_keyman_select');
       const filtered = KEYMAN_ROSTER.filter(k => k.gang === selectedGang);
 
-      let optionsHtml = filtered.map(k => `<option value="${k.id}">${k.name} (${k.line})</option>`).join('');
+      let optionsHtml = filtered.map(k => `<option value="${k.id}">${k.name}</option>`).join('');
       optionsHtml += `<option value="OTHER">-- अन्य कर्मचारी (Substitute / Badli) --</option>`;
       selectEl.innerHTML = optionsHtml;
       handleKeymanSelectionChange();
@@ -871,7 +864,6 @@
         subInput.className = "w-full border rounded-lg p-2 bg-white text-slate-800 border-amber-400 focus:ring-1 focus:ring-amber-500";
         subInput.focus();
         subInput.required = true;
-        document.getElementById('k_line_name').value = "UP Line";
         document.getElementById('k_start_km').value = "";
         document.getElementById('k_end_km').value = "";
       } else {
@@ -882,10 +874,36 @@
 
         const record = KEYMAN_ROSTER.find(k => k.id === selectedVal);
         if (record) {
-          document.getElementById('k_line_name').value = record.line;
           document.getElementById('k_start_km').value = record.startKm.toFixed(3);
           document.getElementById('k_end_km').value = record.endKm.toFixed(3);
         }
+      }
+    }
+
+    // Dynamic work option changes label & placeholder
+    function handleKeymanWorkCategoryChange() {
+      const cat = document.getElementById('k_work_category').value;
+      const labelEl = document.getElementById('k_work_label');
+      const inputEl = document.getElementById('k_work_details');
+
+      if (cat === 'grass_cutting') {
+        labelEl.innerText = "घास सफाई प्रोग्रेस (OHE खंभा संख्या एवं चेनेज सहित)";
+        inputEl.placeholder = "उदा. OHE 102/12 से 102/26 (Km 102.300 से 102.650 तक)";
+      } else if (cat === 'herbicide_spray') {
+        labelEl.innerText = "दवाई छिड़काव प्रोग्रेस (स्थान व लंबाई)";
+        inputEl.placeholder = "उदा. Km 104/0 से 104/8 तक दोनों तरफ छिड़काव किया";
+      } else if (cat === 'curve_greasing') {
+        labelEl.innerText = "Curve Greasing विवरण (कर्व नंबर व स्थिति)";
+        inputEl.placeholder = "उदा. Curve No. 4 एवं 5 की गेज फेस ग्रीसिंग पूर्ण";
+      } else if (cat === 'sej_greasing') {
+        labelEl.innerText = "SEJ Greasing विवरण (स्थान व गैप)";
+        inputEl.placeholder = "उदा. SEJ Km 104/1-2 greased, गैप 54mm पाया गया";
+      } else if (cat === 'pt_crossing_greasing') {
+        labelEl.innerText = "Points & Crossing Greasing विवरण (पॉइंट नंबर)";
+        inputEl.placeholder = "उदा. Point No. 101A, B एवं 102 स्लाइड चेयर ग्रीसिंग पूर्ण";
+      } else {
+        labelEl.innerText = "सामान्य बीट पेट्रोलिंग / अन्य कार्य विवरण";
+        inputEl.placeholder = "उदा. सामान्य पेट्रोलिंग पूर्ण, सभी फिटिंग्स जांची गईं";
       }
     }
 
@@ -899,18 +917,24 @@
       let finalKeymanName = (selectEl.value === 'OTHER') ? "बदली कर्मचारी" : (KEYMAN_ROSTER.find(k => k.id === selectEl.value)?.name || "Keyman");
       let substituteName = (selectEl.value === 'OTHER') ? document.getElementById('k_substitute_name').value : null;
 
+      const cat = document.getElementById('k_work_category').value;
+      const details = document.getElementById('k_work_details').value;
+
       const payload = {
         gang_no: document.getElementById('k_gang_no').value,
         keyman_name: finalKeymanName,
         substitute_name: substituteName,
-        line_name: document.getElementById('k_line_name').value,
+        line_name: "All 3 Lines",
         beat_start_km: parseFloat(document.getElementById('k_start_km').value),
         beat_end_km: parseFloat(document.getElementById('k_end_km').value),
-        grass_cutting: document.getElementById('k_grass_cutting').value || null,
-        herbicide_spray: document.getElementById('k_herbicide_spray').value || null,
-        curve_greasing: document.getElementById('k_curve_greasing').value || null,
-        sej_greasing: document.getElementById('k_sej_greasing').value || null,
-        pt_crossing_greasing: document.getElementById('k_pt_crossing').value || null,
+        work_category: cat,
+        work_details: details,
+        // Backward compatibility mapping
+        grass_cutting: (cat === 'grass_cutting') ? details : null,
+        herbicide_spray: (cat === 'herbicide_spray') ? details : null,
+        curve_greasing: (cat === 'curve_greasing') ? details : null,
+        sej_greasing: (cat === 'sej_greasing') ? details : null,
+        pt_crossing_greasing: (cat === 'pt_crossing_greasing') ? details : null,
         defects: document.getElementById('k_defects').value || null
       };
 
@@ -922,13 +946,12 @@
       if (error) {
         alert("Error: " + error.message);
       } else {
-        alert("✅ कीमैन बीट रिपोर्ट दर्ज हो गई!");
-        document.getElementById('k_grass_cutting').value = "";
-        document.getElementById('k_herbicide_spray').value = "";
-        document.getElementById('k_curve_greasing').value = "";
-        document.getElementById('k_sej_greasing').value = "";
-        document.getElementById('k_pt_crossing').value = "";
+        alert("✅ कीमैन बीट रिपोर्ट सफलतापूर्वक दर्ज हो गई!");
+        // Reset dynamic field and defects
+        document.getElementById('k_work_details').value = "";
         document.getElementById('k_defects').value = "";
+        document.getElementById('k_work_category').value = "grass_cutting";
+        handleKeymanWorkCategoryChange();
         filterKeymanByGang();
         switchTab('dashboard');
       }
@@ -988,16 +1011,13 @@
           keyListEl.innerHTML = keymans.map(item => `
             <div class="py-3">
               <div class="flex justify-between font-semibold text-slate-800">
-                <span>${item.keyman_name} — <span class="text-emerald-600">${item.line_name}</span></span>
+                <span>${item.keyman_name} ${item.substitute_name ? `<span class="text-xs text-amber-600">(बदली: ${item.substitute_name})</span>` : ''} (${item.gang_no})</span>
                 <span class="text-xs bg-slate-100 px-2 py-0.5 rounded text-slate-500">${item.log_date}</span>
               </div>
-              <p class="text-xs text-slate-500 mt-0.5">Beat: Km ${item.beat_start_km} से ${item.beat_end_km} (${item.gang_no})</p>
+              <p class="text-xs text-slate-500 mt-0.5">Beat: Km ${item.beat_start_km} से ${item.beat_end_km} (तीनों लाइनें)</p>
               <div class="mt-1 space-y-0.5 text-xs text-slate-700 bg-slate-50 p-2 rounded">
-                ${item.grass_cutting ? `<div>🌱 <b>घास सफाई:</b> ${item.grass_cutting}</div>` : ''}
-                ${item.herbicide_spray ? `<div>🧪 <b>दवाई छिड़काव:</b> ${item.herbicide_spray}</div>` : ''}
-                ${item.curve_greasing ? `<div>🛤️ <b>Curve Greasing:</b> ${item.curve_greasing}</div>` : ''}
-                ${item.sej_greasing ? `<div>🔩 <b>SEJ Greasing:</b> ${item.sej_greasing}</div>` : ''}
-                ${item.pt_crossing_greasing ? `<div>🔀 <b>Points/Crossing:</b> ${item.pt_crossing_greasing}</div>` : ''}
+                ${item.work_details ? `<div>🛠️ <b>कार्य:</b> ${item.work_details}</div>` : ''}
+                ${item.grass_cutting && !item.work_details ? `<div>🌱 <b>घास सफाई:</b> ${item.grass_cutting}</div>` : ''}
                 ${item.defects ? `<div class="text-rose-600 font-semibold mt-1">⚠️ Defect: ${item.defects}</div>` : ''}
               </div>
             </div>
@@ -1058,6 +1078,7 @@
     // Initialize cleanly on load
     handleMorningGangChange();
     filterKeymanByGang();
+    handleKeymanWorkCategoryChange();
     loadDashboardData();
   </script>
 </body>
