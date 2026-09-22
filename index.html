@@ -12,7 +12,7 @@
 <body class="bg-slate-100 text-slate-900 font-sans min-h-screen flex flex-col relative">
 
   <!-- TOP HEADER BAR -->
-  <header class="bg-slate-900 text-white sticky top-0 z-40 shadow-md">
+  <header class="bg-slate-900 text-white sticky top-0 z-30 shadow-md">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
       <div>
         <h1 class="text-xl font-bold flex items-center gap-2 text-emerald-400">
@@ -21,27 +21,27 @@
         <p class="text-xs text-slate-400">Section: 16 Km × 3 Lines (UP / DN / 3rd Line) — 48 TKM</p>
       </div>
       
-      <!-- NAVIGATION TABS (NO DASHBOARD BUTTON - ONLY AUTHENTICATED TABS & LOGIN BUTTON) -->
+      <!-- NAVIGATION TABS -->
       <div id="nav-tabs-container" class="flex flex-wrap items-center gap-2">
         
-        <!-- RESTRICTED TABS (Hidden until user logs in) -->
-        <button onclick="switchTab('sagoni-hub')" id="tab-sagoni-hub" class="tab-btn hidden px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+        <!-- RESTRICTED TABS (Hidden by default, shown ONLY after login) -->
+        <button onclick="switchTab('sagoni-hub')" id="tab-sagoni-hub" style="display: none;" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
           🚉 Section / JE P.Way Sagoni
         </button>
-        <button onclick="switchTab('mate-hub')" id="tab-mate-hub" class="tab-btn hidden px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+        <button onclick="switchTab('mate-hub')" id="tab-mate-hub" style="display: none;" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
           👷 मुकद्दम / Gang Diary
         </button>
-        <button onclick="switchTab('keyman')" id="tab-keyman" class="tab-btn hidden px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+        <button onclick="switchTab('keyman')" id="tab-keyman" style="display: none;" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
           🔧 Keyman Beat Log
         </button>
 
         <!-- Profile Pill & Login / Logout Action Button -->
         <div class="flex items-center gap-2">
-          <span id="user-badge" class="text-xs bg-emerald-950 text-emerald-300 border border-emerald-700/50 px-2.5 py-1 rounded-full font-semibold hidden flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="user-badge" style="display: none;" class="text-xs bg-emerald-950 text-emerald-300 border border-emerald-700 px-2.5 py-1 rounded-full font-semibold items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
             <span id="user-badge-text"></span>
           </span>
-          <button id="auth-btn" type="button" onclick="handleAuthAction()" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-xs font-bold text-white shadow-sm transition flex items-center gap-1.5 cursor-pointer">
+          <button id="auth-btn" type="button" onclick="handleAuthAction()" class="px-4 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-xs font-bold text-white shadow-sm transition flex items-center gap-1.5 cursor-pointer">
             <i data-lucide="log-in" class="w-3.5 h-3.5"></i> <span id="auth-btn-text">लॉगिन</span>
           </button>
         </div>
@@ -50,65 +50,57 @@
   </header>
 
   <!-- ==================================================== -->
-  <!-- RANG-BIRANGA MODERN LOGIN TABLET / MODAL POPUP -->
+  <!-- 100% RELIABLE MODERN LOGIN MODAL POPUP -->
   <!-- ==================================================== -->
-  <div id="login-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-    <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden border border-slate-200 animate-in fade-in zoom-in duration-200">
+  <div id="login-modal" style="display: none;" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
       
-      <!-- Tablet Header with Gradient & Railway Graphic -->
+      <!-- Tablet Header with Gradient -->
       <div class="bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 p-6 text-white text-center relative">
-        <button type="button" onclick="closeLoginModal()" class="absolute top-4 right-4 text-white/80 hover:text-white bg-black/20 hover:bg-black/30 rounded-full p-1.5 transition cursor-pointer">
+        <button type="button" onclick="closeLoginModal()" class="absolute top-4 right-4 text-white/80 hover:text-white bg-black/20 hover:bg-black/40 rounded-full p-2 transition cursor-pointer">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
-        <div class="inline-flex p-3 rounded-2xl bg-white/15 backdrop-blur-md mb-2 shadow-inner border border-white/20">
+        <div class="inline-flex p-3 rounded-2xl bg-white/15 backdrop-blur-md mb-2 border border-white/20">
           <i data-lucide="shield-check" class="w-8 h-8 text-emerald-300"></i>
         </div>
         <h3 class="text-xl font-black tracking-wide">TRACKCARE PORTAL LOGIN</h3>
-        <p class="text-xs text-blue-100 mt-1">अधिकृत रेल कर्मचारी पहचान दर्ज करें</p>
+        <p class="text-xs text-blue-100 mt-1">कर्मचारी पद चुनें एवं 4-अंकों का पिन दर्ज करें</p>
       </div>
 
-      <!-- Tablet Login Form -->
-      <form onsubmit="handleModernLogin(event)" class="p-6 space-y-4">
+      <!-- Tablet Login Body -->
+      <div class="p-6 space-y-4">
         <div>
           <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-            1. पद / कर्मचारी चुनें (Select User Role)
+            1. पद / कर्मचारी चुनें (Select Role)
           </label>
-          <div class="relative">
-            <select id="login_user_select" class="w-full border-2 border-slate-200 rounded-xl p-3 bg-slate-50 focus:bg-white focus:border-blue-600 text-sm font-semibold text-slate-800 appearance-none pr-10" required>
-              <option value="je_sagoni">🚉 Sectional JE / P-Way Sagoni</option>
-              <option value="mate12">👷 मुकद्दम (Unit No. 12 - श्रीनिवास)</option>
-              <option value="mate13">👷 मुकद्दम (Unit No. 13 - रूप सिंह मीणा)</option>
-              <option value="mate14">👷 मुकद्दम (Unit No. 14 - लाखन)</option>
-              <option value="keyman">🔧 चाबीदार / सेक्शन कीमैन (Keyman)</option>
-            </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
-              <i data-lucide="chevron-down" class="w-4 h-4"></i>
-            </div>
-          </div>
+          <select id="login_user_select" class="w-full border-2 border-slate-200 rounded-xl p-3 bg-slate-50 focus:bg-white focus:border-blue-600 text-sm font-semibold text-slate-800">
+            <option value="je_sagoni">🚉 Sectional JE / P-Way Sagoni</option>
+            <option value="mate12">👷 मुकद्दम (Unit No. 12 - श्रीनिवास)</option>
+            <option value="mate13">👷 मुकद्दम (Unit No. 13 - रूप सिंह मीणा)</option>
+            <option value="mate14">👷 मुकद्दम (Unit No. 14 - लाखन)</option>
+            <option value="keyman">🔧 चाबीदार / सेक्शन कीमैन (Keyman)</option>
+          </select>
         </div>
 
         <div>
           <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-            2. 4-अंकों का सुरक्षा पिन (Security PIN)
+            2. 4-अंकों का सुरक्षा पिन (PIN)
           </label>
-          <div class="relative">
-            <input 
-              type="password" 
-              id="login_pin" 
-              maxlength="4" 
-              placeholder="••••" 
-              class="w-full border-2 border-slate-200 rounded-xl p-3 text-center text-2xl tracking-[0.5em] font-black bg-slate-50 focus:bg-white focus:border-blue-600 text-slate-800" 
-              required
-            >
-          </div>
-          <span class="text-[11px] text-slate-400 mt-1 block text-center font-medium">पिन: JE (1234), U12 (1212), U13 (1313), U14 (1414), Keyman (5555)</span>
+          <input 
+            type="password" 
+            id="login_pin" 
+            maxlength="4" 
+            placeholder="••••" 
+            class="w-full border-2 border-slate-200 rounded-xl p-3 text-center text-2xl tracking-[0.5em] font-black bg-slate-50 focus:bg-white focus:border-blue-600 text-slate-800"
+          >
+          <span class="text-[11px] text-slate-400 mt-1 block text-center font-medium">डिफ़ॉल्ट पिन: JE (1234), U12 (1212), U13 (1313), U14 (1414), Keyman (5555)</span>
         </div>
 
-        <button type="submit" id="btn-modal-login" class="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 cursor-pointer">
+        <button type="button" onclick="performLogin()" id="btn-modal-login" class="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 cursor-pointer">
           <span>पोर्टल में प्रवेश करें</span>
           <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </button>
-      </form>
+      </div>
 
     </div>
   </div>
@@ -262,7 +254,7 @@
     </div>
 
     <!-- 2. SECTION / JE P.WAY SAGONI (Visible ONLY after JE Login) -->
-    <div id="view-sagoni-hub" class="hidden space-y-6">
+    <div id="view-sagoni-hub" style="display: none;" class="space-y-6">
       
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
@@ -370,7 +362,7 @@
     </div>
 
     <!-- 3. MUKADDAM GANG HUB (Visible ONLY after Mate / JE Login) -->
-    <div id="view-mate-hub" class="hidden max-w-3xl mx-auto space-y-4">
+    <div id="view-mate-hub" style="display: none;" class="max-w-3xl mx-auto space-y-4">
       <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-sm flex gap-2">
         <button onclick="switchMateSubTab('morning')" id="subtab-btn-morning" class="flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-amber-500 text-white cursor-pointer">
           <i data-lucide="sun" class="w-4 h-4"></i> 1. सुबह 08:00 हाजिरी व प्रस्तावित प्लान
@@ -628,7 +620,7 @@
     </div>
 
     <!-- 4. KEYMAN BEAT REPORT (Visible ONLY after Keyman / JE Login) -->
-    <div id="view-keyman" class="hidden max-w-3xl mx-auto bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+    <div id="view-keyman" style="display: none;" class="max-w-3xl mx-auto bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
       <div class="border-b pb-3 mb-4">
         <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
           <i data-lucide="wrench" class="text-emerald-600"></i> कीमैन बीट दैनिक प्रोग्रेस रिपोर्ट
@@ -746,7 +738,7 @@
     lucide.createIcons();
 
     // ----------------------------------------------------
-    // POPUP LOGIN / LOGOUT LOGIC
+    // BULLETPROOF POPUP LOGIN / LOGOUT LOGIC
     // ----------------------------------------------------
     function handleAuthAction() {
       if (currentUser) {
@@ -762,17 +754,18 @@
     }
 
     function openLoginModal() {
-      document.getElementById('login-modal').classList.remove('hidden');
-      document.getElementById('login_pin').value = "";
-      setTimeout(() => document.getElementById('login_pin').focus(), 100);
+      const modal = document.getElementById('login-modal');
+      modal.style.display = 'flex';
+      const pinInput = document.getElementById('login_pin');
+      pinInput.value = "";
+      setTimeout(() => pinInput.focus(), 150);
     }
 
     function closeLoginModal() {
-      document.getElementById('login-modal').classList.add('hidden');
+      document.getElementById('login-modal').style.display = 'none';
     }
 
-    function handleModernLogin(e) {
-      e.preventDefault();
+    function performLogin() {
       const username = document.getElementById('login_user_select').value;
       const pin = document.getElementById('login_pin').value.trim();
 
@@ -785,15 +778,26 @@
         updateUIPerUserRole();
 
         // Direct user straight to their exclusive section
-        if (currentUser.role === 'JE') switchTab('sagoni-hub');
-        else if (currentUser.role === 'MATE') switchTab('mate-hub');
-        else if (currentUser.role === 'KEYMAN') switchTab('keyman');
+        if (currentUser.role === 'JE') {
+          switchTab('sagoni-hub');
+        } else if (currentUser.role === 'MATE') {
+          switchTab('mate-hub');
+        } else if (currentUser.role === 'KEYMAN') {
+          switchTab('keyman');
+        }
       } else {
         alert("❌ गलत सुरक्षा पिन! कृपया सही पिन दर्ज करें।");
         document.getElementById('login_pin').value = "";
         document.getElementById('login_pin').focus();
       }
     }
+
+    // Allow Enter key to trigger login in PIN box
+    document.getElementById('login_pin').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        performLogin();
+      }
+    });
 
     function updateUIPerUserRole() {
       const authBtnText = document.getElementById('auth-btn-text');
@@ -806,37 +810,37 @@
 
       if (currentUser) {
         authBtnText.innerText = "लॉगआउट";
-        authBtn.className = "px-3.5 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-xs font-bold text-white shadow-sm transition flex items-center gap-1.5 cursor-pointer";
+        authBtn.className = "px-4 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-xs font-bold text-white shadow-sm transition flex items-center gap-1.5 cursor-pointer";
         badgeText.innerText = `${currentUser.full_name}`;
-        badge.classList.remove('hidden');
+        badge.style.display = 'inline-flex';
 
         // Show only the authorized tabs for this role
         if (currentUser.role === 'JE') {
-          tabSagoni.classList.remove('hidden');
-          tabMate.classList.remove('hidden');
-          tabKeyman.classList.remove('hidden');
+          tabSagoni.style.display = 'inline-block';
+          tabMate.style.display = 'inline-block';
+          tabKeyman.style.display = 'inline-block';
         } else if (currentUser.role === 'MATE') {
-          tabSagoni.classList.add('hidden');
-          tabMate.classList.remove('hidden');
-          tabKeyman.classList.add('hidden');
+          tabSagoni.style.display = 'none';
+          tabMate.style.display = 'inline-block';
+          tabKeyman.style.display = 'none';
           
           document.getElementById('m_gang_no').value = currentUser.gang_unit;
           document.getElementById('m_gang_no').disabled = true;
           document.getElementById('e_gang_no').value = currentUser.gang_unit;
           document.getElementById('e_gang_no').disabled = true;
         } else if (currentUser.role === 'KEYMAN') {
-          tabSagoni.classList.add('hidden');
-          tabMate.classList.add('hidden');
-          tabKeyman.classList.remove('hidden');
+          tabSagoni.style.display = 'none';
+          tabMate.style.display = 'none';
+          tabKeyman.style.display = 'inline-block';
         }
       } else {
         authBtnText.innerText = "लॉगिन";
-        authBtn.className = "px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-xs font-bold text-white shadow-sm transition flex items-center gap-1.5 cursor-pointer";
-        badge.classList.add('hidden');
+        authBtn.className = "px-4 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-xs font-bold text-white shadow-sm transition flex items-center gap-1.5 cursor-pointer";
+        badge.style.display = 'none';
         
-        tabSagoni.classList.add('hidden');
-        tabMate.classList.add('hidden');
-        tabKeyman.classList.add('hidden');
+        tabSagoni.style.display = 'none';
+        tabMate.style.display = 'none';
+        tabKeyman.style.display = 'none';
       }
       lucide.createIcons();
     }
@@ -850,13 +854,18 @@
         return;
       }
 
-      ['dashboard', 'sagoni-hub', 'mate-hub', 'keyman'].forEach(id => {
-        document.getElementById(`view-${id}`).classList.add('hidden');
+      const allTabs = ['dashboard', 'sagoni-hub', 'mate-hub', 'keyman'];
+      allTabs.forEach(id => {
+        const viewEl = document.getElementById(`view-${id}`);
+        if (viewEl) viewEl.style.display = 'none';
+
         const tabBtn = document.getElementById(`tab-${id}`);
         if (tabBtn) tabBtn.className = "tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition";
       });
 
-      document.getElementById(`view-${tabId}`).classList.remove('hidden');
+      const activeView = document.getElementById(`view-${tabId}`);
+      if (activeView) activeView.style.display = 'block';
+
       const activeBtn = document.getElementById(`tab-${tabId}`);
       if (activeBtn) activeBtn.className = "tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-blue-600 text-white transition";
 
@@ -871,13 +880,13 @@
 
     function switchMateSubTab(subTab) {
       if (subTab === 'morning') {
-        document.getElementById('subview-morning').classList.remove('hidden');
-        document.getElementById('subview-evening').classList.add('hidden');
+        document.getElementById('subview-morning').style.display = 'block';
+        document.getElementById('subview-evening').style.display = 'none';
         document.getElementById('subtab-btn-morning').className = "flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-amber-500 text-white cursor-pointer";
         document.getElementById('subtab-btn-evening').className = "flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer";
       } else {
-        document.getElementById('subview-morning').classList.add('hidden');
-        document.getElementById('subview-evening').classList.remove('hidden');
+        document.getElementById('subview-morning').style.display = 'none';
+        document.getElementById('subview-evening').style.display = 'block';
         document.getElementById('subtab-btn-evening').className = "flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-indigo-600 text-white cursor-pointer";
         document.getElementById('subtab-btn-morning').className = "flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer";
         fetchMorningMusterForEvening();
