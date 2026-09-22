@@ -1036,7 +1036,7 @@
       }
     }
 
-    // Dashboard Data Loader (Isolated in Try-Catch)
+    // Dashboard Data Loader (Crash-Proof)
     async function loadDashboardData() {
       if (!supabaseClient) return;
 
@@ -1087,7 +1087,7 @@
         const countEl = document.getElementById('dash-keyman-count');
         if (countEl) countEl.innerText = keymans ? keymans.length : 0;
 
-        // Gang Reports List
+        // Gang Reports List (Line 1109 bracket fixed!)
         const { data: allGangs } = await supabaseClient
           .from('gang_daily_reports')
           .select('*')
