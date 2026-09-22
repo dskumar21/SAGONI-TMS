@@ -8,15 +8,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    /* Instant Reliable Modal Visibility */
-    #login-modal {
-      display: none;
-    }
-    #login-modal.active {
-      display: flex !important;
-    }
-  </style>
 </head>
 <body class="bg-slate-100 text-slate-900 font-sans min-h-screen flex flex-col relative">
 
@@ -32,8 +23,9 @@
       
       <!-- NAVIGATION TABS -->
       <div id="nav-tabs-container" class="flex flex-wrap items-center gap-2">
-        
-        <!-- RESTRICTED TABS (Hidden by default, shown ONLY after login) -->
+        <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-blue-600 text-white transition">
+          📊 Dashboard
+        </button>
         <button onclick="switchTab('sagoni-hub')" id="tab-sagoni-hub" style="display: none;" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
           🚉 Section / JE P.Way Sagoni
         </button>
@@ -44,15 +36,13 @@
           🔧 Keyman Beat Log
         </button>
 
-        <!-- Profile Pill & Login / Logout Action Button -->
-        <div class="flex items-center gap-2">
-          <span id="user-badge" style="display: none;" class="text-xs bg-emerald-950 text-emerald-300 border border-emerald-700 px-2.5 py-1 rounded-full font-semibold items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
+        <!-- Profile Badge & Login / Logout Toggle -->
+        <div class="flex items-center gap-2 border-l border-slate-700 pl-2">
+          <span id="user-badge" style="display: none;" class="text-xs bg-emerald-950 text-emerald-300 border border-emerald-700 px-2.5 py-1 rounded-full font-semibold">
             <span id="user-badge-text"></span>
           </span>
-          
-          <button id="auth-btn" type="button" class="px-4 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-xs font-bold text-white shadow-sm transition cursor-pointer">
-            लॉगिन
+          <button id="auth-btn" type="button" onclick="toggleLoginCard()" class="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-xs font-bold text-white shadow-sm transition cursor-pointer">
+            🔑 लॉगिन
           </button>
         </div>
       </div>
@@ -60,71 +50,64 @@
   </header>
 
   <!-- ==================================================== -->
-  <!-- RANG-BIRANGA MODERN LOGIN TABLET / MODAL POPUP -->
+  <!-- INLINE COLORFUL LOGIN PANEL (No Hidden Modal, 100% Works) -->
   <!-- ==================================================== -->
-  <div id="login-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm items-center justify-center p-4">
-    <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
-      
-      <!-- Tablet Header with Gradient & Railway Graphic -->
-      <div class="bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 p-6 text-white text-center relative">
-        <button type="button" id="close-modal-btn" class="absolute top-4 right-4 text-white/80 hover:text-white bg-black/20 hover:bg-black/40 rounded-full p-2 transition cursor-pointer">
-          ✕
-        </button>
-        <div class="inline-flex p-3 rounded-2xl bg-white/15 backdrop-blur-md mb-2 border border-white/20">
-          <i data-lucide="shield-check" class="w-8 h-8 text-emerald-300"></i>
-        </div>
-        <h3 class="text-xl font-black tracking-wide">TRACKCARE PORTAL LOGIN</h3>
-        <p class="text-xs text-blue-100 mt-1">पद / कर्मचारी चुनें एवं 4-अंकों का पिन दर्ज करें</p>
+  <div id="login-inline-panel" style="display: none;" class="bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 border-b-4 border-emerald-400 p-4 shadow-xl">
+    <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-4 text-white">
+      <div>
+        <h3 class="font-bold text-sm text-emerald-400 flex items-center gap-1.5">
+          <i data-lucide="shield-check" class="w-4 h-4"></i> अधिकृत रेल कर्मचारी लॉगिन (Authorized Access)
+        </h3>
+        <p class="text-xs text-slate-300">पद चुनकर अपना 4-अंकों का पिन दर्ज करें और सीधे अपने अनुभाग में जाएँ</p>
       </div>
 
-      <!-- Tablet Login Body -->
-      <div class="p-6 space-y-4">
+      <div class="flex flex-wrap items-center gap-3">
+        <!-- Role Select -->
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-            1. पद / कर्मचारी चुनें (Select User Role)
-          </label>
-          <select id="login_user_select" class="w-full border-2 border-slate-200 rounded-xl p-3 bg-slate-50 focus:bg-white focus:border-blue-600 text-sm font-semibold text-slate-800">
+          <select id="login_user_select" class="border border-slate-400 rounded-lg px-3 py-1.5 bg-slate-800 text-white text-xs font-semibold focus:ring-2 focus:ring-emerald-400">
             <option value="je_sagoni">🚉 Sectional JE / P-Way Sagoni</option>
-            <option value="mate12">👷 मुकद्दम (Unit No. 12 - श्रीनिवास)</option>
-            <option value="mate13">👷 मुकद्दम (Unit No. 13 - रूप सिंह मीणा)</option>
-            <option value="mate14">👷 मुकद्दम (Unit No. 14 - लाखन)</option>
-            <option value="keyman">🔧 चाबीदार / सेक्शन कीमैन (Keyman)</option>
+            <option value="mate12">👷 मुकद्दम (Unit 12 - श्रीनिवास)</option>
+            <option value="mate13">👷 मुकद्दम (Unit 13 - रूप सिंह)</option>
+            <option value="mate14">👷 मुकद्दम (Unit 14 - लाखन)</option>
+            <option value="keyman">🔧 सेक्शन कीमैन (Keyman)</option>
           </select>
         </div>
 
+        <!-- PIN Input -->
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-            2. 4-अंकों का सुरक्षा पिन (Security PIN)
-          </label>
           <input 
             type="password" 
             id="login_pin" 
             maxlength="4" 
-            placeholder="••••" 
-            class="w-full border-2 border-slate-200 rounded-xl p-3 text-center text-2xl tracking-[0.5em] font-black bg-slate-50 focus:bg-white focus:border-blue-600 text-slate-800"
+            placeholder="PIN (उदा. 1234)" 
+            class="w-28 border border-slate-400 rounded-lg px-3 py-1.5 text-center text-xs font-bold bg-white text-slate-900 tracking-widest focus:ring-2 focus:ring-emerald-400"
           >
-          <span class="text-[11px] text-slate-400 mt-1 block text-center font-medium">पिन: JE (1234), U12 (1212), U13 (1313), U14 (1414), Keyman (5555)</span>
         </div>
 
-        <button type="button" id="submit-login-btn" class="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 cursor-pointer">
-          <span>पोर्टल में प्रवेश करें ➔</span>
+        <!-- Login Button -->
+        <button type="button" onclick="doLoginNow()" class="px-4 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black text-xs transition cursor-pointer shadow">
+          प्रवेश करें ➔
+        </button>
+
+        <!-- Close Button -->
+        <button type="button" onclick="toggleLoginCard()" class="text-slate-400 hover:text-white px-2 py-1 text-xs">
+          ✕ बंद करें
         </button>
       </div>
-
     </div>
   </div>
 
   <!-- MAIN CONTAINER -->
   <main class="max-w-7xl mx-auto p-4 md:p-6 flex-1 w-full">
 
-    <!-- 1. PUBLIC DASHBOARD VIEW (Always default on main screen) -->
+    <!-- 1. PUBLIC DASHBOARD VIEW (Default Screen) -->
     <div id="view-dashboard" class="space-y-6">
       <div class="flex justify-between items-center border-b pb-2">
         <div>
           <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
             <i data-lucide="layout-grid" class="text-blue-600"></i> सेक्शन गैंग यूनिट स्थिति (Real-Time Deployment)
           </h2>
-          <p class="text-xs text-slate-500">प्रत्येक यूनिट का वर्तमान दैनिक उपस्थिति व ट्रैक कार्य विवरण</p>
+          <p class="text-xs text-slate-500">तीनों यूनिटों का दैनिक उपस्थिति व ट्रैक कार्य विवरण</p>
         </div>
         <button onclick="loadDashboardData()" class="text-xs bg-slate-200 hover:bg-slate-300 px-3 py-1.5 rounded-lg font-medium text-slate-700 flex items-center gap-1 cursor-pointer">
           <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> रिफ्रेश
@@ -262,9 +245,8 @@
       </div>
     </div>
 
-    <!-- 2. SECTION / JE P.WAY SAGONI (Visible ONLY after JE Login) -->
+    <!-- 2. SECTION / JE P.WAY SAGONI TAB -->
     <div id="view-sagoni-hub" style="display: none;" class="space-y-6">
-      
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
           <div class="flex justify-between items-center text-slate-500 text-xs font-semibold">
@@ -370,7 +352,7 @@
 
     </div>
 
-    <!-- 3. MUKADDAM GANG HUB (Visible ONLY after Mate / JE Login) -->
+    <!-- 3. MUKADDAM GANG HUB TAB -->
     <div id="view-mate-hub" style="display: none;" class="max-w-3xl mx-auto space-y-4">
       <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-sm flex gap-2">
         <button onclick="switchMateSubTab('morning')" id="subtab-btn-morning" class="flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-amber-500 text-white cursor-pointer">
@@ -628,7 +610,7 @@
 
     </div>
 
-    <!-- 4. KEYMAN BEAT REPORT (Visible ONLY after Keyman / JE Login) -->
+    <!-- 4. KEYMAN BEAT REPORT TAB -->
     <div id="view-keyman" style="display: none;" class="max-w-3xl mx-auto bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
       <div class="border-b pb-3 mb-4">
         <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
@@ -733,7 +715,7 @@
       { id: 'km5', gang: 'Unit No. 14', name: 'महेंद्र सिंह', startKm: 108.000, endKm: 116.000 },
     ];
 
-    // PREDEFINED CREDENTIALS
+    // HARDCODED SECURE ROLES & PINS
     const VALID_USERS = {
       'je_sagoni': { pin: '1234', role: 'JE', gang_unit: 'ALL', full_name: 'JE P-Way Sagoni' },
       'mate12': { pin: '1212', role: 'MATE', gang_unit: 'Unit No. 12', full_name: 'श्रीनिवास (Mate U-12)' },
@@ -744,43 +726,8 @@
 
     let currentUser = JSON.parse(localStorage.getItem('trackcare_user')) || null;
 
-    // Direct Event Attachment
-    document.addEventListener('DOMContentLoaded', () => {
-      lucide.createIcons();
-      
-      const authBtn = document.getElementById('auth-btn');
-      if (authBtn) {
-        authBtn.addEventListener('click', handleAuthAction);
-      }
-
-      const closeBtn = document.getElementById('close-modal-btn');
-      if (closeBtn) {
-        closeBtn.addEventListener('click', closeLoginModal);
-      }
-
-      const submitBtn = document.getElementById('submit-login-btn');
-      if (submitBtn) {
-        submitBtn.addEventListener('click', performLogin);
-      }
-
-      const pinInput = document.getElementById('login_pin');
-      if (pinInput) {
-        pinInput.addEventListener('keypress', (e) => {
-          if (e.key === 'Enter') performLogin();
-        });
-      }
-
-      updateUIPerUserRole();
-      handleMorningGangChange();
-      filterKeymanByGang();
-      handleKeymanWorkCategoryChange();
-      loadDashboardData();
-    });
-
-    // ----------------------------------------------------
-    // BULLETPROOF POPUP LOGIN / LOGOUT LOGIC
-    // ----------------------------------------------------
-    function handleAuthAction() {
+    // Direct Toggle Function
+    function toggleLoginCard() {
       if (currentUser) {
         if (confirm("क्या आप लॉगआउट करना चाहते हैं?")) {
           localStorage.removeItem('trackcare_user');
@@ -789,36 +736,32 @@
           switchTab('dashboard');
         }
       } else {
-        openLoginModal();
+        const panel = document.getElementById('login-inline-panel');
+        if (panel.style.display === 'none' || panel.style.display === '') {
+          panel.style.display = 'block';
+          const pinBox = document.getElementById('login_pin');
+          pinBox.value = "";
+          setTimeout(() => pinBox.focus(), 100);
+        } else {
+          panel.style.display = 'none';
+        }
       }
     }
 
-    function openLoginModal() {
-      const modal = document.getElementById('login-modal');
-      modal.classList.add('active');
-      const pinInput = document.getElementById('login_pin');
-      pinInput.value = "";
-      setTimeout(() => pinInput.focus(), 150);
-    }
-
-    function closeLoginModal() {
-      const modal = document.getElementById('login-modal');
-      modal.classList.remove('active');
-    }
-
-    function performLogin() {
+    function doLoginNow() {
       const username = document.getElementById('login_user_select').value;
       const pin = document.getElementById('login_pin').value.trim();
-
       const userRecord = VALID_USERS[username];
 
       if (userRecord && userRecord.pin === pin) {
         currentUser = { username, ...userRecord };
         localStorage.setItem('trackcare_user', JSON.stringify(currentUser));
-        closeLoginModal();
+        
+        // Hide Login Panel
+        document.getElementById('login-inline-panel').style.display = 'none';
         updateUIPerUserRole();
 
-        // Direct user straight to their exclusive section
+        // Switch to correct view
         if (currentUser.role === 'JE') {
           switchTab('sagoni-hub');
         } else if (currentUser.role === 'MATE') {
@@ -833,6 +776,22 @@
       }
     }
 
+    // Support Enter Key
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      const pinBox = document.getElementById('login_pin');
+      if (pinBox) {
+        pinBox.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') doLoginNow();
+        });
+      }
+      updateUIPerUserRole();
+      handleMorningGangChange();
+      filterKeymanByGang();
+      handleKeymanWorkCategoryChange();
+      loadDashboardData();
+    });
+
     function updateUIPerUserRole() {
       const authBtn = document.getElementById('auth-btn');
       const badge = document.getElementById('user-badge');
@@ -842,10 +801,10 @@
       const tabKeyman = document.getElementById('tab-keyman');
 
       if (currentUser) {
-        authBtn.innerText = "लॉगआउट";
+        authBtn.innerText = "🚪 लॉगआउट";
         authBtn.className = "px-4 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-xs font-bold text-white shadow-sm transition cursor-pointer";
         badgeText.innerText = `${currentUser.full_name}`;
-        badge.style.display = 'inline-flex';
+        badge.style.display = 'inline-block';
 
         if (currentUser.role === 'JE') {
           tabSagoni.style.display = 'inline-block';
@@ -866,8 +825,8 @@
           tabKeyman.style.display = 'inline-block';
         }
       } else {
-        authBtn.innerText = "लॉगिन";
-        authBtn.className = "px-4 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-xs font-bold text-white shadow-sm transition cursor-pointer";
+        authBtn.innerText = "🔑 लॉगिन";
+        authBtn.className = "px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-xs font-bold text-white shadow-sm transition cursor-pointer";
         badge.style.display = 'none';
         
         tabSagoni.style.display = 'none';
@@ -877,17 +836,15 @@
       lucide.createIcons();
     }
 
-    // ----------------------------------------------------
-    // TAB SWITCHING
-    // ----------------------------------------------------
+    // Tab Switching
     function switchTab(tabId) {
       if (tabId !== 'dashboard' && !currentUser) {
-        openLoginModal();
+        document.getElementById('login-inline-panel').style.display = 'block';
+        alert("🔒 कृपया पहले लॉगिन करें।");
         return;
       }
 
-      const allTabs = ['dashboard', 'sagoni-hub', 'mate-hub', 'keyman'];
-      allTabs.forEach(id => {
+      ['dashboard', 'sagoni-hub', 'mate-hub', 'keyman'].forEach(id => {
         const viewEl = document.getElementById(`view-${id}`);
         if (viewEl) viewEl.style.display = 'none';
 
@@ -925,9 +882,7 @@
       }
     }
 
-    // ----------------------------------------------------
-    // MORNING FORM LOGIC
-    // ----------------------------------------------------
+    // Gang Logic
     function resetMorningFormToDefaults() {
       document.getElementById('m_absent_count').value = 0;
       document.getElementById('m_leave_count').value = 0;
@@ -1074,7 +1029,7 @@
 
       const { error } = await supabaseClient.from('gang_daily_reports').insert([payload]);
 
-      btn.innerText = "☀️ सुबह की हाजिरी सबमिट करें (Submit Morning Muster)";
+      btn.innerText = "☀️ सुबह की हाजिरी सबमिट करें";
       btn.disabled = false;
 
       if (error) {
@@ -1086,9 +1041,7 @@
       }
     }
 
-    // ----------------------------------------------------
-    // EVENING WORK LOGIC
-    // ----------------------------------------------------
+    // Evening submit
     async function fetchMorningMusterForEvening() {
       const gangVal = document.getElementById('e_gang_no').value;
       const todayDate = new Date().toISOString().split('T')[0];
@@ -1160,7 +1113,7 @@
         resError = error;
       }
 
-      btn.innerText = "🌙 शाम का कार्य फाइनल सबमिट करें (Complete Work Diary)";
+      btn.innerText = "🌙 शाम का कार्य फाइनल सबमिट करें";
       btn.disabled = false;
 
       if (resError) {
@@ -1175,9 +1128,7 @@
       }
     }
 
-    // ----------------------------------------------------
-    // EXCEL / CSV EXPORT
-    // ----------------------------------------------------
+    // CSV Exports
     async function exportToCSV(tableName, fileName) {
       const { data, error } = await supabaseClient.from(tableName).select('*').order('created_at', { ascending: false });
       if (error || !data || data.length === 0) {
@@ -1186,8 +1137,7 @@
       }
 
       const headers = Object.keys(data[0]);
-      const csvRows = [];
-      csvRows.push(headers.join(','));
+      const csvRows = [headers.join(',')];
 
       for (const row of data) {
         const values = headers.map(header => {
@@ -1207,9 +1157,7 @@
       document.body.removeChild(link);
     }
 
-    // ----------------------------------------------------
-    // KEYMAN SECTION
-    // ----------------------------------------------------
+    // Keyman Logic
     function filterKeymanByGang() {
       const selectedGang = document.getElementById('k_gang_no').value;
       const selectEl = document.getElementById('k_keyman_select');
@@ -1321,9 +1269,7 @@
       }
     }
 
-    // ----------------------------------------------------
-    // DASHBOARD & UNIT CARDS DATA LOADER
-    // ----------------------------------------------------
+    // Dashboard Data Loader
     async function loadDashboardData() {
       try {
         const todayDate = new Date().toISOString().split('T')[0];
@@ -1371,10 +1317,9 @@
           .select('*')
           .eq('log_date', todayDate);
 
-        const keymanCount = keymans ? keymans.length : 0;
-        document.getElementById('dash-keyman-count').innerText = keymanCount;
+        document.getElementById('dash-keyman-count').innerText = keymans ? keymans.length : 0;
 
-        // Populate Sagoni Sectional Lists
+        // All gang reports
         const { data: allGangs } = await supabaseClient
           .from('gang_daily_reports')
           .select('*')
@@ -1441,9 +1386,7 @@
       }
     }
 
-    // ----------------------------------------------------
-    // INSPECTIONS (INSIDE SAGONI HUB)
-    // ----------------------------------------------------
+    // Inspections
     async function loadInspections() {
       const { data } = await supabaseClient.from('inspections').select('*').order('scheduled_date', { ascending: true });
       const tbody = document.getElementById('table-inspections');
