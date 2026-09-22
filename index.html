@@ -9,10 +9,10 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-slate-100 text-slate-900 font-sans min-h-screen flex flex-col relative">
+<body class="bg-slate-100 text-slate-900 font-sans min-h-screen flex flex-col">
 
   <!-- TOP HEADER BAR -->
-  <header class="bg-slate-900 text-white sticky top-0 z-40 shadow-md">
+  <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
       <div>
         <h1 class="text-xl font-bold flex items-center gap-2 text-emerald-400">
@@ -21,95 +21,45 @@
         <p class="text-xs text-slate-400">Section: 16 Km × 3 Lines (UP / DN / 3rd Line) — 48 TKM</p>
       </div>
       
-      <!-- NAVIGATION TABS -->
+      <!-- MAIN NAVIGATION TABS (Shown dynamically based on Login) -->
       <div id="nav-tabs-container" class="flex flex-wrap items-center gap-2">
         <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-blue-600 text-white transition">
           📊 Dashboard
         </button>
-        <button onclick="switchTab('sagoni-hub')" id="tab-sagoni-hub" style="display: none;" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+        <button onclick="switchTab('sagoni-hub')" id="tab-sagoni-hub" class="tab-btn hidden px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
           🚉 Section / JE P.Way Sagoni
         </button>
-        <button onclick="switchTab('mate-hub')" id="tab-mate-hub" style="display: none;" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+        <button onclick="switchTab('mate-hub')" id="tab-mate-hub" class="tab-btn hidden px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
           👷 मुकद्दम / Gang Diary
         </button>
-        <button onclick="switchTab('keyman')" id="tab-keyman" style="display: none;" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+        <button onclick="switchTab('keyman')" id="tab-keyman" class="tab-btn hidden px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
           🔧 Keyman Beat Log
         </button>
 
-        <!-- Profile Badge & Login / Logout Toggle -->
-        <div class="flex items-center gap-2 border-l border-slate-700 pl-2">
-          <span id="user-badge" style="display: none;" class="text-xs bg-emerald-950 text-emerald-300 border border-emerald-700 px-2.5 py-1 rounded-full font-semibold">
-            <span id="user-badge-text"></span>
-          </span>
-          <button id="auth-btn" type="button" onclick="toggleLoginCard()" class="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-xs font-bold text-white shadow-sm transition cursor-pointer">
-            🔑 लॉगिन
+        <!-- User Badge & Login/Logout Button -->
+        <div class="ml-2 flex items-center gap-2 border-l border-slate-700 pl-3">
+          <span id="user-badge" class="text-xs text-emerald-300 font-semibold hidden"></span>
+          <button id="auth-btn" onclick="handleAuthButtonClick()" class="px-3 py-1 rounded bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 border border-slate-700">
+            लॉगिन
           </button>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- ==================================================== -->
-  <!-- INLINE COLORFUL LOGIN PANEL (No Hidden Modal, 100% Works) -->
-  <!-- ==================================================== -->
-  <div id="login-inline-panel" style="display: none;" class="bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 border-b-4 border-emerald-400 p-4 shadow-xl">
-    <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-4 text-white">
-      <div>
-        <h3 class="font-bold text-sm text-emerald-400 flex items-center gap-1.5">
-          <i data-lucide="shield-check" class="w-4 h-4"></i> अधिकृत रेल कर्मचारी लॉगिन (Authorized Access)
-        </h3>
-        <p class="text-xs text-slate-300">पद चुनकर अपना 4-अंकों का पिन दर्ज करें और सीधे अपने अनुभाग में जाएँ</p>
-      </div>
-
-      <div class="flex flex-wrap items-center gap-3">
-        <!-- Role Select -->
-        <div>
-          <select id="login_user_select" class="border border-slate-400 rounded-lg px-3 py-1.5 bg-slate-800 text-white text-xs font-semibold focus:ring-2 focus:ring-emerald-400">
-            <option value="je_sagoni">🚉 Sectional JE / P-Way Sagoni</option>
-            <option value="mate12">👷 मुकद्दम (Unit 12 - श्रीनिवास)</option>
-            <option value="mate13">👷 मुकद्दम (Unit 13 - रूप सिंह)</option>
-            <option value="mate14">👷 मुकद्दम (Unit 14 - लाखन)</option>
-            <option value="keyman">🔧 सेक्शन कीमैन (Keyman)</option>
-          </select>
-        </div>
-
-        <!-- PIN Input -->
-        <div>
-          <input 
-            type="password" 
-            id="login_pin" 
-            maxlength="4" 
-            placeholder="PIN (उदा. 1234)" 
-            class="w-28 border border-slate-400 rounded-lg px-3 py-1.5 text-center text-xs font-bold bg-white text-slate-900 tracking-widest focus:ring-2 focus:ring-emerald-400"
-          >
-        </div>
-
-        <!-- Login Button -->
-        <button type="button" onclick="doLoginNow()" class="px-4 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black text-xs transition cursor-pointer shadow">
-          प्रवेश करें ➔
-        </button>
-
-        <!-- Close Button -->
-        <button type="button" onclick="toggleLoginCard()" class="text-slate-400 hover:text-white px-2 py-1 text-xs">
-          ✕ बंद करें
-        </button>
-      </div>
-    </div>
-  </div>
-
   <!-- MAIN CONTAINER -->
   <main class="max-w-7xl mx-auto p-4 md:p-6 flex-1 w-full">
 
-    <!-- 1. PUBLIC DASHBOARD VIEW (Default Screen) -->
+    <!-- 1. CLEAN UNIT-WISE MAIN DASHBOARD VIEW (Publicly visible overview) -->
     <div id="view-dashboard" class="space-y-6">
       <div class="flex justify-between items-center border-b pb-2">
         <div>
           <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
             <i data-lucide="layout-grid" class="text-blue-600"></i> सेक्शन गैंग यूनिट स्थिति (Real-Time Deployment)
           </h2>
-          <p class="text-xs text-slate-500">तीनों यूनिटों का दैनिक उपस्थिति व ट्रैक कार्य विवरण</p>
+          <p class="text-xs text-slate-500">प्रत्येक यूनिट का वर्तमान दैनिक उपस्थिति व ट्रैक कार्य विवरण</p>
         </div>
-        <button onclick="loadDashboardData()" class="text-xs bg-slate-200 hover:bg-slate-300 px-3 py-1.5 rounded-lg font-medium text-slate-700 flex items-center gap-1 cursor-pointer">
+        <button onclick="loadDashboardData()" class="text-xs bg-slate-200 hover:bg-slate-300 px-3 py-1.5 rounded-lg font-medium text-slate-700 flex items-center gap-1">
           <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> रिफ्रेश
         </button>
       </div>
@@ -227,7 +177,7 @@
 
       </div>
 
-      <!-- KEYMAN BEATS SUMMARY CARD -->
+      <!-- KEYMAN BEATS CARD (BUTTON REMOVED) -->
       <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
         <div class="flex items-center gap-3">
           <div class="bg-purple-100 p-3 rounded-xl">
@@ -238,15 +188,18 @@
             <p class="text-xs text-slate-500">तीनों लाइनों के चाबीदारों द्वारा दर्ज की गई दैनिक बीट प्रोग्रेस संख्या</p>
           </div>
         </div>
-        <div class="text-right">
-          <span id="dash-keyman-count" class="text-3xl font-black text-purple-700">0</span>
-          <span class="text-xs font-semibold text-slate-400 block">बीट लॉग दर्ज</span>
+        <div class="flex items-center gap-4">
+          <div class="text-right">
+            <span id="dash-keyman-count" class="text-3xl font-black text-purple-700">0</span>
+            <span class="text-xs font-semibold text-slate-400 block">बीट लॉग दर्ज</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- 2. SECTION / JE P.WAY SAGONI TAB -->
-    <div id="view-sagoni-hub" style="display: none;" class="space-y-6">
+    <!-- 2. SECTION / JE P.WAY SAGONI (INCLUDES INSPECTIONS + EXCEL EXPORTS) -->
+    <div id="view-sagoni-hub" class="hidden space-y-6">
+      
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
           <div class="flex justify-between items-center text-slate-500 text-xs font-semibold">
@@ -292,16 +245,16 @@
           <p class="text-xs text-slate-500">मुकद्दम हाजिरी व कार्य डायरी की एक्सेल फाइल डाउनलोड करें</p>
         </div>
         <div class="flex flex-wrap gap-2">
-          <button onclick="exportToCSV('gang_daily_reports', 'PWay_Sagoni_Gang_Report.csv')" class="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700 flex items-center gap-1.5 cursor-pointer">
+          <button onclick="exportToCSV('gang_daily_reports', 'PWay_Sagoni_Gang_Report.csv')" class="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700 flex items-center gap-1.5">
             <i data-lucide="download" class="w-3.5 h-3.5"></i> मुकद्दम डायरी Excel
           </button>
-          <button onclick="exportToCSV('keyman_logs', 'PWay_Sagoni_Keyman_Logs.csv')" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700 flex items-center gap-1.5 cursor-pointer">
+          <button onclick="exportToCSV('keyman_logs', 'PWay_Sagoni_Keyman_Logs.csv')" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700 flex items-center gap-1.5">
             <i data-lucide="download" class="w-3.5 h-3.5"></i> कीमैन बीट Excel
           </button>
         </div>
       </div>
 
-      <!-- Detail Lists -->
+      <!-- Detail Lists (Gang Reports Diary & Keyman Beat Log) -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
           <h3 class="font-bold text-slate-800 text-base mb-3 flex items-center gap-2 border-b pb-2">
@@ -322,13 +275,13 @@
         </div>
       </div>
 
-      <!-- INSPECTION SCHEDULE SECTION -->
+      <!-- INSPECTION SCHEDULE SECTION (MOVED INSIDE SAGONI TAB) -->
       <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
         <div class="flex justify-between items-center mb-4 border-b pb-2">
           <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-            <i data-lucide="clipboard-check" class="text-purple-600"></i> JE P-Way निरीक्षण शेड्यूल व अनुपालन (Inspections)
+            <i data-lucide="clipboard-check" class="text-purple-600"></i> JE P-Way निरीक्षण शेड्यूल व अनुपालन (Inspections & Compliance)
           </h2>
-          <button onclick="addNewInspectionModal()" class="text-xs bg-purple-600 text-white px-3 py-1.5 rounded-md hover:bg-purple-700 cursor-pointer">
+          <button onclick="addNewInspectionModal()" class="text-xs bg-purple-600 text-white px-3 py-1.5 rounded-md hover:bg-purple-700">
             + नया शेड्यूल जोड़ें
           </button>
         </div>
@@ -352,13 +305,13 @@
 
     </div>
 
-    <!-- 3. MUKADDAM GANG HUB TAB -->
-    <div id="view-mate-hub" style="display: none;" class="max-w-3xl mx-auto space-y-4">
+    <!-- 3. MUKADDAM GANG HUB -->
+    <div id="view-mate-hub" class="hidden max-w-3xl mx-auto space-y-4">
       <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-sm flex gap-2">
-        <button onclick="switchMateSubTab('morning')" id="subtab-btn-morning" class="flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-amber-500 text-white cursor-pointer">
+        <button onclick="switchMateSubTab('morning')" id="subtab-btn-morning" class="flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-amber-500 text-white">
           <i data-lucide="sun" class="w-4 h-4"></i> 1. सुबह 08:00 हाजिरी व प्रस्तावित प्लान
         </button>
-        <button onclick="switchMateSubTab('evening')" id="subtab-btn-evening" class="flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer">
+        <button onclick="switchMateSubTab('evening')" id="subtab-btn-evening" class="flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-slate-100 text-slate-600 hover:bg-slate-200">
           <i data-lucide="moon" class="w-4 h-4"></i> 2. शाम 05:00 वास्तविक कार्य डायरी
         </button>
       </div>
@@ -372,7 +325,7 @@
             </h2>
             <p class="text-xs text-slate-500 mt-0.5">सबमिट होते ही फॉर्म स्वतः नया (रीसेट) हो जाएगा।</p>
           </div>
-          <button type="button" onclick="resetMorningFormToDefaults()" class="text-xs text-slate-500 hover:text-slate-800 border px-2 py-1 rounded bg-slate-50 cursor-pointer">
+          <button type="button" onclick="resetMorningFormToDefaults()" class="text-xs text-slate-500 hover:text-slate-800 border px-2 py-1 rounded bg-slate-50">
             🔄 रिफ्रेश फॉर्म
           </button>
         </div>
@@ -518,7 +471,7 @@
             </div>
           </div>
 
-          <button type="submit" id="btn-morning-submit" class="w-full bg-amber-600 text-white font-semibold py-2.5 rounded-lg hover:bg-amber-700 shadow transition cursor-pointer">
+          <button type="submit" id="btn-morning-submit" class="w-full bg-amber-600 text-white font-semibold py-2.5 rounded-lg hover:bg-amber-700 shadow transition">
             ☀️ सुबह की हाजिरी सबमिट करें (Submit Morning Muster)
           </button>
         </form>
@@ -602,7 +555,7 @@
             <textarea id="e_remarks" rows="3" class="w-full border rounded-lg p-2" placeholder="उदा. थ्रू पैकिंग पूर्ण, 4 रबर पैड बदले गए, लाइन फिट पाई गई..."></textarea>
           </div>
 
-          <button type="submit" id="btn-evening-submit" class="w-full bg-indigo-600 text-white font-semibold py-2.5 rounded-lg hover:bg-indigo-700 shadow transition cursor-pointer">
+          <button type="submit" id="btn-evening-submit" class="w-full bg-indigo-600 text-white font-semibold py-2.5 rounded-lg hover:bg-indigo-700 shadow transition">
             🌙 शाम का कार्य फाइनल सबमिट करें (Complete Work Diary)
           </button>
         </form>
@@ -610,8 +563,8 @@
 
     </div>
 
-    <!-- 4. KEYMAN BEAT REPORT TAB -->
-    <div id="view-keyman" style="display: none;" class="max-w-3xl mx-auto bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+    <!-- 4. KEYMAN BEAT REPORT -->
+    <div id="view-keyman" class="hidden max-w-3xl mx-auto bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
       <div class="border-b pb-3 mb-4">
         <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
           <i data-lucide="wrench" class="text-emerald-600"></i> कीमैन बीट दैनिक प्रोग्रेस रिपोर्ट
@@ -686,7 +639,7 @@
           <textarea id="k_defects" rows="2" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white" placeholder="उदा. SEZ गैप 52mm, रबर पैड मिसिंग, या 'Nil' लिखें..."></textarea>
         </div>
 
-        <button type="submit" id="btn-keyman-submit" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-lg hover:bg-emerald-700 shadow transition cursor-pointer">
+        <button type="submit" id="btn-keyman-submit" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-lg hover:bg-emerald-700 shadow transition">
           कीमैन रिपोर्ट सबमिट करें
         </button>
       </form>
@@ -715,19 +668,56 @@
       { id: 'km5', gang: 'Unit No. 14', name: 'महेंद्र सिंह', startKm: 108.000, endKm: 116.000 },
     ];
 
-    // HARDCODED SECURE ROLES & PINS
-    const VALID_USERS = {
-      'je_sagoni': { pin: '1234', role: 'JE', gang_unit: 'ALL', full_name: 'JE P-Way Sagoni' },
-      'mate12': { pin: '1212', role: 'MATE', gang_unit: 'Unit No. 12', full_name: 'श्रीनिवास (Mate U-12)' },
-      'mate13': { pin: '1313', role: 'MATE', gang_unit: 'Unit No. 13', full_name: 'रूप सिंह मीणा (Mate U-13)' },
-      'mate14': { pin: '1414', role: 'MATE', gang_unit: 'Unit No. 14', full_name: 'लाखन (Mate U-14)' },
-      'keyman': { pin: '5555', role: 'KEYMAN', gang_unit: 'ALL', full_name: 'सेक्शन कीमैन (Keyman)' }
-    };
-
+    // Current Logged-in User Session
     let currentUser = JSON.parse(localStorage.getItem('trackcare_user')) || null;
 
-    // Direct Toggle Function
-    function toggleLoginCard() {
+    lucide.createIcons();
+
+    // ----------------------------------------------------
+    // AUTH & ROLE-BASED ACCESS CONTROL (RBAC)
+    // ----------------------------------------------------
+    function updateUIPerUserRole() {
+      const authBtn = document.getElementById('auth-btn');
+      const badge = document.getElementById('user-badge');
+      const tabSagoni = document.getElementById('tab-sagoni-hub');
+      const tabMate = document.getElementById('tab-mate-hub');
+      const tabKeyman = document.getElementById('tab-keyman');
+
+      if (currentUser) {
+        authBtn.innerText = "लॉगआउट";
+        badge.innerText = `${currentUser.full_name}`;
+        badge.classList.remove('hidden');
+
+        // Show/hide tabs according to role
+        if (currentUser.role === 'JE') {
+          tabSagoni.classList.remove('hidden');
+          tabMate.classList.remove('hidden');
+          tabKeyman.classList.remove('hidden');
+        } else if (currentUser.role === 'MATE') {
+          tabSagoni.classList.add('hidden');
+          tabMate.classList.remove('hidden');
+          tabKeyman.classList.add('hidden');
+          
+          // Lock gang selector to their assigned unit only
+          document.getElementById('m_gang_no').value = currentUser.gang_unit;
+          document.getElementById('m_gang_no').disabled = true;
+          document.getElementById('e_gang_no').value = currentUser.gang_unit;
+          document.getElementById('e_gang_no').disabled = true;
+        } else if (currentUser.role === 'KEYMAN') {
+          tabSagoni.classList.add('hidden');
+          tabMate.classList.add('hidden');
+          tabKeyman.classList.remove('hidden');
+        }
+      } else {
+        authBtn.innerText = "लॉगिन";
+        badge.classList.add('hidden');
+        tabSagoni.classList.add('hidden');
+        tabMate.classList.add('hidden');
+        tabKeyman.classList.add('hidden');
+      }
+    }
+
+    async function handleAuthButtonClick() {
       if (currentUser) {
         if (confirm("क्या आप लॉगआउट करना चाहते हैं?")) {
           localStorage.removeItem('trackcare_user');
@@ -736,125 +726,44 @@
           switchTab('dashboard');
         }
       } else {
-        const panel = document.getElementById('login-inline-panel');
-        if (panel.style.display === 'none' || panel.style.display === '') {
-          panel.style.display = 'block';
-          const pinBox = document.getElementById('login_pin');
-          pinBox.value = "";
-          setTimeout(() => pinBox.focus(), 100);
+        const username = prompt("यूज़रनेम (Username) दर्ज करें:\n(e.g. je_sagoni, mate12, mate13, mate14, keyman)");
+        if (!username) return;
+        const pin = prompt("4-अंकों का पिन (PIN / Password) दर्ज करें:");
+        if (!pin) return;
+
+        const { data, error } = await supabaseClient
+          .from('app_users')
+          .select('*')
+          .eq('username', username.trim().toLowerCase())
+          .eq('pin_code', pin.trim())
+          .single();
+
+        if (error || !data) {
+          alert("❌ गलत यूज़रनेम या पिन! कृपया पुनः प्रयास करें।");
         } else {
-          panel.style.display = 'none';
+          currentUser = data;
+          localStorage.setItem('trackcare_user', JSON.stringify(currentUser));
+          alert(`✅ स्वागत है, ${currentUser.full_name}!`);
+          updateUIPerUserRole();
+
+          if (currentUser.role === 'JE') switchTab('sagoni-hub');
+          else if (currentUser.role === 'MATE') switchTab('mate-hub');
+          else if (currentUser.role === 'KEYMAN') switchTab('keyman');
         }
       }
     }
 
-    function doLoginNow() {
-      const username = document.getElementById('login_user_select').value;
-      const pin = document.getElementById('login_pin').value.trim();
-      const userRecord = VALID_USERS[username];
-
-      if (userRecord && userRecord.pin === pin) {
-        currentUser = { username, ...userRecord };
-        localStorage.setItem('trackcare_user', JSON.stringify(currentUser));
-        
-        // Hide Login Panel
-        document.getElementById('login-inline-panel').style.display = 'none';
-        updateUIPerUserRole();
-
-        // Switch to correct view
-        if (currentUser.role === 'JE') {
-          switchTab('sagoni-hub');
-        } else if (currentUser.role === 'MATE') {
-          switchTab('mate-hub');
-        } else if (currentUser.role === 'KEYMAN') {
-          switchTab('keyman');
-        }
-      } else {
-        alert("❌ गलत सुरक्षा पिन! कृपया सही पिन दर्ज करें।");
-        document.getElementById('login_pin').value = "";
-        document.getElementById('login_pin').focus();
-      }
-    }
-
-    // Support Enter Key
-    document.addEventListener('DOMContentLoaded', () => {
-      lucide.createIcons();
-      const pinBox = document.getElementById('login_pin');
-      if (pinBox) {
-        pinBox.addEventListener('keypress', (e) => {
-          if (e.key === 'Enter') doLoginNow();
-        });
-      }
-      updateUIPerUserRole();
-      handleMorningGangChange();
-      filterKeymanByGang();
-      handleKeymanWorkCategoryChange();
-      loadDashboardData();
-    });
-
-    function updateUIPerUserRole() {
-      const authBtn = document.getElementById('auth-btn');
-      const badge = document.getElementById('user-badge');
-      const badgeText = document.getElementById('user-badge-text');
-      const tabSagoni = document.getElementById('tab-sagoni-hub');
-      const tabMate = document.getElementById('tab-mate-hub');
-      const tabKeyman = document.getElementById('tab-keyman');
-
-      if (currentUser) {
-        authBtn.innerText = "🚪 लॉगआउट";
-        authBtn.className = "px-4 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-xs font-bold text-white shadow-sm transition cursor-pointer";
-        badgeText.innerText = `${currentUser.full_name}`;
-        badge.style.display = 'inline-block';
-
-        if (currentUser.role === 'JE') {
-          tabSagoni.style.display = 'inline-block';
-          tabMate.style.display = 'inline-block';
-          tabKeyman.style.display = 'inline-block';
-        } else if (currentUser.role === 'MATE') {
-          tabSagoni.style.display = 'none';
-          tabMate.style.display = 'inline-block';
-          tabKeyman.style.display = 'none';
-          
-          document.getElementById('m_gang_no').value = currentUser.gang_unit;
-          document.getElementById('m_gang_no').disabled = true;
-          document.getElementById('e_gang_no').value = currentUser.gang_unit;
-          document.getElementById('e_gang_no').disabled = true;
-        } else if (currentUser.role === 'KEYMAN') {
-          tabSagoni.style.display = 'none';
-          tabMate.style.display = 'none';
-          tabKeyman.style.display = 'inline-block';
-        }
-      } else {
-        authBtn.innerText = "🔑 लॉगिन";
-        authBtn.className = "px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-xs font-bold text-white shadow-sm transition cursor-pointer";
-        badge.style.display = 'none';
-        
-        tabSagoni.style.display = 'none';
-        tabMate.style.display = 'none';
-        tabKeyman.style.display = 'none';
-      }
-      lucide.createIcons();
-    }
-
-    // Tab Switching
+    // ----------------------------------------------------
+    // TAB SWITCHING
+    // ----------------------------------------------------
     function switchTab(tabId) {
-      if (tabId !== 'dashboard' && !currentUser) {
-        document.getElementById('login-inline-panel').style.display = 'block';
-        alert("🔒 कृपया पहले लॉगिन करें।");
-        return;
-      }
-
       ['dashboard', 'sagoni-hub', 'mate-hub', 'keyman'].forEach(id => {
-        const viewEl = document.getElementById(`view-${id}`);
-        if (viewEl) viewEl.style.display = 'none';
-
+        document.getElementById(`view-${id}`).classList.add('hidden');
         const tabBtn = document.getElementById(`tab-${id}`);
         if (tabBtn) tabBtn.className = "tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition";
       });
 
-      const activeView = document.getElementById(`view-${tabId}`);
-      if (activeView) activeView.style.display = 'block';
-
+      document.getElementById(`view-${tabId}`).classList.remove('hidden');
       const activeBtn = document.getElementById(`tab-${tabId}`);
       if (activeBtn) activeBtn.className = "tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-blue-600 text-white transition";
 
@@ -869,20 +778,22 @@
 
     function switchMateSubTab(subTab) {
       if (subTab === 'morning') {
-        document.getElementById('subview-morning').style.display = 'block';
-        document.getElementById('subview-evening').style.display = 'none';
-        document.getElementById('subtab-btn-morning').className = "flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-amber-500 text-white cursor-pointer";
-        document.getElementById('subtab-btn-evening').className = "flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer";
+        document.getElementById('subview-morning').classList.remove('hidden');
+        document.getElementById('subview-evening').classList.add('hidden');
+        document.getElementById('subtab-btn-morning').className = "flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-amber-500 text-white";
+        document.getElementById('subtab-btn-evening').className = "flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-slate-100 text-slate-600 hover:bg-slate-200";
       } else {
-        document.getElementById('subview-morning').style.display = 'none';
-        document.getElementById('subview-evening').style.display = 'block';
-        document.getElementById('subtab-btn-evening').className = "flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-indigo-600 text-white cursor-pointer";
-        document.getElementById('subtab-btn-morning').className = "flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer";
+        document.getElementById('subview-morning').classList.add('hidden');
+        document.getElementById('subview-evening').classList.remove('hidden');
+        document.getElementById('subtab-btn-evening').className = "flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-indigo-600 text-white";
+        document.getElementById('subtab-btn-morning').className = "flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-slate-100 text-slate-600 hover:bg-slate-200";
         fetchMorningMusterForEvening();
       }
     }
 
-    // Gang Logic
+    // ----------------------------------------------------
+    // MORNING FORM LOGIC
+    // ----------------------------------------------------
     function resetMorningFormToDefaults() {
       document.getElementById('m_absent_count').value = 0;
       document.getElementById('m_leave_count').value = 0;
@@ -1029,7 +940,7 @@
 
       const { error } = await supabaseClient.from('gang_daily_reports').insert([payload]);
 
-      btn.innerText = "☀️ सुबह की हाजिरी सबमिट करें";
+      btn.innerText = "☀️ सुबह की हाजिरी सबमिट करें (Submit Morning Muster)";
       btn.disabled = false;
 
       if (error) {
@@ -1041,7 +952,9 @@
       }
     }
 
-    // Evening submit
+    // ----------------------------------------------------
+    // EVENING WORK LOGIC
+    // ----------------------------------------------------
     async function fetchMorningMusterForEvening() {
       const gangVal = document.getElementById('e_gang_no').value;
       const todayDate = new Date().toISOString().split('T')[0];
@@ -1113,7 +1026,7 @@
         resError = error;
       }
 
-      btn.innerText = "🌙 शाम का कार्य फाइनल सबमिट करें";
+      btn.innerText = "🌙 शाम का कार्य फाइनल सबमिट करें (Complete Work Diary)";
       btn.disabled = false;
 
       if (resError) {
@@ -1128,7 +1041,9 @@
       }
     }
 
-    // CSV Exports
+    // ----------------------------------------------------
+    // EXCEL / CSV EXPORT
+    // ----------------------------------------------------
     async function exportToCSV(tableName, fileName) {
       const { data, error } = await supabaseClient.from(tableName).select('*').order('created_at', { ascending: false });
       if (error || !data || data.length === 0) {
@@ -1137,7 +1052,8 @@
       }
 
       const headers = Object.keys(data[0]);
-      const csvRows = [headers.join(',')];
+      const csvRows = [];
+      csvRows.push(headers.join(','));
 
       for (const row of data) {
         const values = headers.map(header => {
@@ -1157,7 +1073,9 @@
       document.body.removeChild(link);
     }
 
-    // Keyman Logic
+    // ----------------------------------------------------
+    // KEYMAN SECTION
+    // ----------------------------------------------------
     function filterKeymanByGang() {
       const selectedGang = document.getElementById('k_gang_no').value;
       const selectEl = document.getElementById('k_keyman_select');
@@ -1269,7 +1187,9 @@
       }
     }
 
-    // Dashboard Data Loader
+    // ----------------------------------------------------
+    // DASHBOARD & UNIT CARDS DATA LOADER
+    // ----------------------------------------------------
     async function loadDashboardData() {
       try {
         const todayDate = new Date().toISOString().split('T')[0];
@@ -1317,9 +1237,10 @@
           .select('*')
           .eq('log_date', todayDate);
 
-        document.getElementById('dash-keyman-count').innerText = keymans ? keymans.length : 0;
+        const keymanCount = keymans ? keymans.length : 0;
+        document.getElementById('dash-keyman-count').innerText = keymanCount;
 
-        // All gang reports
+        // Populate Sagoni Sectional Lists
         const { data: allGangs } = await supabaseClient
           .from('gang_daily_reports')
           .select('*')
@@ -1386,7 +1307,9 @@
       }
     }
 
-    // Inspections
+    // ----------------------------------------------------
+    // INSPECTIONS (INSIDE SAGONI HUB)
+    // ----------------------------------------------------
     async function loadInspections() {
       const { data } = await supabaseClient.from('inspections').select('*').order('scheduled_date', { ascending: true });
       const tbody = document.getElementById('table-inspections');
@@ -1435,6 +1358,13 @@
         loadInspections();
       }
     }
+
+    // Initialize
+    updateUIPerUserRole();
+    handleMorningGangChange();
+    filterKeymanByGang();
+    handleKeymanWorkCategoryChange();
+    loadDashboardData();
   </script>
 </body>
 </html>
