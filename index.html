@@ -23,16 +23,16 @@
       
       <!-- NAV TABS -->
       <div class="flex flex-wrap gap-2">
-        <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-blue-600 text-white transition">
+        <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-blue-600 text-white transition cursor-pointer">
           📊 Dashboard
         </button>
-        <button onclick="switchTab('mate-hub')" id="tab-mate-hub" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+        <button onclick="switchTab('mate-hub')" id="tab-mate-hub" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition cursor-pointer">
           👷 मुकद्दम / Gang Diary
         </button>
-        <button onclick="switchTab('keyman')" id="tab-keyman" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+        <button onclick="switchTab('keyman')" id="tab-keyman" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition cursor-pointer">
           🔧 Keyman Beat Log
         </button>
-        <button onclick="switchTab('inspections')" id="tab-inspections" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+        <button onclick="switchTab('inspections')" id="tab-inspections" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition cursor-pointer">
           📋 Inspection Schedule
         </button>
       </div>
@@ -44,41 +44,134 @@
 
     <!-- 1. DASHBOARD VIEW -->
     <div id="view-dashboard" class="space-y-6">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-          <div class="flex justify-between items-center text-slate-500 text-xs font-semibold">
-            <span>TOTAL SECTION</span>
-            <i data-lucide="map-pin" class="w-4 h-4 text-blue-500"></i>
+      
+      <!-- 3 Gang Units Grid (Real-time Deployment Cards) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- UNIT 12 CARD -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="bg-blue-600 p-4 text-white flex justify-between items-center">
+            <div>
+              <span class="text-xs font-semibold uppercase tracking-wider text-blue-200">Gang Unit</span>
+              <h3 class="text-lg font-bold">यूनिट नंबर 12</h3>
+            </div>
+            <div class="bg-white/20 p-2.5 rounded-xl">
+              <i data-lucide="users" class="w-6 h-6 text-white"></i>
+            </div>
           </div>
-          <div class="text-2xl font-bold mt-2 text-slate-800">16.0 Km</div>
-          <span class="text-xs text-slate-500">3 Running Lines</span>
+          <div class="p-4 space-y-3">
+            <div class="text-xs text-slate-500 flex justify-between">
+              <span>मुकद्दम: <b id="u12-mate" class="text-slate-800">श्रीनिवास</b></span>
+              <span id="u12-status" class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-medium">प्रतीक्षारत</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 pt-1">
+              <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-center">
+                <span class="text-[11px] font-bold text-emerald-800 uppercase block">उपस्थित (Present)</span>
+                <span id="u12-present" class="text-2xl font-black text-emerald-600 mt-1 block">--</span>
+                <span class="text-[10px] text-emerald-700">Total Sanction: 22</span>
+              </div>
+              <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl text-center">
+                <span class="text-[11px] font-bold text-amber-800 uppercase block">कार्य पर (On Track)</span>
+                <span id="u12-onwork" class="text-2xl font-black text-amber-600 mt-1 block">--</span>
+                <span class="text-[10px] text-amber-700">ट्रैक पर कार्यरत</span>
+              </div>
+            </div>
+
+            <p id="u12-work-desc" class="text-xs text-slate-600 bg-slate-50 p-2 rounded border border-slate-100 italic">
+              आज का कार्य: अभी रिपोर्ट दर्ज नहीं हुई
+            </p>
+          </div>
         </div>
 
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-          <div class="flex justify-between items-center text-slate-500 text-xs font-semibold">
-            <span>TODAY PRESENT</span>
-            <i data-lucide="users" class="w-4 h-4 text-emerald-500"></i>
+        <!-- UNIT 13 CARD -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="bg-indigo-600 p-4 text-white flex justify-between items-center">
+            <div>
+              <span class="text-xs font-semibold uppercase tracking-wider text-indigo-200">Gang Unit</span>
+              <h3 class="text-lg font-bold">यूनिट नंबर 13</h3>
+            </div>
+            <div class="bg-white/20 p-2.5 rounded-xl">
+              <i data-lucide="users" class="w-6 h-6 text-white"></i>
+            </div>
           </div>
-          <div id="stat-gang-present" class="text-2xl font-bold mt-2 text-emerald-600">--</div>
-          <span class="text-xs text-slate-500">Active Trackmen</span>
+          <div class="p-4 space-y-3">
+            <div class="text-xs text-slate-500 flex justify-between">
+              <span>मुकद्दम: <b id="u13-mate" class="text-slate-800">रूप सिंह मीणा</b></span>
+              <span id="u13-status" class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-medium">प्रतीक्षारत</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 pt-1">
+              <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-center">
+                <span class="text-[11px] font-bold text-emerald-800 uppercase block">उपस्थित (Present)</span>
+                <span id="u13-present" class="text-2xl font-black text-emerald-600 mt-1 block">--</span>
+                <span class="text-[10px] text-emerald-700">Total Sanction: 25</span>
+              </div>
+              <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl text-center">
+                <span class="text-[11px] font-bold text-amber-800 uppercase block">कार्य पर (On Track)</span>
+                <span id="u13-onwork" class="text-2xl font-black text-amber-600 mt-1 block">--</span>
+                <span class="text-[10px] text-amber-700">ट्रैक पर कार्यरत</span>
+              </div>
+            </div>
+
+            <p id="u13-work-desc" class="text-xs text-slate-600 bg-slate-50 p-2 rounded border border-slate-100 italic">
+              आज का कार्य: अभी रिपोर्ट दर्ज नहीं हुई
+            </p>
+          </div>
         </div>
 
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-          <div class="flex justify-between items-center text-slate-500 text-xs font-semibold">
-            <span>ON TRACK WORK</span>
-            <i data-lucide="hammer" class="w-4 h-4 text-amber-500"></i>
+        <!-- UNIT 14 CARD -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="bg-slate-800 p-4 text-white flex justify-between items-center">
+            <div>
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-300">Gang Unit</span>
+              <h3 class="text-lg font-bold">यूनिट नंबर 14</h3>
+            </div>
+            <div class="bg-white/20 p-2.5 rounded-xl">
+              <i data-lucide="users" class="w-6 h-6 text-white"></i>
+            </div>
           </div>
-          <div id="stat-on-work" class="text-2xl font-bold mt-2 text-amber-600">--</div>
-          <span class="text-xs text-slate-500">Men on Actual Track</span>
+          <div class="p-4 space-y-3">
+            <div class="text-xs text-slate-500 flex justify-between">
+              <span>मुकद्दम: <b id="u14-mate" class="text-slate-800">लाखन</b></span>
+              <span id="u14-status" class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-medium">प्रतीक्षारत</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 pt-1">
+              <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-center">
+                <span class="text-[11px] font-bold text-emerald-800 uppercase block">उपस्थित (Present)</span>
+                <span id="u14-present" class="text-2xl font-black text-emerald-600 mt-1 block">--</span>
+                <span class="text-[10px] text-emerald-700">Total Sanction: 20</span>
+              </div>
+              <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl text-center">
+                <span class="text-[11px] font-bold text-amber-800 uppercase block">कार्य पर (On Track)</span>
+                <span id="u14-onwork" class="text-2xl font-black text-amber-600 mt-1 block">--</span>
+                <span class="text-[10px] text-amber-700">ट्रैक पर कार्यरत</span>
+              </div>
+            </div>
+
+            <p id="u14-work-desc" class="text-xs text-slate-600 bg-slate-50 p-2 rounded border border-slate-100 italic">
+              आज का कार्य: अभी रिपोर्ट दर्ज नहीं हुई
+            </p>
+          </div>
         </div>
 
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-          <div class="flex justify-between items-center text-slate-500 text-xs font-semibold">
-            <span>KEYMAN LOGS</span>
-            <i data-lucide="wrench" class="w-4 h-4 text-purple-500"></i>
+      </div>
+
+      <!-- Keyman Summary Card -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-3">
+          <div class="bg-purple-100 p-3 rounded-xl">
+            <i data-lucide="wrench" class="w-6 h-6 text-purple-600"></i>
           </div>
-          <div id="stat-keyman-count" class="text-2xl font-bold mt-2 text-purple-600">--</div>
-          <span class="text-xs text-slate-500">Beats Reported</span>
+          <div>
+            <h4 class="font-bold text-slate-800 text-base">Keyman Beats Reported Today</h4>
+            <p class="text-xs text-slate-500">तीनों लाइनों के चाबीदारों द्वारा दर्ज की गई दैनिक बीट प्रोग्रेस संख्या</p>
+          </div>
+        </div>
+        <div class="text-right">
+          <span id="dash-keyman-count" class="text-3xl font-black text-purple-700">0</span>
+          <span class="text-xs font-semibold text-slate-400 block">बीट लॉग दर्ज</span>
         </div>
       </div>
 
@@ -98,7 +191,7 @@
         </div>
       </div>
 
-      <!-- Recent Records -->
+      <!-- Recent Records Lists -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
           <h3 class="font-bold text-slate-800 text-base mb-3 flex items-center gap-2 border-b pb-2">
@@ -378,7 +471,7 @@
 
     </div>
 
-    <!-- 4. KEYMAN BEAT REPORT -->
+    <!-- 3. KEYMAN BEAT REPORT -->
     <div id="view-keyman" class="hidden max-w-3xl mx-auto bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
       <div class="border-b pb-3 mb-4">
         <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
@@ -460,7 +553,7 @@
       </form>
     </div>
 
-    <!-- 5. INSPECTION SCHEDULE VIEW -->
+    <!-- 4. INSPECTION SCHEDULE VIEW -->
     <div id="view-inspections" class="hidden max-w-4xl mx-auto bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
       <div class="flex justify-between items-center mb-4 border-b pb-2">
         <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
@@ -495,7 +588,14 @@
     const SUPABASE_URL = "https://jhdkpdsrrgwqzxwftcyc.supabase.co";
     const SUPABASE_KEY = "sb_publishable_GL2DEQ5U-COnS8ifSz4Zgg_8ooV-wGv";
 
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    let supabaseClient = null;
+    try {
+      if (typeof supabase !== 'undefined' && supabase.createClient) {
+        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      }
+    } catch (e) {
+      console.error("Supabase Init Error:", e);
+    }
 
     const GANG_CONFIG = {
       'Unit No. 12': { mate: 'श्रीनिवास', totalStrength: 22 },
@@ -511,17 +611,23 @@
       { id: 'km5', gang: 'Unit No. 14', name: 'महेंद्र सिंह', startKm: 108.000, endKm: 116.000 },
     ];
 
-    lucide.createIcons();
+    try { lucide.createIcons(); } catch(e){}
 
-    // Tab Switcher
+    // Tab Switcher (Never Crashes)
     function switchTab(tabId) {
-      ['dashboard', 'mate-hub', 'keyman', 'inspections'].forEach(id => {
-        document.getElementById(`view-${id}`).classList.add('hidden');
-        document.getElementById(`tab-${id}`).className = "tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition";
+      const tabs = ['dashboard', 'mate-hub', 'keyman', 'inspections'];
+      tabs.forEach(id => {
+        const viewEl = document.getElementById(`view-${id}`);
+        if (viewEl) viewEl.classList.add('hidden');
+        const tabBtn = document.getElementById(`tab-${id}`);
+        if (tabBtn) tabBtn.className = "tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition cursor-pointer";
       });
 
-      document.getElementById(`view-${tabId}`).classList.remove('hidden');
-      document.getElementById(`tab-${tabId}`).className = "tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-blue-600 text-white transition";
+      const activeView = document.getElementById(`view-${tabId}`);
+      if (activeView) activeView.classList.remove('hidden');
+
+      const activeBtn = document.getElementById(`tab-${tabId}`);
+      if (activeBtn) activeBtn.className = "tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-blue-600 text-white transition cursor-pointer";
 
       if (tabId === 'dashboard') loadDashboardData();
       if (tabId === 'mate-hub') {
@@ -578,7 +684,7 @@
     function handleMorningGangChange() {
       const gangVal = document.getElementById('m_gang_no').value;
       const mateSelect = document.getElementById('m_mate_select');
-      const conf = GANG_CONFIG[gangVal];
+      const conf = GANG_CONFIG[gangVal] || { mate: 'मुकद्दम', totalStrength: 25 };
 
       document.getElementById('m_total_strength').value = conf.totalStrength;
       mateSelect.innerHTML = `
@@ -659,7 +765,7 @@
 
       const gangVal = document.getElementById('m_gang_no').value;
       const mateSelectVal = document.getElementById('m_mate_select').value;
-      let finalMate = GANG_CONFIG[gangVal].mate;
+      let finalMate = GANG_CONFIG[gangVal] ? GANG_CONFIG[gangVal].mate : 'मुकद्दम';
       let subMate = (mateSelectVal === 'OTHER') ? document.getElementById('m_substitute_mate').value : null;
 
       const todayDate = new Date().toISOString().split('T')[0];
@@ -692,6 +798,13 @@
         report_status: 'Morning_Submitted'
       };
 
+      if (!supabaseClient) {
+        alert("⚠️ Supabase कनेक्ट नहीं है।");
+        btn.innerText = "☀️ सुबह की हाजिरी सबमिट करें";
+        btn.disabled = false;
+        return;
+      }
+
       const { error } = await supabaseClient.from('gang_daily_reports').insert([payload]);
 
       btn.innerText = "☀️ सुबह की हाजिरी सबमिट करें";
@@ -707,33 +820,38 @@
     }
 
     async function fetchMorningMusterForEvening() {
+      if (!supabaseClient) return;
       const gangVal = document.getElementById('e_gang_no').value;
       const todayDate = new Date().toISOString().split('T')[0];
 
-      const { data } = await supabaseClient
-        .from('gang_daily_reports')
-        .select('*')
-        .eq('gang_no', gangVal)
-        .eq('report_date', todayDate)
-        .order('created_at', { ascending: false })
-        .limit(1);
+      try {
+        const { data } = await supabaseClient
+          .from('gang_daily_reports')
+          .select('*')
+          .eq('gang_no', gangVal)
+          .eq('report_date', todayDate)
+          .order('created_at', { ascending: false })
+          .limit(1);
 
-      const summaryMate = document.getElementById('e_sum_mate');
-      const summaryStrength = document.getElementById('e_sum_strength');
-      const summaryPlanned = document.getElementById('e_sum_planned');
-      const recordIdInput = document.getElementById('e_record_id');
+        const summaryMate = document.getElementById('e_sum_mate');
+        const summaryStrength = document.getElementById('e_sum_strength');
+        const summaryPlanned = document.getElementById('e_sum_planned');
+        const recordIdInput = document.getElementById('e_record_id');
 
-      if (data && data.length > 0) {
-        const item = data[0];
-        recordIdInput.value = item.id;
-        summaryMate.innerText = `मुकद्दम: ${item.mate_name} ${item.substitute_mate_name ? `(बदली: ${item.substitute_mate_name})` : ''}`;
-        summaryStrength.innerText = `उपस्थित: ${item.present_count} | कार्य पर: ${item.on_work_count}`;
-        summaryPlanned.innerText = `सुबह का प्लान: ${item.morning_planned_work || 'Nil'} (${item.morning_planned_location || ''})`;
-      } else {
-        recordIdInput.value = "";
-        summaryMate.innerText = `मुकद्दम: ${GANG_CONFIG[gangVal].mate}`;
-        summaryStrength.innerText = `⚠️ आज सुबह की हाजिरी अभी तक दर्ज नहीं हुई है!`;
-        summaryPlanned.innerText = `सुबह का प्लान: अनुपलब्ध`;
+        if (data && data.length > 0) {
+          const item = data[0];
+          recordIdInput.value = item.id;
+          summaryMate.innerText = `मुकद्दम: ${item.mate_name} ${item.substitute_mate_name ? `(बदली: ${item.substitute_mate_name})` : ''}`;
+          summaryStrength.innerText = `उपस्थित: ${item.present_count} | कार्य पर: ${item.on_work_count}`;
+          summaryPlanned.innerText = `सुबह का प्लान: ${item.morning_planned_work || 'Nil'} (${item.morning_planned_location || ''})`;
+        } else {
+          recordIdInput.value = "";
+          summaryMate.innerText = `मुकद्दम: ${GANG_CONFIG[gangVal] ? GANG_CONFIG[gangVal].mate : ''}`;
+          summaryStrength.innerText = `⚠️ आज सुबह की हाजिरी अभी तक दर्ज नहीं हुई है!`;
+          summaryPlanned.innerText = `सुबह का प्लान: अनुपलब्ध`;
+        }
+      } catch (err) {
+        console.error("fetchMorningMuster error:", err);
       }
     }
 
@@ -757,6 +875,13 @@
         report_status: 'Completed'
       };
 
+      if (!supabaseClient) {
+        alert("⚠️ Supabase कनेक्ट नहीं है।");
+        btn.innerText = "🌙 शाम का कार्य फाइनल सबमिट करें";
+        btn.disabled = false;
+        return;
+      }
+
       let resError = null;
 
       if (recordId) {
@@ -766,7 +891,7 @@
           .eq('id', recordId);
         resError = error;
       } else {
-        const conf = GANG_CONFIG[gangVal];
+        const conf = GANG_CONFIG[gangVal] || { mate: 'मुकद्दम', totalStrength: 25 };
         payload.gang_no = gangVal;
         payload.mate_name = conf.mate;
         payload.total_strength = conf.totalStrength;
@@ -886,6 +1011,13 @@
         defects: document.getElementById('k_defects').value || null
       };
 
+      if (!supabaseClient) {
+        alert("⚠️ Supabase कनेक्ट नहीं है।");
+        btn.innerText = "कीमैन रिपोर्ट सबमिट करें";
+        btn.disabled = false;
+        return;
+      }
+
       const { error } = await supabaseClient.from('keyman_logs').insert([payload]);
 
       btn.innerText = "कीमैन रिपोर्ट सबमिट करें";
@@ -904,27 +1036,56 @@
       }
     }
 
-    // Dashboard Data Loader
+    // Dashboard Data Loader (Isolated in Try-Catch)
     async function loadDashboardData() {
+      if (!supabaseClient) return;
+
       try {
         const todayDate = new Date().toISOString().split('T')[0];
 
+        // 1. Fetch Today's Reports for the 3 Units
         const { data: todayGangs } = await supabaseClient
           .from('gang_daily_reports')
           .select('*')
           .eq('report_date', todayDate);
 
-        if (todayGangs && todayGangs.length > 0) {
-          document.getElementById('stat-gang-present').innerText = todayGangs[0].present_count + ' Men';
-          document.getElementById('stat-on-work').innerText = (todayGangs[0].on_work_count || 0) + ' Men';
-        }
+        ['Unit No. 12', 'Unit No. 13', 'Unit No. 14'].forEach(unitName => {
+          const prefix = unitName === 'Unit No. 12' ? 'u12' : (unitName === 'Unit No. 13' ? 'u13' : 'u14');
+          const unitData = (todayGangs || []).find(g => g.gang_no === unitName);
+
+          const presentEl = document.getElementById(`${prefix}-present`);
+          const onworkEl = document.getElementById(`${prefix}-onwork`);
+          const statusEl = document.getElementById(`${prefix}-status`);
+          const descEl = document.getElementById(`${prefix}-work-desc`);
+          const mateEl = document.getElementById(`${prefix}-mate`);
+
+          if (unitData) {
+            if (presentEl) presentEl.innerText = unitData.present_count;
+            if (onworkEl) onworkEl.innerText = unitData.on_work_count;
+            if (mateEl) mateEl.innerText = unitData.substitute_mate_name ? `${unitData.mate_name} (बदली: ${unitData.substitute_mate_name})` : unitData.mate_name;
+
+            if (statusEl) {
+              if (unitData.report_status === 'Completed') {
+                statusEl.innerText = "कार्य पूर्ण";
+                statusEl.className = "bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-semibold text-xs";
+              } else {
+                statusEl.innerText = "हाजिरी दर्ज";
+                statusEl.className = "bg-amber-100 text-amber-700 px-2 py-0.5 rounded font-semibold text-xs";
+              }
+            }
+            if (descEl) {
+              descEl.innerText = unitData.work_type ? `कार्य: ${unitData.work_type} (${unitData.work_output || 0} Slprs) | Km ${unitData.start_km}-${unitData.end_km}` : `प्लान: ${unitData.morning_planned_work || 'Nil'} (${unitData.morning_planned_location || ''})`;
+            }
+          }
+        });
 
         const { data: keymans } = await supabaseClient
           .from('keyman_logs')
           .select('*')
           .eq('log_date', todayDate);
 
-        document.getElementById('stat-keyman-count').innerText = keymans ? keymans.length : 0;
+        const countEl = document.getElementById('dash-keyman-count');
+        if (countEl) countEl.innerText = keymans ? keymans.length : 0;
 
         // Gang Reports List
         const { data: allGangs } = await supabaseClient
@@ -934,31 +1095,33 @@
           .limit(6);
 
         const gangListEl = document.getElementById('list-gang-reports');
-        if (allGangs && allGangs.length > 0) {
-          gangListEl.innerHTML = allGangs.map(item => `
-            <div class="py-3">
-              <div class="flex justify-between font-semibold text-slate-800">
-                <span>${item.gang_no} (${item.mate_name}) ${item.substitute_mate_name ? `<span class="text-xs text-amber-600">(बदली: ${item.substitute_mate_name})</span>` : ''}</span>
-                <span class="text-xs ${item.report_status === 'Completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'} px-2 py-0.5 rounded font-semibold">
-                  ${item.report_status === 'Completed' ? 'कार्य पूर्ण' : 'सुबह हाजिरी दर्ज'}
-                </span>
+        if (gangListEl) {
+          if (allGangs && allGangs.length > 0) {
+            gangListEl.innerHTML = allGangs.map(item => `
+              <div class="py-3">
+                <div class="flex justify-between font-semibold text-slate-800">
+                  <span>${item.gang_no} (${item.mate_name}) ${item.substitute_mate_name ? `<span class="text-xs text-amber-600">(बदली: ${item.substitute_mate_name})</span>` : ''}</span>
+                  <span class="text-xs ${item.report_status === 'Completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'} px-2 py-0.5 rounded font-semibold">
+                    ${item.report_status === 'Completed' ? 'कार्य पूर्ण' : 'सुबह हाजिरी दर्ज'}
+                  </span>
+                </div>
+                <div class="text-xs text-slate-600 mt-1">
+                  ${item.work_type ? `📍 <b>${item.line_name || 'Track'}:</b> Km ${item.start_km}-${item.end_km} | कार्य: <b>${item.work_type}</b> (${item.work_output || 0} Slprs/M)` : `📋 सुबह प्लान: <b>${item.morning_planned_work \vert{}\vert{} 'Nil'}</b> (${item.morning_planned_location || ''})`}
+                </div>
+                <div class="text-xs text-slate-500 mt-1 flex flex-wrap gap-2">
+                  <span class="bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded border border-emerald-200">कार्य पर: <b>${item.on_work_count || 0}</b></span>
+                  <span class="bg-slate-50 text-slate-600 px-1.5 py-0.5 rounded">P: ${item.present_count} / A: ${item.absent_count}</span>
+                  <span class="bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded">${item.report_date}</span>
+                </div>
+                ${item.remarks ? `<p class="text-xs text-slate-400 mt-1 italic">रिमार्क: ${item.remarks}</p>` : ''}
               </div>
-              <div class="text-xs text-slate-600 mt-1">
-                ${item.work_type ? `📍 <b>${item.line_name}:</b> Km ${item.start_km}-${item.end_km} | कार्य: <b>${item.work_type}</b> (${item.work_output || 0} Slprs/M)` : `📋 सुबह प्लान: <b>${item.morning_planned_work \vert{}\vert{} 'Nil'}</b> (${item.morning_planned_location || ''})`}
-              </div>
-              <div class="text-xs text-slate-500 mt-1 flex flex-wrap gap-2">
-                <span class="bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded border border-emerald-200">कार्य पर: <b>${item.on_work_count || 0}</b></span>
-                <span class="bg-slate-50 text-slate-600 px-1.5 py-0.5 rounded">P: ${item.present_count} / A: ${item.absent_count}</span>
-                <span class="bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded">${item.report_date}</span>
-              </div>
-              ${item.remarks ? `<p class="text-xs text-slate-400 mt-1 italic">रिमार्क: ${item.remarks}</p>` : ''}
-            </div>
-          `).join('');
-        } else {
-          gangListEl.innerHTML = `<p class="text-slate-400 py-3 text-center">कोई रिपोर्ट नहीं मिली।</p>`;
+            `).join('');
+          } else {
+            gangListEl.innerHTML = `<p class="text-slate-400 py-3 text-center">कोई रिपोर्ट नहीं मिली।</p>`;
+          }
         }
 
-        // Keyman Beat Reports List
+        // Keyman Reports List
         const { data: allKeymans } = await supabaseClient
           .from('keyman_logs')
           .select('*')
@@ -966,23 +1129,25 @@
           .limit(6);
 
         const keyListEl = document.getElementById('list-keyman-reports');
-        if (allKeymans && allKeymans.length > 0) {
-          keyListEl.innerHTML = allKeymans.map(item => `
-            <div class="py-3">
-              <div class="flex justify-between font-semibold text-slate-800">
-                <span>${item.keyman_name} ${item.substitute_name ? `<span class="text-xs text-amber-600">(बदली: ${item.substitute_name})</span>` : ''} (${item.gang_no})</span>
-                <span class="text-xs bg-slate-100 px-2 py-0.5 rounded text-slate-500">${item.log_date}</span>
+        if (keyListEl) {
+          if (allKeymans && allKeymans.length > 0) {
+            keyListEl.innerHTML = allKeymans.map(item => `
+              <div class="py-3">
+                <div class="flex justify-between font-semibold text-slate-800">
+                  <span>${item.keyman_name} ${item.substitute_name ? `<span class="text-xs text-amber-600">(बदली: ${item.substitute_name})</span>` : ''} (${item.gang_no})</span>
+                  <span class="text-xs bg-slate-100 px-2 py-0.5 rounded text-slate-500">${item.log_date}</span>
+                </div>
+                <p class="text-xs text-slate-500 mt-0.5">Beat: Km ${item.beat_start_km} से ${item.beat_end_km} (तीनों लाइनें)</p>
+                <div class="mt-1 space-y-0.5 text-xs text-slate-700 bg-slate-50 p-2 rounded">
+                  ${item.work_details ? `<div>🛠️ <b>कार्य:</b> ${item.work_details}</div>` : ''}
+                  ${item.grass_cutting && !item.work_details ? `<div>🌱 <b>घास सफाई:</b> ${item.grass_cutting}</div>` : ''}
+                  ${item.defects ? `<div class="text-rose-600 font-semibold mt-1">⚠️ Defect: ${item.defects}</div>` : ''}
+                </div>
               </div>
-              <p class="text-xs text-slate-500 mt-0.5">Beat: Km ${item.beat_start_km} से ${item.beat_end_km} (तीनों लाइनें)</p>
-              <div class="mt-1 space-y-0.5 text-xs text-slate-700 bg-slate-50 p-2 rounded">
-                ${item.work_details ? `<div>🛠️ <b>कार्य:</b> ${item.work_details}</div>` : ''}
-                ${item.grass_cutting && !item.work_details ? `<div>🌱 <b>घास सफाई:</b> ${item.grass_cutting}</div>` : ''}
-                ${item.defects ? `<div class="text-rose-600 font-semibold mt-1">⚠️ Defect: ${item.defects}</div>` : ''}
-              </div>
-            </div>
-          `).join('');
-        } else {
-          keyListEl.innerHTML = `<p class="text-slate-400 py-3 text-center">कोई कीमैन रिकॉर्ड नहीं मिला।</p>`;
+            `).join('');
+          } else {
+            keyListEl.innerHTML = `<p class="text-slate-400 py-3 text-center">कोई कीमैन रिकॉर्ड नहीं मिला।</p>`;
+          }
         }
 
       } catch (err) {
@@ -990,61 +1155,72 @@
       }
     }
 
-    // CSV Exports
+    // CSV Export
     async function exportToCSV(tableName, fileName) {
-      const { data, error } = await supabaseClient.from(tableName).select('*').order('created_at', { ascending: false });
-      if (error || !data || data.length === 0) {
-        alert("डाउनलोड के लिए कोई डेटा मौजूद नहीं है!");
-        return;
+      if (!supabaseClient) return;
+      try {
+        const { data, error } = await supabaseClient.from(tableName).select('*').order('created_at', { ascending: false });
+        if (error || !data || data.length === 0) {
+          alert("डाउनलोड के लिए कोई डेटा मौजूद नहीं है!");
+          return;
+        }
+
+        const headers = Object.keys(data[0]);
+        const csvRows = [headers.join(',')];
+
+        for (const row of data) {
+          const values = headers.map(header => {
+            const val = row[header] === null || row[header] === undefined ? '' : row[header];
+            return `"${String(val).replace(/"/g, '""')}"`;
+          });
+          csvRows.push(values.join(','));
+        }
+
+        const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + csvRows.join('\n');
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", fileName);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch(e) {
+        console.error("CSV Export Error:", e);
       }
-
-      const headers = Object.keys(data[0]);
-      const csvRows = [headers.join(',')];
-
-      for (const row of data) {
-        const values = headers.map(header => {
-          const val = row[header] === null || row[header] === undefined ? '' : row[header];
-          return `"${String(val).replace(/"/g, '""')}"`;
-        });
-        csvRows.push(values.join(','));
-      }
-
-      const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + csvRows.join('\n');
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", fileName);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
     }
 
-    // Inspections
+    // Inspections Logic
     async function loadInspections() {
-      const { data } = await supabaseClient.from('inspections').select('*').order('scheduled_date', { ascending: true });
-      const tbody = document.getElementById('table-inspections');
+      if (!supabaseClient) return;
+      try {
+        const { data } = await supabaseClient.from('inspections').select('*').order('scheduled_date', { ascending: true });
+        const tbody = document.getElementById('table-inspections');
 
-      if (tbody) {
-        if (data && data.length > 0) {
-          tbody.innerHTML = data.map(item => `
-            <tr>
-              <td class="p-3 font-semibold">${item.scheduled_date}</td>
-              <td class="p-3">${item.inspection_type}</td>
-              <td class="p-3">${item.location_km} (${item.line_name})</td>
-              <td class="p-3">
-                <span class="px-2 py-0.5 text-xs rounded-full font-semibold ${item.status === 'Completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">
-                  ${item.status}
-                </span>
-              </td>
-            </tr>
-          `).join('');
-        } else {
-          tbody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-slate-400">कोई शेड्यूल मौजूद नहीं है।</td></tr>`;
+        if (tbody) {
+          if (data && data.length > 0) {
+            tbody.innerHTML = data.map(item => `
+              <tr>
+                <td class="p-3 font-semibold">${item.scheduled_date}</td>
+                <td class="p-3">${item.inspection_type}</td>
+                <td class="p-3">${item.location_km} (${item.line_name})</td>
+                <td class="p-3">
+                  <span class="px-2 py-0.5 text-xs rounded-full font-semibold ${item.status === 'Completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">
+                    ${item.status}
+                  </span>
+                </td>
+              </tr>
+            `).join('');
+          } else {
+            tbody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-slate-400">कोई शेड्यूल मौजूद नहीं है।</td></tr>`;
+          }
         }
+      } catch(e) {
+        console.error("loadInspections error:", e);
       }
     }
 
     async function addNewInspectionModal() {
+      if (!supabaseClient) return;
       const type = prompt("निरीक्षण का प्रकार (Points & Crossing / Curve / SEZ):");
       if (!type) return;
       const date = prompt("तारीख (YYYY-MM-DD):", new Date().toISOString().split('T')[0]);
@@ -1065,7 +1241,7 @@
       }
     }
 
-    // Init
+    // Direct Bootup
     handleMorningGangChange();
     filterKeymanByGang();
     handleKeymanWorkCategoryChange();
