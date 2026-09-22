@@ -21,11 +21,13 @@
         <p class="text-xs text-slate-400">Section: 16 Km × 3 Lines (UP / DN / 3rd Line) — 48 TKM</p>
       </div>
       
-      <!-- MAIN NAVIGATION TABS -->
+      <!-- NAVIGATION BAR: Defaults to ONLY Dashboard for non-logged-in users -->
       <div id="nav-tabs-container" class="flex flex-wrap items-center gap-2">
         <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-blue-600 text-white transition">
           📊 Dashboard
         </button>
+        
+        <!-- RESTRICTED TABS (Hidden completely until authenticated login) -->
         <button onclick="switchTab('sagoni-hub')" id="tab-sagoni-hub" class="tab-btn hidden px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
           🚉 Section / JE P.Way Sagoni
         </button>
@@ -36,7 +38,7 @@
           🔧 Keyman Beat Log
         </button>
 
-        <!-- User Profile Pill & Login Button -->
+        <!-- User Profile Pill & Login / Logout Action Button -->
         <div class="ml-2 flex items-center gap-2 border-l border-slate-700 pl-3">
           <span id="user-badge" class="text-xs bg-emerald-950 text-emerald-300 border border-emerald-700/50 px-2.5 py-1 rounded-full font-semibold hidden flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -117,7 +119,7 @@
   <!-- MAIN CONTAINER -->
   <main class="max-w-7xl mx-auto p-4 md:p-6 flex-1 w-full">
 
-    <!-- 1. CLEAN UNIT-WISE MAIN DASHBOARD VIEW -->
+    <!-- 1. PUBLIC DASHBOARD VIEW (Visible to all, summary only) -->
     <div id="view-dashboard" class="space-y-6">
       <div class="flex justify-between items-center border-b pb-2">
         <div>
@@ -262,7 +264,7 @@
       </div>
     </div>
 
-    <!-- 2. SECTION / JE P.WAY SAGONI -->
+    <!-- 2. SECTION / JE P.WAY SAGONI (Visible ONLY after JE Login) -->
     <div id="view-sagoni-hub" class="hidden space-y-6">
       
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -370,7 +372,7 @@
 
     </div>
 
-    <!-- 3. MUKADDAM GANG HUB -->
+    <!-- 3. MUKADDAM GANG HUB (Visible ONLY after Mate / JE Login) -->
     <div id="view-mate-hub" class="hidden max-w-3xl mx-auto space-y-4">
       <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-sm flex gap-2">
         <button onclick="switchMateSubTab('morning')" id="subtab-btn-morning" class="flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-amber-500 text-white">
@@ -628,7 +630,7 @@
 
     </div>
 
-    <!-- 4. KEYMAN BEAT REPORT -->
+    <!-- 4. KEYMAN BEAT REPORT (Visible ONLY after Keyman / JE Login) -->
     <div id="view-keyman" class="hidden max-w-3xl mx-auto bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
       <div class="border-b pb-3 mb-4">
         <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
@@ -738,7 +740,7 @@
     lucide.createIcons();
 
     // ----------------------------------------------------
-    // MODERN POPUP LOGIN LOGIC
+    // MODERN POPUP LOGIN LOGIC & TAB SECURITY
     // ----------------------------------------------------
     function openLoginModal() {
       if (currentUser) {
@@ -787,6 +789,7 @@
         closeLoginModal();
         updateUIPerUserRole();
 
+        // Direct user straight to their exclusive tab upon login
         if (currentUser.role === 'JE') switchTab('sagoni-hub');
         else if (currentUser.role === 'MATE') switchTab('mate-hub');
         else if (currentUser.role === 'KEYMAN') switchTab('keyman');
@@ -807,6 +810,7 @@
         badgeText.innerText = `${currentUser.full_name}`;
         badge.classList.remove('hidden');
 
+        // Unhide only the authorized tab for this role
         if (currentUser.role === 'JE') {
           tabSagoni.classList.remove('hidden');
           tabMate.classList.remove('hidden');
@@ -829,6 +833,8 @@
         authBtn.innerHTML = `<i data-lucide="log-in" class="w-3.5 h-3.5"></i> <span>लॉगिन</span>`;
         authBtn.className = "px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-xs font-bold text-white shadow-sm transition flex items-center gap-1.5";
         badge.classList.add('hidden');
+        
+        // Hide all restricted tabs for public visitors
         tabSagoni.classList.add('hidden');
         tabMate.classList.add('hidden');
         tabKeyman.classList.add('hidden');
@@ -837,9 +843,16 @@
     }
 
     // ----------------------------------------------------
-    // TAB SWITCHING
+    // TAB SWITCHING (With Permission Guard)
     // ----------------------------------------------------
     function switchTab(tabId) {
+      // Permission Guard: Do not allow direct access if not logged in
+      if (tabId !== 'dashboard' && !currentUser) {
+        alert("🔒 यह सेक्शन केवल अधिकृत लॉगिन के लिए सुरक्षित है। कृपया पहले लॉगिन करें।");
+        openLoginModal();
+        return;
+      }
+
       ['dashboard', 'sagoni-hub', 'mate-hub', 'keyman'].forEach(id => {
         document.getElementById(`view-${id}`).classList.add('hidden');
         const tabBtn = document.getElementById(`tab-${id}`);
@@ -1348,7 +1361,7 @@
                   </span>
                 </div>
                 <div class="text-xs text-slate-600 mt-1">
-                  ${item.work_type ? `📍 <b>${item.line_name}:</b> Km ${item.start_km}-${item.end_km} | कार्य: <b>${item.work_type}</b> (${item.work_output || 0} Slprs/M)` : `📋 सुबह प्लान: <b>${item.morning_planned_work || 'Nil'}</b> (${item.morning_planned_location || ''})`}
+                  ${item.work_type ? `📍 <b>${item.line_name}:</b> Km ${item.start_km}-${item.end_km} | कार्य: <b>${item.work_type}</b> (${item.work_output || 0} Slprs/M)` : `📋 सुबह प्लान: <b>${item.morning_planned_work \vert{}\vert{} 'Nil'}</b> (${item.morning_planned_location || ''})`}
                 </div>
                 <div class="text-xs text-slate-500 mt-1 flex flex-wrap gap-2">
                   <span class="bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded border border-emerald-200">कार्य पर: <b>${item.on_work_count || 0}</b></span>
@@ -1391,7 +1404,7 @@
     }
 
     // ----------------------------------------------------
-    // INSPECTIONS
+    // INSPECTIONS (INSIDE SAGONI HUB)
     // ----------------------------------------------------
     async function loadInspections() {
       const { data } = await supabaseClient.from('inspections').select('*').order('scheduled_date', { ascending: true });
@@ -1442,7 +1455,7 @@
       }
     }
 
-    // Initialize
+    // Initialize (Strict Security default)
     updateUIPerUserRole();
     handleMorningGangChange();
     filterKeymanByGang();
