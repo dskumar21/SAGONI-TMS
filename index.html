@@ -3,1083 +3,1210 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TrackCare - JE P-Way Section Portal</title>
+  <title>WCR Sagoni P-Way Section TMS</title>
+
+  <!-- 📱 MOBILE PWA & APP ICON EMBED (NO EXTERNAL FILES NEEDED) -->
+  <meta name="theme-color" content="#0b1329">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Sagoni TMS">
+
+  <!-- Crisp Railway SVG Favicon & Touch Icon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%230b1329'/%3E%3Ccircle cx='256' cy='256' r='210' fill='%231e3a8a' stroke='%23f59e0b' stroke-width='18'/%3E%3Ccircle cx='256' cy='256' r='175' fill='%230f172a' stroke='%2338bdf8' stroke-width='8' stroke-dasharray='12 12'/%3E%3Cpath d='M150 330 L362 330 L335 190 L177 190 Z' fill='%23ef4444' stroke='%23f59e0b' stroke-width='10'/%3E%3Ccircle cx='205' cy='260' r='24' fill='%23ffffff'/%3E%3Ccircle cx='307' cy='260' r='24' fill='%23ffffff'/%3E%3Crect x='226' cy='145' width='60' height='45' rx='8' fill='%23f59e0b'/%3E%3Cline x1='110' y1='370' x2='402' y2='370' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cline x1='130' y1='398' x2='382' y2='398' stroke='%23f59e0b' stroke-width='12' stroke-linecap='round'/%3E%3Ctext x='256' y='460' font-size='42' font-family='sans-serif' font-weight='900' fill='%23fef08a' text-anchor='middle'%3EWCR TMS%3C/text%3E%3C/svg%3E">
   
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%230b1329'/%3E%3Ccircle cx='256' cy='256' r='210' fill='%231e3a8a' stroke='%23f59e0b' stroke-width='18'/%3E%3Ccircle cx='256' cy='256' r='175' fill='%230f172a' stroke='%2338bdf8' stroke-width='8' stroke-dasharray='12 12'/%3E%3Cpath d='M150 330 L362 330 L335 190 L177 190 Z' fill='%23ef4444' stroke='%23f59e0b' stroke-width='10'/%3E%3Ccircle cx='205' cy='260' r='24' fill='%23ffffff'/%3E%3Ccircle cx='307' cy='260' r='24' fill='%23ffffff'/%3E%3Crect x='226' cy='145' width='60' height='45' rx='8' fill='%23f59e0b'/%3E%3Cline x1='110' y1='370' x2='402' y2='370' stroke='%2338bdf8' stroke-width='18' stroke-linecap='round'/%3E%3Cline x1='130' y1='398' x2='382' y2='398' stroke='%23f59e0b' stroke-width='12' stroke-linecap='round'/%3E%3Ctext x='256' y='460' font-size='42' font-family='sans-serif' font-weight='900' fill='%23fef08a' text-anchor='middle'%3EWCR TMS%3C/text%3E%3C/svg%3E">
+
+  <!-- PWA Web Manifest Data URI (Auto App-Mode) -->
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Sagoni%20P-Way%20TMS%22%2C%22short_name%22%3A%22Sagoni%20TMS%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230b1329%22%2C%22theme_color%22%3A%22%230b1329%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20512%20512'%253E%253Crect%20width%3D'512'%20height%3D'512'%20rx%3D'110'%20fill%3D'%25230b1329'%2F%253E%253Ccircle%20cx%3D'256'%20cy%3D'256'%20r%3D'210'%20fill%3D'%25231e3a8a'%20stroke%3D'%2523f59e0b'%20stroke-width%3D'18'%2F%253E%253Ccircle%20cx%3D'256'%20cy%3D'256'%20r%3D'175'%20fill%3D'%25230f172a'%20stroke%3D'%252338bdf8'%20stroke-width%3D'8'%20stroke-dasharray%3D'12%2012'%2F%253E%253Cpath%20d%3D'M150%20330%20L362%20330%20L335%20190%20L177%20190%20Z'%20fill%3D'%2523ef4444'%20stroke%3D'%2523f59e0b'%20stroke-width%3D'10'%2F%253E%253Ccircle%20cx%3D'205'%20cy%3D'260'%20r%3D'24'%20fill%3D'%2523ffffff'%2F%253E%253Ccircle%20cx%3D'307'%20cy%3D'260'%20r%3D'24'%20fill%3D'%2523ffffff'%2F%253E%253Crect%20x%3D'226'%20cy%3D'145'%20width%3D'60'%20height%3D'45'%20rx%3D'8'%20fill%3D'%2523f59e0b'%2F%253E%253Cline%20x1%3D'110'%20y1%3D'370'%20x2%3D'402'%20y2%3D'370'%20stroke%3D'%252338bdf8'%20stroke-width%3D'18'%20stroke-linecap%3D'round'%2F%253E%253Cline%20x1%3D'130'%20y1%3D'398'%20x2%3D'382'%20y2%3D'398'%20stroke%3D'%2523f59e0b'%20stroke-width%3D'12'%20stroke-linecap%3D'round'%2F%253E%253Ctext%20x%3D'256'%20y%3D'460'%20font-size%3D'42'%20font-family%3D'sans-serif'%20font-weight%3D'900'%20fill%3D'%2523fef08a'%20text-anchor%3D'middle'%253EWCR%20TMS%253C%2Ftext%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
+
+  <!-- Supabase CDN Client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    
+    body {
+      background-color: #0b1329;
+      background-image: 
+        radial-gradient(circle at 50% 0%, #1e3a8a 0%, transparent 75%),
+        linear-gradient(rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.98)),
+        repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(56, 189, 248, 0.05) 40px),
+        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(56, 189, 248, 0.05) 40px);
+      color: #f8fafc;
+      min-height: 100vh;
+      padding: 12px;
+    }
+    .container { max-width: 760px; margin: 0 auto; }
+    
+    .header {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border-radius: 12px;
+      border: 2px solid #f59e0b;
+      padding: 14px 10px;
+      margin-bottom: 14px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+      text-align: center;
+    }
+    .header .ir-zone { font-size: 11px; font-weight: 900; color: #f59e0b; letter-spacing: 1.5px; text-transform: uppercase; }
+    .header h1 { font-size: 17px; font-weight: 900; color: #38bdf8; margin: 3px 0; }
+    .header p { font-size: 10px; color: #cbd5e1; font-weight: 600; }
+    .sec-badge { display: inline-block; background: #0284c7; color: #ffffff; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 6px; margin-top: 4px; border: 1px solid #38bdf8; }
+
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      margin-bottom: 12px;
+    }
+    .card-emergency { border: 2px solid #ef4444; background: #20131d; }
+    .card-train-safety { border: 2px solid #0284c7; background: #0f2338; }
+
+    .form-group { margin-bottom: 12px; }
+    label { display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 5px; }
+    input, select, textarea { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 13px; outline: none; }
+    input:focus, select:focus, textarea:focus { border-color: #38bdf8; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+
+    .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; color: white; transition: 0.2s; }
+    .btn-blue { background: #2563eb; }
+    .btn-green { background: #16a34a; }
+    .btn-red { background: #dc2626; }
+    .btn-amber { background: #d97706; }
+    .btn-purple { background: #7c3aed; }
+    .btn-csv { background: #059669; color: white; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+
+    .section-pills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 4px; }
+    .line-selector-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 4px; }
+    .pills-btn { background: #0f172a; border: 2px solid #334155; color: #cbd5e1; padding: 9px 4px; border-radius: 8px; font-size: 11px; font-weight: 700; text-align: center; cursor: pointer; transition: 0.2s; user-select: none; }
+    .pills-btn.selected { background: #0284c7; border-color: #38bdf8; color: white; box-shadow: 0 0 10px rgba(56,189,248,0.4); }
+    .pills-btn.locked { opacity: 0.7; pointer-events: none; }
+
+    .sos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
+    .sos-item { background: #0f172a; border: 1px solid #dc2626; border-radius: 8px; padding: 10px 4px; text-align: center; cursor: pointer; transition: 0.2s; }
+    .sos-item:hover { background: #7f1d1d; border-color: #f87171; }
+    .sos-icon { font-size: 22px; display: block; margin-bottom: 4px; }
+    .sos-label { font-size: 10px; font-weight: 700; color: #fecaca; }
+
+    .train-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+    .train-item { background: #0f172a; border: 1px solid #0284c7; border-radius: 8px; padding: 12px 8px; text-align: center; cursor: pointer; }
+    .train-item:hover { background: #075985; }
+
+    .user-bar { background: #0f172a; border: 1px solid #334155; padding: 10px 12px; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+    .user-info { font-size: 12px; }
+    .user-info strong { color: #38bdf8; font-size: 13px; }
+
+    .toast { display: none; background: #065f46; border: 1px solid #34d399; color: #ecfdf5; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 600; text-align: center; margin-bottom: 12px; }
+    
+    #sirenAlarmBox { display: none; background: #7f1d1d; border: 3px solid #ef4444; border-radius: 12px; padding: 18px 12px; text-align: center; margin-bottom: 14px; animation: pulseAlert 0.8s infinite alternate; }
+    @keyframes pulseAlert { 0% { box-shadow: 0 0 10px #ef4444; transform: scale(0.99); } 100% { box-shadow: 0 0 25px #dc2626; transform: scale(1.01); background: #991b1b; } }
+
+    #floatingStopBar { display: none; position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 480px; z-index: 10000; }
+    #floatingStopBar button { background: #ffffff; color: #b91c1c; border: 3px solid #ef4444; border-radius: 50px; font-size: 16px; font-weight: 900; padding: 14px; box-shadow: 0 10px 25px rgba(0,0,0,0.6); width: 100%; cursor: pointer; }
+
+    .tab-bar { display: flex; gap: 6px; margin-bottom: 12px; background: #0f172a; padding: 4px; border-radius: 8px; border: 1px solid #334155; }
+    .tab-btn { flex: 1; padding: 8px 4px; border: none; background: transparent; color: #94a3b8; font-size: 11px; font-weight: 700; border-radius: 6px; cursor: pointer; text-align: center; transition: 0.2s; }
+    .tab-btn.active { background: #2563eb; color: white; }
+
+    .table-responsive { max-height: 380px; overflow-y: auto; overflow-x: auto; border: 1px solid #334155; border-radius: 8px; }
+    table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: left; }
+    th { background: #0f172a; color: #38bdf8; padding: 8px 10px; position: sticky; top: 0; border-bottom: 1px solid #334155; white-space: nowrap; }
+    td { padding: 8px 10px; border-bottom: 1px solid rgba(51, 65, 85, 0.4); color: #cbd5e1; }
+    tr:nth-child(even) { background-color: rgba(15, 23, 42, 0.4); }
+
+    .muster-box { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+    .muster-title { font-size: 13px; font-weight: 700; color: #38bdf8; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 4px; }
+  </style>
 </head>
-<body class="bg-slate-100 text-slate-900 font-sans min-h-screen flex flex-col">
+<body>
 
-  <!-- TOP HEADER BAR -->
-  <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
-      <div>
-        <h1 class="text-xl font-bold flex items-center gap-2 text-emerald-400">
-          <i data-lucide="activity"></i> JE P-WAY TRACK DASHBOARD
-        </h1>
-        <p class="text-xs text-slate-400">Jurisdiction: 16 Km × 3 Lines (UP / DN / 3rd Line) — 48 TKM</p>
-      </div>
-      
-      <!-- MAIN NAVIGATION TABS -->
-      <div class="flex flex-wrap gap-2">
-        <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-blue-600 text-white transition">
-          📊 Dashboard
-        </button>
-        <button onclick="switchTab('mate-hub')" id="tab-mate-hub" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
-          👷 मुकद्दम / Gang Diary
-        </button>
-        <button onclick="switchTab('keyman')" id="tab-keyman" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
-          🔧 Keyman Beat Log
-        </button>
-        <button onclick="switchTab('inspections')" id="tab-inspections" class="tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
-          📋 Inspections
-        </button>
-      </div>
-    </div>
-  </header>
+  <div id="floatingStopBar">
+    <button onclick="stopAlarmSound()">🔕 अलार्म बंद करें (Acknowledge & Stop)</button>
+  </div>
 
-  <!-- MAIN CONTAINER -->
-  <main class="max-w-7xl mx-auto p-4 md:p-6 flex-1 w-full">
-
-    <!-- 1. DASHBOARD VIEW -->
-    <div id="view-dashboard" class="space-y-6">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-          <div class="flex justify-between items-center text-slate-500 text-xs font-semibold">
-            <span>TOTAL SECTION</span>
-            <i data-lucide="map-pin" class="w-4 h-4 text-blue-500"></i>
-          </div>
-          <div class="text-2xl font-bold mt-2 text-slate-800">16.0 Km</div>
-          <span class="text-xs text-slate-500">3 Running Lines</span>
-        </div>
-
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-          <div class="flex justify-between items-center text-slate-500 text-xs font-semibold">
-            <span>TODAY PRESENT</span>
-            <i data-lucide="users" class="w-4 h-4 text-emerald-500"></i>
-          </div>
-          <div id="stat-gang-present" class="text-2xl font-bold mt-2 text-emerald-600">--</div>
-          <span class="text-xs text-slate-500">Morning Muster</span>
-        </div>
-
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-          <div class="flex justify-between items-center text-slate-500 text-xs font-semibold">
-            <span>ON TRACK WORK</span>
-            <i data-lucide="hammer" class="w-4 h-4 text-amber-500"></i>
-          </div>
-          <div id="stat-on-work" class="text-2xl font-bold mt-2 text-amber-600">--</div>
-          <span class="text-xs text-slate-500">Men on Track</span>
-        </div>
-
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-          <div class="flex justify-between items-center text-slate-500 text-xs font-semibold">
-            <span>KEYMAN BEATS</span>
-            <i data-lucide="wrench" class="w-4 h-4 text-purple-500"></i>
-          </div>
-          <div id="stat-keyman-count" class="text-2xl font-bold mt-2 text-purple-600">--</div>
-          <span class="text-xs text-slate-500">Beats Reported</span>
-        </div>
-      </div>
-
-      <!-- Export Buttons -->
-      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-wrap gap-3 items-center justify-between">
-        <div>
-          <h4 class="font-bold text-slate-800 text-sm">📥 Excel Data Exports</h4>
-          <p class="text-xs text-slate-500">मुकद्दम हाजिरी व कार्य डायरी की एक्सेल फाइल डाउनलोड करें</p>
-        </div>
-        <div class="flex flex-wrap gap-2">
-          <button onclick="exportToCSV('gang_daily_reports', 'PWay_Gang_Muster_Work_Report.csv')" class="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700 flex items-center gap-1.5">
-            <i data-lucide="download" class="w-3.5 h-3.5"></i> मुकद्दम डायरी Excel
-          </button>
-          <button onclick="exportToCSV('keyman_logs', 'PWay_Keyman_Logs.csv')" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700 flex items-center gap-1.5">
-            <i data-lucide="download" class="w-3.5 h-3.5"></i> कीमैन बीट Excel
-          </button>
-        </div>
-      </div>
-
-      <!-- Recent Records -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-          <h3 class="font-bold text-slate-800 text-base mb-3 flex items-center gap-2 border-b pb-2">
-            <i data-lucide="users" class="text-blue-600 w-5 h-5"></i> Recent Gang Reports (मुकद्दम डायरी)
-          </h3>
-          <div id="list-gang-reports" class="divide-y divide-slate-100 text-sm">
-            <p class="text-slate-400 py-4 text-center">लोड हो रहा है...</p>
-          </div>
-        </div>
-
-        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-          <h3 class="font-bold text-slate-800 text-base mb-3 flex items-center gap-2 border-b pb-2">
-            <i data-lucide="wrench" class="text-emerald-600 w-5 h-5"></i> Keyman Beat Progress (कीमैन कार्य)
-          </h3>
-          <div id="list-keyman-reports" class="divide-y divide-slate-100 text-sm">
-            <p class="text-slate-400 py-4 text-center">लोड हो रहा है...</p>
-          </div>
-        </div>
-      </div>
+  <div class="container">
+    
+    <div class="header">
+      <div class="ir-zone">पश्चिम मध्य रेल | WCR JABALPUR</div>
+      <h1>सगोनी पी-वे ट्रैक मैनेजमेंट सिस्टम</h1>
+      <span class="sec-badge">Km 1157.000 से 1173.000 (16 Km)</span>
+      <p style="margin-top: 4px;">रतनगांव ➔ सगोनी ➔ गोला पट्टी (IBH)</p>
     </div>
 
-    <!-- 2. COMBINED MUKADDAM / GANG HUB -->
-    <div id="view-mate-hub" class="hidden max-w-3xl mx-auto space-y-4">
-      <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-sm flex gap-2">
-        <button onclick="switchMateSubTab('morning')" id="subtab-btn-morning" class="flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-amber-500 text-white">
-          <i data-lucide="sun" class="w-4 h-4"></i> 1. सुबह 08:00 हाजिरी व प्रस्तावित प्लान
-        </button>
-        <button onclick="switchMateSubTab('evening')" id="subtab-btn-evening" class="flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-slate-100 text-slate-600 hover:bg-slate-200">
-          <i data-lucide="moon" class="w-4 h-4"></i> 2. शाम 05:00 वास्तविक कार्य डायरी
-        </button>
-      </div>
-
-      <!-- SUB-SECTION A: MORNING MUSTER -->
-      <div id="subview-morning" class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-        <div class="border-b pb-3 mb-4 flex justify-between items-center">
-          <div>
-            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-              <i data-lucide="sun" class="text-amber-500"></i> सुबह 08:00 बजे: हाजिरी, ड्यूटी व प्रस्तावित कार्य
-            </h2>
-            <p class="text-xs text-slate-500 mt-0.5">सबमिट होते ही फॉर्म स्वतः नया (रीसेट) हो जाएगा।</p>
-          </div>
-          <button type="button" onclick="resetMorningFormToDefaults()" class="text-xs text-slate-500 hover:text-slate-800 border px-2 py-1 rounded bg-slate-50">
-            🔄 रिफ्रेश फॉर्म
-          </button>
-        </div>
-
-        <form id="form-morning" onsubmit="handleMorningSubmit(event)" class="space-y-4 text-sm">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label class="block font-medium text-slate-700 mb-1">गैंग नंबर (Gang Unit)</label>
-              <select id="m_gang_no" onchange="handleMorningGangChange()" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white font-medium" required>
-                <option value="Unit No. 12">यूनिट नंबर 12</option>
-                <option value="Unit No. 13">यूनिट नंबर 13</option>
-                <option value="Unit No. 14">यूनिट नंबर 14</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="block font-medium text-slate-700 mb-1">मुकद्दम / मेट का नाम</label>
-              <select id="m_mate_select" onchange="handleMorningMateChange()" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white" required></select>
-            </div>
-
-            <div>
-              <label class="block font-medium text-slate-700 mb-1">बदली मेट (यदि अन्य हो)</label>
-              <input type="text" id="m_substitute_mate" disabled placeholder="कार्यवाहक मेट का नाम" class="w-full border rounded-lg p-2 bg-slate-100 text-slate-400 cursor-not-allowed">
-            </div>
-          </div>
-
-          <!-- Attendance Breakdown -->
-          <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100 space-y-3">
-            <div class="flex justify-between items-center">
-              <h3 class="font-bold text-blue-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
-                <i data-lucide="users" class="w-4 h-4 text-blue-600"></i> 1. हाजिरी विवरण (Muster)
-              </h3>
-              <span class="text-xs font-semibold text-blue-700">ऑटो-बैलेंस</span>
-            </div>
-            
-            <div class="grid grid-cols-2 md:grid-cols-6 gap-3 text-xs">
-              <div>
-                <label class="block font-semibold text-slate-600 mb-1">कुल संख्या</label>
-                <input type="number" id="m_total_strength" class="w-full border rounded p-1.5 bg-slate-200 font-bold text-slate-800 text-center" readonly>
-              </div>
-              <div>
-                <label class="block font-semibold text-emerald-700 mb-1">उपस्थित (Auto)</label>
-                <input type="number" id="m_present_count" class="w-full border border-emerald-400 rounded p-1.5 bg-emerald-50 font-bold text-emerald-800 text-center" readonly>
-              </div>
-              <div>
-                <label class="block font-semibold text-rose-700 mb-1">अनुपस्थित (A)</label>
-                <input type="number" id="m_absent_count" value="0" min="0" oninput="calculateMorningNumbers()" class="w-full border border-rose-300 rounded p-1.5 bg-white text-center text-rose-700" required>
-              </div>
-              <div>
-                <label class="block font-semibold text-amber-700 mb-1">छुट्टी (L)</label>
-                <input type="number" id="m_leave_count" value="0" min="0" oninput="calculateMorningNumbers()" class="w-full border border-amber-300 rounded p-1.5 bg-white text-center text-amber-700">
-              </div>
-              <div>
-                <label class="block font-semibold text-purple-700 mb-1">बीमारी (S)</label>
-                <input type="number" id="m_sick_count" value="0" min="0" oninput="calculateMorningNumbers()" class="w-full border border-purple-300 rounded p-1.5 bg-white text-center text-purple-700">
-              </div>
-              <div>
-                <label class="block font-semibold text-cyan-700 mb-1">विश्राम (R)</label>
-                <input type="number" id="m_rest_count" value="0" min="0" oninput="calculateMorningNumbers()" class="w-full border border-cyan-300 rounded p-1.5 bg-white text-center text-cyan-700">
-              </div>
-            </div>
-          </div>
-
-          <!-- Duty Breakdown -->
-          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-            <div class="flex justify-between items-center">
-              <h3 class="font-bold text-slate-800 text-xs uppercase tracking-wider flex items-center gap-1.5">
-                <i data-lucide="clipboard-list" class="w-4 h-4 text-emerald-600"></i> 2. ड्यूटी विवरण (Duty Distribution)
-              </h3>
-              <span id="m_alert_badge" class="text-xs font-semibold text-emerald-600">संतुलित</span>
-            </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 text-xs">
-              <div>
-                <label class="block text-slate-700 mb-1 font-semibold">मुकद्दम</label>
-                <input type="number" id="m_mate_count" value="1" min="0" oninput="calculateMorningNumbers()" class="w-full border rounded p-1.5 bg-white text-center font-bold">
-              </div>
-              <div>
-                <label class="block text-slate-600 mb-1">कीमैन</label>
-                <input type="number" id="m_keyman_count" value="0" min="0" oninput="calculateMorningNumbers()" class="w-full border rounded p-1.5 bg-white text-center">
-              </div>
-              <div>
-                <label class="block text-slate-600 mb-1">पेट्रोलमैन</label>
-                <input type="number" id="m_patrol_count" value="0" min="0" oninput="calculateMorningNumbers()" class="w-full border rounded p-1.5 bg-white text-center">
-              </div>
-              <div>
-                <label class="block text-slate-600 mb-1">नाइट वॉचमैन</label>
-                <input type="number" id="m_night_count" value="0" min="0" oninput="calculateMorningNumbers()" class="w-full border rounded p-1.5 bg-white text-center">
-              </div>
-              <div>
-                <label class="block text-slate-600 mb-1">ट्रेनिंग</label>
-                <input type="number" id="m_train_count" value="0" min="0" oninput="calculateMorningNumbers()" class="w-full border rounded p-1.5 bg-white text-center">
-              </div>
-              <div>
-                <label class="block text-slate-600 mb-1">वेल्डर</label>
-                <input type="number" id="m_weld_count" value="0" min="0" oninput="calculateMorningNumbers()" class="w-full border rounded p-1.5 bg-white text-center">
-              </div>
-              <div>
-                <label class="block text-slate-600 mb-1">ब्लैकस्मिथ</label>
-                <input type="number" id="m_smith_count" value="0" min="0" oninput="calculateMorningNumbers()" class="w-full border rounded p-1.5 bg-white text-center">
-              </div>
-              <div>
-                <label class="block text-slate-600 mb-1">पेंटर</label>
-                <input type="number" id="m_paint_count" value="0" min="0" oninput="calculateMorningNumbers()" class="w-full border rounded p-1.5 bg-white text-center">
-              </div>
-              <div>
-                <label class="block text-slate-600 mb-1">पंप ड्यूटी</label>
-                <input type="number" id="m_pump_count" value="0" min="0" oninput="calculateMorningNumbers()" class="w-full border rounded p-1.5 bg-white text-center">
-              </div>
-              <div>
-                <label class="block text-slate-600 mb-1">प्रोटेक्शन</label>
-                <input type="number" id="m_prot_count" value="0" min="0" oninput="calculateMorningNumbers()" class="w-full border rounded p-1.5 bg-white text-center">
-              </div>
-              <div>
-                <label class="block text-indigo-700 mb-1 font-semibold">अन्य कार्य</label>
-                <input type="number" id="m_other_count" value="0" min="0" oninput="calculateMorningNumbers()" class="w-full border border-indigo-300 rounded p-1.5 bg-indigo-50/50 text-center">
-              </div>
-              <div class="bg-emerald-100/70 p-1.5 rounded border border-emerald-300">
-                <label class="block text-emerald-900 font-bold mb-1">कार्य पर (Auto)</label>
-                <input type="number" id="m_onwork_count" value="24" class="w-full border border-emerald-500 rounded p-1 bg-white font-black text-emerald-800 text-center" readonly>
-              </div>
-            </div>
-          </div>
-
-          <!-- PLANNED WORK -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block font-medium text-slate-700 mb-1">आज का प्रस्तावित कार्य (Planned Work)</label>
-              <select id="m_planned_work" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white font-medium" required>
-                <option value="थ्रू पैकिंग (Through Packing)">थ्रू पैकिंग (Through Packing)</option>
-                <option value="सीजर रिमूवल / SEZ (Scissor/SEZ Attention)">सीजर रिमूवल / SEZ (Scissor/SEZ Attention)</option>
-                <option value="बॉक्सिंग व ड्रेसिंग (Boxing & Dressing)">बॉक्सिंग व ड्रेसिंग (Boxing & Dressing)</option>
-                <option value="स्लैक अटेंशन (Slack Attention)">स्लैक अटेंशन (Slack Attention)</option>
-                <option value="डेली ट्रैक मेंटेनेंस (Daily Track Maintenance)">डेली ट्रैक मेंटेनेंस (Daily Track Maintenance)</option>
-                <option value="पॉइंट्स व क्रॉसिंग अटेंशन (Points & Crossing)">पॉइंट्स व क्रॉसिंग अटेंशन (Points & Crossing)</option>
-                <option value="ग्रीसिंग कार्य (Curve/Fitting/SEJ Greasing)">ग्रीसिंग कार्य (Curve/Fitting/SEJ Greasing)</option>
-                <option value="घास सफाई (Grass Cutting)">घास सफाई (Grass Cutting)</option>
-                <option value="पेड़ों की ट्रिमिंग (Tree Branch Trimming)">पेड़ों की ट्रिमिंग (Tree Branch Trimming)</option>
-                <option value="मटेरियल यार्ड / स्टोर कार्य (Material Yard / Store)">मटेरियल यार्ड / स्टोर कार्य (Material Yard / Store)</option>
-                <option value="अन्य कार्य (Other Planned Work)">अन्य कार्य (Other Planned Work)</option>
-              </select>
-            </div>
-            <div>
-              <label class="block font-medium text-slate-700 mb-1">प्रस्तावित स्थान (Line & Km)</label>
-              <input type="text" id="m_planned_location" placeholder="उदा. UP Line, Km 104/2 - 104/6" class="w-full border rounded-lg p-2" required>
-            </div>
-          </div>
-
-          <button type="submit" id="btn-morning-submit" class="w-full bg-amber-600 text-white font-semibold py-2.5 rounded-lg hover:bg-amber-700 shadow transition">
-            ☀️ सुबह की हाजिरी सबमिट करें (Submit Morning Muster)
-          </button>
-        </form>
-      </div>
-
-      <!-- SUB-SECTION B: EVENING WORK DIARY -->
-      <div id="subview-evening" class="hidden bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-        <div class="border-b pb-3 mb-4">
-          <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-            <i data-lucide="moon" class="text-indigo-600"></i> शाम 05:00 बजे: दैनिक कार्य डायरी (Evening Work Diary)
-          </h2>
-          <p class="text-xs text-slate-500 mt-0.5">गैंग चुनते ही सुबह की हाजिरी स्वतः लोड होगी, केवल काम का वास्तविक विवरण भरें।</p>
-        </div>
-
-        <div class="mb-4">
-          <label class="block font-medium text-slate-700 mb-1 text-sm">गैंग नंबर सेलेक्ट करें</label>
-          <select id="e_gang_no" onchange="fetchMorningMusterForEvening()" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white font-medium text-sm">
-            <option value="Unit No. 12">यूनिट नंबर 12</option>
-            <option value="Unit No. 13">यूनिट नंबर 13</option>
-            <option value="Unit No. 14">यूनिट नंबर 14</option>
-          </select>
-        </div>
-
-        <div id="evening-morning-summary" class="bg-indigo-50/60 p-4 rounded-xl border border-indigo-200 mb-4 text-xs space-y-1.5">
-          <div class="flex justify-between font-bold text-indigo-900">
-            <span id="e_sum_mate">मुकद्दम: --</span>
-            <span id="e_sum_strength">हाजिरी: लोड हो रही है...</span>
-          </div>
-          <p id="e_sum_planned" class="text-slate-600 font-medium">सुबह का प्लान: --</p>
-        </div>
-
-        <form id="form-evening" onsubmit="handleEveningSubmit(event)" class="space-y-4 text-sm">
-          <input type="hidden" id="e_record_id">
-
-          <div class="grid grid-cols-3 gap-4">
-            <div>
-              <label class="block font-medium text-slate-700 mb-1">लाइन (Actual Line)</label>
-              <select id="e_line_name" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white" required>
-                <option>UP Line</option>
-                <option>DN Line</option>
-                <option>3rd Line</option>
-              </select>
-            </div>
-            <div>
-              <label class="block font-medium text-slate-700 mb-1">From Km</label>
-              <input type="number" step="0.001" id="e_start_km" class="w-full border rounded-lg p-2" placeholder="104.200" required>
-            </div>
-            <div>
-              <label class="block font-medium text-slate-700 mb-1">To Km</label>
-              <input type="number" step="0.001" id="e_end_km" class="w-full border rounded-lg p-2" placeholder="104.500" required>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label class="block font-medium text-slate-700 mb-1">वास्तविक कार्य (Work Done)</label>
-              <select id="e_work_type" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white" required>
-                <option>थ्रू पैकिंग (Through Packing)</option>
-                <option>सीजर रिमूवल / SEZ (Scissor/SEZ Attention)</option>
-                <option>बॉक्सिंग व ड्रेसिंग (Boxing & Dressing)</option>
-                <option>स्लैक अटेंशन (Slack Attention)</option>
-                <option>डेली ट्रैक मेंटेनेंस (Daily Track Maintenance)</option>
-                <option>पॉइंट्स व क्रॉसिंग अटेंशन (Points & Crossing)</option>
-                <option>ग्रीसिंग कार्य (Curve/Fitting/SEJ Greasing)</option>
-                <option>घास सफाई (Grass Cutting)</option>
-                <option>पेड़ों की ट्रिमिंग (Tree Branch Trimming)</option>
-                <option>मटेरियल यार्ड / स्टोर कार्य (Material Yard / Store)</option>
-                <option>कैजुअल रिन्यूअल (Casual Renewal)</option>
-                <option>डीप स्क्रीनिंग (Deep Screening)</option>
-                <option>अन्य कार्य (Other Work)</option>
-              </select>
-            </div>
-            <div>
-              <label class="block font-medium text-slate-700 mb-1">आउटपुट (Sleepers / Metres)</label>
-              <input type="number" id="e_work_output" class="w-full border rounded-lg p-2" placeholder="140" required>
-            </div>
-          </div>
-
-          <div>
-            <label class="block font-medium text-slate-700 mb-1">कार्य रिमार्क / ट्रैक स्थिति (Remarks)</label>
-            <textarea id="e_remarks" rows="3" class="w-full border rounded-lg p-2" placeholder="उदा. थ्रू पैकिंग पूर्ण, 4 रबर पैड बदले गए, लाइन फिट पाई गई..."></textarea>
-          </div>
-
-          <button type="submit" id="btn-evening-submit" class="w-full bg-indigo-600 text-white font-semibold py-2.5 rounded-lg hover:bg-indigo-700 shadow transition">
-            🌙 शाम का कार्य फाइनल सबमिट करें (Complete Work Diary)
-          </button>
-        </form>
-      </div>
-
+    <div id="sirenAlarmBox">
+      <div style="font-size: 32px; margin-bottom: 4px;">🚨 📢 ⚠️</div>
+      <h2 id="sirenAlertTitle" style="color: #fff; font-size: 18px; font-weight: 900;">ट्रेन आ रही है! तुरंत ट्रैक छोड़ें!</h2>
+      <p id="sirenAlertDesc" style="color: #fecaca; font-size: 13px; margin: 6px 0 14px 0;">--</p>
+      <button onclick="stopAlarmSound()" class="btn" style="background:#fff; color:#991b1b; font-size:15px; font-weight:900; box-shadow:0 4px 10px rgba(0,0,0,0.4);">🔕 अलार्म बंद करें (Stop Sound)</button>
     </div>
 
-    <!-- 3. KEYMAN BEAT REPORT (UPDATED WITH DYNAMIC SINGLE WORK LIST & SERIAL ORDER) -->
-    <div id="view-keyman" class="hidden max-w-3xl mx-auto bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-      <div class="border-b pb-3 mb-4">
-        <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-          <i data-lucide="wrench" class="text-emerald-600"></i> कीमैन बीट दैनिक प्रोग्रेस रिपोर्ट
-        </h2>
-        <p class="text-xs text-slate-500 mt-0.5">तीनों लाइनों का संयुक्त निरीक्षण — कार्य चुनते ही संबंधित इनपुट बॉक्स स्वतः खुल जाएगा।</p>
+    <div id="toast" class="toast"></div>
+
+    <div id="homeSection">
+
+      <div class="card card-train-safety">
+        <div style="text-align: center;">
+          <strong style="color: #38bdf8; font-size: 15px;">🚆 रिलेटिव सेक्शन ब्लॉक चेतावनी प्रणाली</strong>
+          <p style="font-size: 11px; color: #94a3b8; margin-top: 2px;">रतनगांव ➔ सगोनी ➔ गोला पट्टी (IBH)</p>
+        </div>
+
+        <div class="train-grid">
+          <div class="train-item" onclick="openTrainMode('sender')">
+            <span style="font-size: 24px; display:block; margin-bottom:4px;">📢</span>
+            <strong style="color:#38bdf8; font-size:12px;">गाड़ी सूचना दें</strong><br>
+            <span style="color:#94a3b8; font-size:10px;">(Sender / Dispatcher)</span>
+          </div>
+          <div class="train-item" onclick="openTrainMode('receiver')">
+            <span style="font-size: 24px; display:block; margin-bottom:4px;">📡</span>
+            <strong style="color:#4ade80; font-size:12px;">गाड़ी अलर्ट सुनें</strong><br>
+            <span style="color:#94a3b8; font-size:10px;">(Receiver / Locked Route)</span>
+          </div>
+        </div>
+
+        <!-- SENDER FORM -->
+        <div id="trainSenderPanel" style="display: none; margin-top: 14px; border-top: 1px dashed #0284c7; padding-top: 12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <strong style="color:#38bdf8; font-size:13px;">📢 ट्रेन डिस्पैच (एक साथ कई सेक्शन चुनें)</strong>
+            <button onclick="closeTrainPanels()" style="background:none; border:none; color:#f87171; cursor:pointer;">✖</button>
+          </div>
+          
+          <form onsubmit="handleSenderFormSubmit(event)">
+            <div class="form-group">
+              <label>आपकी ID / स्टेशन (Sender ID)</label>
+              <input type="text" id="sndEmpId" placeholder="उदा: SM_SAGONI, GATE_1162, JE01" required>
+            </div>
+
+            <div class="form-group">
+              <label>1. मूवमेंट व ब्लॉक सेक्शन चुनें (टच करें):</label>
+              <div class="section-pills-grid" id="sndMovementGrid">
+                <div class="pills-btn selected" id="sndMv1" onclick="toggleSenderMovement('sndMv1', 'रतनगांव से सगोनी', 'रतनगांव-सगोनी')">🔼 UP: रतनगांव ➔ सगोनी</div>
+                <div class="pills-btn" id="sndMv2" onclick="toggleSenderMovement('sndMv2', 'सगोनी से गोला पट्टी', 'गोला पट्टी-सगोनी')">🔼 UP: सगोनी ➔ गोला पट्टी</div>
+                <div class="pills-btn" id="sndMv3" onclick="toggleSenderMovement('sndMv3', 'गोला पट्टी से सगोनी', 'गोला पट्टी-सगोनी')">🔽 DN: गोला पट्टी ➔ सगोनी</div>
+                <div class="pills-btn" id="sndMv4" onclick="toggleSenderMovement('sndMv4', 'सगोनी से रतनगांव', 'रतनगांव-सगोनी')">🔽 DN: सगोनी ➔ रतनगांव</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>2. प्रभावित लाइन चुनें (एक या अधिक चुनें):</label>
+              <div class="line-selector-grid" id="sndLinesGrid">
+                <div class="pills-btn selected" id="sndL_upMain" onclick="toggleSenderLine('sndL_upMain', 'अप मेन लाइन')">अप मेन लाइन</div>
+                <div class="pills-btn" id="sndL_dnMain" onclick="toggleSenderLine('sndL_dnMain', 'डाउन मेन लाइन')">डाउन मेन लाइन</div>
+                <div class="pills-btn" id="sndL_3rdMain" onclick="toggleSenderLine('sndL_3rdMain', 'थर्ड मेन लाइन')">थर्ड मेन लाइन</div>
+                <div class="pills-btn" id="sndL_upLoop" onclick="toggleSenderLine('sndL_upLoop', 'अप लूप लाइन')">अप लूप लाइन</div>
+                <div class="pills-btn" id="sndL_dnLoop" onclick="toggleSenderLine('sndL_dnLoop', 'डाउन लूप लाइन')">डाउन लूप लाइन</div>
+                <div class="pills-btn" id="sndL_3rdLoop" onclick="toggleSenderLine('sndL_3rdLoop', 'थर्ड लूप लाइन')">थर्ड लूप लाइन</div>
+                <div class="pills-btn" id="sndL_lh" onclick="toggleSenderLine('sndL_lh', 'लॉन्ग हॉल साइडिंग')" style="grid-column: span 3;">लॉन्ग हॉल साइडिंग</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>गाड़ी सं. / विवरण</label>
+              <input type="text" id="sndTrain" placeholder="उदा: 12181 / मालगाड़ी / लाइट इंजन">
+            </div>
+
+            <div class="grid-2" style="margin-top: 8px;">
+              <button type="submit" class="btn btn-red" style="font-size:13px;">🚨 गाड़ी छोड़ दी गई (Broadcast Alert)</button>
+              <button type="button" onclick="sendMultiLiveTrainAlert('BLOCKED')" class="btn btn-amber" style="font-size:13px;">⛔ गाड़ी ब्लॉक हो चुकी है (Broadcast Alert)</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- RECEIVER FORM -->
+        <div id="trainReceiverPanel" style="display: none; margin-top: 14px; border-top: 1px dashed #0284c7; padding-top: 12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <strong style="color:#4ade80; font-size:13px;">📡 रिलेटिव लोकेशन मॉनिटर (रूट लॉक)</strong>
+            <button onclick="closeTrainPanels()" style="background:none; border:none; color:#f87171; cursor:pointer;">✖</button>
+          </div>
+          
+          <form onsubmit="handleReceiverLockSubmit(event)">
+            <div class="form-group">
+              <label>आपकी ID (Trackman / Mate ID)</label>
+              <input type="text" id="rcvEmpId" placeholder="उदा: MATE01, KEY01">
+            </div>
+
+            <div class="form-group">
+              <label>1. आपकी कार्य लोकेशन (Block Section):</label>
+              <div class="section-pills-grid" id="rcvBlockGrid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="pills-btn selected" id="rcvLocGhul" onclick="selectReceiverBlock('गोला पट्टी-सगोनी')">गोला पट्टी – सगोनी</div>
+                <div class="pills-btn" id="rcvLocYard" onclick="selectReceiverBlock('सगोनी यार्ड')">सगोनी यार्ड क्षेत्र</div>
+                <div class="pills-btn" id="rcvLocRat" onclick="selectReceiverBlock('रतनगांव-सगोनी')">सगोनी – रतनगांव</div>
+              </div>
+              <input type="hidden" id="selectedReceiverBlock" value="गोला पट्टी-सगोनी">
+            </div>
+
+            <div class="form-group">
+              <label>2. किन-किन लाइनों पर नजर रखनी है? (टच करके चुनें):</label>
+              <div class="line-selector-grid" id="rcvLineGrid">
+                <div class="pills-btn selected" id="rcvL_upMain" onclick="toggleReceiverLine('rcvL_upMain', 'अप मेन लाइन')">अप मेन लाइन</div>
+                <div class="pills-btn selected" id="rcvL_dnMain" onclick="toggleReceiverLine('rcvL_dnMain', 'डाउन मेन लाइन')">डाउन मेन लाइन</div>
+                <div class="pills-btn selected" id="rcvL_3rdMain" onclick="toggleReceiverLine('rcvL_3rdMain', 'थर्ड मेन लाइन')">थर्ड मेन लाइन</div>
+                <div class="pills-btn" id="rcvL_upLoop" onclick="toggleReceiverLine('rcvL_upLoop', 'अप लूप लाइन')">अप लूप लाइन</div>
+                <div class="pills-btn" id="rcvL_dnLoop" onclick="toggleReceiverLine('rcvL_dnLoop', 'डाउन लूप लाइन')">डाउन लूप लाइन</div>
+                <div class="pills-btn" id="rcvL_3rdLoop" onclick="toggleReceiverLine('rcvL_3rdLoop', 'थर्ड लूप लाइन')">थर्ड लूप लाइन</div>
+                <div class="pills-btn" id="rcvL_lh" onclick="toggleReceiverLine('rcvL_lh', 'लॉन्ग हॉल साइडिंग')" style="grid-column: span 3;">लॉन्ग हॉल साइडिंग</div>
+              </div>
+            </div>
+
+            <div id="receiverControls">
+              <button type="submit" id="btnLockMonitor" class="btn btn-green" style="font-size:14px; font-weight:800;">
+                🔒 लोकेशन व रूट लॉक करें (Start Safe Monitoring)
+              </button>
+              <div id="rcvStatus" style="font-size:11px; color:#94a3b8; text-align:center; margin-top:6px;">स्टेटस: लोकेशन लॉक करने के बाद ही सक्रिय होगा</div>
+            </div>
+
+            <div id="receiverUnlockBar" style="display: none; margin-top: 8px;">
+              <button type="button" onclick="unlockReceiverSettings()" class="btn" style="background:#475569; font-size:12px;">
+                🔓 अनलॉक करें / लोकेशन बदलें
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
 
-      <form id="form-keyman" onsubmit="handleKeymanSubmit(event)" class="space-y-4 text-sm">
+      <!-- LOGIN FORM -->
+      <div class="card">
+        <div style="text-align: center; margin-bottom: 14px;">
+          <span style="font-size: 26px;">🔐</span>
+          <h2 style="font-size: 15px; margin-top: 4px;">स्टाफ लॉगिन (Staff Access)</h2>
+          <p style="font-size: 11px; color: #94a3b8;">दैनिक कार्य / डायरी / हाजिरी भरने हेतु टोकन दर्ज करें</p>
+        </div>
         
-        <!-- Gang Serial Order: Unit 12, 13, 14 -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label class="block font-medium text-slate-700 mb-1">गैंग नंबर (Gang Unit)</label>
-            <select id="k_gang_no" onchange="filterKeymanByGang()" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white font-medium" required>
-              <option value="Unit No. 12">यूनिट नंबर 12</option>
-              <option value="Unit No. 13">यूनिट नंबर 13</option>
-              <option value="Unit No. 14">यूनिट नंबर 14</option>
-            </select>
+        <form onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label>Employee ID / टोकन नंबर</label>
+            <input type="text" id="empIdInput" placeholder="उदा: JE01, MATE01, KEY01" autofocus required>
           </div>
 
-          <div>
-            <label class="block font-medium text-slate-700 mb-1">कीमैन का नाम (Keyman)</label>
-            <select id="k_keyman_select" onchange="handleKeymanSelectionChange()" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white" required></select>
-          </div>
+          <button type="submit" class="btn btn-blue">लॉगिन करें (Press Enter)</button>
+        </form>
 
-          <div>
-            <label class="block font-medium text-slate-700 mb-1">बदली कर्मचारी (यदि अन्य हो)</label>
-            <input type="text" id="k_substitute_name" disabled placeholder="कार्यवाहक कीमैन का नाम" class="w-full border rounded-lg p-2 bg-slate-100 text-slate-400 cursor-not-allowed">
-          </div>
+        <div style="margin-top: 14px; font-size: 11px; color: #64748b; line-height: 1.6; border-top: 1px solid #334155; padding-top: 8px;">
+          <strong>लॉगिन टोकन्स:</strong> <code>JE01</code> | <code>MATE01</code> | <code>KEY01</code> | <code>PAT01</code>
         </div>
-
-        <!-- Beat Length (Line name completely removed) -->
-        <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">📍 बीट शुरू Km (Start Km)</label>
-            <input type="number" step="0.001" id="k_start_km" class="w-full border rounded p-2 bg-white font-semibold text-slate-700" placeholder="उदा. 100.000" required>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">🏁 बीट खत्म Km (End Km)</label>
-            <input type="number" step="0.001" id="k_end_km" class="w-full border rounded p-2 bg-white font-semibold text-slate-700" placeholder="उदा. 104.000" required>
-          </div>
-        </div>
-
-        <!-- DYNAMIC SINGLE WORK ITEM SELECTION -->
-        <div class="border rounded-xl p-4 bg-emerald-50/40 border-emerald-100 space-y-3">
-          <div>
-            <label class="block font-bold text-slate-800 text-xs mb-1 uppercase tracking-wider text-emerald-800">
-              🛠️ दैनिक अनुरक्षण कार्य का चयन करें (Select Work)
-            </label>
-            <select id="k_work_category" onchange="handleKeymanWorkCategoryChange()" class="w-full border border-emerald-300 rounded-lg p-2.5 bg-white font-medium text-slate-800" required>
-              <option value="grass_cutting">🌱 1. घास सफाई कार्य (Grass Cutting)</option>
-              <option value="herbicide_spray">🧪 2. दवाई छिड़काव (Herbicide Spray)</option>
-              <option value="curve_greasing">🛤️ 3. Curve Greasing</option>
-              <option value="sej_greasing">🔩 4. SEJ Greasing</option>
-              <option value="pt_crossing_greasing">🔀 5. Points & Crossing Greasing</option>
-              <option value="general_patrol">🔍 6. सामान्य बीट पेट्रोलिंग / अन्य कार्य</option>
-            </select>
-          </div>
-
-          <!-- Dynamic Input Box which adapts based on work selection -->
-          <div id="dynamic-work-detail-box" class="bg-white p-3 rounded-lg border border-emerald-200">
-            <label id="k_work_label" class="block font-semibold text-slate-700 text-xs mb-1">
-              घास सफाई प्रोग्रेस विवरण (OHE खंभा संख्या एवं चेनेज सहित भरें)
-            </label>
-            <input 
-              type="text" 
-              id="k_work_details" 
-              placeholder="उदा. OHE 102/12 से 102/26 (Km 102.300 से 102.650 तक)" 
-              class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white text-xs"
-              required
-            >
-          </div>
-        </div>
-
-        <div>
-          <label class="block font-medium text-slate-700 mb-1">⚠️ ट्रैक खामियां / डिफेक्ट (Defects / Remarks)</label>
-          <textarea id="k_defects" rows="2" class="w-full border rounded-lg p-2 bg-slate-50 focus:bg-white" placeholder="उदा. SEZ गैप 52mm, रबर पैड मिसिंग, या 'Nil' लिखें..."></textarea>
-        </div>
-
-        <button type="submit" id="btn-keyman-submit" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-lg hover:bg-emerald-700 shadow transition">
-          कीमैन रिपोर्ट सबमिट करें
-        </button>
-      </form>
-    </div>
-
-    <!-- 4. INSPECTIONS VIEW -->
-    <div id="view-inspections" class="hidden max-w-4xl mx-auto bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-      <div class="flex justify-between items-center mb-4 border-b pb-2">
-        <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-          <i data-lucide="clipboard-check" class="text-purple-600"></i> JE P-Way निरीक्षण शेड्यूल (Inspections)
-        </h2>
-        <button onclick="addNewInspectionModal()" class="text-xs bg-purple-600 text-white px-3 py-1.5 rounded-md hover:bg-purple-700">
-          + नया शेड्यूल जोड़ें
-        </button>
       </div>
 
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-sm">
-          <thead class="bg-slate-50 border-b text-slate-600 text-xs">
-            <tr>
-              <th class="p-3">तारीख</th>
-              <th class="p-3">निरीक्षण प्रकार (Type)</th>
-              <th class="p-3">स्थान (Km & Line)</th>
-              <th class="p-3">स्थिति (Status)</th>
-            </tr>
-          </thead>
-          <tbody id="table-inspections" class="divide-y divide-slate-100 text-slate-700">
-            <tr><td colspan="4" class="text-center py-4 text-slate-400">लोड हो रहा है...</td></tr>
-          </tbody>
-        </table>
+      <div class="card card-emergency">
+        <div style="text-align: center;">
+          <strong style="color: #f87171; font-size: 14px;">🚨 त्वरित आपातकालीन रिपोर्टिंग (Direct SOS)</strong>
+          <p style="font-size: 11px; color: #94a3b8; margin-top: 2px;">बिना लॉगिन किए तुरंत घटना दर्ज करें:</p>
+        </div>
+
+        <div class="sos-grid">
+          <div class="sos-item" onclick="selectEmergencyType('🐮 CRO (Cattle Run Over)')"><span class="sos-icon">🐮</span><span class="sos-label">C.R.O.</span></div>
+          <div class="sos-item" onclick="selectEmergencyType('🔥 Hot Axle / Brake Binding')"><span class="sos-icon">🔥</span><span class="sos-label">Hot Axle</span></div>
+          <div class="sos-item" onclick="selectEmergencyType('🛑 Train Stalled / Failure')"><span class="sos-icon">🛑</span><span class="sos-label">Train Fail</span></div>
+          <div class="sos-item" onclick="selectEmergencyType('⚠️ Sabotage / Obstruction')"><span class="sos-icon">⚠️</span><span class="sos-label">Sabotage</span></div>
+        </div>
+
+        <div id="inlineEmergencyForm" style="display: none; margin-top: 16px; border-top: 1px dashed #ef4444; padding-top: 12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong id="selectedTypeTitle" style="color:#38bdf8; font-size:13px;">--</strong>
+            <button onclick="closeEmergencyForm()" style="background:none; border:none; color:#f87171; font-size:16px; cursor:pointer; font-weight:bold;">✖</button>
+          </div>
+
+          <form onsubmit="submitEmergencyIncident(event)">
+            <input type="hidden" id="emIncidentType">
+            <div class="form-group"><label>आपकी Employee ID / नाम</label><input type="text" id="emEmpId" placeholder="उदा: KEY01, MATE01" required></div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label>लाइन (Line)</label>
+                <select id="emLine">
+                  <option>UP Main Line</option>
+                  <option>DN Main Line</option>
+                  <option>3rd Main Line</option>
+                  <option>UP Loop Line</option>
+                  <option>DN Loop Line</option>
+                  <option>3rd Loop Line</option>
+                  <option>Long Haul Siding</option>
+                </select>
+              </div>
+              <div class="form-group"><label>गाड़ी सं.</label><input type="text" id="emTrain" placeholder="12181 / GOODS"></div>
+            </div>
+            <div class="grid-2">
+              <div class="form-group"><label>Km Location</label><input type="number" id="emKm" step="0.001" min="1157" max="1173" placeholder="1164.200" required></div>
+              <div class="form-group"><label>खंभा नंबर</label><input type="text" id="emPole" placeholder="1164/18" required></div>
+            </div>
+            <div class="form-group"><label>विवरण</label><textarea id="emRemarks" rows="2" placeholder="मौके की स्थिति..." required></textarea></div>
+            <div class="form-group"><label>📸 मौके की फोटो</label><input type="file" id="emPhoto" accept="image/*" capture="environment" style="padding:6px;"></div>
+            <button type="submit" id="emBtn" class="btn btn-red">🚨 तुरंत इमरजेंसी अलर्ट दर्ज करें (Press Enter)</button>
+          </form>
+        </div>
       </div>
+
     </div>
 
-  </main>
+    <div id="appContainer" style="display: none;">
+      <div class="user-bar">
+        <div class="user-info">
+          लॉगिन: <strong id="uName">--</strong> (<span id="uRole">--</span>)<br>
+          <span id="uBeat" style="color: #94a3b8; font-size: 11px;">--</span>
+        </div>
+        <button onclick="logout()" style="background: none; border: 1px solid #475569; color: #f87171; font-size: 11px; padding: 4px 8px; border-radius: 6px; cursor: pointer;">लॉगआउट</button>
+      </div>
 
-  <!-- JAVASCRIPT LOGIC -->
+      <div id="mateForm" style="display: none;">
+        <div class="tab-bar" style="margin-bottom: 12px;">
+          <button class="tab-btn active" id="btnMateTabMuster" onclick="switchMateTab('mateMusterCard')">🌅 सुबह 08:00 AM मस्टर (हाजिरी)</button>
+          <button class="tab-btn" id="btnMateTabDiary" onclick="switchMateTab('mateDiaryCard')">🛠️ दैनिक कार्य डायरी & प्रगति</button>
+        </div>
+
+        <div id="mateMusterCard" class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 style="font-size: 15px; color: #38bdf8;">🌅 सुबह का गैंग मस्टर (Morning Attendance)</h3>
+            <span style="font-size:11px; color:#4ade80; font-weight:bold;">समय: 08:00 AM</span>
+          </div>
+
+          <form onsubmit="submitMorningMuster(event)">
+            <div class="muster-box">
+              <div class="muster-title">👥 ऑन-ड्यूटी कार्य आवंटन (Working Breakdown)</div>
+              <div class="grid-3">
+                <div class="form-group">
+                  <label>🟢 ऑन ट्रैक कार्य</label>
+                  <input type="number" id="mstTrackWork" min="0" value="12" onchange="calculateMusterTotal()" required>
+                </div>
+                <div class="form-group">
+                  <label>🔑 कीमैन ड्यूटी</label>
+                  <input type="number" id="mstKeyman" min="0" value="2" onchange="calculateMusterTotal()" required>
+                </div>
+                <div class="form-group">
+                  <label>🔦 वॉचमैन / गेट</label>
+                  <input type="number" id="mstWatchman" min="0" value="1" onchange="calculateMusterTotal()" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="muster-box">
+              <div class="muster-title" style="color:#f59e0b;">🏖️ अनुपस्थिति / अन्य (Non-Available)</div>
+              <div class="grid-4">
+                <div class="form-group">
+                  <label>🌙 नाइट रेस्ट</label>
+                  <input type="number" id="mstNight" min="0" value="1" onchange="calculateMusterTotal()" required>
+                </div>
+                <div class="form-group">
+                  <label>🏥 सिक / मेडिकल</label>
+                  <input type="number" id="mstSick" min="0" value="0" onchange="calculateMusterTotal()" required>
+                </div>
+                <div class="form-group">
+                  <label>🏖️ छुट्टी (Leave)</label>
+                  <input type="number" id="mstLeave" min="0" value="1" onchange="calculateMusterTotal()" required>
+                </div>
+                <div class="form-group">
+                  <label>🔴 गैरहाजिर</label>
+                  <input type="number" id="mstAbsent" min="0" value="0" onchange="calculateMusterTotal()" required>
+                </div>
+              </div>
+            </div>
+
+            <div style="background:#0369a1; padding:10px 12px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <span style="font-size:12px; font-weight:700; color:white;">कुल गैंग स्ट्रेंथ (Total Headcount):</span>
+              <strong id="mstTotalSum" style="font-size:16px; color:#fef08a;">16</strong>
+            </div>
+
+            <div class="form-group">
+              <label>मुकद्दम रिमार्क्स (Remarks / विशेष विवरण)</label>
+              <textarea id="mstRemarks" rows="2" placeholder="उदा: आज 2 आदमी गेट 1162 पर तैनात किए गए हैं..."></textarea>
+            </div>
+
+            <button type="submit" id="mstBtn" class="btn btn-purple">💾 सुबह 8:00 AM मस्टर सबमिट करें (Press Enter)</button>
+          </form>
+        </div>
+
+        <div id="mateDiaryCard" class="card" style="display: none;">
+          <h3 style="font-size: 15px; margin-bottom: 12px; color: #4ade80;">🛠️ दैनिक कार्य डायरी & मैनपॉवर पोजिशनिंग</h3>
+          <form onsubmit="submitMateWork(event)">
+            <div class="form-group">
+              <label>लाइन (Line)</label>
+              <select id="mLine">
+                <option>UP Main Line</option>
+                <option>DN Main Line</option>
+                <option>3rd Main Line</option>
+                <option>UP Loop Line</option>
+                <option>DN Loop Line</option>
+                <option>3rd Loop Line</option>
+                <option>Long Haul Siding</option>
+              </select>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group"><label>From Km</label><input type="number" id="mFromKm" step="0.001" min="1157" max="1173" value="1157.000" required></div>
+              <div class="form-group"><label>To Km</label><input type="number" id="mToKm" step="0.001" min="1157" max="1173" value="1157.450" required></div>
+            </div>
+
+            <div class="form-group">
+              <label>कार्य का प्रकार</label>
+              <select id="mWorkType">
+                <option>Through Packing (थ्रू पैकिंग)</option>
+                <option>Slack Picking (स्लैक पिकिंग)</option>
+                <option>ERC & Liner Greasing</option>
+                <option>Joint Lubrication & Destressing</option>
+                <option>Ballast Boxing / Dressing</option>
+                <option>Turnout Overhauling (सगोनी यार्ड)</option>
+                <option>Casual Sleeper Renewal</option>
+              </select>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label>मौके पर कार्यरत कुल लेबर</label>
+                <input type="number" id="mWorkingLabour" min="1" value="12" required>
+              </div>
+              <div class="form-group">
+                <label>आउटपुट / प्रगति विवरण</label>
+                <input type="text" id="mOutput" placeholder="उदा: 75 Sleeper Packed" required>
+              </div>
+            </div>
+
+            <button type="submit" id="mBtn" class="btn btn-green">💾 कार्य डायरी डेटाबेस में सुरक्षित करें (Press Enter)</button>
+          </form>
+        </div>
+      </div>
+
+      <div id="keymanForm" class="card" style="display: none;">
+        <h3 style="font-size: 15px; margin-bottom: 12px; color: #38bdf8;">🔑 डिफेक्ट रिपोर्टिंग (Keyman)</h3>
+        <form onsubmit="submitKeymanDefect(event)">
+          <div class="form-group">
+            <label>लाइन</label>
+            <select id="kLine">
+              <option>UP Main Line</option>
+              <option>DN Main Line</option>
+              <option>3rd Main Line</option>
+              <option>UP Loop Line</option>
+              <option>DN Loop Line</option>
+              <option>3rd Loop Line</option>
+              <option>Long Haul Siding</option>
+            </select>
+          </div>
+          <div class="grid-2">
+            <div class="form-group"><label>Km</label><input type="number" id="kKm" step="0.001" min="1157" max="1173" placeholder="1162.400" required></div>
+            <div class="form-group"><label>खंभा</label><input type="text" id="kPole" placeholder="1162/14" required></div>
+          </div>
+          <div class="form-group">
+            <label>डिफेक्ट का प्रकार</label>
+            <select id="kDefect">
+              <option>🟢 Normal - Routine Beat OK</option><option>🔴 Weld Fracture / Crack</option>
+              <option>🟡 Missing ERC / Liners</option><option>🟡 Loose Fishbolts</option><option>🟡 Bad Riding / Slack</option>
+            </select>
+          </div>
+          <div class="form-group"><label>रिमार्क्स</label><textarea id="kRemarks" rows="2" placeholder="मौके की स्थिति..."></textarea></div>
+          <button type="submit" id="kBtn" class="btn btn-blue">डिफेक्ट दर्ज करें (Press Enter)</button>
+        </form>
+      </div>
+
+      <div id="jeForm" style="display: none;">
+        <div class="tab-bar">
+          <button class="tab-btn active" onclick="switchJETab('tabMusterLog')">📋 मस्टर & हाजिरी</button>
+          <button class="tab-btn" onclick="switchJETab('tabEmergency')">🚨 आपात अलर्ट्स</button>
+          <button class="tab-btn" onclick="switchJETab('tabMate')">🛠️ कार्य डायरी</button>
+          <button class="tab-btn" onclick="switchJETab('tabDefects')">⚠️ डिफेक्ट्स</button>
+          <button class="tab-btn" onclick="switchJETab('tabMap')">🗺️ 2D स्केल</button>
+        </div>
+
+        <div id="tabMusterLog" class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong style="color:#a855f7; font-size:14px;">📋 सुबह 08:00 AM गैंग हाजिरी & पोजिशनिंग</strong>
+            <div style="display:flex; gap:6px;">
+              <button onclick="exportMusterToCSV()" class="btn-csv">📥 Download Excel (CSV)</button>
+              <button onclick="loadMusterLogs()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>समय</th>
+                  <th>गैंग/मुकद्दम</th>
+                  <th>कुल</th>
+                  <th>कार्य पर</th>
+                  <th>कीमैन</th>
+                  <th>वॉचमैन</th>
+                  <th>नाइट</th>
+                  <th>सिक</th>
+                  <th>छुट्टी</th>
+                  <th>गैरहाजिर</th>
+                  <th>रिमार्क्स</th>
+                </tr>
+              </thead>
+              <tbody id="musterTableBody"><tr><td colspan="11" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="tabEmergency" class="card" style="display: none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong style="color:#ef4444; font-size:14px;">🚨 आपातकालीन घटना रजिस्टर</strong>
+            <div style="display:flex; gap:6px;">
+              <button onclick="exportEmergenciesToCSV()" class="btn-csv">📥 Download Excel (CSV)</button>
+              <button onclick="loadEmergencies()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
+            </div>
+          </div>
+          <div id="emergencyLiveList">लोड हो रहा है...</div>
+        </div>
+
+        <div id="tabMate" class="card" style="display: none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong style="color:#4ade80; font-size:14px;">🛠️ दैनिक कार्य प्रगति रजिस्टर</strong>
+            <div style="display:flex; gap:6px;">
+              <button onclick="exportWorkLogsToCSV()" class="btn-csv">📥 Download Excel (CSV)</button>
+              <button onclick="loadGangWork()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table>
+              <thead><tr><th>समय</th><th>गैंग/मुकद्दम</th><th>लाइन</th><th>Km Range</th><th>कार्य</th><th>प्रगति</th></tr></thead>
+              <tbody id="gangWorkTableBody"><tr><td colspan="6" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="tabDefects" class="card" style="display: none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong style="color:#f87171; font-size:14px;">⚠️ ट्रैक डिफेक्ट & अलर्ट रजिस्टर</strong>
+            <div style="display:flex; gap:6px;">
+              <button onclick="exportDefectsToCSV()" class="btn-csv">📥 Download Excel (CSV)</button>
+              <button onclick="loadDefects()" style="background:#334155; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">🔄 Refresh</button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table>
+              <thead><tr><th>समय</th><th>लाइन</th><th>Km</th><th>खंभा</th><th>स्थिति</th><th>रिमार्क्स</th><th>रिपोर्टकर्ता</th></tr></thead>
+              <tbody id="defectsTableBody"><tr><td colspan="7" style="text-align:center;">लोड हो रहा है...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="tabMap" class="card" style="display: none;">
+          <strong style="color:#38bdf8; font-size:14px; display:block; margin-bottom:6px;">🗺️ 16 Km लीनियर ट्रैक मॉनिटर (सगोनी 1157 - 1173)</strong>
+          <div style="background: #0f172a; padding:16px 12px; border-radius:8px; border:1px solid #334155;">
+            <div style="display:flex; justify-content:space-between; font-size:10px; color:#64748b; margin-bottom:4px;"><span>Km 1157.0 (रतनगांव)</span><span>Km 1165.0 (सगोनी)</span><span>Km 1173.0 (गोला पट्टी IBH)</span></div>
+            <div style="font-size:11px; color:#cbd5e1; margin-bottom:2px;">UP Main Line:</div>
+            <div id="upLineTrack" style="height:7px; background:#1e293b; border-radius:4px; position:relative; margin-bottom:8px; border:1px solid #475569;"></div>
+            <div style="font-size:11px; color:#cbd5e1; margin-bottom:2px;">DN Main Line:</div>
+            <div id="dnLineTrack" style="height:7px; background:#1e293b; border-radius:4px; position:relative; margin-bottom:8px; border:1px solid #475569;"></div>
+            <div style="font-size:11px; color:#cbd5e1; margin-bottom:2px;">3rd Main Line:</div>
+            <div id="thirdLineTrack" style="height:7px; background:#1e293b; border-radius:4px; position:relative; border:1px solid #475569;"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <script>
     const SUPABASE_URL = "https://jhdkpdsrrgwqzxwftcyc.supabase.co";
     const SUPABASE_KEY = "sb_publishable_GL2DEQ5U-COnS8ifSz4Zgg_8ooV-wGv";
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    let activeUser = null;
+    let audioContext = null;
+    let alarmInterval = null;
+    let voiceInterval = null;
+    let autoStopTimer = null;
+    let realtimeChannel = null;
 
-    // GANG CONFIG IN SERIAL ORDER: 12, 13, 14
-    const GANG_CONFIG = {
-      'Unit No. 12': { mate: 'श्रीनिवास', totalStrength: 22 },
-      'Unit No. 13': { mate: 'रूप सिंह मीणा', totalStrength: 25 },
-      'Unit No. 14': { mate: 'लाखन', totalStrength: 20 }
+    const senderMovements = new Map([
+      ['sndMv1', { name: 'रतनगांव से सगोनी', block: 'रतनगांव-सगोनी' }]
+    ]);
+    const senderLines = new Set(['अप मेन लाइन']);
+
+    let myLockedBlock = 'गोला पट्टी-सगोनी';
+    const mySubscribedLines = new Set(['अप मेन लाइन', 'डाउन मेन लाइन', 'थर्ड मेन लाइन']);
+
+    const STAFF_DATA = {
+      "JE01": { name: "JE (P-Way) Sagoni", role: "je", beat: "Section 1157 - 1173" },
+      "MATE01": { name: "रामलाल मुकद्दम", role: "mate", beat: "Gang-01 (1157-1162)" },
+      "MATE02": { name: "श्याम सिंह", role: "mate", beat: "Gang-02 (1162-1168)" },
+      "KEY01": { name: "सुरेश कीमैन", role: "keyman", beat: "UP Line (1157-1165)" },
+      "PAT01": { name: "राकेश पेट्रोलमैन", role: "keyman", beat: "Night Patrol (1157-1165)" }
     };
 
-    // KEYMAN DIRECTORY (All 3 lines handled by single keyman per unit)
-    const KEYMAN_ROSTER = [
-      { id: 'km1', gang: 'Unit No. 12', name: 'रामेश्वर दयाल', startKm: 100.000, endKm: 104.000 },
-      { id: 'km2', gang: 'Unit No. 12', name: 'भगवान दास', startKm: 100.000, endKm: 104.000 },
-      { id: 'km3', gang: 'Unit No. 13', name: 'सुरेश कुमार', startKm: 104.000, endKm: 108.000 },
-      { id: 'km4', gang: 'Unit No. 13', name: 'राम सहाय', startKm: 104.000, endKm: 108.000 },
-      { id: 'km5', gang: 'Unit No. 14', name: 'महेंद्र सिंह', startKm: 108.000, endKm: 116.000 },
-    ];
-
-    lucide.createIcons();
-
-    // MAIN TABS
-    function switchTab(tabId) {
-      ['dashboard', 'mate-hub', 'keyman', 'inspections'].forEach(id => {
-        document.getElementById(`view-${id}`).classList.add('hidden');
-        document.getElementById(`tab-${id}`).className = "tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition";
-      });
-
-      document.getElementById(`view-${tabId}`).classList.remove('hidden');
-      document.getElementById(`tab-${tabId}`).className = "tab-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-blue-600 text-white transition";
-
-      if (tabId === 'dashboard') loadDashboardData();
-      if (tabId === 'mate-hub') {
-        handleMorningGangChange();
-        fetchMorningMusterForEvening();
-      }
-      if (tabId === 'keyman') filterKeymanByGang();
-      if (tabId === 'inspections') loadInspections();
-    }
-
-    // SUB TABS INSIDE MATE HUB
-    function switchMateSubTab(subTab) {
-      if (subTab === 'morning') {
-        document.getElementById('subview-morning').classList.remove('hidden');
-        document.getElementById('subview-evening').classList.add('hidden');
-        document.getElementById('subtab-btn-morning').className = "flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-amber-500 text-white";
-        document.getElementById('subtab-btn-evening').className = "flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-slate-100 text-slate-600 hover:bg-slate-200";
-      } else {
-        document.getElementById('subview-morning').classList.add('hidden');
-        document.getElementById('subview-evening').classList.remove('hidden');
-        document.getElementById('subtab-btn-evening').className = "flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-indigo-600 text-white";
-        document.getElementById('subtab-btn-morning').className = "flex-1 py-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-slate-100 text-slate-600 hover:bg-slate-200";
-        fetchMorningMusterForEvening();
-      }
-    }
-
-    // ----------------------------------------------------
-    // MORNING FORM: RESET TO CLEAN ZERO DEFAULTS
-    // ----------------------------------------------------
-    function resetMorningFormToDefaults() {
-      document.getElementById('m_absent_count').value = 0;
-      document.getElementById('m_leave_count').value = 0;
-      document.getElementById('m_sick_count').value = 0;
-      document.getElementById('m_rest_count').value = 0;
-
-      document.getElementById('m_mate_count').value = 1;
-      document.getElementById('m_keyman_count').value = 0;
-      document.getElementById('m_patrol_count').value = 0;
-      document.getElementById('m_night_count').value = 0;
-      document.getElementById('m_train_count').value = 0;
-      document.getElementById('m_weld_count').value = 0;
-      document.getElementById('m_smith_count').value = 0;
-      document.getElementById('m_paint_count').value = 0;
-      document.getElementById('m_pump_count').value = 0;
-      document.getElementById('m_prot_count').value = 0;
-      document.getElementById('m_other_count').value = 0;
-
-      document.getElementById('m_planned_location').value = "";
-      const subInput = document.getElementById('m_substitute_mate');
-      subInput.value = "";
-      subInput.disabled = true;
-      subInput.className = "w-full border rounded-lg p-2 bg-slate-100 text-slate-400 cursor-not-allowed";
-
-      calculateMorningNumbers();
-    }
-
-    function handleMorningGangChange() {
-      const gangVal = document.getElementById('m_gang_no').value;
-      const mateSelect = document.getElementById('m_mate_select');
-      const conf = GANG_CONFIG[gangVal];
-
-      document.getElementById('m_total_strength').value = conf.totalStrength;
-      mateSelect.innerHTML = `
-        <option value="REGULAR">${conf.mate} (रेगुलर मुकद्दम)</option>
-        <option value="OTHER">-- अन्य कर्मचारी (Substitute / Badli) --</option>
-      `;
-      handleMorningMateChange();
-      resetMorningFormToDefaults();
-    }
-
-    function handleMorningMateChange() {
-      const selectVal = document.getElementById('m_mate_select').value;
-      const subInput = document.getElementById('m_substitute_mate');
-      if (selectVal === 'OTHER') {
-        subInput.disabled = false;
-        subInput.className = "w-full border rounded-lg p-2 bg-white text-slate-800 border-amber-400 focus:ring-1 focus:ring-amber-500";
-        subInput.focus();
-        subInput.required = true;
-      } else {
-        subInput.disabled = true;
-        subInput.value = "";
-        subInput.required = false;
-        subInput.className = "w-full border rounded-lg p-2 bg-slate-100 text-slate-400 cursor-not-allowed";
-      }
-    }
-
-    function calculateMorningNumbers() {
-      const total = parseInt(document.getElementById('m_total_strength').value) || 25;
-      const absent = Math.max(0, parseInt(document.getElementById('m_absent_count').value) || 0);
-      const leave = Math.max(0, parseInt(document.getElementById('m_leave_count').value) || 0);
-      const sick = Math.max(0, parseInt(document.getElementById('m_sick_count').value) || 0);
-      const rest = Math.max(0, parseInt(document.getElementById('m_rest_count').value) || 0);
-
-      const present = Math.max(0, total - (absent + leave + sick + rest));
-      document.getElementById('m_present_count').value = present;
-
-      const specialDuties = 
-        (parseInt(document.getElementById('m_mate_count').value) || 0) +
-        (parseInt(document.getElementById('m_keyman_count').value) || 0) +
-        (parseInt(document.getElementById('m_patrol_count').value) || 0) +
-        (parseInt(document.getElementById('m_night_count').value) || 0) +
-        (parseInt(document.getElementById('m_train_count').value) || 0) +
-        (parseInt(document.getElementById('m_weld_count').value) || 0) +
-        (parseInt(document.getElementById('m_smith_count').value) || 0) +
-        (parseInt(document.getElementById('m_paint_count').value) || 0) +
-        (parseInt(document.getElementById('m_pump_count').value) || 0) +
-        (parseInt(document.getElementById('m_prot_count').value) || 0) +
-        (parseInt(document.getElementById('m_other_count').value) || 0);
-
-      const onWork = present - specialDuties;
-      const onWorkInput = document.getElementById('m_onwork_count');
-      const alertBadge = document.getElementById('m_alert_badge');
-
-      if (onWork < 0) {
-        onWorkInput.value = 0;
-        onWorkInput.classList.add('bg-rose-100', 'text-rose-700');
-        alertBadge.innerText = `⚠️ ड्यूटी योग उपस्थिति से ${Math.abs(onWork)} अधिक!`;
-        alertBadge.className = "text-xs font-bold text-rose-600";
-      } else {
-        onWorkInput.value = onWork;
-        onWorkInput.classList.remove('bg-rose-100', 'text-rose-700');
-        alertBadge.innerText = `✅ संतुलित (कार्य पर: ${onWork})`;
-        alertBadge.className = "text-xs font-semibold text-emerald-600";
-      }
-    }
-
-    async function handleMorningSubmit(e) {
-      e.preventDefault();
-      const onWork = parseInt(document.getElementById('m_onwork_count').value);
-      if (onWork < 0) {
-        alert("कृपया ड्यूटी संतुलन ठीक करें!");
-        return;
-      }
-
-      const btn = document.getElementById('btn-morning-submit');
-      btn.innerText = "सबमिट हो रहा है...";
-      btn.disabled = true;
-
-      const gangVal = document.getElementById('m_gang_no').value;
-      const mateSelectVal = document.getElementById('m_mate_select').value;
-      let finalMate = GANG_CONFIG[gangVal].mate;
-      let subMate = (mateSelectVal === 'OTHER') ? document.getElementById('m_substitute_mate').value : null;
-
-      const todayDate = new Date().toISOString().split('T')[0];
-
-      const payload = {
-        report_date: todayDate,
-        gang_no: gangVal,
-        mate_name: finalMate,
-        substitute_mate_name: subMate,
-        total_strength: parseInt(document.getElementById('m_total_strength').value),
-        present_count: parseInt(document.getElementById('m_present_count').value),
-        absent_count: parseInt(document.getElementById('m_absent_count').value),
-        leave_count: parseInt(document.getElementById('m_leave_count').value || 0),
-        sick_count: parseInt(document.getElementById('m_sick_count').value || 0),
-        rest_count: parseInt(document.getElementById('m_rest_count').value || 0),
-        mate_count: parseInt(document.getElementById('m_mate_count').value || 0),
-        keyman_count: parseInt(document.getElementById('m_keyman_count').value || 0),
-        patrolman_count: parseInt(document.getElementById('m_patrol_count').value || 0),
-        night_watchman_count: parseInt(document.getElementById('m_night_count').value || 0),
-        training_count: parseInt(document.getElementById('m_train_count').value || 0),
-        welder_count: parseInt(document.getElementById('m_weld_count').value || 0),
-        blacksmith_count: parseInt(document.getElementById('m_smith_count').value || 0),
-        painter_count: parseInt(document.getElementById('m_paint_count').value || 0),
-        pump_count: parseInt(document.getElementById('m_pump_count').value || 0),
-        protection_count: parseInt(document.getElementById('m_prot_count').value || 0),
-        other_duty_count: parseInt(document.getElementById('m_other_count').value || 0),
-        on_work_count: onWork,
-        morning_planned_work: document.getElementById('m_planned_work').value,
-        morning_planned_location: document.getElementById('m_planned_location').value,
-        report_status: 'Morning_Submitted'
-      };
-
-      const { error } = await supabaseClient.from('gang_daily_reports').insert([payload]);
-
-      btn.innerText = "☀️ सुबह की हाजिरी सबमिट करें (Submit Morning Muster)";
-      btn.disabled = false;
-
-      if (error) {
-        alert("Error: " + error.message);
-      } else {
-        alert("✅ सुबह 08:00 बजे की हाजिरी दर्ज हो गई!");
-        resetMorningFormToDefaults();
-        switchTab('dashboard');
-      }
-    }
-
-    // ----------------------------------------------------
-    // EVENING WORK LOGIC (AUTO-FETCH MORNING RECORD)
-    // ----------------------------------------------------
-    async function fetchMorningMusterForEvening() {
-      const gangVal = document.getElementById('e_gang_no').value;
-      const todayDate = new Date().toISOString().split('T')[0];
-
-      const { data } = await supabaseClient
-        .from('gang_daily_reports')
-        .select('*')
-        .eq('gang_no', gangVal)
-        .eq('report_date', todayDate)
-        .order('created_at', { ascending: false })
-        .limit(1);
-
-      const summaryMate = document.getElementById('e_sum_mate');
-      const summaryStrength = document.getElementById('e_sum_strength');
-      const summaryPlanned = document.getElementById('e_sum_planned');
-      const recordIdInput = document.getElementById('e_record_id');
-
-      if (data && data.length > 0) {
-        const item = data[0];
-        recordIdInput.value = item.id;
-        summaryMate.innerText = `मुकद्दम: ${item.mate_name} ${item.substitute_mate_name ? `(बदली: ${item.substitute_mate_name})` : ''}`;
-        summaryStrength.innerText = `उपस्थित: ${item.present_count} | कार्य पर: ${item.on_work_count}`;
-        summaryPlanned.innerText = `सुबह का प्लान: ${item.morning_planned_work || 'Nil'} (${item.morning_planned_location || ''})`;
-      } else {
-        recordIdInput.value = "";
-        summaryMate.innerText = `मुकद्दम: ${GANG_CONFIG[gangVal].mate}`;
-        summaryStrength.innerText = `⚠️ आज सुबह की हाजिरी अभी तक दर्ज नहीं हुई है!`;
-        summaryPlanned.innerText = `सुबह का प्लान: अनुपलब्ध`;
-      }
-    }
-
-    async function handleEveningSubmit(e) {
-      e.preventDefault();
-      const btn = document.getElementById('btn-evening-submit');
-      btn.innerText = "सबमिट हो रहा है...";
-      btn.disabled = true;
-
-      const recordId = document.getElementById('e_record_id').value;
-      const gangVal = document.getElementById('e_gang_no').value;
-      const todayDate = new Date().toISOString().split('T')[0];
-
-      const payload = {
-        line_name: document.getElementById('e_line_name').value,
-        start_km: parseFloat(document.getElementById('e_start_km').value),
-        end_km: parseFloat(document.getElementById('e_end_km').value),
-        work_type: document.getElementById('e_work_type').value,
-        work_output: parseInt(document.getElementById('e_work_output').value),
-        remarks: document.getElementById('e_remarks').value,
-        report_status: 'Completed'
-      };
-
-      let resError = null;
-
-      if (recordId) {
-        const { error } = await supabaseClient
-          .from('gang_daily_reports')
-          .update(payload)
-          .eq('id', recordId);
-        resError = error;
-      } else {
-        const conf = GANG_CONFIG[gangVal];
-        payload.gang_no = gangVal;
-        payload.mate_name = conf.mate;
-        payload.total_strength = conf.totalStrength;
-        payload.present_count = conf.totalStrength;
-        payload.report_date = todayDate;
-
-        const { error } = await supabaseClient.from('gang_daily_reports').insert([payload]);
-        resError = error;
-      }
-
-      btn.innerText = "🌙 शाम का कार्य फाइनल सबमिट करें (Complete Work Diary)";
-      btn.disabled = false;
-
-      if (resError) {
-        alert("Error: " + resError.message);
-      } else {
-        alert("✅ शाम का कार्य विवरण सफलतापूर्वक सबमिट हो गया!");
-        document.getElementById('e_start_km').value = "";
-        document.getElementById('e_end_km').value = "";
-        document.getElementById('e_work_output').value = "";
-        document.getElementById('e_remarks').value = "";
-        switchTab('dashboard');
-      }
-    }
-
-    // ----------------------------------------------------
-    // EXCEL / CSV EXPORT
-    // ----------------------------------------------------
-    async function exportToCSV(tableName, fileName) {
-      const { data, error } = await supabaseClient.from(tableName).select('*').order('created_at', { ascending: false });
-      if (error || !data || data.length === 0) {
-        alert("डाउनलोड के लिए कोई डेटा मौजूद नहीं है!");
-        return;
-      }
-
-      const headers = Object.keys(data[0]);
-      const csvRows = [];
-      csvRows.push(headers.join(','));
-
-      for (const row of data) {
-        const values = headers.map(header => {
-          const val = row[header] === null || row[header] === undefined ? '' : row[header];
-          return `"${String(val).replace(/"/g, '""')}"`;
-        });
-        csvRows.push(values.join(','));
-      }
-
-      const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + csvRows.join('\n');
-      const encodedUri = encodeURI(csvContent);
+    function downloadCSVFile(csvContent, fileName) {
+      const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
       link.setAttribute("download", fileName);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     }
 
-    // ----------------------------------------------------
-    // KEYMAN SECTION LOGIC (DYNAMIC WORK & NO LINE)
-    // ----------------------------------------------------
-    function filterKeymanByGang() {
-      const selectedGang = document.getElementById('k_gang_no').value;
-      const selectEl = document.getElementById('k_keyman_select');
-      const filtered = KEYMAN_ROSTER.filter(k => k.gang === selectedGang);
+    async function exportMusterToCSV() {
+      const { data, error } = await db.from('gang_muster_attendance').select('*').order('created_at', { ascending: false });
+      if (error || !data || data.length === 0) { alert('डाउनलोड करने के लिए कोई डेटा उपलब्ध नहीं है!'); return; }
 
-      let optionsHtml = filtered.map(k => `<option value="${k.id}">${k.name}</option>`).join('');
-      optionsHtml += `<option value="OTHER">-- अन्य कर्मचारी (Substitute / Badli) --</option>`;
-      selectEl.innerHTML = optionsHtml;
-      handleKeymanSelectionChange();
+      let csv = "तारीख व समय,मुकद्दम का नाम,गैंग नंबर,कुल लेबर,ऑन ट्रैक कार्य,कीमैन ड्यूटी,वॉचमैन/गेट,नाइट ड्यूटी,सिक/मेडिकल,छुट्टी,गैरहाजिर,रिमार्क्स\n";
+      data.forEach(r => {
+        const time = new Date(r.created_at).toLocaleString();
+        csv += `"${time}","${r.mate_name}","${r.gang_no}",${r.total_sanctioned},${r.on_track_work},${r.keyman_duty},${r.watchman_patrol},${r.night_rest},${r.sick_medical},${r.on_leave},${r.absent},"${r.remarks || ''}"\n`;
+      });
+      const dateStr = new Date().toISOString().split('T')[0];
+      downloadCSVFile(csv, `Gang_Muster_Attendance_${dateStr}.csv`);
     }
 
-    function handleKeymanSelectionChange() {
-      const selectEl = document.getElementById('k_keyman_select');
-      const selectedVal = selectEl.value;
-      const subInput = document.getElementById('k_substitute_name');
+    async function exportWorkLogsToCSV() {
+      const { data, error } = await db.from('daily_work_logs').select('*').order('created_at', { ascending: false });
+      if (error || !data || data.length === 0) { alert('डाउनलोड करने के लिए कोई डेटा उपलब्ध नहीं है!'); return; }
 
-      if (selectedVal === 'OTHER') {
-        subInput.disabled = false;
-        subInput.className = "w-full border rounded-lg p-2 bg-white text-slate-800 border-amber-400 focus:ring-1 focus:ring-amber-500";
-        subInput.focus();
-        subInput.required = true;
-        document.getElementById('k_start_km').value = "";
-        document.getElementById('k_end_km').value = "";
-      } else {
-        subInput.disabled = true;
-        subInput.value = "";
-        subInput.required = false;
-        subInput.className = "w-full border rounded-lg p-2 bg-slate-100 text-slate-400 cursor-not-allowed";
-
-        const record = KEYMAN_ROSTER.find(k => k.id === selectedVal);
-        if (record) {
-          document.getElementById('k_start_km').value = record.startKm.toFixed(3);
-          document.getElementById('k_end_km').value = record.endKm.toFixed(3);
-        }
-      }
+      let csv = "तारीख व समय,मुकद्दम का नाम,गैंग नंबर,लाइन,From Km,To Km,कार्य का प्रकार,प्रगति विवरण\n";
+      data.forEach(r => {
+        const time = new Date(r.created_at).toLocaleString();
+        csv += `"${time}","${r.mate_name}","${r.gang_no}","${r.line_name}",${r.from_km},${r.to_km},"${r.work_type}","${r.output_details}"\n`;
+      });
+      const dateStr = new Date().toISOString().split('T')[0];
+      downloadCSVFile(csv, `Gang_Daily_Work_Logs_${dateStr}.csv`);
     }
 
-    // Dynamic work option changes label & placeholder
-    function handleKeymanWorkCategoryChange() {
-      const cat = document.getElementById('k_work_category').value;
-      const labelEl = document.getElementById('k_work_label');
-      const inputEl = document.getElementById('k_work_details');
+    async function exportDefectsToCSV() {
+      const { data, error } = await db.from('track_defects').select('*').order('created_at', { ascending: false });
+      if (error || !data || data.length === 0) { alert('डाउनलोड करने के लिए कोई डेटा उपलब्ध नहीं है!'); return; }
 
-      if (cat === 'grass_cutting') {
-        labelEl.innerText = "घास सफाई प्रोग्रेस (OHE खंभा संख्या एवं चेनेज सहित)";
-        inputEl.placeholder = "उदा. OHE 102/12 से 102/26 (Km 102.300 से 102.650 तक)";
-      } else if (cat === 'herbicide_spray') {
-        labelEl.innerText = "दवाई छिड़काव प्रोग्रेस (स्थान व लंबाई)";
-        inputEl.placeholder = "उदा. Km 104/0 से 104/8 तक दोनों तरफ छिड़काव किया";
-      } else if (cat === 'curve_greasing') {
-        labelEl.innerText = "Curve Greasing विवरण (कर्व नंबर व स्थिति)";
-        inputEl.placeholder = "उदा. Curve No. 4 एवं 5 की गेज फेस ग्रीसिंग पूर्ण";
-      } else if (cat === 'sej_greasing') {
-        labelEl.innerText = "SEJ Greasing विवरण (स्थान व गैप)";
-        inputEl.placeholder = "उदा. SEJ Km 104/1-2 greased, गैप 54mm पाया गया";
-      } else if (cat === 'pt_crossing_greasing') {
-        labelEl.innerText = "Points & Crossing Greasing विवरण (पॉइंट नंबर)";
-        inputEl.placeholder = "उदा. Point No. 101A, B एवं 102 स्लाइड चेयर ग्रीसिंग पूर्ण";
-      } else {
-        labelEl.innerText = "सामान्य बीट पेट्रोलिंग / अन्य कार्य विवरण";
-        inputEl.placeholder = "उदा. सामान्य पेट्रोलिंग पूर्ण, सभी फिटिंग्स जांची गईं";
-      }
+      let csv = "तारीख व समय,रिपोर्टकर्ता,लाइन,Km लोकेशन,खंभा नंबर,डिफेक्ट प्रकार,रिमार्क्स\n";
+      data.forEach(r => {
+        const time = new Date(r.created_at).toLocaleString();
+        csv += `"${time}","${r.reported_by}","${r.line_name}",${r.km_location},"${r.pole_no || ''}","${r.defect_type}","${r.remarks || ''}"\n`;
+      });
+      const dateStr = new Date().toISOString().split('T')[0];
+      downloadCSVFile(csv, `Track_Defects_Report_${dateStr}.csv`);
     }
 
-    async function handleKeymanSubmit(e) {
+    async function exportEmergenciesToCSV() {
+      const { data, error } = await db.from('emergency_incidents').select('*').order('created_at', { ascending: false });
+      if (error || !data || data.length === 0) { alert('डाउनलोड करने के लिए कोई डेटा उपलब्ध नहीं है!'); return; }
+
+      let csv = "तारीख व समय,रिपोर्टकर्ता,घटना का प्रकार,लाइन,Km लोकेशन,खंभा नंबर,गाड़ी संख्या,विवरण\n";
+      data.forEach(r => {
+        const time = new Date(r.created_at).toLocaleString();
+        csv += `"${time}","${r.reporter_name} (${r.reporter_emp_id})","${r.incident_type}","${r.line_name}",${r.km_location},"${r.pole_no || ''}","${r.train_no || ''}","${r.remarks || ''}"\n`;
+      });
+      const dateStr = new Date().toISOString().split('T')[0];
+      downloadCSVFile(csv, `Emergency_Incidents_Report_${dateStr}.csv`);
+    }
+
+    function switchMateTab(tabId) {
+      document.getElementById('mateMusterCard').style.display = 'none';
+      document.getElementById('mateDiaryCard').style.display = 'none';
+      document.getElementById('btnMateTabMuster').classList.remove('active');
+      document.getElementById('btnMateTabDiary').classList.remove('active');
+
+      document.getElementById(tabId).style.display = 'block';
+      if (tabId === 'mateMusterCard') document.getElementById('btnMateTabMuster').classList.add('active');
+      if (tabId === 'mateDiaryCard') document.getElementById('btnMateTabDiary').classList.add('active');
+    }
+
+    function calculateMusterTotal() {
+      const track = parseInt(document.getElementById('mstTrackWork').value) || 0;
+      const keyman = parseInt(document.getElementById('mstKeyman').value) || 0;
+      const watchman = parseInt(document.getElementById('mstWatchman').value) || 0;
+      const night = parseInt(document.getElementById('mstNight').value) || 0;
+      const sick = parseInt(document.getElementById('mstSick').value) || 0;
+      const leave = parseInt(document.getElementById('mstLeave').value) || 0;
+      const absent = parseInt(document.getElementById('mstAbsent').value) || 0;
+
+      const total = track + keyman + watchman + night + sick + leave + absent;
+      document.getElementById('mstTotalSum').innerText = total;
+      document.getElementById('mWorkingLabour').value = track;
+    }
+
+    async function submitMorningMuster(e) {
       e.preventDefault();
-      const btn = document.getElementById('btn-keyman-submit');
-      btn.innerText = "सबमिट हो रहा है...";
+      const btn = document.getElementById('mstBtn');
+      btn.innerText = "हाजिरी सबमिट हो रही है...";
       btn.disabled = true;
 
-      const selectEl = document.getElementById('k_keyman_select');
-      let finalKeymanName = (selectEl.value === 'OTHER') ? "बदली कर्मचारी" : (KEYMAN_ROSTER.find(k => k.id === selectEl.value)?.name || "Keyman");
-      let substituteName = (selectEl.value === 'OTHER') ? document.getElementById('k_substitute_name').value : null;
-
-      const cat = document.getElementById('k_work_category').value;
-      const details = document.getElementById('k_work_details').value;
-
+      const totalSum = parseInt(document.getElementById('mstTotalSum').innerText) || 0;
       const payload = {
-        gang_no: document.getElementById('k_gang_no').value,
-        keyman_name: finalKeymanName,
-        substitute_name: substituteName,
-        line_name: "All 3 Lines",
-        beat_start_km: parseFloat(document.getElementById('k_start_km').value),
-        beat_end_km: parseFloat(document.getElementById('k_end_km').value),
-        work_category: cat,
-        work_details: details,
-        // Backward compatibility mapping
-        grass_cutting: (cat === 'grass_cutting') ? details : null,
-        herbicide_spray: (cat === 'herbicide_spray') ? details : null,
-        curve_greasing: (cat === 'curve_greasing') ? details : null,
-        sej_greasing: (cat === 'sej_greasing') ? details : null,
-        pt_crossing_greasing: (cat === 'pt_crossing_greasing') ? details : null,
-        defects: document.getElementById('k_defects').value || null
+        emp_id: activeUser.emp_id,
+        mate_name: activeUser.name,
+        gang_no: activeUser.beat,
+        total_sanctioned: totalSum,
+        on_track_work: parseInt(document.getElementById('mstTrackWork').value) || 0,
+        keyman_duty: parseInt(document.getElementById('mstKeyman').value) || 0,
+        watchman_patrol: parseInt(document.getElementById('mstWatchman').value) || 0,
+        night_rest: parseInt(document.getElementById('mstNight').value) || 0,
+        sick_medical: parseInt(document.getElementById('mstSick').value) || 0,
+        on_leave: parseInt(document.getElementById('mstLeave').value) || 0,
+        absent: parseInt(document.getElementById('mstAbsent').value) || 0,
+        remarks: document.getElementById('mstRemarks').value || '8:00 AM मस्टर OK'
       };
 
-      const { error } = await supabaseClient.from('keyman_logs').insert([payload]);
-
-      btn.innerText = "कीमैन रिपोर्ट सबमिट करें";
+      const { error } = await db.from('gang_muster_attendance').insert([payload]);
+      btn.innerText = "💾 सुबह 8:00 AM मस्टर सबमिट करें (Press Enter)";
       btn.disabled = false;
 
       if (error) {
-        alert("Error: " + error.message);
+        alert('डेटाबेस एरर: ' + error.message);
       } else {
-        alert("✅ कीमैन बीट रिपोर्ट सफलतापूर्वक दर्ज हो गई!");
-        // Reset dynamic field and defects
-        document.getElementById('k_work_details').value = "";
-        document.getElementById('k_defects').value = "";
-        document.getElementById('k_work_category').value = "grass_cutting";
-        handleKeymanWorkCategoryChange();
-        filterKeymanByGang();
-        switchTab('dashboard');
+        showToast('✅ सुबह 08:00 AM की गैंग हाजिरी सुरक्षित हो गई!');
+        switchMateTab('mateDiaryCard');
       }
     }
 
-    // ----------------------------------------------------
-    // DASHBOARD DATA
-    // ----------------------------------------------------
-    async function loadDashboardData() {
+    async function submitMateWork(e) {
+      e.preventDefault();
+      const btn = document.getElementById('mBtn');
+      btn.innerText = "डायरी सेव हो रही है...";
+      btn.disabled = true;
+
+      const payload = {
+        emp_id: activeUser.emp_id,
+        gang_no: activeUser.beat,
+        line_name: document.getElementById('mLine').value,
+        from_km: parseFloat(document.getElementById('mFromKm').value),
+        to_km: parseFloat(document.getElementById('mToKm').value),
+        work_type: document.getElementById('mWorkType').value,
+        output_details: `[लेबर: ${document.getElementById('mWorkingLabour').value}] ${document.getElementById('mOutput').value}`,
+        mate_name: activeUser.name
+      };
+
+      const { error } = await db.from('daily_work_logs').insert([payload]);
+      btn.innerText = "💾 कार्य डायरी डेटाबेस में सुरक्षित करें (Press Enter)";
+      btn.disabled = false;
+
+      if (error) alert('एरर: ' + error.message);
+      else {
+        showToast('✅ दैनिक कार्य डायरी सफलता से सुरक्षित हो गई!');
+        e.target.reset();
+      }
+    }
+
+    async function loadMusterLogs() {
+      const tbody = document.getElementById('musterTableBody');
+      tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;">लोड हो रहा है...</td></tr>';
+
+      const { data, error } = await db.from('gang_muster_attendance').select('*').order('created_at', { ascending: false }).limit(10);
+      if (error || !data || data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="11" style="text-align:center; color:#94a3b8;">आज अभी तक किसी मुकद्दम ने मस्टर सबमिट नहीं किया।</td></tr>';
+        return;
+      }
+
+      let html = '';
+      data.forEach(m => {
+        const time = new Date(m.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        html += `<tr>
+          <td>${time}</td>
+          <td><strong style="color:#a855f7;">${m.mate_name}</strong><br><span style="font-size:9px; color:#64748b;">${m.gang_no}</span></td>
+          <td><strong style="color:#fef08a;">${m.total_sanctioned}</strong></td>
+          <td><strong style="color:#4ade80;">${m.on_track_work}</strong></td>
+          <td>${m.keyman_duty}</td>
+          <td>${m.watchman_patrol}</td>
+          <td>${m.night_rest}</td>
+          <td><span style="color:#f87171;">${m.sick_medical}</span></td>
+          <td><span style="color:#f59e0b;">${m.on_leave}</span></td>
+          <td><span style="color:#ef4444; font-weight:bold;">${m.absent}</span></td>
+          <td><em>${m.remarks || '-'}</em></td>
+        </tr>`;
+      });
+      tbody.innerHTML = html;
+    }
+
+    function initAudio() {
+      if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioContext.state === 'suspended') audioContext.resume();
+    }
+
+    function playTone(freq, type, duration) {
       try {
-        const { data: gangs } = await supabaseClient
-          .from('gang_daily_reports')
-          .select('*')
-          .order('created_at', { ascending: false })
-          .limit(6);
+        initAudio();
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+        gain.gain.setValueAtTime(0.05, audioContext.currentTime);
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        osc.start();
+        osc.stop(audioContext.currentTime + duration);
+      } catch (e) { console.log(e); }
+    }
 
-        const { data: keymans } = await supabaseClient
-          .from('keyman_logs')
-          .select('*')
-          .order('created_at', { ascending: false })
-          .limit(5);
+    function speakHindiAlert(text) {
+      try {
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const cleanText = text.replace(/[-_➔→]/g, ' ');
+          const utterance = new SpeechSynthesisUtterance(cleanText);
+          utterance.lang = 'hi-IN';
+          utterance.volume = 1.0;
+          utterance.rate = 0.85;
+          utterance.pitch = 0.95;
 
-        if (gangs && gangs.length > 0) {
-          document.getElementById('stat-gang-present').innerText = gangs[0].present_count + ' Men';
-          document.getElementById('stat-on-work').innerText = (gangs[0].on_work_count || 0) + ' Men';
+          const voices = window.speechSynthesis.getVoices();
+          const hiVoice = voices.find(v => v.lang.includes('hi') || v.lang.includes('HI'));
+          if (hiVoice) utterance.voice = hiVoice;
+
+          window.speechSynthesis.speak(utterance);
         }
-        if (keymans) {
-          document.getElementById('stat-keyman-count').innerText = keymans.length;
-        }
+      } catch (e) { console.log("Voice error:", e); }
+    }
 
-        const gangListEl = document.getElementById('list-gang-reports');
-        if (gangs && gangs.length > 0) {
-          gangListEl.innerHTML = gangs.map(item => `
-            <div class="py-3">
-              <div class="flex justify-between font-semibold text-slate-800">
-                <span>${item.gang_no} (${item.mate_name}) ${item.substitute_mate_name ? `<span class="text-xs text-amber-600">(बदली: ${item.substitute_mate_name})</span>` : ''}</span>
-                <span class="text-xs ${item.report_status === 'Completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'} px-2 py-0.5 rounded font-semibold">
-                  ${item.report_status === 'Completed' ? 'कार्य पूर्ण' : 'सुबह हाजिरी दर्ज'}
-                </span>
-              </div>
-              <div class="text-xs text-slate-600 mt-1">
-                ${item.work_type ? `📍 <b>${item.line_name}:</b> Km ${item.start_km}-${item.end_km} | कार्य: <b>${item.work_type}</b> (${item.work_output || 0} Slprs/M)` : `📋 सुबह प्लान: <b>${item.morning_planned_work \vert{}\vert{} 'Nil'}</b> (${item.morning_planned_location || ''})`}
-              </div>
-              <div class="text-xs text-slate-500 mt-1 flex flex-wrap gap-2">
-                <span class="bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded border border-emerald-200">कार्य पर: <b>${item.on_work_count || 0}</b></span>
-                <span class="bg-slate-50 text-slate-600 px-1.5 py-0.5 rounded">P: ${item.present_count} / A: ${item.absent_count}</span>
-              </div>
-              ${item.remarks ? `<p class="text-xs text-slate-400 mt-1 italic">रिमार्क: ${item.remarks}</p>` : ''}
-            </div>
-          `).join('');
-        } else {
-          gangListEl.innerHTML = `<p class="text-slate-400 py-3 text-center">कोई रिपोर्ट नहीं मिली।</p>`;
-        }
+    function triggerSirenSound(alertType, movementText, lineText, trainNo) {
+      stopAlarmSound();
+      initAudio();
 
-        const keyListEl = document.getElementById('list-keyman-reports');
-        if (keymans && keymans.length > 0) {
-          keyListEl.innerHTML = keymans.map(item => `
-            <div class="py-3">
-              <div class="flex justify-between font-semibold text-slate-800">
-                <span>${item.keyman_name} ${item.substitute_name ? `<span class="text-xs text-amber-600">(बदली: ${item.substitute_name})</span>` : ''} (${item.gang_no})</span>
-                <span class="text-xs bg-slate-100 px-2 py-0.5 rounded text-slate-500">${item.log_date}</span>
-              </div>
-              <p class="text-xs text-slate-500 mt-0.5">Beat: Km ${item.beat_start_km} से ${item.beat_end_km} (तीनों लाइनें)</p>
-              <div class="mt-1 space-y-0.5 text-xs text-slate-700 bg-slate-50 p-2 rounded">
-                ${item.work_details ? `<div>🛠️ <b>कार्य:</b> ${item.work_details}</div>` : ''}
-                ${item.grass_cutting && !item.work_details ? `<div>🌱 <b>घास सफाई:</b> ${item.grass_cutting}</div>` : ''}
-                ${item.defects ? `<div class="text-rose-600 font-semibold mt-1">⚠️ Defect: ${item.defects}</div>` : ''}
-              </div>
-            </div>
-          `).join('');
-        } else {
-          keyListEl.innerHTML = `<p class="text-slate-400 py-3 text-center">कोई कीमैन रिकॉर्ड नहीं मिला।</p>`;
+      document.getElementById('sirenAlarmBox').style.display = 'block';
+      document.getElementById('floatingStopBar').style.display = 'block';
+
+      const voiceText = alertType === 'DISPATCHED'
+        ? `सावधान। ${lineText} पर ${movementText} के लिए गाड़ी छोड़ दी गई है। कृपया तुरंत ट्रैक से हटें।`
+        : `सावधान। ${lineText} पर ${movementText} में गाड़ी ब्लॉक हो चुकी है।`;
+
+      speakHindiAlert(voiceText);
+
+      if (alertType === 'DISPATCHED') {
+        let toggle = false;
+        alarmInterval = setInterval(() => {
+          playTone(toggle ? 900 : 650, 'sawtooth', 0.18);
+          toggle = !toggle;
+        }, 320);
+      } else {
+        alarmInterval = setInterval(() => {
+          playTone(400, 'square', 0.25);
+        }, 700);
+      }
+
+      voiceInterval = setInterval(() => speakHindiAlert(voiceText), 6500);
+      autoStopTimer = setTimeout(() => stopAlarmSound(), 40000);
+    }
+
+    function stopAlarmSound() {
+      if (alarmInterval) { clearInterval(alarmInterval); alarmInterval = null; }
+      if (voiceInterval) { clearInterval(voiceInterval); voiceInterval = null; }
+      if (autoStopTimer) { clearTimeout(autoStopTimer); autoStopTimer = null; }
+      if ('speechSynthesis' in window) { window.speechSynthesis.cancel(); }
+      
+      document.getElementById('sirenAlarmBox').style.display = 'none';
+      document.getElementById('floatingStopBar').style.display = 'none';
+    }
+
+    function toggleSenderMovement(btnId, mvName, blockName) {
+      const btn = document.getElementById(btnId);
+      if (senderMovements.has(btnId)) {
+        if (senderMovements.size === 1) { alert('कम से कम एक मूवमेंट चुनना आवश्यक है!'); return; }
+        senderMovements.delete(btnId);
+        btn.classList.remove('selected');
+      } else {
+        senderMovements.set(btnId, { name: mvName, block: blockName });
+        btn.classList.add('selected');
+      }
+    }
+
+    function toggleSenderLine(btnId, lineName) {
+      const btn = document.getElementById(btnId);
+      if (senderLines.has(lineName)) {
+        if (senderLines.size === 1) { alert('कम से कम एक लाइन चुनना आवश्यक है!'); return; }
+        senderLines.delete(lineName);
+        btn.classList.remove('selected');
+      } else {
+        senderLines.add(lineName);
+        btn.classList.add('selected');
+      }
+    }
+
+    function handleSenderFormSubmit(e) {
+      e.preventDefault();
+      sendMultiLiveTrainAlert('DISPATCHED');
+    }
+
+    async function sendMultiLiveTrainAlert(alertType) {
+      const senderId = document.getElementById('sndEmpId').value.trim().toUpperCase() || 'P-WAY_USER';
+      const train = document.getElementById('sndTrain').value || 'गाड़ी';
+
+      const payloads = [];
+      senderMovements.forEach(mv => {
+        senderLines.forEach(ln => {
+          payloads.push({
+            sender_id: senderId,
+            line_name: ln,
+            alert_type: alertType,
+            train_no: train,
+            location_note: JSON.stringify({ block: mv.block, movement: mv.name })
+          });
+        });
+      });
+
+      const { error } = await db.from('train_live_alerts').insert(payloads);
+      if (error) alert('त्रुटि: ' + error.message);
+      else showToast(`✅ ${payloads.length} सेक्शन्स/लाइनों पर एक साथ लाइव अलर्ट प्रसारित हो गया!`);
+    }
+
+    function selectReceiverBlock(blockName) {
+      myLockedBlock = blockName;
+      document.getElementById('selectedReceiverBlock').value = blockName;
+      ['rcvLocGhul', 'rcvLocYard', 'rcvLocRat'].forEach(id => document.getElementById(id).classList.remove('selected'));
+      if (blockName === 'गोला पट्टी-सगोनी') document.getElementById('rcvLocGhul').classList.add('selected');
+      if (blockName === 'सगोनी यार्ड') document.getElementById('rcvLocYard').classList.add('selected');
+      if (blockName === 'रतनगांव-सगोनी') document.getElementById('rcvLocRat').classList.add('selected');
+    }
+
+    function toggleReceiverLine(btnId, lineName) {
+      const btn = document.getElementById(btnId);
+      if (mySubscribedLines.has(lineName)) {
+        if (mySubscribedLines.size === 1) { alert('कम से कम एक लाइन चुनना आवश्यक है!'); return; }
+        mySubscribedLines.delete(lineName);
+        btn.classList.remove('selected');
+      } else {
+        mySubscribedLines.add(lineName);
+        btn.classList.add('selected');
+      }
+    }
+
+    function handleReceiverLockSubmit(e) {
+      e.preventDefault();
+      lockAndStartMonitoring();
+    }
+
+    function lockAndStartMonitoring() {
+      initAudio();
+      document.querySelectorAll('#rcvBlockGrid .pills-btn, #rcvLineGrid .pills-btn').forEach(btn => btn.classList.add('locked'));
+      
+      speakHindiAlert(`${myLockedBlock} का लोकेशन रूट लॉक हो गया है।`);
+      document.getElementById('receiverControls').style.display = 'none';
+      document.getElementById('receiverUnlockBar').style.display = 'block';
+
+      if (!realtimeChannel) {
+        realtimeChannel = db.channel('public:train_live_alerts')
+          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'train_live_alerts' }, payload => {
+            const alertData = payload.new;
+            let note = { block: '', movement: '' };
+            try { note = JSON.parse(alertData.location_note); } catch(e){}
+
+            const blockMatches = (note.block === myLockedBlock) || (myLockedBlock === 'सगोनी यार्ड');
+            const lineMatches = mySubscribedLines.has(alertData.line_name);
+
+            if (blockMatches && lineMatches) {
+              const isDispatched = alertData.alert_type === 'DISPATCHED';
+              document.getElementById('sirenAlertTitle').innerText = isDispatched 
+                ? `🚨 ${note.movement} (${alertData.line_name}): गाड़ी छोड़ दी गई!` 
+                : `⛔ ${note.movement} (${alertData.line_name}): गाड़ी ब्लॉक हो चुकी है!`;
+              document.getElementById('sirenAlertDesc').innerText = `ट्रेन सं.: ${alertData.train_no} | प्रेषक: ${alertData.sender_id}`;
+              document.getElementById('sirenAlarmBox').scrollIntoView({ behavior: 'smooth' });
+
+              triggerSirenSound(alertData.alert_type, note.movement, alertData.line_name, alertData.train_no);
+            }
+          })
+          .subscribe();
+      }
+
+      showToast(`🔒 ${myLockedBlock} सुरक्षित रूप से लॉक हो गया!`);
+    }
+
+    function unlockReceiverSettings() {
+      document.querySelectorAll('#rcvBlockGrid .pills-btn, #rcvLineGrid .pills-btn').forEach(btn => btn.classList.remove('locked'));
+      document.getElementById('receiverControls').style.display = 'block';
+      document.getElementById('receiverUnlockBar').style.display = 'none';
+    }
+
+    function openTrainMode(mode) {
+      closeTrainPanels();
+      if (mode === 'sender') document.getElementById('trainSenderPanel').style.display = 'block';
+      if (mode === 'receiver') document.getElementById('trainReceiverPanel').style.display = 'block';
+    }
+
+    function closeTrainPanels() {
+      document.getElementById('trainSenderPanel').style.display = 'none';
+      document.getElementById('trainReceiverPanel').style.display = 'none';
+    }
+
+    function handleLogin(e) {
+      if (e) e.preventDefault();
+      const id = document.getElementById('empIdInput').value.trim().toUpperCase();
+      if (!STAFF_DATA[id]) { alert('अमान्य ID! (उदा: JE01, MATE01, KEY01)'); return; }
+      activeUser = { emp_id: id, ...STAFF_DATA[id] };
+      document.getElementById('uName').innerText = activeUser.name;
+      document.getElementById('uRole').innerText = activeUser.role.toUpperCase();
+      document.getElementById('uBeat').innerText = activeUser.beat;
+
+      document.getElementById('homeSection').style.display = 'none';
+      document.getElementById('appContainer').style.display = 'block';
+
+      ['mateForm', 'keymanForm', 'jeForm'].forEach(f => document.getElementById(f).style.display = 'none');
+      if (activeUser.role === 'mate') {
+        document.getElementById('mateForm').style.display = 'block';
+        switchMateTab('mateMusterCard');
+      }
+      if (activeUser.role === 'keyman') document.getElementById('keymanForm').style.display = 'block';
+      if (activeUser.role === 'je') {
+        document.getElementById('jeForm').style.display = 'block';
+        loadMusterLogs();
+        loadEmergencies();
+        loadGangWork();
+        loadDefects();
+      }
+    }
+
+    function logout() {
+      activeUser = null;
+      document.getElementById('appContainer').style.display = 'none';
+      document.getElementById('homeSection').style.display = 'block';
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 3500);
+    }
+
+    function switchJETab(tabId) {
+      document.querySelectorAll('.tab-bar .tab-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      ['tabMusterLog', 'tabEmergency', 'tabMate', 'tabDefects', 'tabMap'].forEach(t => document.getElementById(t).style.display = 'none');
+      document.getElementById(tabId).style.display = 'block';
+    }
+
+    function selectEmergencyType(type) {
+      document.getElementById('selectedTypeTitle').innerText = 'रिपोर्ट: ' + type;
+      document.getElementById('emIncidentType').value = type;
+      document.getElementById('inlineEmergencyForm').style.display = 'block';
+      document.getElementById('inlineEmergencyForm').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function closeEmergencyForm() {
+      document.getElementById('inlineEmergencyForm').style.display = 'none';
+    }
+
+    function compressImageFile(file) {
+      return new Promise((resolve) => {
+        if (!file) { resolve(null); return; }
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (e) => {
+          const img = new Image();
+          img.src = e.target.result;
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let width = img.width, height = img.height, maxDim = 800;
+            if (width > height) { if (width > maxDim) { height = Math.round((height * maxDim) / width); width = maxDim; } }
+            else { if (height > maxDim) { width = Math.round((width * maxDim) / height); height = maxDim; } }
+            canvas.width = width; canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            resolve(canvas.toDataURL('image/jpeg', 0.6));
+          };
+          img.onerror = () => resolve(null);
+        };
+        reader.onerror = () => resolve(null);
+      });
+    }
+
+    async function submitEmergencyIncident(e) {
+      e.preventDefault();
+      const btn = document.getElementById('emBtn');
+      btn.innerText = "⚡ फोटो अपलोड हो रही है...";
+      btn.disabled = true;
+
+      try {
+        const fileInput = document.getElementById('emPhoto');
+        let photoBase64 = null;
+        if (fileInput.files.length > 0) photoBase64 = await compressImageFile(fileInput.files[0]);
+
+        const empId = document.getElementById('emEmpId').value.trim().toUpperCase();
+        const payload = {
+          reporter_emp_id: empId,
+          reporter_name: STAFF_DATA[empId] ? STAFF_DATA[empId].name : empId,
+          incident_type: document.getElementById('emIncidentType').value,
+          line_name: document.getElementById('emLine').value,
+          km_location: parseFloat(document.getElementById('emKm').value),
+          pole_no: document.getElementById('emPole').value,
+          train_no: document.getElementById('emTrain').value || 'N/A',
+          remarks: document.getElementById('emRemarks').value,
+          photo_url: photoBase64
+        };
+
+        const { error } = await db.from('emergency_incidents').insert([payload]);
+        btn.innerText = "🚨 तुरंत इमरजेंसी अलर्ट दर्ज करें (Press Enter)";
+        btn.disabled = false;
+
+        if (error) alert('त्रुटि: ' + error.message);
+        else {
+          closeEmergencyForm();
+          showToast('✅ आपातकालीन अलर्ट 1 सेकंड में दर्ज हो गया!');
+          e.target.reset();
         }
       } catch (err) {
-        console.error("Dashboard Load Error:", err);
+        btn.innerText = "🚨 तुरंत इमरजेंसी अलर्ट दर्ज करें (Press Enter)";
+        btn.disabled = false;
+        alert('त्रुटि: ' + err.message);
       }
     }
 
-    // ----------------------------------------------------
-    // INSPECTIONS
-    // ----------------------------------------------------
-    async function loadInspections() {
-      const { data } = await supabaseClient.from('inspections').select('*').order('scheduled_date', { ascending: true });
-      const tbody = document.getElementById('table-inspections');
-      if (data && data.length > 0) {
-        tbody.innerHTML = data.map(item => `
-          <tr>
-            <td class="p-3 font-semibold">${item.scheduled_date}</td>
-            <td class="p-3">${item.inspection_type}</td>
-            <td class="p-3">${item.location_km} (${item.line_name})</td>
-            <td class="p-3">
-              <span class="px-2 py-0.5 text-xs rounded-full font-semibold ${item.status === 'Completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">
-                ${item.status}
-              </span>
-            </td>
-          </tr>
-        `).join('');
-      } else {
-        tbody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-slate-400">कोई शेड्यूल मौजूद नहीं है।</td></tr>`;
+    async function loadEmergencies() {
+      const container = document.getElementById('emergencyLiveList');
+      const { data } = await db.from('emergency_incidents').select('*').order('created_at', { ascending: false }).limit(10);
+      if (!data || data.length === 0) {
+        container.innerHTML = '<div style="color:#22c55e; padding:10px; background:#0f172a; border-radius:6px; text-align:center;">🟢 कोई सक्रिय अलर्ट नहीं है।</div>';
+        return;
       }
+      let html = '';
+      data.forEach(inc => {
+        const time = new Date(inc.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        html += `<div style="background:#0f172a; border-left:4px solid #ef4444; padding:10px; border-radius:8px; margin-bottom:8px;">
+          <div style="display:flex; justify-content:space-between;"><strong style="color:#ef4444; font-size:13px;">${inc.incident_type}</strong><span style="color:#94a3b8; font-size:10px;">${time}</span></div>
+          <div style="margin-top:4px; font-size:12px;">📍 <strong>${inc.line_name} @ Km ${inc.km_location}</strong> (${inc.pole_no})<br>🚆 <strong>गाड़ी सं.:</strong> ${inc.train_no} | <em>${inc.remarks}</em><br><span style="color:#38bdf8; font-size:11px;">रिपोर्टकर्ता: <strong>${inc.reporter_name}</strong></span></div>
+          ${inc.photo_url ? `<div style="margin-top:8px;"><img src="${inc.photo_url}" style="max-width:100%; max-height:220px; border-radius:6px; border:1px solid #334155; object-fit:contain;"></div>` : ''}
+        </div>`;
+      });
+      container.innerHTML = html;
     }
 
-    async function addNewInspectionModal() {
-      const type = prompt("निरीक्षण का प्रकार (Points & Crossing / Curve / SEZ):");
-      if (!type) return;
-      const date = prompt("तारीख (YYYY-MM-DD):", new Date().toISOString().split('T')[0]);
-      const line = prompt("लाइन (UP Line / DN Line / 3rd Line):", "UP Line");
-      const km = prompt("स्थान / Km:");
+    async function submitKeymanDefect(e) {
+      e.preventDefault();
+      const btn = document.getElementById('kBtn');
+      btn.innerText = "सेव हो रहा है...";
+      btn.disabled = true;
 
-      const { error } = await supabaseClient.from('inspections').insert([{
-        scheduled_date: date,
-        inspection_type: type,
-        line_name: line,
-        location_km: km,
-        status: 'Pending'
-      }]);
+      const payload = {
+        emp_id: activeUser.emp_id, line_name: document.getElementById('kLine').value,
+        km_location: parseFloat(document.getElementById('kKm').value), pole_no: document.getElementById('kPole').value,
+        defect_type: document.getElementById('kDefect').value, remarks: document.getElementById('kRemarks').value,
+        reported_by: activeUser.name
+      };
 
-      if (!error) {
-        alert("निरीक्षण शेड्यूल जुड़ गया!");
-        loadInspections();
-      }
+      const { error } = await db.from('track_defects').insert([payload]);
+      btn.innerText = "डिफेक्ट दर्ज करें (Press Enter)";
+      btn.disabled = false;
+      if (error) alert('एरर: ' + error.message);
+      else { showToast('✅ डिफेक्ट अलर्ट दर्ज हो गया!'); e.target.reset(); }
     }
 
-    // Initialize cleanly on load
-    handleMorningGangChange();
-    filterKeymanByGang();
-    handleKeymanWorkCategoryChange();
-    loadDashboardData();
+    async function loadGangWork() {
+      const tbody = document.getElementById('gangWorkTableBody');
+      const { data } = await db.from('daily_work_logs').select('*').order('created_at', { ascending: false });
+      if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">कोई रिकॉर्ड नहीं।</td></tr>'; return; }
+      let html = '';
+      data.forEach(w => {
+        const time = new Date(w.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        html += `<tr><td>${time}</td><td><strong style="color:#4ade80;">${w.mate_name}</strong></td><td><span style="background:#78350f; color:#fef08a; padding:2px 6px; border-radius:4px; font-size:10px;">${w.line_name}</span></td><td>${w.from_km} - ${w.to_km}</td><td>${w.work_type}</td><td><strong style="color:#38bdf8;">${w.output_details}</strong></td></tr>`;
+      });
+      tbody.innerHTML = html;
+    }
+
+    async function loadDefects() {
+      const tbody = document.getElementById('defectsTableBody');
+      const upTrack = document.getElementById('upLineTrack'), dnTrack = document.getElementById('dnLineTrack'), thirdTrack = document.getElementById('thirdLineTrack');
+      upTrack.innerHTML = ''; dnTrack.innerHTML = ''; thirdTrack.innerHTML = '';
+      const { data } = await db.from('track_defects').select('*').order('created_at', { ascending: false });
+      if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#4ade80;">🟢 कोई ओपन डिफेक्ट नहीं है।</td></tr>'; return; }
+      let html = '';
+      data.forEach(d => {
+        const isCritical = d.defect_type.includes('Fracture') || d.defect_type.includes('🔴');
+        const tagClass = isCritical ? 'background:#7f1d1d; color:#fecaca;' : (d.defect_type.includes('🟢') ? 'background:#14532d; color:#bbf7d0;' : 'background:#78350f; color:#fef08a;');
+        const time = new Date(d.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+        html += `<tr><td>${time}</td><td>${d.line_name}</td><td><strong>${d.km_location}</strong></td><td>${d.pole_no || '-'}</td><td><span style="padding:2px 6px; border-radius:4px; font-size:10px; font-weight:700; ${tagClass}">${d.defect_type}</span></td><td><em>${d.remarks || '-'}</em></td><td>${d.reported_by}</td></tr>`;
+        if (d.km_location >= 1157 && d.km_location <= 1173) {
+          const percent = ((d.km_location - 1157) / 16) * 100;
+          const markerColor = isCritical ? '#ef4444' : (d.defect_type.includes('🟢') ? '#22c55e' : '#f59e0b');
+          const dot = `<div style="position:absolute; left:${percent}%; top:-3px; width:12px; height:12px; background:${markerColor}; border-radius:50%; border:2px solid #0f172a;"></div>`;
+          if (d.line_name.includes('UP') || d.line_name.includes('अप')) upTrack.innerHTML += dot;
+          if (d.line_name.includes('DN') || d.line_name.includes('डाउन')) dnTrack.innerHTML += dot;
+          if (d.line_name.includes('3rd') || d.line_name.includes('थर्ड')) thirdTrack.innerHTML += dot;
+        }
+      });
+      tbody.innerHTML = html;
+    }
   </script>
 </body>
 </html>
